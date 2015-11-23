@@ -1,6 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-public class Hashtagabonnement {
+public class Hashtagabonnement extends Abonnement {
 
 	private String name;
 	

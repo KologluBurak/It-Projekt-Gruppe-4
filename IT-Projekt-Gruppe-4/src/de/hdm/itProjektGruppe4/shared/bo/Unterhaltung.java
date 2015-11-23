@@ -1,6 +1,9 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-public class Unterhaltung {
+public class Unterhaltung extends BusinessObject{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private Nachricht refNachricht;
 	
 	public void setNachrichten(Nachricht nachricht){
@@ -8,7 +11,7 @@ public class Unterhaltung {
 	}
 	
 	public Nachricht nachrichtAnzeigen(){
-		return refNachricht; //muss noch verändert werden
+		return refNachricht; //muss noch verï¿½ndert werden
 	}
 	
 	public void nachrichtHinzufuegen (Nachricht phinzufuegen){
