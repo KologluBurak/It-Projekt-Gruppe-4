@@ -1,6 +1,8 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-public class Abonnement {
+public class Abonnement extends BusinessObject {
+	
+	private static final long serialVersionUID = 1L;
 
 	private static Abonnement aboArt;
 
@@ -15,7 +17,7 @@ public class Abonnement {
 	public void aboEntfernen () {
 	
 }
-
+	
 	public static Abonnement getAboArt() {
 	return aboArt;
 }

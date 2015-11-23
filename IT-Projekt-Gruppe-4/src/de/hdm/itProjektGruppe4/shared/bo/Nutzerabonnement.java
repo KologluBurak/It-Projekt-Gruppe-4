@@ -1,7 +1,9 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-public class Nutzerabonnement {
+public class Nutzerabonnement extends Abonnement {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String benutzername;
 
 	//Methodenköprer
