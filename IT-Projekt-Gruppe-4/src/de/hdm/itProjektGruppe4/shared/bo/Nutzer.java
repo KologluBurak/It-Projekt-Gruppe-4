@@ -20,4 +20,5 @@ public class Nutzer extends BusinessObject {
 	}
 	
 	
+	
 }
