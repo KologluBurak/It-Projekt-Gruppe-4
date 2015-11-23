@@ -71,7 +71,7 @@ public abstract class BusinessObject implements Serializable {
 	   * </p>
 	   * @see #equals(Object o)
 	   */
-	//TODO: was heisst dieses @override 
+	
 	  @Override
 	public boolean equals(Object o) {
 	    /*
