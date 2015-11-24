@@ -15,7 +15,7 @@ public class Nutzer extends BusinessObject {
 	public String getGoogleId() {
 		return googleId;
 	}
-	public void setGooglId(String googleId) {
+	public void setGoogleId(String googleId) {
 		this.googleId = googleId;
 	}
 	

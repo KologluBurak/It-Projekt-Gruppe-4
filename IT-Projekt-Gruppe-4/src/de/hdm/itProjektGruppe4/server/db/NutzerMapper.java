@@ -30,15 +30,6 @@ public class NutzerMapper {
 		
 	}
 	
- /**
-  * Suchen eines Kontos mit vorgegebener Kontonummer. Da diese eindeutig ist,
-  * wird genau ein Objekt zur�ckgegeben.
-  * 
-  * @param id Primärschlüsselattribut (->DB)
-  * @return Konto-Objekt, das dem übergebenen Schlüssel entspricht, null bei
-  *         nicht vorhandenem DB-Tupel.
-  */
-
   public Nutzer findByKey(int id){
 	
 	  Connection con = DBConnection.connection();
@@ -51,10 +42,10 @@ public class NutzerMapper {
 		  
 
 		  if (rs.next()) {
-			  Nutzer a = new Nutzer();
-			  a.setId(rs.getInt("id"));
-			  a.setGoogleId(rs.getString("googleId"));
-			  return a;
+			  Nutzer n = new Nutzer();
+			  n.setId(rs.getInt("id"));
+			  n.setGoogleId(rs.getString("googleId"));
+			  return n;
 		  }
 	   }
 	  catch (SQLException e2) {
@@ -77,10 +68,10 @@ public class NutzerMapper {
 
 
 	      if (rs.next()) {
-	        Nutzer a = new Nutzer();
-	        a.setVorname(rs.getString("vorname"));
-	        a.setGoogleId(rs.getString("googleId"));
-	        return a;
+	        Nutzer n = new Nutzer();
+	        n.setVorname(rs.getString("vorname"));
+	        n.setGoogleId(rs.getString("googleId"));
+	        return n;
 	      }
 	    }
 	    catch (SQLException e2) {
@@ -104,12 +95,12 @@ public class NutzerMapper {
 
 	      
 	      while (rs.next()) {
-	        Nutzer a = new Nutzer();
-	        a.setId(rs.getInt("id"));
-	        a.setGoogleId(rs.getString("googleId"));
+	        Nutzer n = new Nutzer();
+	        n.setId(rs.getInt("id"));
+	        n.setGoogleId(rs.getString("googleId"));
 
 	        
-	        result.addElement(a);
+	        result.addElement(n);
 	      }
 	    }
 	    catch (SQLException e2) {
@@ -119,25 +110,25 @@ public class NutzerMapper {
 	    return result;
 	  }
   
-  public Nutzer update(Nutzer a) {
+  public Nutzer update(Nutzer n) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE nutzer " + "SET googleId=\"" + a.getGoogleId()
-	          + "\" " + "WHERE id=" + a.getId());
+	      stmt.executeUpdate("UPDATE nutzer " + "SET googleId=\"" + n.getGoogleId()
+	          + "\" " + "WHERE id=" + n.getId());
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return a;
+	    return n;
 	  }
   
   
-  public Nutzer insert(Nutzer a) {
+  public Nutzer insert(Nutzer n) {
 	    Connection con = DBConnection.connection();
 
 	    try {
@@ -148,28 +139,28 @@ public class NutzerMapper {
 
 	      if (rs.next()) {
 	  
-	        a.setId(rs.getInt("maxid") + 1);
+	        n.setId(rs.getInt("maxid") + 1);
 
 	        stmt = con.createStatement();
 
-	        stmt.executeUpdate("INSERT INTO accounts (id, owner) " + "VALUES ("
-	            + a.getId() + "," + a.getGoogleId() + ")");
+	        stmt.executeUpdate("INSERT INTO nutzer (id, googleid) " + "VALUES ("
+	            + n.getId() + "," + n.getGoogleId() + ")");
 	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return a;
+	    return n;
 	  }
   
-  public void delete(Nutzer a) {
+  public void delete(Nutzer n) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM nutzer " + "WHERE id=" + a.getId());
+	      stmt.executeUpdate("DELETE FROM nutzer " + "WHERE id=" + n.getId());
 
 	    }
 	    catch (SQLException e2) {
