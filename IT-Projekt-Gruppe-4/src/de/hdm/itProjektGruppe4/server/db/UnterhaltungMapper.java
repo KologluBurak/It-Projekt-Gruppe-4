@@ -6,6 +6,7 @@ import java.util.Vector;
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 public class UnterhaltungMapper {
+	
 	private static UnterhaltungMapper unterhaltungMapper=null;
 	
 	protected UnterhaltungMapper() {
@@ -70,7 +71,7 @@ public class UnterhaltungMapper {
 		        u.setId(rs.getInt("maxid") + 1);
 		        stmt = con.createStatement();
 		        stmt.executeUpdate("INSERT INTO Unterhaltung (id, sender, receiver) " + "VALUES ("
-		            + u.getId() + "," + u.getSender() + "," + u.getReceiver + ")") ;
+		            + u.getId() + "," + u.getSender() + "," + u.getReceiver() + ")") ;
 		      }
 		    }
 		    catch (SQLException e2) {
@@ -108,31 +109,22 @@ public class UnterhaltungMapper {
 		    Connection con = DBConnection.connection();
 		    try {
 		      Statement stmt = con.createStatement();
-		      stmt.executeUpdate("DELETE sender FROM Unterhaltung " + "WHERE sender="
-		          + u.getId());
+		      stmt.executeUpdate("DELETE sender FROM Unterhaltung " + "WHERE sender=" + u.getId());
 		      
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
-		  }
+	 }
 	 
 	 public void deleteChatOfReceiver(Unterhaltung u){
 		 	Connection con = DBConnection.connection();
 		 	try {
 		 		Statement stmt = con.createStatement();
-		 		stmt.executeUpdate("DELETE receiver FROM Unterhaltung " + "WHERE receiver="
-				          + u.getId());
+		 		stmt.executeUpdate("DELETE receiver FROM Unterhaltung " + "WHERE receiver=" + u.getId());
+		 		
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 			}
 	 }
-	 
-	 
-	 
-	 
-
-	
-	
-	
 }

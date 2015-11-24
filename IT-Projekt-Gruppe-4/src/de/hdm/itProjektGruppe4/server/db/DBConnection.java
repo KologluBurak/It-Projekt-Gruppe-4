@@ -2,7 +2,10 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import com.google.appengine.api.utils.SystemProperty;
+import com.google.appengine.api.rdbms.AppEngineDriver;
 
 public class DBConnection {
 	private static Connection con = null;
@@ -22,6 +25,7 @@ public class DBConnection {
                     url = localUrl;
                 }
                 con = DriverManager.getConnection(url);
+                
             } catch (Exception e) {
                 con = null;
                 e.printStackTrace();
