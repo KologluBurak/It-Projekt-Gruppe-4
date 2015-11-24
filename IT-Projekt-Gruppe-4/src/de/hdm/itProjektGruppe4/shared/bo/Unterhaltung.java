@@ -5,6 +5,7 @@ public class Unterhaltung extends BusinessObject{
 	private static final long serialVersionUID = 1L;
 	
 	private Nachricht refNachricht;
+	private Unterhaltung lastEdited;
 	
 	public void setNachrichten(Nachricht nachricht){
 		refNachricht= nachricht;
@@ -14,7 +15,16 @@ public class Unterhaltung extends BusinessObject{
 		return refNachricht; //muss noch ver�ndert werden
 	}
 	
-	public void nachrichtHinzufuegen (Nachricht phinzufuegen){
+	public void nachrichtHinzufuegen (Nachricht hinzufuegen){
 		//
 	}
+
+	public Unterhaltung getLastEdited() {
+		return lastEdited;
+	}
+
+	public void setLastEdited(Unterhaltung lastEdited) {
+		this.lastEdited = lastEdited;
+	}
+	
 }
