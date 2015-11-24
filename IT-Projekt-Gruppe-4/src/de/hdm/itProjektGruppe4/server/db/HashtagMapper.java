@@ -1,5 +1,5 @@
 package de.hdm.itProjektGruppe4.server.db;
 
-public class HashtagMapper {
+public class HashtagMapper extends AbonnementMapper {
 
 }

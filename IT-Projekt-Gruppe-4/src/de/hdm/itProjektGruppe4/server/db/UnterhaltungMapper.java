@@ -4,9 +4,6 @@ import java.sql.*;
 import java.util.Vector;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
-import de.hdm.thies.bankProjekt.server.db.DBConnection;
-import de.hdm.thies.bankProjekt.shared.bo.Account;
-import de.hdm.thies.bankProjekt.shared.bo.Transaction;
 
 public class UnterhaltungMapper {
 	private static UnterhaltungMapper unterhaltungMapper=null;
