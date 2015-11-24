@@ -4,8 +4,9 @@ public class Nachricht extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 	
-	String text;
-	String betreff;
+	private String text;
+	private String betreff;
+	
 	public String getText() {
 		return text;
 	}
