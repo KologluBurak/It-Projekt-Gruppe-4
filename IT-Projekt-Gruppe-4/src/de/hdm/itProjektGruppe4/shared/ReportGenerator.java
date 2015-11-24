@@ -11,6 +11,7 @@ public void init() throws IllegalArgumentException;
 public void xxx throws IllegalArgumentException;
 
 public abstract xxx throws IllegalArgumentException;
+
 	
 }
 
