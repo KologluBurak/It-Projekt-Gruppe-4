@@ -4,9 +4,15 @@ public class Abonnement extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 
-	private static Abonnement aboArt;
+	private String aboArt;
 
 
+	public String getAboArt() {
+		return aboArt;
+	}
+	public void setAboArt(String aboArt) {
+		this.aboArt = aboArt;
+	}
 	//Methodenkörper
 	public void aboAnzeigen (){
 	
@@ -18,11 +24,5 @@ public class Abonnement extends BusinessObject {
 	
 }
 	
-	public static Abonnement getAboArt() {
-	return aboArt;
-}
-	public static void setAboArt(Abonnement aboArt) {
-	Abonnement.aboArt = aboArt;
-}
 
 }
