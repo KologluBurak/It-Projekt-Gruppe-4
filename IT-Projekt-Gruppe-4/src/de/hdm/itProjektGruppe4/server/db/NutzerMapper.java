@@ -43,13 +43,13 @@ public class NutzerMapper {
 		  Statement stmt = con.createStatement();
 		  
 		  ResultSet rs = stmt.executeQuery("SELECT id, googleId FROM nutzer " 
-		  + "WHERE id=" + id + " ORDER by googleID");
+		  + "WHERE id=" + id + " ORDER by googleId");
 		  
 
 		  if (rs.next()) {
 			  Nutzer a = new Nutzer();
 			  a.setId(rs.getInt("id"));
-			  a.setGoogleID(rs.getInt("googleID"));
+			  a.setGoogleId(rs.getString("googleId"));
 			  return a;
 		  }
 	   }
