@@ -17,12 +17,6 @@ public class Abonnement extends BusinessObject {
 	public void aboEntfernen () {
 	
 }
-	
-	public static Abonnement getAboArt() {
-	return aboArt;
-}
-	public static void setAboArt(Abonnement aboArt) {
-	Abonnement.aboArt = aboArt;
-}
+
 
 }
