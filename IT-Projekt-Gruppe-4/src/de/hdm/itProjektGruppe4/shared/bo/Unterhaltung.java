@@ -12,7 +12,7 @@ public class Unterhaltung extends BusinessObject{
 	}
 	
 	public Nachricht nachrichtAnzeigen(){
-		return refNachricht; //muss noch ver�ndert werden
+		return refNachricht; //muss noch veraendert werden
 	}
 	
 	public void nachrichtHinzufuegen (Nachricht hinzufuegen){
