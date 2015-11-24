@@ -3,7 +3,7 @@ package de.hdm.itProjektGruppe4.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.*;
 
 
 
@@ -154,7 +154,7 @@ public class NutzerMapper {
 	    return n;
 	  }
   
-  public void delete(Nutzer n) {
+   public void delete(Nutzer n) {
 	    Connection con = DBConnection.connection();
 
 	    try {

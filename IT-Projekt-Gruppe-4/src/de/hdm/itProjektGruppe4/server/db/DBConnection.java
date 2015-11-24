@@ -3,15 +3,17 @@ package de.hdm.itProjektGruppe4.server.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import com.google.appengine.api.utils.SystemProperty;
-import com.google.appengine.api.rdbms.AppEngineDriver;
 
 public class DBConnection {
+	
 	private static Connection con = null;
-	private static String googleUrl = null; /*Muss noch entsprechend geändert werden*/
-    private static String localUrl = null;/*Muss noch entsprechend geändert werden*/
-    
+	private static String googleUrl = null;
+    private static String localUrl = "jdbc:mysql://localhost:3306/derNameunsererDatenbank?user=root";
+        
     public static Connection connection() {
         // Wenn es bisher keine Conncetion zur DB gab, ...
         if (con == null) {
@@ -27,10 +29,13 @@ public class DBConnection {
                 con = DriverManager.getConnection(url);
                 
             } catch (Exception e) {
-                con = null;
+                System.err.println("Unable to load");
+            	con = null;
                 e.printStackTrace();
             }
         }
         return con;
     }
+    
+    
 }

@@ -2,7 +2,6 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
 import java.util.Vector;
-
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 public class UnterhaltungMapper {
@@ -104,27 +103,4 @@ public class UnterhaltungMapper {
 		      e2.printStackTrace();
 		    }
 		  }
-	 
-	 public void deleteChatOfSender(Unterhaltung u) {
-		    Connection con = DBConnection.connection();
-		    try {
-		      Statement stmt = con.createStatement();
-		      stmt.executeUpdate("DELETE sender FROM Unterhaltung " + "WHERE sender=" + u.getId());
-		      
-		    }
-		    catch (SQLException e2) {
-		      e2.printStackTrace();
-		    }
-	 }
-	 
-	 public void deleteChatOfReceiver(Unterhaltung u){
-		 	Connection con = DBConnection.connection();
-		 	try {
-		 		Statement stmt = con.createStatement();
-		 		stmt.executeUpdate("DELETE receiver FROM Unterhaltung " + "WHERE receiver=" + u.getId());
-		 		
-			} catch (SQLException e2) {
-				e2.printStackTrace();
-			}
-	 }
 }
