@@ -13,10 +13,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 
 /**
- * Das asynchrone Gegenstück des Interface {@link BankAdministration}. Es wird
+ * Das asynchrone Gegenstück des Interface {@link MessagingAdministration}. Es wird
  * semiautomatisch durch das Google Plugin erstellt und gepflegt. Daher erfolgt
  * hier keine weitere Dokumentation. Für weitere Informationen siehe das
- * synchrone Interface {@link BankAdministration}.
+ * synchrone Interface {@link MessagingAdministration}.
  * 
  * @author thies
  */
