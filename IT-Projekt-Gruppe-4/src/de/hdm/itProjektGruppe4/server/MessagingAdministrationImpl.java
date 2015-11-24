@@ -96,7 +96,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public void saveAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
 		//
 	}	/**
-	   * Speichern eines Nutzer.
+	   * Speichern eines Nutzer in der Datenbank.
 	   */
 	public void saveNutzer (Nutzer nutzer)throws IllegalArgumentException{
 		nutzerMapper.update(nutzer);
