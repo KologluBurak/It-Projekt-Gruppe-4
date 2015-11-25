@@ -22,7 +22,7 @@ public class UnterhaltungMapper {
 		    Connection con = DBConnection.connection();
 		    try {
 		      Statement stmt = con.createStatement();
-		      ResultSet rs = stmt.executeQuery("SELECT id, sender, receiver FROM Unterhaltung "
+		      ResultSet rs = stmt.executeQuery("SELECT id, sender, receiver FROM unterhaltung "
 		          + "WHERE id=" + id + " ORDER BY receiver");
 		      if (rs.next()) {
 		        Unterhaltung u = new Unterhaltung();
@@ -44,7 +44,7 @@ public class UnterhaltungMapper {
 
 		    try {
 		      Statement stmt = con.createStatement();
-		      ResultSet rs = stmt.executeQuery("SELECT id FROM Unterhaltung "
+		      ResultSet rs = stmt.executeQuery("SELECT id FROM unterhaltung "
 		          + " ORDER BY id");
 		      while (rs.next()) {
 		        Unterhaltung u = new Unterhaltung();
@@ -64,12 +64,12 @@ public class UnterhaltungMapper {
 		    try {
 		      Statement stmt = con.createStatement();
 		      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-		          + "FROM Unterhaltung ");
+		          + "FROM unterhaltung ");
 
 		      if (rs.next()) {
 		        u.setId(rs.getInt("maxid") + 1);
 		        stmt = con.createStatement();
-		        stmt.executeUpdate("INSERT INTO Unterhaltung (id, sender, receiver) " + "VALUES ("
+		        stmt.executeUpdate("INSERT INTO unterhaltung (id, sender, receiver) " + "VALUES ("
 		            + u.getId() + "," + u.getSender() + "," + u.getReceiver() + ")") ;
 		      }
 		    }
@@ -83,8 +83,7 @@ public class UnterhaltungMapper {
 		 Connection con = DBConnection.connection();
 		    try {
 		      Statement stmt = con.createStatement();
-		      stmt.executeUpdate("UPDATE Unterhaltung SET " + "sender="
-		          + u.getSender() + "," + "receiver=" + u.getReceiver() + "," + "lastEdited=" + u.getLastEdited()
+		      stmt.executeUpdate("UPDATE unterhaltung SET sender= "+ u.getSender() + "," + "receiver=" + u.getReceiver() + "," + "lastEdited=" + u.getLastEdited()
 		          + "," + "WHERE id=" + u.getId()); 
 		    }
 		    catch (SQLException e2) {
