@@ -16,18 +16,20 @@ public class Abonnement extends BusinessObject {
 	public String getAboArt() {
 		return aboArt;
 	}
+	
 	public void setAboArt(String aboArt) {
 		this.aboArt = aboArt;
 	}
+	
 	//Methodenkörper
-	public void aboAnzeigen (){
-	
-}
-	public void aboHinzufuegen () {
-	
-}
-	public void aboEntfernen () {
-	
-}
+//	public void aboAnzeigen (){
+//	
+//}
+//	public void aboHinzufuegen () {
+//	
+//}
+//	public void aboEntfernen () {
+//	
+//}
 
 }
