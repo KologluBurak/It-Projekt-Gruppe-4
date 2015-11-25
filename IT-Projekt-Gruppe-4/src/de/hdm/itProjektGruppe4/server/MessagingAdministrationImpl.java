@@ -40,9 +40,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	//	
 	}
 	public void setNachrichtEditedBy (Nachricht NachrichtEditedBy)throws IllegalArgumentException{
+		nachrichtMapper.update(NachrichtEditedBy);
 		//
 	}
 	public void saveNachricht (Nachricht Nachricht) throws IllegalArgumentException{
+		nachrichtMapper.update(Nachricht);
 		//
 	}
 	public void deleteHashtag (Hashtag Hashtag)throws IllegalArgumentException{
@@ -55,6 +57,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		//
 	}
 	public void saveAbonnement (Abonnement Abo) throws IllegalArgumentException {
+		abonnementMapper.update(Abo);
 		//
 	}
 	
@@ -70,24 +73,31 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		n.setGoogleId(googleId);
 	}
 	public void senden (Nachricht Senden) throws IllegalArgumentException {
+		nachrichtMapper.update(Senden);
 		//
 	}
 	public void saveUnterhaltung (Unterhaltung Unterhaltung) throws IllegalArgumentException{
-		
+
+		unterhaltungMapper.update(Unterhaltung);
+
 	}
 	public void deleteNutzer (Nutzer Nutzer) throws IllegalArgumentException{
 		//
 	}
 	public void createUnterhaltung (Unterhaltung Unterhaltung) throws IllegalArgumentException{
+		
 		//
 	}
 	public void setDateOfNachricht(Date DateOfNachricht) throws IllegalArgumentException{
+		
 		//
 	}
 	public void saveHashtag (Hashtag Hashtag) throws IllegalArgumentException{
+		hashtagMapper.update(Hashtag);
 		//
 	}
 	public void empfangen (Nachricht Empfangen) throws IllegalArgumentException{
+		nachrichtMapper.update(Empfangen);
 		//
 		}
 	public void createAbonnement (Abonnement Abo) throws IllegalArgumentException{
@@ -102,26 +112,31 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	}
 	
 	public void deleteAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
+		
 		//
 	}
 
 	public void saveAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
+		nutzerAboMapper.update(NutzerAbo);
 		//
 	}
 	public void createAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
+		Hashtagabonnement h = new Hashtagabonnement();
+		h.setId(HashtagAbo.getId());
 		//
 	}
 	public void deleteAboHastag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
+		hashtagMapper.update(HashtagAbo);
 		//
 	}
 	public void saveAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
+		hashtagMapper.update(HashtagAbo);
 		//
 	}	
 	/**
 	   * Speichern eines Nutzer in der Datenbank.
 	   */
 	public void saveNutzer (Nutzer nutzer)throws IllegalArgumentException{
-
 		nutzerMapper.update(nutzer);
 	}
 
