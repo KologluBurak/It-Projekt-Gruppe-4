@@ -11,7 +11,7 @@ public class DBConnection {
 	//Variablen f�r den Verbindungsaufbau
 	private static Connection con = null;
 	private static String googleUrl = null;
-    private static String localUrl = "jdbc:mysql://localhost:3306/derNameunsererDatenbank?user=root";
+    private static String localUrl = "jdbc:mysql://localhost:3306/testdb?user=root";
         
     public static Connection connection() {
         // Wenn es bisher keine Conncetion zur DB gab, ...
@@ -29,14 +29,14 @@ public class DBConnection {
                 con.close();
                 
             } catch (Exception e) {
-                System.err.println("Unable to load");
+                System.err.println("Datenbank konnte nicht geladen werden");
             	con = null;
                 e.printStackTrace();
             }
         }
         return con;
     }
-   
+
     public static void closeCon (){
 	    try {
 			con.close();
@@ -45,5 +45,20 @@ public class DBConnection {
 			e.printStackTrace();
 		}
     }
- 
+
+    public static void closeConnection(){
+		if (con != null) {
+			try {
+				con.close();
+				con = null;
+			} 
+			catch(Exception e){
+				System.err.println("Datenbankverbindung konnte nicht getrennt werden");
+			}
+		}
+		else{
+			System.out.println("Verbindung bereits getrennt");
+		}
+
+	}
 }
