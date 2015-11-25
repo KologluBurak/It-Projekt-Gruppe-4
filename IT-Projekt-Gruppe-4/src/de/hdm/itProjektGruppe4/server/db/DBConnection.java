@@ -26,7 +26,6 @@ public class DBConnection {
                     url = localUrl;
                 }
                 con = DriverManager.getConnection(url);
-                con.close();
                 
             } catch (Exception e) {
                 System.err.println("Datenbank konnte nicht geladen werden");

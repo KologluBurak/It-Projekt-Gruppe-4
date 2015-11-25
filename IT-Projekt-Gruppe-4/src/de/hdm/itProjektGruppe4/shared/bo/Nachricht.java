@@ -1,9 +1,8 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
- * 
- * @author Yücel
- *
+ *@author Yücel
+ *@author Oikonomou
  */
 
 public class Nachricht extends BusinessObject {

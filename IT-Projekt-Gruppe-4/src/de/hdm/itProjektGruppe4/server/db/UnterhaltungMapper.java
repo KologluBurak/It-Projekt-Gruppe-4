@@ -1,8 +1,18 @@
 package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
-import java.util.Vector;
+
+import java.util.ArrayList;
 import de.hdm.itProjektGruppe4.shared.bo.*;
+
+
+/**
+ * @author Kologlu
+ * @author Oikonomou
+ * @author Thies
+ *
+ */
+
 
 public class UnterhaltungMapper {
 	
@@ -18,16 +28,23 @@ public class UnterhaltungMapper {
 	    return unterhaltungMapper;
 	  }
 	
-	 public Unterhaltung findByKey(int id) {
+	
+	/**
+	 * Diese Methode ermöglicht es eine Unterhaltung anhand ihrer ID das Auszugeben.
+	 * @param id
+	 * @return
+	 */
+	
+	 public Unterhaltung findUnterhaltungByKey(int id) {
 		    Connection con = DBConnection.connection();
 		    try {
 		      Statement stmt = con.createStatement();
-		      ResultSet rs = stmt.executeQuery("SELECT id, sender, receiver FROM unterhaltung "
-		          + "WHERE id=" + id + " ORDER BY receiver");
+		      ResultSet rs = stmt.executeQuery("SELECT (unterhaltung_id, sender, receiver) FROM unterhaltung "
+		          + "WHERE unterhaltung_id=" + id + " ORDER BY receiver");
 		      if (rs.next()) {
-		        Unterhaltung u = new Unterhaltung();
-		        u.setId(rs.getInt("id"));
-		        return u;
+		        Unterhaltung unterhaltung = new Unterhaltung();
+		        unterhaltung.setId(rs.getInt("id"));
+		        return unterhaltung;
 		      }
 		    }
 		    catch (SQLException e2) {
@@ -37,28 +54,39 @@ public class UnterhaltungMapper {
 
 		    return null;
 		  }
+	 
+	/**
+	 * Diese Methode ermöglicht es alle Unterhaltungen aus der Datenbank in einer Liste auszugeben.
+	 * @return
+	 */
 	
-	public Vector<Unterhaltung> findAll() {
+	public ArrayList<Unterhaltung> findAllUnterhaltungen() {
 		    Connection con = DBConnection.connection();
-		    Vector<Unterhaltung> result = new Vector<Unterhaltung>();
+		    ArrayList<Unterhaltung> unterhaltungListe = new ArrayList<Unterhaltung>();
 
 		    try {
 		      Statement stmt = con.createStatement();
 		      ResultSet rs = stmt.executeQuery("SELECT id FROM unterhaltung "
 		          + " ORDER BY id");
 		      while (rs.next()) {
-		        Unterhaltung u = new Unterhaltung();
-		        u.setId(rs.getInt("id"));
-		        result.addElement(u);
+		        Unterhaltung unterhaltung = new Unterhaltung();
+		        unterhaltung.setId(rs.getInt("id"));
+		        unterhaltungListe.add(unterhaltung);
 		      }
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
-		    return result;
+		    return unterhaltungListe;
 		  }
+	
+	/**
+	 * Diese Methode ermöglicht es eine Unterhaltung in der Datenbank anzulegen.
+	 * @param unterhaltung
+	 * @return
+	 */
 	 
-	 public Unterhaltung insert(Unterhaltung u) {
+	 public Unterhaltung insertUnterhaltung(Unterhaltung unterhaltung) {
 		    Connection con = DBConnection.connection();
 
 		    try {
@@ -67,39 +95,56 @@ public class UnterhaltungMapper {
 		          + "FROM unterhaltung ");
 
 		      if (rs.next()) {
-		        u.setId(rs.getInt("maxid") + 1);
+		        unterhaltung.setId(rs.getInt("maxid") + 1);
+		        unterhaltung.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 		        stmt = con.createStatement();
 		        stmt.executeUpdate("INSERT INTO unterhaltung (id, sender, receiver) " + "VALUES ("
-		            + u.getId() + "," + u.getSender() + "," + u.getReceiver() + ")") ;
+		            + unterhaltung.getId() + "," + unterhaltung.getSender() + "," + unterhaltung.getReceiver() + ")") ;
 		      }
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
-		    return u;
+		    return unterhaltung;
 	  }
 	 
-	 public Unterhaltung update(Unterhaltung u){
+	 /**
+	  * Diese Methode ermöglicht eine Akutalisierung des Unterhaltungsdatensatzes in der Datenbank.
+	  * @param unterhaltung
+	  * @return
+	  */
+	 
+	 public Unterhaltung updateUnterhaltung(Unterhaltung unterhaltung){
 		 Connection con = DBConnection.connection();
 		    try {
 		      Statement stmt = con.createStatement();
-		      stmt.executeUpdate("UPDATE unterhaltung SET sender= "+ u.getSender() + "," + "receiver=" + u.getReceiver() + "," + "lastEdited=" + u.getLastEdited()
-		          + "," + "WHERE id=" + u.getId()); 
+		      stmt.executeUpdate("UPDATE unterhaltung SET sender= "+ unterhaltung.getSender() + "," + "receiver=" + unterhaltung.getReceiver() + "," + "lastEdited=" + unterhaltung.getLastEdited()
+		          + "," + "WHERE unterhaltung_id=" + unterhaltung.getId()); 
 		    }
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
-		    return u;
+		    return unterhaltung;
 	 }
 	 
-	 public void delete(Unterhaltung u) {
+	 /**
+	  * Diese Methode ermöglicht es eine Unterhaltung aus der Datenbank zu löschen.
+	  * @param unterhaltung
+	  */
+	 
+	 public void deleteUnterhaltung(Unterhaltung unterhaltung) {
 		    Connection con = DBConnection.connection();
+		    
 		    try {
-		      Statement stmt = con.createStatement();
-		      stmt.executeUpdate("DELETE FROM Unterhaltung " + "WHERE id=" + u.getId());
+		      
+		    	Statement stmt = con.createStatement();
+		      
+		    	stmt.executeUpdate("DELETE FROM Unterhaltung " + "WHERE unterhaltung_id=" + unterhaltung.getId());
 		    }
+		    
 		    catch (SQLException e2) {
 		      e2.printStackTrace();
 		    }
+		    return;
 		  }
 }

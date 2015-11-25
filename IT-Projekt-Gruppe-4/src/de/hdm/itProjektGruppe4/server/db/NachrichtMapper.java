@@ -1,9 +1,9 @@
 package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
-import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
+import de.hdm.itProjektGruppe4.shared.bo.*;
 
 
 
@@ -30,8 +30,12 @@ public class NachrichtMapper {
 		
 	}
 	
-  
-  public Nachricht findByKey(int id){
+  /**
+   * Diese Methode ermöglicht es einen Nutzer anhand seiner ID das Auszugeben.
+   * @param id
+   * @return
+   */
+  public Nachricht findNachrichtByKey(int id){
 		
 	  Connection con = DBConnection.connection();
 	  
@@ -43,11 +47,12 @@ public class NachrichtMapper {
 		  
 
 		  if (rs.next()) {
-			  Nachricht n = new Nachricht();
-			  n.setId(rs.getInt("id"));
-			  n.setText(rs.getString("text"));
-			  n.setBetreff(rs.getString("betreff"));
-			  return n;
+			  Nachricht nachricht = new Nachricht();
+			  nachricht.setId(rs.getInt("nachricht_id"));
+			  nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
+			  nachricht.setText(rs.getString("text"));
+			  nachricht.setBetreff(rs.getString("betreff"));
+			  return nachricht;
 		  }
 	   }
 	  catch (SQLException e2) {
@@ -58,46 +63,56 @@ public class NachrichtMapper {
 	  return null;
 	}
   
-  public Vector<Nachricht> findAll() {
+  /**
+   * Diese Methode ermöglicht es alle angelegten Nachrichten aus der Datenbank in einer Liste auszugeben.
+   * @param id
+   * @return
+   */
+  public ArrayList<Nachricht> findAllNachrichten(int id) {
 	    Connection con = DBConnection.connection();
-
-	    Vector<Nachricht> result = new Vector<Nachricht>();
+	    
+	    ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      ResultSet rs = stmt.executeQuery("SELECT id, text, betreff FROM nachricht "
-	          + " ORDER BY id");
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM nachricht "
+	          + " ORDER BY nachricht_id");
 
 	      
 	      while (rs.next()) {
-	        Nachricht n = new Nachricht();
-	        n.setId(rs.getInt("id"));
-	        n.setText(rs.getString("text"));
-	        n.setBetreff(rs.getString("betreff"));
+	        Nachricht nachricht = new Nachricht();
+	        nachricht.setId(rs.getInt("nachricht_id"));
+	        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
+	        nachricht.setText(rs.getString("text"));
+	        nachricht.setBetreff(rs.getString("betreff"));
 
 	        
-	        result.addElement(n);
+	        result.add(nachricht);
 	      }
+	      
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
-
-	    
-	    
 	    
 	    return result;
 	  }
   
-  public Nachricht update(Nachricht n) {
+  /**
+   * Diese Methode ermöglicht eine Akutalisierung des Nachrichtendatensatzes in der Datenbank
+   * @param nachricht
+   * @return
+   */
+  
+  public Nachricht updateNachricht(Nachricht nachricht) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE nachricht " + "SET text=\"" + n.getText()
-	          + "\" " + "WHERE id=" + n.getId());
+	      stmt.executeUpdate("UPDATE nachricht " + "SET Text=\"" + nachricht.getText()
+	          + "\" " + "WHERE id=" + nachricht.getId());
 
 	    }
 	    catch (SQLException e2) {
@@ -105,47 +120,151 @@ public class NachrichtMapper {
 	    }
 	    
 	    DBConnection.closeCon();
-	    return n;
+	    return nachricht;
 	  }
 
-  public Nachricht insert(Nachricht n) {
+  /**
+   * Diese Methode ermöglicht es eine Nachricht in der Datenbank anzulegen.
+   * @param nachricht
+   * @return
+   */
+  public Nachricht insertNachricht(Nachricht nachricht) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
+	      ResultSet rs = stmt.executeQuery("SELECT MAX(nachricht_id) AS maxid "
 	          + "FROM nachricht ");
 
 	      if (rs.next()) {
 	  
-	        n.setId(rs.getInt("maxid") + 1);
+	        nachricht.setId(rs.getInt("maxid") + 1);
+	        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 	        stmt = con.createStatement();
 
-	        stmt.executeUpdate("INSERT INTO nachricht (id, text, betreff) " + "VALUES ("
-	            + n.getId() + "," + n.getText() + "," + n.getBetreff() + ")");
+	        stmt.executeUpdate("INSERT INTO nachricht (nachricht_id, text, betreff, datum) " 
+	        + "VALUES (" + nachricht.getId() + "," + nachricht.getText() + "," + nachricht.getErstellungsZeitpunkt() + "");
 	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return n;
+	    return nachricht;
 	  }
   
-  public void delete(Nachricht n) {
+  /**
+   * Diese Methode ermöglicht das editieren einer Nachricht aus der Datenbank.
+   * @param nachricht
+   * @return
+   */
+  
+  public Nachricht editNachricht(Nachricht nachricht){
+
+		Connection con = DBConnection.connection();
+
+	    try {
+	      Statement stmt = con.createStatement();
+
+	      stmt.executeUpdate("UPDATE Kommentar SET Text=\"" + nachricht.getText() + "\" WHERE Kommentar_ID= " + nachricht.getId());
+
+
+	    }
+	    catch (SQLException e) {
+	      e.printStackTrace();
+	    }
+
+	    return nachricht;
+	}
+  
+  /**
+   * Diese Methode ermöglicht es eine Nachricht aus der Datenbank zu löschen.
+   * @param nachricht
+   */
+  
+  public void deleteNachricht(Nachricht nachricht) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM nachricht " + "WHERE id=" + n.getId());
+	      stmt.executeUpdate("DELETE FROM nachricht " + "WHERE nachricht_id=" + nachricht.getId());
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
+	    return;
+  }
+  
+  /**
+   * Diese Methode ermöglicht es alle Nachricht eines Nutzers auszugeben.
+   * @param nutzer
+   * @param von
+   * @param bis
+   * @param sortierung
+   * @return
+   */
+  
+  public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis, int sortierung) {
+		Connection con = DBConnection.connection();
+		ArrayList <Nachricht> nachrichtenJeNutzer= new ArrayList<Nachricht>();
+
+		try{
+			Statement stmt = con.createStatement();
+			String sql = "SELECT * FROM Nachricht WHERE nutzer_ID =" + nutzer.getId() + " AND Datum between " + von + " AND " + bis + "";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				
+		        Nachricht nachricht = new Nachricht();
+		        nachricht.setId(rs.getInt("nutzer_ID"));
+		        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
+		        nachricht.setText(rs.getString("Text"));
+		    
+		        nachrichtenJeNutzer.add(nachricht);
+			}
+			return nachrichtenJeNutzer;		
+		}
+		   catch (SQLException e) {
+	    		e.printStackTrace();
+	    		return null;
+		    }
+  
+  }
+  
+  /**
+   * Diese Methode ermöglicht es alle Nachrichten je Zeitraum auszugeben.
+   * @param von
+   * @param bis
+   * @return
+   */
+  public ArrayList<Nachricht> alleNachrichtJeZeitraum(String von, String bis) {
+		Connection con = DBConnection.connection();
+		ArrayList <Nachricht> nachrichtenJeZeitraum= new ArrayList<Nachricht>();
+		
+		
+		try{
+			Statement stmt = con.createStatement();
+			String sql = "SELECT * FROM Nachricht WHERE Datum between " + von + " AND " + bis + "";
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+		        Nachricht nachricht = new Nachricht();
+		        nachricht.setId(rs.getInt("nachricht_ID"));
+		        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("Datum"));
+		        nachricht.setText(rs.getString("Text"));
+		      
+		        nachrichtenJeZeitraum.add(nachricht);
+			}
+			return nachrichtenJeZeitraum;		
+		}
+		   catch (SQLException e) {
+	    		e.printStackTrace();
+	    		return null;
+		    }				
 	 }
 }
 
