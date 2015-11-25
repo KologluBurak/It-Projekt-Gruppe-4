@@ -10,16 +10,13 @@ public class Unterhaltung extends BusinessObject{
 	private String sender;
 	private String receiver;
 	
-	public void setNachrichten(Nachricht nachricht){
-		refNachricht= nachricht;
+
+	public Nachricht getRefNachricht() {
+		return refNachricht;
 	}
-	
-	public Nachricht nachrichtAnzeigen(){
-		return refNachricht; //muss noch veraendert werden
-	}
-	
-	public void nachrichtHinzufuegen (Nachricht hinzufuegen){
-		//
+
+	public void setRefNachricht(Nachricht refNachricht) {
+		this.refNachricht = refNachricht;
 	}
 
 	public Date getLastEdited() {

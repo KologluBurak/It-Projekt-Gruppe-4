@@ -1,7 +1,7 @@
 package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
@@ -30,7 +30,13 @@ public class NutzerMapper {
 		
 	}
 	
-  public Nutzer findByKey(int id){
+/**
+ * Diese Methode ermöglicht das Ausgeben der Nutzer anhand deren ID aus der Datenbank.
+ * @param id
+ * @return
+ */
+	
+  public Nutzer findNutzerByKey(int id){
 	
 	  Connection con = DBConnection.connection();
 	  
@@ -42,10 +48,10 @@ public class NutzerMapper {
 		  
 
 		  if (rs.next()) {
-			  Nutzer n = new Nutzer();
-			  n.setId(rs.getInt("id"));
-			  n.setGoogleId(rs.getString("googleId"));
-			  return n;
+			  Nutzer nutzer = new Nutzer();
+			  nutzer.setId(rs.getInt("nutzerId"));
+			  nutzer.setGoogleId(rs.getString("googleId"));
+			  return nutzer;
 		  }
 	   }
 	  catch (SQLException e2) {
@@ -56,22 +62,63 @@ public class NutzerMapper {
 	  return null;
 	}
   
-  public Nutzer findByVorname(int id) {
+  /**
+   * Diese Methode gibt die registrierten Nutzer in der Datenbank anhand dem Vornamen aus. 
+   * @param vorname
+   * @return
+   */
+  
+  public Nutzer findNutzerByVorname(String vorname) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	    	
 	      Statement stmt = con.createStatement();
 
-	      ResultSet rs = stmt.executeQuery("SELECT id, googleId FROM nutzer "
-	          + "WHERE id=" + id + " ORDER BY googleId");
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzer "
+	          + "WHERE Vorname=" + vorname + " ORDER BY id");
 
 
 	      if (rs.next()) {
-	        Nutzer n = new Nutzer();
-	        n.setVorname(rs.getString("vorname"));
-	        n.setGoogleId(rs.getString("googleId"));
-	        return n;
+	        Nutzer nutzer = new Nutzer();
+	        nutzer.setId(rs.getInt("nutzer_id"));
+	        nutzer.setVorname(rs.getString("vorname"));
+	        nutzer.setGoogleId(rs.getString("googleId"));
+	        return nutzer;
+	      }
+	    }
+	    catch (SQLException e2) {
+	      e2.printStackTrace();
+	      return null;
+	    }
+
+	    return null;
+	  }
+  
+  /**d
+   * Diese Methode gibt die registrierten Nutzer aus der Datenbank anhand dem Nachname aus. 
+   * @param nachname
+   * @return
+   */
+  public Nutzer findNutzerByNachname(String nachname) {
+	    Connection con = DBConnection.connection();
+
+	    try {
+	    	
+	      Statement stmt = con.createStatement();
+
+	      ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzer "
+		          + "WHERE Nachname=" + nachname + " ORDER BY id");
+
+
+
+	      if (rs.next()) {
+	    	  
+	        Nutzer nutzer = new Nutzer();
+	        nutzer.setId(rs.getInt("nutzer_id"));
+	        nutzer.setNachname(rs.getString("nachname"));
+	        nutzer.setGoogleId(rs.getString("googleId"));
+	        return nutzer;
 	      }
 	    }
 	    catch (SQLException e2) {
@@ -82,85 +129,117 @@ public class NutzerMapper {
 	    return null;
 	  }
 
-  public Vector<Nutzer> findAll() {
+  /**
+   * Diese Methode ermöglicht es alle registrierten Nutzer aus der datenbank in einer Liste auszugeben.
+   * @return
+   */
+  public ArrayList<Nutzer> findAllNutzer() {
 	    Connection con = DBConnection.connection();
 
-	    Vector<Nutzer> result = new Vector<Nutzer>();
+	    ArrayList<Nutzer> allNutzer = new ArrayList<Nutzer>();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      ResultSet rs = stmt.executeQuery("SELECT id, googleId FROM nutzer "
+	      ResultSet rs = stmt.executeQuery("SELECT id * FROM nutzer "
 	          + " ORDER BY id");
 
 	      
 	      while (rs.next()) {
-	        Nutzer n = new Nutzer();
-	        n.setId(rs.getInt("id"));
-	        n.setGoogleId(rs.getString("googleId"));
+	        Nutzer nutzer = new Nutzer();
+	        nutzer.setId(rs.getInt("nutzer_id"));
+	        nutzer.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
+	        nutzer.setVorname(rs.getString("vorname"));
+	        nutzer.setNachname(rs.getString("nachname"));
+	        nutzer.setPasswort(rs.getString("passwort"));
+	        nutzer.setGoogleId(rs.getString("googleId"));
 
 	        
-	        result.addElement(n);
+	        allNutzer.add(nutzer);
 	      }
+	      
+	      return allNutzer;
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return result;
-	  }
+	    return allNutzer;
+
+  }
   
-  public Nutzer update(Nutzer n) {
+  
+  /**
+   * Diese Methode ermöglicht eine Aktualisierung des Nutzerdatensatzes in der Datenbank.
+   * @param n
+   * @return
+   */
+  public Nutzer updateNutzer(Nutzer nutzer) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE nutzer " + "SET googleId=\"" + n.getGoogleId()
-	          + "\" " + "WHERE id=" + n.getId());
+	      stmt.executeUpdate("UPDATE nutzer " + "SET vorname=\"" + nutzer.getVorname() + "\", " + "nachname=\"" + nutzer.getNachname() +
+	    		  "\", " + "googleId=\"" + nutzer.getGoogleId() + "\" " + "WHERE nutzer_id=" + nutzer.getId());
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return n;
+	    return nutzer;
 	  }
   
+  /**
+   * Diese Methode ermöglicht es einen Nutzer in der Datenbank anzulegen.
+   * @param n
+   * @return
+   */
   
-  public Nutzer insert(Nutzer n) {
+  public Nutzer insertNutzer(Nutzer nutzer) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-	          + "FROM nutzer ");
+	      ResultSet rs = stmt.executeQuery("SELECT MAX(nutzer_id) AS maxid "
+	          + "FROM Nutzer ");
 
 	      if (rs.next()) {
 	  
-	        n.setId(rs.getInt("maxid") + 1);
+	        nutzer.setId(rs.getInt("maxid") + 1);
+	        nutzer.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 	        stmt = con.createStatement();
 
-	        stmt.executeUpdate("INSERT INTO nutzer (id, googleid) " + "VALUES ("
-	            + n.getId() + "," + n.getGoogleId() + ")");
+	        stmt.executeUpdate("INSERT INTO Nutzer " + "VALUES ("
+	            + nutzer.getId() + "," + nutzer.getVorname() + nutzer.getNachname() + "," + nutzer.getPasswort() + "," + nutzer.getGoogleId() + ")");
 	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return n;
+	    return nutzer;
 	  }
   
-   public void delete(Nutzer n) {
+  /**
+   * Diese Methode ermöglicht das Löschen eines Nutzer und dessen Referenzen zu anderen Klassen
+   * @param n
+   */
+   public void deleteNutzer(Nutzer nutzer) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM nutzer " + "WHERE id=" + n.getId());
+	      stmt.executeUpdate("DELETE FROM Abonnement " + "WHERE nutzer_id=" + nutzer.getId());
+	      stmt.executeUpdate("DELETE FROM Hashtag " + "WHERE nutzer_id=" + nutzer.getId());
+	      stmt.executeUpdate("DELETE FROM Nachricht " + "WHERE nutzer_id=" + nutzer.getId());
+	      stmt.executeUpdate("DELETE FROM Unterhaltung " + "WHERE nutzer_id=" + nutzer.getId());
+	      stmt.executeUpdate("DELETE FROM Nutzer " + "WHERE nutzer_id=" + nutzer.getId());
+
 
 	    }
 	    catch (SQLException e2) {

@@ -1,15 +1,25 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+
 /**
- * 
- * @author Yücel
- *
+ *@author Yücel
+ *@author Oikonomou
  */
 
 public class Hashtag {
 
-	private String name = null;
-	private int id = 0;
+	private String bezeichnung;
+	private int id; 
+
+
+
+	public String getBezeichnung() {
+		return bezeichnung;
+	}
+
+	public void setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
+	}
 	
 	public int getId() {
 		return id;
@@ -19,14 +29,4 @@ public class Hashtag {
 		this.id = id;
 	}
 
-	//Methodenkörper
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	
 }

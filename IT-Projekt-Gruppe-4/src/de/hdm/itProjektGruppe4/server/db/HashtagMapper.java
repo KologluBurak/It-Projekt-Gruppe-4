@@ -1,10 +1,10 @@
 package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
-import java.util.Vector;
+import java.util.ArrayList;
+
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
-
 
 
 /**
@@ -30,8 +30,13 @@ public class HashtagMapper {
 		
 	}
 	
-  
-  public Hashtag findByKey(int id){
+  /**
+   * Diese Methode ermöglicht das Ausgeben der Hashtag anhand deren ID aus der Datenbank. 
+   * @param id
+   * @return
+   */
+	
+  public Hashtag findHashtagByKey(int id){
 		
 	  Connection con = DBConnection.connection();
 	  
@@ -43,10 +48,10 @@ public class HashtagMapper {
 		  
 
 		  if (rs.next()) {
-			  Hashtag h = new Hashtag();
-			  h.setId(rs.getInt("id"));
-			  h.setName(rs.getString("name"));
-			  return h;
+			  Hashtag hashtag = new Hashtag();
+			  hashtag.setId(rs.getInt("hashtag_id"));
+			  hashtag.setBezeichnung(rs.getString("Bezeichnung"));
+			  return hashtag;
 		  }
 	   }
 	  catch (SQLException e2) {
@@ -57,26 +62,31 @@ public class HashtagMapper {
 	  return null;
 	}
   
-  public Vector<Hashtag> findAll() {
+  
+  /**
+   * Diese Methode ermöglicht es alle Hashtag aus der datenbank in einer Liste auszugeben.
+   * @return
+   */
+  public ArrayList<Hashtag> findAllHashtags() {
 	    Connection con = DBConnection.connection();
 
-	    Vector<Hashtag> result = new Vector<Hashtag>();
+	    ArrayList<Hashtag> result = new ArrayList<Hashtag>();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      ResultSet rs = stmt.executeQuery("SELECT id, name, FROM hashtag"
-	          + " ORDER BY id");
+	      ResultSet rs = stmt.executeQuery("SELECT (hashtag_id, bezeichnung) FROM hashtag"
+	          + " ORDER BY hashtag_id");
 
 	      
 	      while (rs.next()) {
-	        Hashtag h = new Hashtag();
-	        h.setId(rs.getInt("id"));
-	        h.setName(rs.getString("name"));
+	        Hashtag hashtag = new Hashtag();
+	        hashtag.setId(rs.getInt("hashtag_id"));
+	        hashtag.setBezeichnung(rs.getString("bezeichnung"));
 	       
 
 	        
-	        result.addElement(h);
+	        result.add(hashtag);
 	      }
 	    }
 	    catch (SQLException e2) {
@@ -86,25 +96,35 @@ public class HashtagMapper {
 	    return result;
 	  }
   
-  public Hashtag update(Hashtag h) {
+  /**
+   * Diese Methode ermöglicht eine Aktualisierung des Hashtagdatensatzes in der Datenbank.
+   * @param hashtag
+   * @return
+   */
+  public Hashtag updateHashtag(Hashtag hashtag) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("UPDATE hashtag " + "SET name=\"" + h.getName()
-	          + "\" " + "WHERE id=" + h.getId());
+	      stmt.executeUpdate("UPDATE hashtag " + "SET bezeichnung=\"" + hashtag.getBezeichnung()
+	          + "\" " + "WHERE hashtag_id=" + hashtag.getId());
 
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return h;
+	    return hashtag;
 	  }
   
+  /**
+   * Diese Methode ermöglicht es einen Hashtag in der Datenbank anzulegen.
+   * @param hashtagBezeichnung
+   * @return
+   */
   
-  public Hashtag insert(Hashtag h) {
+  public Hashtag insertHashtagBezeichnung(Hashtag hashtagBezeichnung) {
 	    Connection con = DBConnection.connection();
 
 	    try {
@@ -115,28 +135,32 @@ public class HashtagMapper {
 
 	      if (rs.next()) {
 	  
-	        h.setId(rs.getInt("maxid") + 1);
+	        hashtagBezeichnung.setId(rs.getInt("maxid") + 1);
 
 	        stmt = con.createStatement();
 
-	        stmt.executeUpdate("INSERT INTO hashtag (id, name) " + "VALUES ("
-	            + h.getId() + "," + h.getName() + ")");
+	        stmt.executeUpdate("INSERT INTO hashtag (hashtag_id, bezeichnung) " + "VALUES ("
+	            + hashtagBezeichnung.getId() + "," + hashtagBezeichnung.getBezeichnung() + ")");
 	      }
 	    }
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
 
-	    return h;
+	    return hashtagBezeichnung;
 	  }
   
-  public void delete(Hashtag h) {
+  /**
+   * Diese Methode ermöglicht das Löschen eines Nutzer und dessen Referenzen zu anderen Klassen.
+   * @param hashtagBezeichnung
+   */
+  public void deleteHashtagBezeichnung(Hashtag hashtagBezeichnung) {
 	    Connection con = DBConnection.connection();
 
 	    try {
 	      Statement stmt = con.createStatement();
 
-	      stmt.executeUpdate("DELETE FROM hashtag " + "WHERE id=" + h.getId());
+	      stmt.executeUpdate("DELETE FROM hashtag " + "WHERE hashtag_id=" + hashtagBezeichnung.getId());
 
 	    }
 	    catch (SQLException e2) {
