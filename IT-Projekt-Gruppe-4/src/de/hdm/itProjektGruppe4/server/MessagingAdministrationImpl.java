@@ -8,8 +8,17 @@ import de.hdm.itProjektGruppe4.server.db.*;
 import de.hdm.itProjektGruppe4.shared.*;
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
+/**
+ * 
+ * @author Yücel, Nguyen
+ * 
+ *
+ */
+
 public class MessagingAdministrationImpl extends RemoteServiceServlet 
 	implements MessagingAdministration {
+
+ 
 	
 	private NutzerMapper nutzerMapper = null;
 	private AbonnementMapper abonnementMapper= null;
@@ -33,9 +42,6 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		this.unterhaltungMapper= UnterhaltungMapper.unterhaltungMapper();	
 	}
 	
-
-	
-	
 	public void deleteAbonnement (Abonnement Abo) throws IllegalArgumentException{
 	//	
 	}
@@ -50,10 +56,18 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	public void deleteHashtag (Hashtag Hashtag)throws IllegalArgumentException{
 		//
 	}
-	public void createNachricht (Nachricht Nachricht) throws IllegalArgumentException{
+	public Nachricht createNachricht (String text) 
+			throws IllegalArgumentException{
+		Nachricht na = new Nachricht ();
+		na.setText(text);
+		return nachrichtMapper.insert(na);
 		//
 	}
-	public void createHashtag (Hashtag Hashtag) throws IllegalArgumentException {
+	public Hashtag createHashtag (String name) throws IllegalArgumentException {
+		Hashtag nam = new Hashtag ();
+		nam.setName(name);
+		return hashtagMapper.insert(nam);
+		
 		//
 	}
 	public void saveAbonnement (Abonnement Abo) throws IllegalArgumentException {
@@ -67,10 +81,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * </p>
 	      */
 	
-	public void createNutzer (String vorname, String googleId) throws IllegalArgumentException {
+	public Nutzer createNutzer (String vorname, String googleId) throws IllegalArgumentException {
 		Nutzer n = new Nutzer();
 		n.setVorname(vorname);
 		n.setGoogleId(googleId);
+		return nutzerMapper.insert(n);
 	}
 	public void senden (Nachricht Senden) throws IllegalArgumentException {
 		nachrichtMapper.update(Senden);
@@ -84,7 +99,13 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	public void deleteNutzer (Nutzer Nutzer) throws IllegalArgumentException{
 		//
 	}
-	public void createUnterhaltung (Unterhaltung Unterhaltung) throws IllegalArgumentException{
+	public Unterhaltung createUnterhaltung (Nachricht refNachricht, String sender, String receiver) 
+			throws IllegalArgumentException{
+		Unterhaltung u = new Unterhaltung ();
+		u.setNachrichten(refNachricht);
+		u.setSender(sender);
+		u.setReceiver(receiver);
+		return unterhaltungMapper.insert(u);
 		
 		//
 	}
@@ -100,16 +121,22 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		nachrichtMapper.update(Empfangen);
 		//
 		}
-	public void createAbonnement (Abonnement Abo) throws IllegalArgumentException{
+	public Abonnement createAbonnement (String aboArt) throws IllegalArgumentException{
+		Abonnement a = new Abonnement();
+		a.setAboArt(aboArt);
+		return abonnementMapper.insert(a);
 		//
 		}
 	public void deleteNachricht (Nachricht Nachricht) throws IllegalArgumentException{
 		//
 	}
 	
-	public void createAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
-		//
-	}
+//	public Nutzerabonnement createAboNutzer (String benutzername)throws IllegalArgumentException{
+//		Nutzerabonnement be = new Nutzerabonnement();
+//		be.setBenutzername(benutzername);
+//		return nutzerAboMapper.insert(be); 
+//		Befehele fehlen noch in der Mapper Klasse
+//	}
 	
 	public void deleteAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
 		
@@ -120,11 +147,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		nutzerAboMapper.update(NutzerAbo);
 		//
 	}
-	public void createAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
-		Hashtagabonnement h = new Hashtagabonnement();
-		h.setId(HashtagAbo.getId());
-		//
-	}
+//	public Hashtagabonnement createAboHashtag (String bezeichnung)throws IllegalArgumentException{
+//		Hashtagabonnement b = new Hashtagabonnement();
+//		b.setBezeichnung(bezeichnung);
+//		return hashtagAboMapper.insert(b);
+//		Befehele fehlen noch in der Mapper Klasse
+//	}
 	public void deleteAboHastag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
 		hashtagMapper.update(HashtagAbo);
 		//
