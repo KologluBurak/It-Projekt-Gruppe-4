@@ -1,5 +1,11 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+/**
+ * 
+ * @author Yücel
+ *
+ */
+
 public class Nachricht extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
