@@ -2,13 +2,17 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import com.google.appengine.api.utils.SystemProperty;
 
 public class DBConnection {
+
+	//Variablen fï¿½r den Verbindungsaufbau
 	private static Connection con = null;
-	private static String googleUrl = null; /*Muss noch entsprechend geändert werden*/
-    private static String localUrl = null;/*Muss noch entsprechend geändert werden*/
-    
+	private static String googleUrl = null;
+    private static String localUrl = "jdbc:mysql://localhost:3306/derNameunsererDatenbank?user=root";
+        
     public static Connection connection() {
         // Wenn es bisher keine Conncetion zur DB gab, ...
         if (con == null) {
@@ -22,11 +26,24 @@ public class DBConnection {
                     url = localUrl;
                 }
                 con = DriverManager.getConnection(url);
+                con.close();
+                
             } catch (Exception e) {
-                con = null;
+                System.err.println("Unable to load");
+            	con = null;
                 e.printStackTrace();
             }
         }
         return con;
     }
+   
+    public static void closeCon (){
+	    try {
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+ 
 }

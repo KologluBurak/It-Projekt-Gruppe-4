@@ -1,5 +1,16 @@
 package de.hdm.itProjektGruppe4.server.db;
 
-public class HashtagAboMapper {
+
+
+	
+	/**
+	 * 
+	 * @author Oikonomou
+	 * @author Thies
+	 *
+	 */
+
+	public class HashtagAboMapper {
+
 
 }

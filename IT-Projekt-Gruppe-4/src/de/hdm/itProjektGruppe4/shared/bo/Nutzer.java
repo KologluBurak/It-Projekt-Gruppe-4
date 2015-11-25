@@ -3,9 +3,9 @@ package de.hdm.itProjektGruppe4.shared.bo;
 public class Nutzer extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
-	
 	private String vorname;
 	private String googleId;
+	
 	public String getVorname() {
 		return vorname;
 	}

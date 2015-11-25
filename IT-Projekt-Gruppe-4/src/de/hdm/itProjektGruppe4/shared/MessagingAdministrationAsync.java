@@ -19,6 +19,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
  * synchrone Interface {@link MessagingAdministration}.
  * 
  * @author thies
+ * @author Yücel
  */
 
 public interface MessagingAdministrationAsync {

@@ -15,7 +15,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
  */
 
 public class NachrichtMapper {
-	 
+	
 	private static NachrichtMapper nachrichtMapper = null;
 	
 	protected NachrichtMapper(){
@@ -84,6 +84,9 @@ public class NachrichtMapper {
 	      e2.printStackTrace();
 	    }
 
+	    
+	    
+	    
 	    return result;
 	  }
   
@@ -100,11 +103,11 @@ public class NachrichtMapper {
 	    catch (SQLException e2) {
 	      e2.printStackTrace();
 	    }
-
+	    
+	    DBConnection.closeCon();
 	    return n;
 	  }
-  
-  
+
   public Nachricht insert(Nachricht n) {
 	    Connection con = DBConnection.connection();
 

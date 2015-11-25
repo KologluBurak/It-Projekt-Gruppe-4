@@ -3,7 +3,7 @@ package de.hdm.itProjektGruppe4.server.db;
 import java.sql.*;
 import java.util.Vector;
 
-import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
+import de.hdm.itProjektGruppe4.shared.bo.*;
 
 
 
@@ -14,7 +14,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
  *
  */
 
-public class HashtagMapper extends AbonnementMapper {
+public class HashtagMapper {
 	 
 	private static HashtagMapper hashtagMapper = null;
 	

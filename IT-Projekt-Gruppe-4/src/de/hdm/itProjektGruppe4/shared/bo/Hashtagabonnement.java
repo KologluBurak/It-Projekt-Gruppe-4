@@ -1,22 +1,25 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+/**
+ * 
+ * @author Yücel
+ *
+ */
+
 public class Hashtagabonnement extends Abonnement {
 	
 	private static final long serialVersionUID = 1L;
 
-	private String name;
+	private String bezeichnung;
 	
 	//Methodenkörper
-	public String getName() {
-		return name;
+	public String getBezeichnung() {
+		return bezeichnung;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBezeichnung(String bezeichnung) {
+		this.bezeichnung = bezeichnung;
 	}
-	
-	
-	
 	
 	
 }
