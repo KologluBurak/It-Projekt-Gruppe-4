@@ -1,5 +1,11 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+/**
+ * 
+ * @author Yücel
+ *
+ */
+
 public class Abonnement extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
@@ -10,18 +16,20 @@ public class Abonnement extends BusinessObject {
 	public String getAboArt() {
 		return aboArt;
 	}
+	
 	public void setAboArt(String aboArt) {
 		this.aboArt = aboArt;
 	}
+	
 	//Methodenkörper
-	public void aboAnzeigen (){
-	
-}
-	public void aboHinzufuegen () {
-	
-}
-	public void aboEntfernen () {
-	
-}
+//	public void aboAnzeigen (){
+//	
+//}
+//	public void aboHinzufuegen () {
+//	
+//}
+//	public void aboEntfernen () {
+//	
+//}
 
 }

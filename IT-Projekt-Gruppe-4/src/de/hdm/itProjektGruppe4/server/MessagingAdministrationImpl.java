@@ -99,6 +99,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	   * Speichern eines Nutzer in der Datenbank.
 	   */
 	public void saveNutzer (Nutzer nutzer)throws IllegalArgumentException{
+
 		nutzerMapper.update(nutzer);
 	}
 	
