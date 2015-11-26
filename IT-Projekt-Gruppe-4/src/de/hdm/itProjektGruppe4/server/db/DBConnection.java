@@ -36,15 +36,6 @@ public class DBConnection {
         return con;
     }
 
-    public static void closeCon (){
-	    try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-
     public static void closeConnection(){
 		if (con != null) {
 			try {
@@ -58,6 +49,5 @@ public class DBConnection {
 		else{
 			System.out.println("Verbindung bereits getrennt");
 		}
-
 	}
 }
