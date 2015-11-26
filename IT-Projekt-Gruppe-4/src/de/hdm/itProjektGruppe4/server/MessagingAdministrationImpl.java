@@ -1,7 +1,8 @@
 package de.hdm.itProjektGruppe4.server;
 
 import java.sql.Date;
-import java.util.Vector;
+
+import java.util.ArrayList;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -71,14 +72,15 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		Nutzer n = new Nutzer();
 		n.setVorname(vorname);
 		n.setGoogleId(googleId);
-		return nutzerMapper.insert(n);
+		return this.nutzerMapper.insertNutzer(n);
+		
 	}
 	
 	public void saveNutzer (Nutzer nutzer)throws IllegalArgumentException{
-		nutzerMapper.update(nutzer);
+		this.nutzerMapper.updateNutzer(nutzer);
 	}
 	
-	public void deleteNutzer (Nutzer Nutzer) throws IllegalArgumentException{
+	public void deleteNutzer (Nutzer nutzer) throws IllegalArgumentException{
 		//
 	}
 	
@@ -97,30 +99,30 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 			throws IllegalArgumentException{
 		Nachricht na = new Nachricht ();
 		na.setText(text);
-		return nachrichtMapper.insert(na);
+		return this.nachrichtMapper.insertNachricht(na);
 	}
 	
-	public void deleteNachricht (Nachricht Nachricht) throws IllegalArgumentException{
+	public void deleteNachricht (Nachricht nachricht) throws IllegalArgumentException{
 		//
 	}
 	
-	public void setNachrichtEditedBy (Nachricht NachrichtEditedBy)throws IllegalArgumentException{
-		nachrichtMapper.update(NachrichtEditedBy);
+	public void setNachrichtEditedBy (Nachricht nachricht)throws IllegalArgumentException{
+		this.nachrichtMapper.updateNachricht(nachricht);
 	}
 	
-	public void saveNachricht (Nachricht Nachricht) throws IllegalArgumentException{
-		nachrichtMapper.update(Nachricht);
+	public void saveNachricht (Nachricht nachricht) throws IllegalArgumentException{
+		nachrichtMapper.updateNachricht(nachricht);
 	}
 	
-	public void senden (Nachricht Senden) throws IllegalArgumentException {
+	public void senden (Nachricht senden) throws IllegalArgumentException {
 		//nachrichtMapper.update(Senden);
 	}
 	
-	public void empfangen (Nachricht Empfangen) throws IllegalArgumentException{
+	public void empfangen (Nachricht empfangen) throws IllegalArgumentException{
 		//nachrichtMapper.update(Empfangen);  
 		}
 	
-	public void setDateOfNachricht(Date DateOfNachricht) throws IllegalArgumentException{
+	public void setDateOfNachricht(Date dateOfNachricht) throws IllegalArgumentException{
 		
 		//
 	}
@@ -128,8 +130,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	/**
 	   * Auslesen aller Nachrichten aus der Datenbank.
 	      */
-	public Vector<Nachricht> getAllNachrichten() throws IllegalArgumentException{
-		return this.nachrichtMapper.findAll();
+	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException{
+		return this.nachrichtMapper.findAllNachrichten();
 
 	}
 	
@@ -137,10 +139,9 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * Auslesen aller Nachrichten eines Nutzers.
 	      */
 	
-	public Vector<Nachricht> getNachrichten(Nutzer n) throws IllegalArgumentException{
-		//return this.nachrichtMapper.findbyOwner(n);
-	return null;
-	}
+	//public ArrayList<Nachricht> getNachrichten(Nutzer n, String von, String bis, int sort) throws IllegalArgumentException{
+		//return this.nachrichtMapper.alleNachrichtenJeNutzer(n, von, bis, sort);
+	//}
 	
 	/*
 	   * ***************************************************************************
@@ -157,30 +158,29 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	public Unterhaltung createUnterhaltung (Nachricht refNachricht, String sender, String receiver) 
 			throws IllegalArgumentException{
 		Unterhaltung u = new Unterhaltung ();
-		u.setNachrichten(refNachricht);
+		u.setRefNachricht(refNachricht);
 		u.setSender(sender);
 		u.setReceiver(receiver);
-		return unterhaltungMapper.insert(u);
+		return unterhaltungMapper.insertUnterhaltung(u);
 		
-		//
 	}
 	
-	public void saveUnterhaltung (Unterhaltung Unterhaltung) throws IllegalArgumentException{
-		unterhaltungMapper.update(Unterhaltung);
+	public void saveUnterhaltung (Unterhaltung unterhaltung) throws IllegalArgumentException{
+		unterhaltungMapper.updateUnterhaltung(unterhaltung);
 	}
 	
 	/**
 	   * Auslesen von allen Unterhaltungen aus der Datenbank.
 	      */
-	public Vector<Unterhaltung> getAllUnterhaltungen() throws IllegalArgumentException{
-		return this.unterhaltungMapper.findAll();
+	public ArrayList<Unterhaltung> getAllUnterhaltungen() throws IllegalArgumentException{
+		return this.unterhaltungMapper.findAllUnterhaltungen();
 	}
 	
 	/**
 	   * Auslesen von Unterhaltungen anhand der ID.
 	      */
 	public Unterhaltung getUnterhaltungbyId(int id)throws IllegalArgumentException{
-		return this.unterhaltungMapper.findByKey(id);
+		return this.unterhaltungMapper.findUnterhaltungByKey(id);
 	}
 	
 	
@@ -199,12 +199,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	public Abonnement createAbonnement (String aboArt) throws IllegalArgumentException{
 		Abonnement a = new Abonnement();
 		a.setAboArt(aboArt);
-		return abonnementMapper.insert(a);
+		return abonnementMapper.insertAbonnement(a);
 		//
 		}
 	
-	public void saveAbonnement (Abonnement Abo) throws IllegalArgumentException {
-		abonnementMapper.update(Abo);
+	public void saveAbonnement (Abonnement abo) throws IllegalArgumentException {
+		abonnementMapper.updateAbonnement(abo);
 		//
 	}
 	
@@ -215,15 +215,15 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	/**
 	   * Auslesen aller Abonnements.
 	      */
-	public Vector<Abonnement> getAllAbonnements() throws IllegalArgumentException{
-		return this.abonnementMapper.findAll();
+	public ArrayList<Abonnement> getAllAbonnements() throws IllegalArgumentException{
+		return this.abonnementMapper.findAllAbonnements();
 	}
 	
 	/**
 	   * Auslesen aller Abonnements anhand deren Id.
 	      */
 	public Abonnement getAbonnementbyId(int id)throws IllegalArgumentException{
-		return this.abonnementMapper.findByKey(id);
+		return this.abonnementMapper.findAbonnementByKey(id);
 	}
 	
 	/*
@@ -238,14 +238,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ***************************************************************************
 	   */
 	
-	public Hashtag createHashtag (String name) throws IllegalArgumentException {
-		Hashtag nam = new Hashtag ();
-		nam.setName(name);
-		return hashtagMapper.insert(nam);
+	public Hashtag createHashtag (String bez) throws IllegalArgumentException {
+		Hashtag hash = new Hashtag ();
+		hash.setBezeichnung(bez);;
+		return hashtagMapper.insertHashtagBezeichnung(hash);
 	}
 	
-	public void saveHashtag (Hashtag Hashtag) throws IllegalArgumentException{
-		hashtagMapper.update(Hashtag);
+	public void saveHashtag (Hashtag hashtag) throws IllegalArgumentException{
+		hashtagMapper.updateHashtag(hashtag);
 		//
 	}
 	
@@ -273,7 +273,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 //}
 	
 	public void saveAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
-		nutzerAboMapper.update(NutzerAbo);
+	//	nutzerAboMapper.update(NutzerAbo);
 		//
 	}
 	

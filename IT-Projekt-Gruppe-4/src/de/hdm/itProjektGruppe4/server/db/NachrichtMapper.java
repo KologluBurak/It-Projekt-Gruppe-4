@@ -65,10 +65,9 @@ public class NachrichtMapper {
   
   /**
    * Diese Methode ermöglicht es alle angelegten Nachrichten aus der Datenbank in einer Liste auszugeben.
-   * @param id
    * @return
    */
-  public ArrayList<Nachricht> findAllNachrichten(int id) {
+  public ArrayList<Nachricht> findAllNachrichten() {
 	    Connection con = DBConnection.connection();
 	    
 	    ArrayList<Nachricht> result = new ArrayList<Nachricht>();
@@ -119,7 +118,7 @@ public class NachrichtMapper {
 	      e2.printStackTrace();
 	    }
 	    
-	    DBConnection.closeCon();
+	    DBConnection.closeConnection();
 	    return nachricht;
 	  }
 
