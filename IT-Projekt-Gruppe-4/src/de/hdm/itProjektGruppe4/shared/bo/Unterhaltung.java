@@ -1,6 +1,12 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 import java.sql.Date;
 
+/**
+ * 
+ * @author Yücel, Nguyen
+ *
+ */
+
 public class Unterhaltung extends BusinessObject{
 	
 	private static final long serialVersionUID = 1L;

@@ -2,8 +2,8 @@ package de.hdm.itProjektGruppe4.shared.bo;
 
 
 /**
- *@author Yücel
- *@author Oikonomou
+ *@author Yücel, Nguyen, Oikonomou
+ *
  */
 
 public class Hashtag {
