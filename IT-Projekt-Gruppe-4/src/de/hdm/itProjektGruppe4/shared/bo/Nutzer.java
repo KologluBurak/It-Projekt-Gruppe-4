@@ -1,7 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
- * @author Oikonomou
+ * @author Yücel, Nguyen, Oikonomou
  */
 
 public class Nutzer extends BusinessObject {
