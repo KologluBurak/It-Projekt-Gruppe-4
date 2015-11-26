@@ -18,7 +18,7 @@ import java.sql.Timestamp;
  * textuelle Notation in JSON (siehe http://www.json.org/) kodiert.
  * </p>
  * 
- * @author Oiokonomou
+ * @author Oikonomou
  * @author Thies
  */
 
