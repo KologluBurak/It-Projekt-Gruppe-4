@@ -1,25 +1,24 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
- * 
- * @author Yücel, Nguyen
  *
+ *@author Yücel
+ *@author Oikonomou
  */
 
-public class Hashtagabonnement extends Abonnement {
+public class Hashtagabonnement extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 
-	private String bezeichnung;
+	private String name;
 	
 	//Methodenkörper
-	public String getBezeichnung() {
-		return bezeichnung;
+	public String getName() {
+		return name;
 	}
 
-	public void setBezeichnung(String bezeichnung) {
-		this.bezeichnung = bezeichnung;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
 	
 }

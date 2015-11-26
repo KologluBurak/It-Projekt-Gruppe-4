@@ -18,8 +18,9 @@ import java.sql.Timestamp;
  * textuelle Notation in JSON (siehe http://www.json.org/) kodiert.
  * </p>
  * 
- * 
- * @author Thies, Oiokonomou, Ngyuen, Yücel
+ * @author Yücel
+ * @author Oikonomou
+ * @author Thies
  */
 
 public abstract class BusinessObject implements Serializable {

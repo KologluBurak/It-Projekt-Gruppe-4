@@ -12,7 +12,6 @@ public class Hashtag {
 	private int id; 
 
 
-
 	public String getBezeichnung() {
 		return bezeichnung;
 	}

@@ -1,23 +1,23 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
- * 
- * @author Yücel, Nguyen
- *
+ *@author Yücel
+ *@author Oikonomou
  */
 
-public class Nutzerabonnement extends Abonnement {
+public class Nutzerabonnement extends BusinessObject {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String benutzername;
+	private String nutzername;
 
-	//Methodenköprer
-	public String getBenutzername() {
-		return benutzername;
+
+	public String getNutzername() {
+		return nutzername;
 	}
 
-	public void setBenutzername(String benutzername) {
-		this.benutzername = benutzername;
+	public void setNutzername(String nutzername) {
+		this.nutzername = nutzername;
+	
 	}
 }
