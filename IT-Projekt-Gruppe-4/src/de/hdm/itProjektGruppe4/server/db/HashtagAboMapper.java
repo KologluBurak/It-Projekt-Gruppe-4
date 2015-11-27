@@ -98,39 +98,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 			    
 	}
 
-	/**
-	 * Diese Methode ermöglicht es alle Hashtagabonnements aus der Datenbank in einer Liste auszugeben.
-	 * @return
-	 */
-	  
-	  public ArrayList<Hashtagabonnement> findAllHastagabonnements() {
-		    Connection con = DBConnection.connection();
 
-		    ArrayList<Hashtagabonnement> allHashtagAbos = new ArrayList<Hashtagabonnement>();
-
-		    try {
-		      Statement stmt = con.createStatement();
-
-		      ResultSet rs = stmt.executeQuery("SELECT abonnement_id FROM abonnement "
-		          + " ORDER BY abonnement_id");
-
-		      
-		      while (rs.next()) {
-		        Hashtagabonnement hashtagabonnement = new Hashtagabonnement();
-		        hashtagabonnement.setId(rs.getInt("hashtagabo_id"));
-		        hashtagabonnement.setName(rs.getString("hashtagname"));
-
-		        
-		        allHashtagAbos.add(hashtagabonnement);
-		      }
-		    }
-		    catch (SQLException e1) {
-		      e1.printStackTrace();
-		    }
-
-		    return allHashtagAbos;
-		  }
-	  
 	  /**
 	   * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in der Datenbank.
 	   * @param hashtagabonnement
