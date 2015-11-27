@@ -1,7 +1,6 @@
 package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
@@ -29,110 +28,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 				
 		}
 		
-	/**
-	 * Diese Methode ermöglicht es eine Ausgabe über einen Nutzerabonnements in der Datenbank, anhand deren ID.
-	 * @param id
-	 * @return
-	 */
-
-	public Nutzerabonnement findNutzerAboByKey(int id){
-			
-		Connection con = DBConnection.connection();
-			  
-		try {
-			Statement stmt = con.createStatement();
-				  
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzerabonnement " 
-			+ "WHERE nutzerabo_id=" + id + " ORDER by nutzerabo_id");
-				  
-
-			if (rs.next()) {
-			Nutzerabonnement nutzerAbonnement = new Nutzerabonnement();
-				nutzerAbonnement.setId(rs.getInt("nutzerabo_id"));
-				nutzerAbonnement.setNutzername(rs.getString("nutzername"));
-					  
-				return nutzerAbonnement;
-				}
-			}
-		catch (SQLException e1) {
-			e1.printStackTrace();
-			return null;
-				  
-			}
-			return null;
-	}
-		  
-	/**
-	 * Diese Methode ermöglicht eine Ausgabe über die Nutzerabonnements eines Nutzers, in einer Liste.
-	 * @param id
-	 * @return
-	 */
-		  
-	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(int id) {
-		 Connection con = DBConnection.connection();
-		 ArrayList <Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement> ();
-			    
-			try {
-			    	
-			   Statement stmt = con.createStatement();
-
-			   ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzerabonnement "
-			        + "WHERE nutzerabo_id=" + id + " ORDER BY nutzerabo_id");
-
-
-			  while (rs.next()) {
-			  Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
-			  nutzerabonnement.setId(rs.getInt("nutzerabo_id"));
-			  nutzerabonnement.setNutzername(rs.getString("nutzername"));
-
-
-			    nutzerAboListe.add(nutzerabonnement);
-			  }
-			      
-			}
-			    
-			catch (SQLException e1) {
-			   e1.printStackTrace();
-			   return null;
-			 }
-
-		return nutzerAboListe;
-			    
-	}
-
-	/**
-	 * Diese Methode ermöglicht es alle Nutzerabonnements aus der Datenbank in einer Liste auszugeben.
-	 * @return
-	 */
-	  
-	  public ArrayList<Nutzerabonnement> findAllNutzerabonnements() {
-		    Connection con = DBConnection.connection();
-
-		    ArrayList<Nutzerabonnement> allNutzerAbos = new ArrayList<Nutzerabonnement>();
-
-		    try {
-		      Statement stmt = con.createStatement();
-
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzerabonnement "
-		          + " ORDER BY nutzerabo_id");
-
-		      
-		      while (rs.next()) {
-		        Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
-		        nutzerabonnement.setId(rs.getInt("nutzerabo_id"));
-		        nutzerabonnement.setNutzername(rs.getString("hashtagname"));
-
-		        
-		        allNutzerAbos.add(nutzerabonnement);
-		      }
-		    }
-		    catch (SQLException e1) {
-		      e1.printStackTrace();
-		    }
-
-		    return allNutzerAbos;
-		  }
-	  
+  
 	  /**
 	   * Diese Methode ermöglicht eine Akutalisierung des Nutzerabodatensatzes in der Datenbank.
 	   * @param nutzerabonnement

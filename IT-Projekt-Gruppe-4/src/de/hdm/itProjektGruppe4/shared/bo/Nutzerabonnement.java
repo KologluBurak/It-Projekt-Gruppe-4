@@ -11,7 +11,7 @@ public class Nutzerabonnement extends BusinessObject {
 	
 	private String nutzername;
 
-
+	
 	public String getNutzername() {
 		return nutzername;
 	}

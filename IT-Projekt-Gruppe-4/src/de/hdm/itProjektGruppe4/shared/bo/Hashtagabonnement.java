@@ -6,12 +6,13 @@ package de.hdm.itProjektGruppe4.shared.bo;
  *@author Oikonomou
  */
 
-public class Hashtagabonnement extends BusinessObject {
+public class Hashtagabonnement extends Abonnement {
 	
 	private static final long serialVersionUID = 1L;
 
 	private String name;
 	
+
 	//Methodenkörper
 	public String getName() {
 		return name;
