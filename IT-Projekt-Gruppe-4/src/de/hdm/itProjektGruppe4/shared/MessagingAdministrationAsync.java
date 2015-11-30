@@ -23,59 +23,163 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
  */
 
 public interface MessagingAdministrationAsync {
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Initialisierung
+	   * ***************************************************************************
+	   */
 
-	void deleteAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
+	void senden(Nachricht Senden, AsyncCallback<Void> callback);
+
+	void empfangen(Nachricht Empfangen, AsyncCallback<Void> callback);
+
+	
+
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Initialisierung
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
+	   * ***************************************************************************
+	   */
+	
+	void createNutzer(Nutzer Nutzer, AsyncCallback<Void> callback);
+
+	void deleteNutzer(Nutzer Nutzer, AsyncCallback<Void> callback);
+
+	
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Nutzer-Objekte
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
+	   * ***************************************************************************
+	   */
+	
+	void createNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
+
+	void saveNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
+	
+	void deleteNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
+
+	void setDateOfNachricht(Date DateOfNachricht, AsyncCallback<Void> callback);
 
 	void setNachrichtEditedBy(Nachricht NachrichtEditedBy,
 			AsyncCallback<Void> callback);
 
-	void saveNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
-
-	void deleteHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
-
-	void createHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
-
-	void createNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
-
-	void saveAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
-
-	void createNutzer(Nutzer Nutzer, AsyncCallback<Void> callback);
-
-	void senden(Nachricht Senden, AsyncCallback<Void> callback);
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Nachricht-Objekte
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
+	   * ***************************************************************************
+	   */
+	
+	void createUnterhaltung(Unterhaltung Unterhaltung,
+			AsyncCallback<Void> callback);
 
 	void saveUnterhaltung(Unterhaltung Unterhaltung,
 			AsyncCallback<Void> callback);
 
-	void setDateOfNachricht(Date DateOfNachricht, AsyncCallback<Void> callback);
+	
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
+	   * ***************************************************************************
+	   */
+	
+	void createAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
 
-	void deleteNutzer(Nutzer Nutzer, AsyncCallback<Void> callback);
+	void saveAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
+	
+	void deleteAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
 
-	void createUnterhaltung(Unterhaltung Unterhaltung,
-			AsyncCallback<Void> callback);
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Abonnement-Objekte
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
+	   * ***************************************************************************
+	   */
+	
+	void createHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
 
 	void saveHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
 
-	void empfangen(Nachricht Empfangen, AsyncCallback<Void> callback);
+	void deleteHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
 
-	void createAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
-
-	void deleteNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
-
+		
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für Hashtag-Objekte
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
+	   * ***************************************************************************
+	   */
+	
 	void createAboNutzer(Nutzerabonnement NutzerAbo,
-			AsyncCallback<Void> callback);
-
-	void deleteAboNutzer(Nutzerabonnement NutzerAbo,
 			AsyncCallback<Void> callback);
 
 	void saveAboNutzer(Nutzerabonnement NutzerAbo, AsyncCallback<Void> callback);
 
-	void createAboHashtag(Hashtagabonnement HashtagAbo,
+	void deleteAboNutzer(Nutzerabonnement NutzerAbo,
 			AsyncCallback<Void> callback);
 
-	void deleteAboHastag(Hashtagabonnement HashtagAbo,
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
+	   * ***************************************************************************
+	   */
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
+	   * ***************************************************************************
+	   */
+	
+	void createAboHashtag(Hashtagabonnement HashtagAbo,
 			AsyncCallback<Void> callback);
 
 	void saveAboHashtag(Hashtagabonnement HashtagAbo,
 			AsyncCallback<Void> callback);
 
+	void deleteAboHastag(Hashtagabonnement HashtagAbo,
+			AsyncCallback<Void> callback);
+	
+	/*
+	   * ***************************************************************************
+	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
+	   * ***************************************************************************
+	   */
+	
 }

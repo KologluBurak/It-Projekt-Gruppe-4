@@ -1,14 +1,15 @@
 package de.hdm.itProjektGruppe4.server;
 
 import java.sql.Date;
-
 import java.util.ArrayList;
+import java.util.Vector;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.server.db.*;
 import de.hdm.itProjektGruppe4.shared.*;
 import de.hdm.itProjektGruppe4.shared.bo.*;
+
 
 /**
  * 
@@ -20,7 +21,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 public class MessagingAdministrationImpl extends RemoteServiceServlet 
 	implements MessagingAdministration {
 
- 
+
 	
 	private NutzerMapper nutzerMapper = null;
 	private AbonnementMapper abonnementMapper= null;
@@ -68,9 +69,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	  /**
 	   * Anlegen eines neuen Nutzers. Der neuer Nutzer wird in die Datenbank gespeichert.
 	      */	
-	public Nutzer createNutzer (String vorname, String googleId) throws IllegalArgumentException {
+	public Nutzer createNutzer (String vorname, String nachname, String passwort, String googleId) 
+			throws IllegalArgumentException {
 		Nutzer n = new Nutzer();
 		n.setVorname(vorname);
+		n.setNachname(nachname);
+		n.setPasswort(passwort);
 		n.setGoogleId(googleId);
 		return this.nutzerMapper.insertNutzer(n);
 		
@@ -81,7 +85,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	}
 	
 	public void deleteNutzer (Nutzer nutzer) throws IllegalArgumentException{
-		//
+		nutzerMapper.deleteNutzer(nutzer);
 	}
 	
 	/*
@@ -95,15 +99,16 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
 	   * ***************************************************************************
 	   */
-	public Nachricht createNachricht (String text) 
+	public Nachricht createNachricht (String text, String betreff) 
 			throws IllegalArgumentException{
 		Nachricht na = new Nachricht ();
 		na.setText(text);
+		na.setBetreff(betreff);
 		return this.nachrichtMapper.insertNachricht(na);
 	}
 	
 	public void deleteNachricht (Nachricht nachricht) throws IllegalArgumentException{
-		//
+		nachrichtMapper.deleteNachricht(nachricht);
 	}
 	
 	public void setNachrichtEditedBy (Nachricht nachricht)throws IllegalArgumentException{
@@ -112,18 +117,18 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	
 	public void saveNachricht (Nachricht nachricht) throws IllegalArgumentException{
 		nachrichtMapper.updateNachricht(nachricht);
+		
 	}
 	
 	public void senden (Nachricht senden) throws IllegalArgumentException {
-		//nachrichtMapper.update(Senden);
+		nachrichtMapper.updateNachricht(senden);
 	}
 	
 	public void empfangen (Nachricht empfangen) throws IllegalArgumentException{
-		//nachrichtMapper.update(Empfangen);  
+		nachrichtMapper.updateNachricht(empfangen);  
 		}
 	
 	public void setDateOfNachricht(Date dateOfNachricht) throws IllegalArgumentException{
-		
 		//
 	}
 	
@@ -155,10 +160,9 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ***************************************************************************
 	   */
 	
-	public Unterhaltung createUnterhaltung (Nachricht refNachricht, String sender, String receiver) 
+	public Unterhaltung createUnterhaltung (String sender, String receiver) 
 			throws IllegalArgumentException{
 		Unterhaltung u = new Unterhaltung ();
-		u.setRefNachricht(refNachricht);
 		u.setSender(sender);
 		u.setReceiver(receiver);
 		return unterhaltungMapper.insertUnterhaltung(u);
@@ -196,9 +200,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ***************************************************************************
 	   */
 	
-	public Abonnement createAbonnement (String aboArt) throws IllegalArgumentException{
+	public Abonnement createAbonnement (Nutzerabonnement aboNutzer, Hashtagabonnement aboHashtag) 
+			throws IllegalArgumentException{
 		Abonnement a = new Abonnement();
-		a.setAboArt(aboArt);
+		a.setAboNutzer(aboNutzer);
+		a.setAboHashtag(aboHashtag);
 		return abonnementMapper.insertAbonnement(a);
 		//
 		}
@@ -208,9 +214,10 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		//
 	}
 	
-	public void deleteAbonnement (Abonnement Abo) throws IllegalArgumentException{
-	//	
-	}
+	//public void deleteAbonnement (Abonnement Abo) throws IllegalArgumentException{
+		
+		
+	
 	
 	/**
 	   * Auslesen aller Abonnements.
@@ -238,9 +245,9 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ***************************************************************************
 	   */
 	
-	public Hashtag createHashtag (String bez) throws IllegalArgumentException {
+	public Hashtag createHashtag (String bezeichnung) throws IllegalArgumentException {
 		Hashtag hash = new Hashtag ();
-		hash.setBezeichnung(bez);;
+		hash.setBezeichnung(bezeichnung);;
 		return hashtagMapper.insertHashtagBezeichnung(hash);
 	}
 	
@@ -250,7 +257,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	}
 	
 	public void deleteHashtag (Hashtag Hashtag)throws IllegalArgumentException{
-		//
+		hashtagMapper.deleteHashtagBezeichnung(Hashtag);
 	}
 	
 	/*
@@ -273,11 +280,13 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 //}
 	
 	public void saveAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
-	//	nutzerAboMapper.update(NutzerAbo);
+		nutzerAboMapper.updateNutzerabonnement(NutzerAbo);
 		//
 	}
 	
 	public void deleteAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{	
+		nutzerAboMapper.deleteNutzerabonnement(NutzerAbo);
+		
 		//
 	}
 	
@@ -302,15 +311,68 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 //}
 
 	public void saveAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
-	//hashtagMapper.update(HashtagAbo);
-		
+		hashtagAboMapper.updateHashtagabonnement(HashtagAbo);
 	//
 }	
 
-public void deleteAboHastag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
-	//hashtagMapper.update(HashtagAbo);
+	public void deleteAboHastag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException{
+		hashtagAboMapper.deleteHashtagabonnement(HashtagAbo);
 
 }
+
+	@Override
+	public void createNutzer(Nutzer Nutzer) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createNachricht(Nachricht Nachricht)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createUnterhaltung(Unterhaltung Unterhaltung)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createAbonnement(Abonnement Abo)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAbonnement(Abonnement Abo)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createHashtag(Hashtag Hashtag) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createAboNutzer(Nutzerabonnement NutzerAbo)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createAboHashtag(Hashtagabonnement HashtagAbo)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	/*
 	   * ***************************************************************************

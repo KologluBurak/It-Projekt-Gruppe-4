@@ -43,5 +43,15 @@ public class Unterhaltung extends BusinessObject{
 		this.receiver = receiver;
 	}
 
+	public void setReceiver(String receiver2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setSender(String sender2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
