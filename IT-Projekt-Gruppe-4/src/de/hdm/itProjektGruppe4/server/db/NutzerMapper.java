@@ -1,14 +1,21 @@
 package de.hdm.itProjektGruppe4.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.PreparedStatement;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 
 
 /**
- * 
+ * @author kologlu
  * @author Oikonomou
  * @author Thies
  *
@@ -16,234 +23,149 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 public class NutzerMapper {
 	 
+	//Deklaration der Klassenvariable
 	private static NutzerMapper nutzerMapper = null;
 	
+	//Geschützter Konstruktor
 	protected NutzerMapper(){
 		
 	}
 	
+	//NutzerMapper-Objekt erzeugen
 	public static NutzerMapper nutzerMapper(){
 		if(nutzerMapper==null) {
 			nutzerMapper= new NutzerMapper();
 		}
 		return nutzerMapper;
-		
 	}
 	
-/**
- * Diese Methode ermÃ¶glicht das Ausgeben der Nutzer anhand deren ID aus der Datenbank.
- * @param id
- * @return
- */
-	
-  public Nutzer findNutzerByKey(int id){
-	
-	  Connection con = DBConnection.connection();
-	  
-	  try {
-		  Statement stmt = con.createStatement();
-		  
-		  ResultSet rs = stmt.executeQuery("SELECT id, googleId FROM nutzer " 
-		  + "WHERE id=" + id + " ORDER by googleId");
-		  
-
-		  if (rs.next()) {
-			  Nutzer nutzer = new Nutzer();
-			  nutzer.setId(rs.getInt("nutzerId"));
-			  nutzer.setGoogleId(rs.getString("googleId"));
-			  return nutzer;
-		  }
-	   }
-	  catch (SQLException e2) {
-		  e2.printStackTrace();
-		  return null;
-		  
-	  }
-	  return null;
+	public Nutzer insert(Nutzer nutzer){
+		//DB-Verbindung herstellen
+		Connection con=DBConnection.connection();
+		try{
+			//Insert-Statement erzeugen
+			Statement stmt = con.createStatement();
+			//Zunächst wird geschaut welches der momentan höchste Primärschlüssel ist
+			ResultSet rs = stmt.executeQuery("SELECT MAX(nutzer_id) AS maxID"+" FROM nutzer");
+				
+			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
+			if(rs.next()){
+				int newId = rs.getInt("maxID") + 1;
+				nutzer.setId(newId);
+					
+				PreparedStatement preStmt;
+				preStmt=con.prepareStatement("INSERT INTO nutzer "
+							+"(nutzer_id, vorname, nachname, passwort, googleId)"
+							+" VALUES (?, ?, ?, ?, ?)");
+					
+				preStmt.setInt(1, newId);
+				preStmt.setString(2, nutzer.getVorname());
+				preStmt.setString(3, nutzer.getNachname());
+				preStmt.setString(4, nutzer.getPasswort());
+				preStmt.setString(5, nutzer.getGoogleId());
+				preStmt.executeUpdate();
+				preStmt.close();
+			}
+			stmt.close();
+			rs.close();
+			con.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return nutzer;
 	}
-  
-  /**
-   * Diese Methode gibt die registrierten Nutzer in der Datenbank anhand dem Vornamen aus. 
-   * @param vorname
-   * @return
-   */
-  
-  public Nutzer findNutzerByVorname(String vorname) {
-	    Connection con = DBConnection.connection();
+	
+	public Nutzer update(Nutzer nutzer){
+		Connection con=DBConnection.connection();
+		try{
+			PreparedStatement preStmt;
+			preStmt=con.prepareStatement("UPDATE nutzer SET vorname=?,"
+					+ " nachname=?, passwort=?, googleID=? WHERE nutzer_id=?");
+			
+			preStmt.setString(1, nutzer.getVorname());
+			preStmt.setString(2, nutzer.getNachname());
+			preStmt.setString(3, nutzer.getPasswort());
+			preStmt.setString(4, nutzer.getGoogleId());
+			preStmt.setInt(5, nutzer.getId());
+			preStmt.executeUpdate();
+			preStmt.close();
+			con.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	return nutzer;
+	}
+	
+	public void deleteById(int id){
+		Connection con =DBConnection.connection();
+		try{
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzer_id="+id);
+			stmt.close();
+			con.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 
-	    try {
-	    	
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzer "
-	          + "WHERE Vorname=" + vorname + " ORDER BY id");
-
-
-	      if (rs.next()) {
-	        Nutzer nutzer = new Nutzer();
-	        nutzer.setId(rs.getInt("nutzer_id"));
-	        nutzer.setVorname(rs.getString("vorname"));
-	        nutzer.setGoogleId(rs.getString("googleId"));
-	        return nutzer;
-	      }
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	      return null;
-	    }
-
-	    return null;
-	  }
-  
-  /**d
-   * Diese Methode gibt die registrierten Nutzer aus der Datenbank anhand dem Nachname aus. 
-   * @param nachname
-   * @return
-   */
-  public Nutzer findNutzerByNachname(String nachname) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	    	
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT * FROM Nutzer "
-		          + "WHERE Nachname=" + nachname + " ORDER BY id");
-
-
-
-	      if (rs.next()) {
-	    	  
-	        Nutzer nutzer = new Nutzer();
-	        nutzer.setId(rs.getInt("nutzer_id"));
-	        nutzer.setNachname(rs.getString("nachname"));
-	        nutzer.setGoogleId(rs.getString("googleId"));
-	        return nutzer;
-	      }
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	      return null;
-	    }
-
-	    return null;
-	  }
-
-  /**
-   * Diese Methode ermÃ¶glicht es alle registrierten Nutzer aus der datenbank in einer Liste auszugeben.
-   * @return
-   */
-  public ArrayList<Nutzer> findAllNutzer() {
-	    Connection con = DBConnection.connection();
-
-	    ArrayList<Nutzer> allNutzer = new ArrayList<Nutzer>();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT id * FROM nutzer "
-	          + " ORDER BY id");
-
-	      
-	      while (rs.next()) {
-	        Nutzer nutzer = new Nutzer();
-	        nutzer.setId(rs.getInt("nutzer_id"));
-	        nutzer.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-	        nutzer.setVorname(rs.getString("vorname"));
-	        nutzer.setNachname(rs.getString("nachname"));
-	        nutzer.setPasswort(rs.getString("passwort"));
-	        nutzer.setGoogleId(rs.getString("googleId"));
-
-	        
-	        allNutzer.add(nutzer);
-	      }
-	      
-	      return allNutzer;
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-
-	    return allNutzer;
-
-  }
-  
-  
-  /**
-   * Diese Methode ermÃ¶glicht eine Aktualisierung des Nutzerdatensatzes in der Datenbank.
-   * @param n
-   * @return
-   */
-  public Nutzer updateNutzer(Nutzer nutzer) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      stmt.executeUpdate("UPDATE nutzer " + "SET vorname=\"" + nutzer.getVorname() + "\", " + "nachname=\"" + nutzer.getNachname() +
-	    		  "\", " + "googleId=\"" + nutzer.getGoogleId() + "\" " + "WHERE nutzer_id=" + nutzer.getId());
-
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-
-	    return nutzer;
-	  }
-  
-  /**
-   * Diese Methode ermÃ¶glicht es einen Nutzer in der Datenbank anzulegen.
-   * @param n
-   * @return
-   */
-  
-  public Nutzer insertNutzer(Nutzer nutzer) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT MAX(nutzer_id) AS maxid "
-	          + "FROM Nutzer ");
-
-	      if (rs.next()) {
-	  
-	        nutzer.setId(rs.getInt("maxid") + 1);
-	        nutzer.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-
-	        stmt = con.createStatement();
-
-	        stmt.executeUpdate("INSERT INTO Nutzer " + "VALUES ("
-	            + nutzer.getId() + "," + nutzer.getVorname() + nutzer.getNachname() + "," + nutzer.getPasswort() + "," + nutzer.getGoogleId() + ")");
-	      }
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-
-	    return nutzer;
-	  }
-  
-  /**
-   * Diese Methode ermÃ¶glicht das LÃ¶schen eines Nutzer und dessen Referenzen zu anderen Klassen
-   * @param n
-   */
-   public void deleteNutzer(Nutzer nutzer) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      stmt.executeUpdate("DELETE FROM Abonnement " + "WHERE nutzer_id=" + nutzer.getId());
-	      stmt.executeUpdate("DELETE FROM Hashtag " + "WHERE nutzer_id=" + nutzer.getId());
-	      stmt.executeUpdate("DELETE FROM Nachricht " + "WHERE nutzer_id=" + nutzer.getId());
-	      stmt.executeUpdate("DELETE FROM Unterhaltung " + "WHERE nutzer_id=" + nutzer.getId());
-	      stmt.executeUpdate("DELETE FROM Nutzer " + "WHERE nutzer_id=" + nutzer.getId());
-
-
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-	 }
+	public ArrayList<Nutzer> findAllNutzer(){
+		Connection con=DBConnection.connection();
+		ArrayList<Nutzer> allNutzer = new ArrayList<Nutzer>();
+		Nutzer nutzer=new Nutzer();
+			try{
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer ORDER BY nutzer_id");
+			
+				while(rs.next()){
+					nutzer.setId(rs.getInt("nutzer_id"));
+					nutzer.setVorname(rs.getString("vorname"));
+					nutzer.setNachname(rs.getString("nachname"));
+					nutzer.setPasswort(rs.getString("passwort"));
+					nutzer.setGoogleId(rs.getString("googleId"));
+				
+					allNutzer.add(nutzer);
+				}
+				stmt.close();
+				rs.close();
+				con.close();
+				return allNutzer;
+			}
+			catch(SQLException e){
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	//Diese Methode ermÃ¶glicht das Ausgeben der Nutzer anhand deren ID aus der Datenbank.
+	public ArrayList<Nutzer> findNutzerByName(String vorname, String nachname){
+		Connection con = DBConnection.connection();
+		ArrayList<Nutzer> allNutzerByName=new ArrayList<Nutzer>();
+		Nutzer nutzer=new Nutzer();
+			try{
+				Statement stmt=con.createStatement();
+				ResultSet rs=stmt.executeQuery("SELECT * FROM nutzer WHERE vorname="
+						+ "'"+vorname+"'" + "AND" + " nachname="+ "'"+nachname+"'" + " ORDER BY nutzer_id");
+							
+				while(rs.next()){
+					nutzer.setId(rs.getInt("nutzer_id"));
+					nutzer.setVorname(rs.getString("vorname"));
+					nutzer.setNachname(rs.getString("nachname"));
+					nutzer.setPasswort(rs.getString("passwort"));
+					nutzer.setGoogleId(rs.getString("googleId"));
+					
+					allNutzerByName.add(nutzer);
+				}
+				stmt.close();
+				rs.close();
+				con.close();
+				return allNutzerByName;
+			}
+			catch(SQLException e){
+				e.printStackTrace();
+			}
+		return null;
+	}	
 }

@@ -2,8 +2,6 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-
 import com.google.appengine.api.utils.SystemProperty;
 
 public class DBConnection {
@@ -11,7 +9,7 @@ public class DBConnection {
 	//Variablen f�r den Verbindungsaufbau
 	private static Connection con = null;
 	private static String googleUrl = null;
-    private static String localUrl = "jdbc:mysql://localhost:3306/testdb?user=root";
+    private static String localUrl = "jdbc:mysql://localhost:3306/messaging_administration?user=root";
         
     public static Connection connection() {
         // Wenn es bisher keine Conncetion zur DB gab, ...
@@ -35,19 +33,4 @@ public class DBConnection {
         }
         return con;
     }
-
-    public static void closeConnection(){
-		if (con != null) {
-			try {
-				con.close();
-				con = null;
-			} 
-			catch(Exception e){
-				System.err.println("Datenbankverbindung konnte nicht getrennt werden");
-			}
-		}
-		else{
-			System.out.println("Verbindung bereits getrennt");
-		}
-	}
 }
