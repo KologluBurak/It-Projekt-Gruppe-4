@@ -58,6 +58,32 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	   * @return
 	   */
 	  
+//	  public Nutzerabonnement insertNutzerabonnement(Nutzerabonnement nutzerabonnement) {
+//		    Connection con = DBConnection.connection();
+//		   
+//		    try {
+//		      Statement stmt = con.createStatement();
+//
+//		      ResultSet rs = stmt.executeQuery("SELECT MAX(nutzerabo_id) AS maxid "
+//		          + "FROM nutzerabonnement ");
+//
+//		      if (rs.next()) {
+//		    	  
+//		        nutzerabonnement.setId(rs.getInt("maxid") + 1);
+//		        nutzerabonnement.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsdatum"));
+//
+//		        stmt = con.createStatement();
+//
+//		        stmt.executeUpdate("INSERT INTO Nutzerabonnement (nutzerabonnement_id, erstellungsdatum) " + "VALUES ("
+//		            + nutzerabonnement.getId() + "," + nutzerabonnement.getNutzername() + ")");
+//		      }
+//		    }
+//		    catch (SQLException e1) {
+//		      e1.printStackTrace();
+//		    }
+//
+//		    return nutzerabonnement;
+//		  }
 	  public Nutzerabonnement insertNutzerabonnement(Nutzerabonnement nutzerabonnement) {
 		    Connection con = DBConnection.connection();
 		   
@@ -75,7 +101,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		        stmt = con.createStatement();
 
 		        stmt.executeUpdate("INSERT INTO Nutzerabonnement (nutzerabonnement_id, erstellungsdatum) " + "VALUES ("
-		            + nutzerabonnement.getId() + "," + nutzerabonnement.getNutzername() + ")");
+		            + nutzerabonnement.getId() + "," + nutzerabonnement.getAboNutzerId() + ")");
 		      }
 		    }
 		    catch (SQLException e1) {

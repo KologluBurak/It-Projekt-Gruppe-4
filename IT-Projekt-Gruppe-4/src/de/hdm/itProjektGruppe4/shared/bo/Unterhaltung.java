@@ -16,7 +16,7 @@ public class Unterhaltung extends BusinessObject{
 	
 	private Nutzer sender;
 	private Nutzer receiver;
-	
+	private Date LastEdited;
 
 
 	public ArrayList<Nachricht> getRefNachricht() {
@@ -43,15 +43,14 @@ public class Unterhaltung extends BusinessObject{
 		this.receiver = receiver;
 	}
 
-	public void setReceiver(String receiver2) {
-		// TODO Auto-generated method stub
-		
+	public Date getLastEdited() {
+		return LastEdited;
 	}
 
-	public void setSender(String sender2) {
-		// TODO Auto-generated method stub
-		
+	public void setLastEdited(Date lastEdited) {
+		LastEdited = lastEdited;
 	}
 
+	
 
 }
