@@ -1,5 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * 
@@ -11,42 +12,36 @@ public class Unterhaltung extends BusinessObject{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Nachricht refNachricht;
-	private Date lastEdited;
-	private String sender;
-	private String receiver;
+	private ArrayList<Nachricht>refNachricht;
+	
+	private Nutzer sender;
+	private Nutzer receiver;
 	
 
-	public Nachricht getRefNachricht() {
+
+	public ArrayList<Nachricht> getRefNachricht() {
 		return refNachricht;
 	}
 
-	public void setRefNachricht(Nachricht refNachricht) {
+	public void setRefNachricht(ArrayList<Nachricht> refNachricht) {
 		this.refNachricht = refNachricht;
 	}
 
-	public Date getLastEdited() {
-		return lastEdited;
-	}
-
-	public void setLastEdited(Date lastEdited) {
-		this.lastEdited = lastEdited;
-	}
-
-	public String getSender() {
+	public Nutzer getSender() {
 		return sender;
 	}
 
-	public void setSender(String sender) {
+	public void setSender(Nutzer sender) {
 		this.sender = sender;
 	}
 
-	public String getReceiver() {
+	public Nutzer getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(String receiver) {
+	public void setReceiver(Nutzer receiver) {
 		this.receiver = receiver;
 	}
-	
+
+
 }

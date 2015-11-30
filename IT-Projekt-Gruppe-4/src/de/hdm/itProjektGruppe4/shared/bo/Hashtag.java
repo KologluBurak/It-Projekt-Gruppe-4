@@ -6,10 +6,11 @@ package de.hdm.itProjektGruppe4.shared.bo;
  *
  */
 
-public class Hashtag {
+public class Hashtag extends BusinessObject{
 
+	private static final long serialVersionUID = 1L;
 	private String bezeichnung;
-	private int id; 
+//	private int id; 
 
 
 	public String getBezeichnung() {
@@ -20,12 +21,12 @@ public class Hashtag {
 		this.bezeichnung = bezeichnung;
 	}
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+//	public int getId() {
+//		return id;
+//	}
+//
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 
 }
