@@ -4,6 +4,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.report.InfosVonAllenNachrichtenReport;
+import de.hdm.itProjektGruppe4.shared.report.InfosVonNachrichtenReport;
 import de.hdm.itProjektGruppe4.shared.report.Report;
 import de.hdm.itProjektGruppe4.shared.ReportGenerator;
 
@@ -36,5 +39,11 @@ void hashtagspezifischeAbonnementsAnzeigen(Abonnement abonnement,
 
 void nutzerspezifischeNachrichtenAnzeigen(Nachricht nachricht,
 		AsyncCallback<Report> callback);
+
+void createAllMessagesOfUserReport(
+		AsyncCallback<InfosVonNachrichtenReport> callback);
+
+void createAllMessagesOfAllUsersReport(Nutzer n,
+		AsyncCallback<InfosVonAllenNachrichtenReport> callback);
 
 }

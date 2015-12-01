@@ -21,8 +21,12 @@ public interface MessagingAdministration extends RemoteService {
 	   * ***************************************************************************
 	   */
 	
+	public void init() throws IllegalArgumentException;
+	
 	public void senden (Nachricht Senden) throws IllegalArgumentException;
 	public void empfangen (Nachricht Empfangen) throws IllegalArgumentException;
+	
+	
 	
 	/*
 	   * ***************************************************************************

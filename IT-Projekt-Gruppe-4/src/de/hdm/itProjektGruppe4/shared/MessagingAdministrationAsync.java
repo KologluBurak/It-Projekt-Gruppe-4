@@ -30,6 +30,8 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 
+	void init(AsyncCallback<Void> callback);
+	
 	void senden(Nachricht Senden, AsyncCallback<Void> callback);
 
 	void empfangen(Nachricht Empfangen, AsyncCallback<Void> callback);
@@ -175,6 +177,8 @@ public interface MessagingAdministrationAsync {
 
 	void deleteAboHastag(Hashtagabonnement HashtagAbo,
 			AsyncCallback<Void> callback);
+
+	
 	
 	/*
 	   * ***************************************************************************

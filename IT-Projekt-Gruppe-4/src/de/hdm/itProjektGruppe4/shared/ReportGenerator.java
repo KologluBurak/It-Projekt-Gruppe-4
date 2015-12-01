@@ -4,8 +4,13 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
+import de.hdm.itProjektGruppe4.shared.report.InfosVonAllenNachrichtenReport;
+import de.hdm.itProjektGruppe4.shared.report.InfosVonNachrichtenReport;
 import de.hdm.itProjektGruppe4.shared.report.Report;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.thies.bankProjekt.shared.bo.Customer;
+import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfAllCustomersReport;
+import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
 
 
 /**
@@ -34,7 +39,8 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
  * unbeeinflusst, so dass bestehende Programmlogik nicht verändert werden muss.
  * </p>
  * 
- * @author thies, Yücel
+ * @author thies
+ * @author Yücel 
  */
 
 
@@ -57,4 +63,4 @@ public interface ReportGenerator extends RemoteService {
 	
 	public Report nutzerspezifischeNachrichtenAnzeigen (Nachricht nachricht) throws IllegalArgumentException;
 		
-}
+	}

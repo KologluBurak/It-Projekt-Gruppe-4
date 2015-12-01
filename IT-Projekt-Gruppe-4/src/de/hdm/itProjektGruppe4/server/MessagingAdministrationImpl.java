@@ -48,8 +48,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	public void init()throws IllegalArgumentException{
 		this.nutzerMapper= NutzerMapper.nutzerMapper();
 		this.abonnementMapper= AbonnementMapper.abonnementMapper();
-		//this.nutzerAboMapper= NutzerAboMapper.nutzerAboMapper();
-		//this.hashtagAboMapper= HastagaboMapeer.hashtagAboMapper;
+		this.nutzerAboMapper= NutzerAboMapper.nutzerAboMapper();
+		this.hashtagAboMapper= HashtagAboMapper.hashtagAboMapper();
 		this.nachrichtMapper= NachrichtMapper.nachrichtMapper();
 		this.hashtagMapper= HashtagMapper.hashtagMapper();
 		this.unterhaltungMapper= UnterhaltungMapper.unterhaltungMapper();	
@@ -160,7 +160,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ***************************************************************************
 	   */
 	
-	public Unterhaltung createUnterhaltung (String sender, String receiver) 
+	public Unterhaltung createUnterhaltung (Nutzer sender, Nutzer receiver) 
 			throws IllegalArgumentException{
 		Unterhaltung u = new Unterhaltung ();
 		u.setSender(sender);
@@ -272,12 +272,13 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	   * ***************************************************************************
 	   */
 	
-//	public Nutzerabonnement createAboNutzer (String benutzername)throws IllegalArgumentException{
-//	Nutzerabonnement be = new Nutzerabonnement();
-//	be.setBenutzername(benutzername);
-//	return nutzerAboMapper.insert(be); 
-//	Befehele fehlen noch in der Mapper Klasse
-//}
+	public Nutzerabonnement createAboNutzer (int aboNutzerId, int derBeobachteteId)
+			throws IllegalArgumentException{
+	Nutzerabonnement be = new Nutzerabonnement();
+	be.setAboNutzerId(aboNutzerId);
+	be.setDerBeobachteteId(derBeobachteteId);
+	return nutzerAboMapper.insertNutzerabonnement(be); 
+}
 	
 	public void saveAboNutzer (Nutzerabonnement NutzerAbo)throws IllegalArgumentException{
 		nutzerAboMapper.updateNutzerabonnement(NutzerAbo);
