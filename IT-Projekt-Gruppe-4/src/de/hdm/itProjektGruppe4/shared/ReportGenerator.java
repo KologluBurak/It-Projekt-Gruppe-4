@@ -1,11 +1,13 @@
 package de.hdm.itProjektGruppe4.shared;
 
+import java.util.ArrayList;
+import java.sql.Timestamp;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
-import de.hdm.itProjektGruppe4.shared.report.Report;
-import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.itProjektGruppe4.report.*;
 
 
 /**
@@ -41,20 +43,39 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 @RemoteServiceRelativePath ("reportgenerator")
 public interface ReportGenerator extends RemoteService {
 	
+//	public void init() throws IllegalArgumentException;
+//	
+//	public ArrayList<Nutzer> findAllNutzer();
+//	
+//	public ArrayList<Hashtag> findAllHashtags();
+//	
+//	public ArrayList<Nachricht> findAllNachrichten();
+//	
+//	public ArrayList<Abonnement> findAllAbonnements();
+//	
+//	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis);
+//			
+//	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis);
+//	
+//	public ArrayList<Abonnement> findAllHastagabonnements(Hashtag hashtag, String von, String bis); 
+//			
+//	public ArrayList<Abonnement> findAllNutzerabonnements(Nutzer nutzer, String von, String bis);
+//	
+
 	public void init() throws IllegalArgumentException;
 	
+	public abstract InfosVonNachrichtenReport erstelleInfosVonNachrichtenReport(Nachricht nachricht, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	throws IllegalArgumentException;
 	
+	public abstract InfosVonAbonnementsReport erstelleInfosVonAbonnementsReport(Abonnement abonnement, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt) 
+	throws IllegalArgumentException;
 	
-	public Report alleNachrichtenAnzeigen(Nachricht nachricht) throws IllegalArgumentException;
+	public abstract InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	throws IllegalArgumentException;
 	
-	public Report alleAbonnementsAnzeien(Abonnement abonnement) throws IllegalArgumentException;
-	
-	public Report zeitraumspezifischeNachrichtenAnzeigen (Nachricht nachricht) throws IllegalArgumentException;
-	
-	public Report nutzerspezifischeAbonnementsAnzeigen (Abonnement abonnement) throws IllegalArgumentException;
-	
-	public Report hashtagspezifischeAbonnementsAnzeigen (Abonnement abonnement) throws IllegalArgumentException;
-	
-	public Report nutzerspezifischeNachrichtenAnzeigen (Nachricht nachricht) throws IllegalArgumentException;
-		
+	public abstract InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	throws IllegalArgumentException;
 }
+
+
+	

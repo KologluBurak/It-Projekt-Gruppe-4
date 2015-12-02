@@ -191,7 +191,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 		 * @return
 		 */
 			  
-		public ArrayList<Abonnement> findNutzerAbonnementByNutzer(int id) {
+		public ArrayList<Abonnement> findNutzerAbonnementByNutzer(String von, String bis, int id) {
 			 Connection con = DBConnection.connection();
 			 ArrayList <Abonnement> nutzerAboListe = new ArrayList<Abonnement> ();
 				    
@@ -207,6 +207,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 				  Abonnement abonnement = new Abonnement();
 				  abonnement.setId(rs.getInt("nutzer_id"));
 				  abonnement.setNutzerabo(rs.getString("nutzername"));
+				  abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 				    nutzerAboListe.add(abonnement);
 				  }
@@ -227,7 +228,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 		 * @return
 		 */
 		  
-		  public ArrayList<Abonnement> findAllNutzerabonnements() {
+		  public ArrayList<Abonnement> findAllNutzerabonnements(String von, String bis, int id) {
 			    Connection con = DBConnection.connection();
 
 			    ArrayList<Abonnement> allNutzerAbos = new ArrayList<Abonnement>();
@@ -243,7 +244,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 			        Abonnement abonnement = new Abonnement();
 			        abonnement.setId(rs.getInt("nutzerabo_id"));
 			        abonnement.setNutzerabo(rs.getString("nutzername"));
-			        
+			        abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
+
 			        allNutzerAbos.add(abonnement);
 			      }
 			    }
@@ -294,7 +296,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 			 * @return
 			 */
 				  
-			public ArrayList<Abonnement> findHashtagAbonnementByNutzer(int id) {
+			public ArrayList<Abonnement> findHashtagAbonnementByNutzer(String von, String bis, int id) {
 				 Connection con = DBConnection.connection();
 				 ArrayList <Abonnement> hashtagAboListe = new ArrayList<Abonnement> ();
 					    
@@ -310,6 +312,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 					  Abonnement abonnement = new Abonnement();
 					  abonnement.setId(rs.getInt("nutzerabo_id"));
 					  abonnement.setHashtagabo(rs.getString("nutzername"));
+					  abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 
 					    hashtagAboListe.add(abonnement);
@@ -331,7 +334,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 			 * @return
 			 */
 			  
-			  public ArrayList<Abonnement> findAllHastagabonnements() {
+			  public ArrayList<Abonnement> findAllHastagabonnements(String von, String bis, int id) {
 				    Connection con = DBConnection.connection();
 
 				    ArrayList<Abonnement> allHashtagAbos = new ArrayList<Abonnement>();
@@ -347,6 +350,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 				        Abonnement abonnement = new Abonnement();
 				        abonnement.setId(rs.getInt("hashtagabo_id"));
 				        abonnement.setHashtagabo(rs.getString("hashtagname"));
+				        abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 				        
 				        allHashtagAbos.add(abonnement);
