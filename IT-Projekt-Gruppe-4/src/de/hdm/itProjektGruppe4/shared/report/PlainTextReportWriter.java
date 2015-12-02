@@ -14,6 +14,7 @@ import de.hdm.itProjektGruppe4.shared.report.Row;
  * Prozessierungsmethode mit <code>getReportText()</code> ausgelesen werden.
  * 
  * @author Thies
+ * @author Yücel
  */
 public class PlainTextReportWriter extends ReportWriter {
 

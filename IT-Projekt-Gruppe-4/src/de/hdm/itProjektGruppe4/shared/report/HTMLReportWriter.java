@@ -10,6 +10,7 @@ import de.hdm.itProjektGruppe4.shared.report.*;
  * <code>getReportText()</code> ausgelesen werden.
  * 
  * @author Thies
+ * @author Yücel
  */
 public class HTMLReportWriter extends ReportWriter {
 

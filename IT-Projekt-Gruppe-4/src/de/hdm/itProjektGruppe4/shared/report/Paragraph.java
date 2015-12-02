@@ -19,6 +19,7 @@ import java.io.Serializable;
  * 
  * @see Report
  * @author Thies
+ * @author Yücel
  */
 public abstract class Paragraph implements Serializable {
 
