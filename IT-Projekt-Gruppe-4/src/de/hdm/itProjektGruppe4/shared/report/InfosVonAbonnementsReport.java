@@ -13,4 +13,24 @@ package de.hdm.itProjektGruppe4.shared.report;
 
 public class InfosVonAbonnementsReport {
 
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Paragraph getHeaderData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Paragraph getImprint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getCreated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
