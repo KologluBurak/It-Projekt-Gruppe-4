@@ -1,8 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
 import java.util.ArrayList;
-import java.util.Vector;
-
 import de.hdm.itProjektGruppe4.shared.report.*;
 
 /**
@@ -120,7 +118,8 @@ public void process(InfosVonAbonnementsReport r) {
     result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
         + "</td></tr></table>");
 
-    ArrayList<Row> rows = r.getClass();
+    ArrayList<Row> rows = r.getRows();
+    
     result.append("<table style=\"width:400px\">");
 
     for (int i = 0; i < rows.size(); i++) {
@@ -219,7 +218,12 @@ public void process(InfosVonAllenAbonnementsReport r) {
        */
       this.reportText = result.toString();
     }
-  public void process(InfosVonAbonnementsReport r) {
+  private String paragraph2HTML(Object headerData) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public void process(InfosVonNachrichtenReport r) {
 	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
 	    this.resetReportText();
 
@@ -242,7 +246,7 @@ public void process(InfosVonAllenAbonnementsReport r) {
 	    result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
 	        + "</td></tr></table>");
 
-	    ArrayList<Row> rows = r.getClass();
+	    ArrayList<Row> rows = r.getRows();
 	    result.append("<table style=\"width:400px\">");
 
 	    for (int i = 0; i < rows.size(); i++) {
@@ -349,10 +353,7 @@ public void process(InfosVonAllenAbonnementsReport r) {
 	   */
 	  public String getReportText() {
 	    return this.getHeader() + this.reportText + this.getTrailer();
-	  }
-
-    
-    	
+	  }    	
     }
 
 

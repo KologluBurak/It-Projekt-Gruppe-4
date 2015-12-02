@@ -3,7 +3,7 @@ package de.hdm.itProjektGruppe4.shared.report;
 import java.io.Serializable;
 
 import de.hdm.itProjektGruppe4.*;
-import de.hdm.thies.bankProjekt.shared.report.SimpleParagraph;
+import de.hdm.itProjektGruppe4.shared.report.SimpleParagraph;
 
 /**
  * Spalte eines <code>Row</code>-Objekts. <code>Column</code>-Objekte
@@ -85,8 +85,3 @@ public class Column implements Serializable {
 	    return this.value;
 	  }
 	}
-
-	
-	
-	
-}

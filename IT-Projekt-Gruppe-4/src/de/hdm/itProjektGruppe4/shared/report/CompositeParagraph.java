@@ -2,15 +2,13 @@ package de.hdm.itProjektGruppe4.shared.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import de.hdm.itProjektGruppe4.shared.report.Paragraph;
 import de.hdm.itProjektGruppe4.shared.report.SimpleParagraph;
 
 /**
  * Diese Klasse stellt eine Menge einzelner Absätze (
  * <code>SimpleParagraph</code>-Objekte) dar. Diese werden als Unterabschnitte
- * in einem <code>Vector</code> abgelegt verwaltet.
+ * in einem <code>ArrayList</code> abgelegt verwaltet.
  * 
  * @author Thies
  * @author Yücel
@@ -47,7 +45,7 @@ public class CompositeParagraph extends Paragraph implements Serializable {
   /**
    * Auslesen sämtlicher Unterabschnitte.
    * 
-   * @return <code>Vector</code>, der sämtliche Unterabschnitte enthält.
+   * @return <code>ArrayList</code>, der sämtliche Unterabschnitte enthält.
    */
   public ArrayList<SimpleParagraph> getSubParagraphs() {
     return this.subParagraphs;

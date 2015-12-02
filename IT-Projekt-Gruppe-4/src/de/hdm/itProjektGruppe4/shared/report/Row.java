@@ -2,8 +2,6 @@ package de.hdm.itProjektGruppe4.shared.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import de.hdm.itProjektGruppe4.shared.report.Column;
 import de.hdm.itProjektGruppe4.shared.report.SimpleReport;
 
@@ -49,7 +47,7 @@ public class Row implements Serializable {
   /**
    * Auslesen sämtlicher Spalten.
    * 
-   * @return <code>Vector</code>-Objekts mit sämtlichen Spalten
+   * @return <code>ArrayList</code>-Objekts mit sämtlichen Spalten
    */
   public ArrayList<Column> getColumns() {
     return this.columns;
