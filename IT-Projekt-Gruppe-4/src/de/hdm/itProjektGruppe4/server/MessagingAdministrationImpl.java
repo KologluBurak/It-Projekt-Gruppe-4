@@ -33,7 +33,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	
 	
 	/**
-	 * No-Argument Konstruktor
+	 * No-Argument   Konstruktor
 	 */
 	
 	public MessagingAdministrationImpl()throws IllegalArgumentException{
@@ -76,8 +76,9 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		n.setNachname(nachname);
 		n.setPasswort(passwort);
 		n.setGoogleId(googleId);
+
 		return this.nutzerMapper.insert(n);
-		
+
 	}
 	
 	public void saveNutzer (Nutzer nutzer)throws IllegalArgumentException{
@@ -85,7 +86,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteNutzer (int id) throws IllegalArgumentException{
-		nutzerMapper.deleteById(id);
+		nutzerMapper.deleteByKey(id);
 	}
 	
 	/*
@@ -137,12 +138,21 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	      */
 	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException{
 		return this.nachrichtMapper.findAllNachrichten();
-
 	}
 	
 	/**
-	 * Auslesen einer Nachricht anhand einer ID
-	 */
+	   * Auslesen Nachrichten anhand der Id.
+	      */
+	public Nachricht getNachrichtbyId(int id)throws IllegalArgumentException{
+		return this.nachrichtMapper.findNachrichtByKey(id);
+	}
+
+	
+	//public ArrayList<Nachricht> getNachrichten(Nutzer n, String von, String bis, int sort) throws IllegalArgumentException{
+		//return this.nachrichtMapper.alleNachrichtenJeNutzer(n, von, bis, sort);
+	//}
+
+	 // Auslesen einer Nachricht anhand einer ID
 	public Nachricht getNachrichtById(int id) throws IllegalArgumentException{
 		return this.nachrichtMapper.findNachrichtByKey(id);
 	}
@@ -164,12 +174,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		Unterhaltung u = new Unterhaltung ();
 		u.setSender(sender);
 		u.setReceiver(receiver);
-		return unterhaltungMapper.insertUnterhaltung(u);
+		return unterhaltungMapper.insert(u);
 		
 	}
 	
 	public void saveUnterhaltung (Unterhaltung unterhaltung) throws IllegalArgumentException{
-		unterhaltungMapper.updateUnterhaltung(unterhaltung);
+		unterhaltungMapper.update(unterhaltung);
 	}
 	
 	/**

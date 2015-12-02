@@ -36,7 +36,6 @@ public interface MessagingAdministration extends RemoteService {
 	   * ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
 	   * ***************************************************************************
 	   */
-	
 	public Nutzer createNutzer (String vorname, String nachname, String passwort, String googleId) throws IllegalArgumentException;
 	public void saveNutzer (Nutzer nutzer)throws IllegalArgumentException;
 	public void deleteNutzer (int id) throws IllegalArgumentException;

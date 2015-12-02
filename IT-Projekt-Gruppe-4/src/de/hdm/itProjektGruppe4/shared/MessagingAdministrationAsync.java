@@ -61,6 +61,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
 	   * ***************************************************************************
 	   */
+
 	void saveNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
 
 	void deleteNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
@@ -93,9 +94,9 @@ public interface MessagingAdministrationAsync {
 	   */
 	void createUnterhaltung(Nutzer sender, Nutzer receiver,
 			AsyncCallback<Unterhaltung> callback);
+	
+	void saveUnterhaltung(Unterhaltung Unterhaltung, AsyncCallback<Void> callback);
 
-	void saveUnterhaltung(Unterhaltung Unterhaltung,
-			AsyncCallback<Void> callback);
 
 	void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
 
@@ -115,6 +116,7 @@ public interface MessagingAdministrationAsync {
 	void createAbonnement(Nutzerabonnement aboNutzer,
 			Hashtagabonnement aboHashtag, AsyncCallback<Abonnement> callback);
 
+
 	void saveAbonnement(Abonnement abo, AsyncCallback<Void> callback);
 	/*
 	   * ***************************************************************************
@@ -128,10 +130,10 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	void createHashtag(String bezeichnung, AsyncCallback<Hashtag> callback);
-
 	void saveHashtag(Hashtag hashtag, AsyncCallback<Void> callback);
 
 	void deleteHashtag(Hashtag hashtag, AsyncCallback<Void> callback);
+
 	/*
 	   * ***************************************************************************
 	   * ABSCHNITT, Ende: Methoden für Hashtag-Objekte
@@ -161,6 +163,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
 	   * ***************************************************************************
 	   */
+
 	//public void createAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException;
 	void saveAboHashtag(Hashtagabonnement hashtagAbo,
 			AsyncCallback<Void> callback);
@@ -172,5 +175,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	   * ***************************************************************************
 	   */
+
+	
 	
 }

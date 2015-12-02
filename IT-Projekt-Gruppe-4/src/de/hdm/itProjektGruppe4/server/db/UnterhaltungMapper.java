@@ -43,8 +43,7 @@ public class UnterhaltungMapper {
 	 * @param unterhaltung
 	 * @return
 	 */
-	public Unterhaltung insert(Unterhaltung unterhaltung)throws IllegalArgumentException,
-			SQLException {
+	public Unterhaltung insert(Unterhaltung unterhaltung){
 		if (unterhaltung == null) {
 			throw new IllegalArgumentException(
 					"Übergebenes Objekt an insert() ist NULL.");
@@ -87,8 +86,7 @@ public class UnterhaltungMapper {
 	  * @param unterhaltung
 	  * @return
 	  */
-	public Unterhaltung update(Unterhaltung unterhaltung)throws IllegalArgumentException,
-		SQLException {
+	public Unterhaltung update(Unterhaltung unterhaltung){
 		if (unterhaltung == null) {
 			throw new IllegalArgumentException(
 				"Übergebenes Objekt an insert() ist NULL.");
@@ -132,8 +130,7 @@ public class UnterhaltungMapper {
 	 * Diese Methode ermöglicht es alle Unterhaltungen aus der Datenbank in einer Liste auszugeben.
 	 * @return
 	 */
-	public ArrayList<Unterhaltung> findAllUnterhaltungen()throws IllegalArgumentException,
-			SQLException {
+	public ArrayList<Unterhaltung> findAllUnterhaltungen(){
 		Connection con=DBConnection.connection();
 		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
 		Unterhaltung unterhaltung=new Unterhaltung();
@@ -168,8 +165,7 @@ public class UnterhaltungMapper {
 	 * @param id
 	 * @return
 	 */
-	public Unterhaltung findUnterhaltungByKey(int id)throws IllegalArgumentException,
-			SQLException {
+	public Unterhaltung findUnterhaltungByKey(int id){
 		Connection con=DBConnection.connection();
 		Unterhaltung unterhaltung=new Unterhaltung();
 		try{
