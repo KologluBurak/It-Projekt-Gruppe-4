@@ -40,7 +40,9 @@ public interface MessagingAdministration extends RemoteService {
 	   * ***************************************************************************
 	   */
 
-	public void createNutzer (Nutzer Nutzer) throws IllegalArgumentException;
+	
+	public Nutzer createNutzer (String vorname, String nachname, String passwort, String googleId) 
+			throws IllegalArgumentException;
 	public void deleteNutzer (Nutzer Nutzer) throws IllegalArgumentException;
 	
 	/*

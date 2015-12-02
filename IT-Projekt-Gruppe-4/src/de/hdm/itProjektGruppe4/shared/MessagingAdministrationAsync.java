@@ -30,11 +30,7 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 
-	void init(AsyncCallback<Void> callback);
-	
-	void senden(Nachricht Senden, AsyncCallback<Void> callback);
 
-	void empfangen(Nachricht Empfangen, AsyncCallback<Void> callback);
 
 	
 
@@ -50,9 +46,6 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	
-	void createNutzer(Nutzer Nutzer, AsyncCallback<Void> callback);
-
-	void deleteNutzer(Nutzer Nutzer, AsyncCallback<Void> callback);
 
 	
 	
@@ -67,17 +60,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
 	   * ***************************************************************************
 	   */
-	
-	void createNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
 
-	void saveNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
-	
-	void deleteNachricht(Nachricht Nachricht, AsyncCallback<Void> callback);
-
-	void setDateOfNachricht(Date DateOfNachricht, AsyncCallback<Void> callback);
-
-	void setNachrichtEditedBy(Nachricht NachrichtEditedBy,
-			AsyncCallback<Void> callback);
 
 	
 	/*
@@ -92,11 +75,7 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	
-	void createUnterhaltung(Unterhaltung Unterhaltung,
-			AsyncCallback<Void> callback);
 
-	void saveUnterhaltung(Unterhaltung Unterhaltung,
-			AsyncCallback<Void> callback);
 
 	
 	
@@ -112,11 +91,7 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	
-	void createAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
 
-	void saveAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
-	
-	void deleteAbonnement(Abonnement Abo, AsyncCallback<Void> callback);
 
 	/*
 	   * ***************************************************************************
@@ -129,12 +104,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
 	   * ***************************************************************************
 	   */
-	
-	void createHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
 
-	void saveHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
-
-	void deleteHashtag(Hashtag Hashtag, AsyncCallback<Void> callback);
 
 		
 	/*
@@ -148,14 +118,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
 	   * ***************************************************************************
 	   */
-	
-	void createAboNutzer(Nutzerabonnement NutzerAbo,
-			AsyncCallback<Void> callback);
 
-	void saveAboNutzer(Nutzerabonnement NutzerAbo, AsyncCallback<Void> callback);
-
-	void deleteAboNutzer(Nutzerabonnement NutzerAbo,
-			AsyncCallback<Void> callback);
 
 	/*
 	   * ***************************************************************************
@@ -169,14 +132,7 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	
-	void createAboHashtag(Hashtagabonnement HashtagAbo,
-			AsyncCallback<Void> callback);
-
-	void saveAboHashtag(Hashtagabonnement HashtagAbo,
-			AsyncCallback<Void> callback);
-
-	void deleteAboHastag(Hashtagabonnement HashtagAbo,
-			AsyncCallback<Void> callback);
+	
 
 	
 	

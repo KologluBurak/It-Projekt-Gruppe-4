@@ -33,7 +33,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	
 	
 	/**
-	 * No-Argument Konstruktor
+	 * No-Argument   Konstruktor
 	 */
 	
 	public MessagingAdministrationImpl()throws IllegalArgumentException{
@@ -76,7 +76,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 		n.setNachname(nachname);
 		n.setPasswort(passwort);
 		n.setGoogleId(googleId);
-		return this.nutzerMapper.insertNutzer(n);
+		return this.nutzerMapper.insert(n)
 		
 	}
 	
@@ -137,12 +137,18 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet
 	      */
 	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException{
 		return this.nachrichtMapper.findAllNachrichten();
-
 	}
 	
 	/**
-	   * Auslesen aller Nachrichten eines Nutzers.
+	   * Auslesen Nachrichten anhand der Id.
 	      */
+	public Nachricht getNachrichtbyId(int id)throws IllegalArgumentException{
+		return this.nachrichtMapper.findNachrichtByKey(id);
+	}
+	
+	
+	
+	
 	
 	//public ArrayList<Nachricht> getNachrichten(Nutzer n, String von, String bis, int sort) throws IllegalArgumentException{
 		//return this.nachrichtMapper.alleNachrichtenJeNutzer(n, von, bis, sort);
