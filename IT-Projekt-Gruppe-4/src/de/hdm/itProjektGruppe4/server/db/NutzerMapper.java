@@ -39,8 +39,7 @@ public class NutzerMapper {
 		return nutzerMapper;
 	}
 	
-	public Nutzer insert(Nutzer nutzer)throws IllegalArgumentException,
-			SQLException {
+	public Nutzer insert(Nutzer nutzer){
 		if (nutzer == null) {
 			throw new IllegalArgumentException(
 					"Übergebenes Objekt an insert() ist NULL.");
@@ -81,8 +80,7 @@ public class NutzerMapper {
 		return nutzer;
 	}
 	
-	public Nutzer update(Nutzer nutzer)throws IllegalArgumentException,
-			SQLException {
+	public Nutzer update(Nutzer nutzer){
 		if (nutzer == null) {
 			throw new IllegalArgumentException(
 					"Übergebenes Objekt an insert() ist NULL.");
@@ -121,8 +119,7 @@ public class NutzerMapper {
 		}
 	}
 
-	public ArrayList<Nutzer> findAllNutzer()throws IllegalArgumentException,
-			SQLException {
+	public ArrayList<Nutzer> findAllNutzer(){
 		Connection con=DBConnection.connection();
 		ArrayList<Nutzer> allNutzer = new ArrayList<Nutzer>();
 		Nutzer nutzer=new Nutzer();
@@ -151,8 +148,7 @@ public class NutzerMapper {
 	}
 	
 	//Diese Methode ermöglicht das Ausgeben der Nutzer anhand deren ID aus der Datenbank.
-	public ArrayList<Nutzer> findNutzerByName(String vorname, String nachname)throws IllegalArgumentException,
-			SQLException {
+	public ArrayList<Nutzer> findNutzerByName(String vorname, String nachname){
 		Connection con = DBConnection.connection();
 		ArrayList<Nutzer> allNutzerByName=new ArrayList<Nutzer>();
 		Nutzer nutzer=new Nutzer();

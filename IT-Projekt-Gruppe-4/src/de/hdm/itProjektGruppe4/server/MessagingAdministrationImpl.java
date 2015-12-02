@@ -142,22 +142,23 @@ implements MessagingAdministration {
 	}
 	
 	/**
-<<<<<<< HEAD
 	   * Auslesen Nachrichten anhand der Id.
 	      */
 	public Nachricht getNachrichtbyId(int id)throws IllegalArgumentException{
 		return this.nachrichtMapper.findNachrichtByKey(id);
 	}
-	
-	
-	
-	
+
 	
 	//public ArrayList<Nachricht> getNachrichten(Nutzer n, String von, String bis, int sort) throws IllegalArgumentException{
 		//return this.nachrichtMapper.alleNachrichtenJeNutzer(n, von, bis, sort);
+
 	//}
 	 /* Auslesen einer Nachricht anhand einer ID
 	 */
+
+
+	 // Auslesen einer Nachricht anhand einer ID
+
 	public Nachricht getNachrichtById(int id) throws IllegalArgumentException{
 		return this.nachrichtMapper.findNachrichtByKey(id);
 	}
