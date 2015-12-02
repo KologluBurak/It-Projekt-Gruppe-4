@@ -94,6 +94,8 @@ public interface MessagingAdministrationAsync {
 	   */
 	void createUnterhaltung(Nutzer sender, Nutzer receiver,
 			AsyncCallback<Unterhaltung> callback);
+	
+	void saveUnterhaltung(Unterhaltung Unterhaltung, AsyncCallback<Void> callback);
 
 
 	void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
@@ -173,5 +175,7 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	   * ***************************************************************************
 	   */
+
+	
 	
 }
