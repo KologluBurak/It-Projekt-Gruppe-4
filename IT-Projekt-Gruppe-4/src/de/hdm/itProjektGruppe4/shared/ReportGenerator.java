@@ -1,6 +1,6 @@
 package de.hdm.itProjektGruppe4.shared;
 
-import java.util.ArrayList;
+
 import java.sql.Timestamp;
 
 import com.google.gwt.user.client.rpc.RemoteService;
