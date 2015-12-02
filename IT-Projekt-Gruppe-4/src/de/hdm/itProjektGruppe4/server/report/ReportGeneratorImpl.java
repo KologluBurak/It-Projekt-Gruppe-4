@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.server.db.*;
-import de.hdm.itProjektGruppe4.server.MessangingAdministrationImpl;
-import de.hdm.itProjektGruppe4.shared.InfosVonAbonnementsReport;
-import de.hdm.itProjektGruppe4.shared.InfosVonAllenAbonnementsReport;
-import de.hdm.itProjektGruppe4.shared.InfosVonNachrichtenReport;
+import de.hdm.itProjektGruppe4.server.*;
 import de.hdm.itProjektGruppe4.shared.ReportGenerator;
 import de.hdm.itProjektGruppe4.shared.bo.*;
 import java.sql.Timestamp;
