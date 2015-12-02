@@ -67,7 +67,7 @@ public class NachrichtMapper {
    * Diese Methode ermöglicht es alle angelegten Nachrichten aus der Datenbank in einer Liste auszugeben.
    * @return
    */
-  public ArrayList<Nachricht> findAllNachrichten() {
+  public ArrayList<Nachricht> findAllNachrichten(int id) {
 	    Connection con = DBConnection.connection();
 	    
 	    ArrayList<Nachricht> result = new ArrayList<Nachricht>();
@@ -207,7 +207,7 @@ public class NachrichtMapper {
    * @return
    */
   
-  public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis, int sortierung) {
+  public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis, int id) {
 		Connection con = DBConnection.connection();
 		ArrayList <Nachricht> nachrichtenJeNutzer= new ArrayList<Nachricht>();
 
@@ -240,7 +240,7 @@ public class NachrichtMapper {
    * @param bis
    * @return
    */
-  public ArrayList<Nachricht> alleNachrichtJeZeitraum(String von, String bis) {
+  public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis, int id) {
 		Connection con = DBConnection.connection();
 		ArrayList <Nachricht> nachrichtenJeZeitraum= new ArrayList<Nachricht>();
 		
