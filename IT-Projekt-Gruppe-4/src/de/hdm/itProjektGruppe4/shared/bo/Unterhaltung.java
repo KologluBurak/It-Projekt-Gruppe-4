@@ -1,5 +1,5 @@
 package de.hdm.itProjektGruppe4.shared.bo;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 
 /**
@@ -13,10 +13,9 @@ public class Unterhaltung extends BusinessObject{
 	private static final long serialVersionUID = 1L;
 	
 	private ArrayList<Nachricht>refNachricht;
-	
 	private Nutzer sender;
 	private Nutzer receiver;
-	private Date LastEdited;
+	private Date lastEdited;
 
 
 	public ArrayList<Nachricht> getRefNachricht() {
@@ -44,13 +43,10 @@ public class Unterhaltung extends BusinessObject{
 	}
 
 	public Date getLastEdited() {
-		return LastEdited;
+		return lastEdited;
 	}
 
 	public void setLastEdited(Date lastEdited) {
-		LastEdited = lastEdited;
+		this.lastEdited = lastEdited;
 	}
-
-	
-
 }
