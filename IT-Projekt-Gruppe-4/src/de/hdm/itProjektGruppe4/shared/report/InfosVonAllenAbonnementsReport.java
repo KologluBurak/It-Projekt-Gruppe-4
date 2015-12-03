@@ -8,7 +8,7 @@ package de.hdm.itProjektGruppe4.shared.report;
  * objektorientiert umgehen zu können.
  * 
  * @author Thies
- * @author Yücel
+ * @author Yücel 
  */
 
 public class InfosVonAllenAbonnementsReport {

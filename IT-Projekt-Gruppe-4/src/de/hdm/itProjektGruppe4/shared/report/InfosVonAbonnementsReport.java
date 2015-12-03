@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * da alles Notwendige schon in den Superklassen vorliegt. Ihre Existenz ist 
  * dennoch wichtig, um bestimmte Typen von Reports deklarieren und mit ihnen 
  * objektorientiert umgehen zu können.
- * 
+ *  
  * @author Thies
  * @author Yücel
  */
