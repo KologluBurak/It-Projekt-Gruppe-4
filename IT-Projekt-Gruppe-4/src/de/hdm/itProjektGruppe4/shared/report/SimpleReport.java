@@ -1,8 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
 import java.util.ArrayList;
-import java.util.Vector;
-
 import de.hdm.itProjektGruppe4.shared.report.Column;
 import de.hdm.itProjektGruppe4.shared.report.Report;
 import de.hdm.itProjektGruppe4.shared.report.Row;
@@ -33,7 +31,7 @@ public abstract class SimpleReport extends Report {
 
   /**
    * Tabelle mit Positionsdaten. Die Tabelle wird zeilenweise in diesem
-   * <code>Vector</code> abgelegt.
+   * <code>ArrayList</code> abgelegt.
    */
   private ArrayList<Row> table = new ArrayList<Row>();
 

@@ -1,11 +1,11 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
-import java.util.Vector;
 
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfAllCustomersReport;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
-import de.hdm.thies.bankProjekt.shared.report.ReportWriter;
-import de.hdm.thies.bankProjekt.shared.report.Row;
+import org.datanucleus.sco.backed.ArrayList;
+import de.hdm.itProjektGruppe4.shared.report.InfosVonAllenAbonnementsReport;
+import de.hdm.itProjektGruppe4.shared.report.InfosVonAbonnementsReport;
+import de.hdm.itProjektGruppe4.shared.report.ReportWriter;
+import de.hdm.itProjektGruppe4.shared.report.Row;
 
 /**
  * Ein <code>ReportWriter</code>, der Reports mittels Plain Text formatiert. Das
@@ -14,6 +14,7 @@ import de.hdm.thies.bankProjekt.shared.report.Row;
  * Prozessierungsmethode mit <code>getReportText()</code> ausgelesen werden.
  * 
  * @author Thies
+ * @author Yücel
  */
 public class PlainTextReportWriter extends ReportWriter {
 
@@ -67,7 +68,7 @@ public class PlainTextReportWriter extends ReportWriter {
 	    result.append("*** " + r.getTitle() + " ***\n\n");
 	    result.append(r.getHeaderData() + "\n");
 	    result.append("Erstellt am: " + r.getCreated().toString() + "\n\n");
-	    Vector<Row> rows = r.getRows();
+	    ArrayList<Row> rows = r.getRows();
 
 	    for (Row row : rows) {
 	      for (int k = 0; k < row.getNumColumns(); k++) {
@@ -175,7 +176,7 @@ public void process(InfosVonNachrichtenReport r) {
     result.append("*** " + r.getTitle() + " ***\n\n");
     result.append(r.getHeaderData() + "\n");
     result.append("Erstellt am: " + r.getCreated().toString() + "\n\n");
-    Vector<Row> rows = r.getRows();
+    ArrayList<Row> rows = r.getRows();
 
     for (Row row : rows) {
       for (int k = 0; k < row.getNumColumns(); k++) {
@@ -267,5 +268,4 @@ public void process(InfosVonAllenNachrichtenReport r) {
 public String getReportText() {
     return this.getHeader() + this.reportText + this.getTrailer();
   }
-}
 }

@@ -11,6 +11,7 @@ import de.hdm.itProjektGruppe4.shared.report.Paragraph;
  * sind.
  * 
  * @author Thies
+ * @author Yücel
  */
 public class SimpleParagraph extends Paragraph implements Serializable {
 

@@ -1,5 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
+import java.util.ArrayList;
+
 /**
  * Report, der alle Konten alle Kunden darstellt.
  * Die Klasse tr#gt keine weiteren Attribute- und Methoden-Implementierungen,
@@ -29,6 +31,11 @@ public class InfosVonAbonnementsReport {
 	}
 
 	public Object getCreated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<Row> getRows() {
 		// TODO Auto-generated method stub
 		return null;
 	}

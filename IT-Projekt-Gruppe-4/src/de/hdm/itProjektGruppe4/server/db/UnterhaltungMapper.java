@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.locks.StampedLock;
 import java.sql.PreparedStatement;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
@@ -113,11 +114,17 @@ public class UnterhaltungMapper {
 	  * Diese Methode ermÃ¶glicht es eine Unterhaltung aus der Datenbank zu lÃ¶schen.
 	  * @param unterhaltung
 	  */
-	public void deleteById(int id){
+	public void delete(Unterhaltung unterhaltung){
 		Connection con =DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzer WHERE unterhaltung_id="+id);
+			// Statement ausfuellen und als Query an die DB schicken
+			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltung_id="+unterhaltung.getId());
+			
+			Statement stmt2=con.createStatement();
+			//Zuordnungen zwischen der Unterhaltung und den dazugehörigen Nutzern löschen
+			stmt2.executeUpdate("DELETE FROM unterhaltungslisten WHERE unterhaltung_id="+unterhaltung.getId());
+			
 			stmt.close();
 			con.close();
 		}

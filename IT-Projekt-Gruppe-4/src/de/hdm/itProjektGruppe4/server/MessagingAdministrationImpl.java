@@ -2,7 +2,7 @@ package de.hdm.itProjektGruppe4.server;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Vector;
+
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -19,7 +19,8 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  *
  */
 
-public class MessagingAdministrationImpl extends RemoteServiceServlet implements MessagingAdministration {
+public class MessagingAdministrationImpl extends RemoteServiceServlet 
+implements MessagingAdministration {
 
 
 	
@@ -150,9 +151,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	
 	//public ArrayList<Nachricht> getNachrichten(Nutzer n, String von, String bis, int sort) throws IllegalArgumentException{
 		//return this.nachrichtMapper.alleNachrichtenJeNutzer(n, von, bis, sort);
+
 	//}
+	 /* Auslesen einer Nachricht anhand einer ID
+	 */
+
 
 	 // Auslesen einer Nachricht anhand einer ID
+
 	public Nachricht getNachrichtById(int id) throws IllegalArgumentException{
 		return this.nachrichtMapper.findNachrichtByKey(id);
 	}
