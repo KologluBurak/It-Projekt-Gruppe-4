@@ -4,12 +4,10 @@ package de.hdm.itProjektGruppe4.shared;
 import java.sql.Timestamp;
 
 import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 import de.hdm.itProjektGruppe4.shared.report.*;
-import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
-
 
 
 /**
@@ -39,32 +37,22 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
  * </p>
  * 
  * @author thies
- * @author Yücel 
+ * @author Yücel
+ * @author Oikonomou 
  */
 
 
-@RemoteServiceRelativePath ("reportgenerator")
 public interface ReportGenerator extends RemoteService {
-	
-//	public void init() throws IllegalArgumentException;
-//	
-//	public ArrayList<Nutzer> findAllNutzer();
-//	
-//	public ArrayList<Hashtag> findAllHashtags();
-//	
-//	public ArrayList<Nachricht> findAllNachrichten();
-//	
-//	public ArrayList<Abonnement> findAllAbonnements();
-//	
-//	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis);
-//			
-//	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis);
-//	
-//	public ArrayList<Abonnement> findAllHastagabonnements(Hashtag hashtag, String von, String bis); 
-//			
-//	public ArrayList<Abonnement> findAllNutzerabonnements(Nutzer nutzer, String von, String bis);
-//	
 
+	/**
+	   * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
+	   * RPC zus‰tzlich zum No Argument Constructor der implementierenden Klasse
+	   * PinnwandVerwaltungImpl} notwendig. Bitte diese Methode direkt nach der
+	   * Instantiierung aufrufen.
+	   * 
+	   * @throws IllegalArgumentException
+	   */
+	
 	public void init() throws IllegalArgumentException;
 	
 	public abstract InfosVonNachrichtenReport erstelleInfosVonNachrichtenReport(Nachricht nachricht, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)

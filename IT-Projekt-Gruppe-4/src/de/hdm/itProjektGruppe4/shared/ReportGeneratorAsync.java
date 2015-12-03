@@ -6,8 +6,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 import de.hdm.itProjektGruppe4.shared.report.*;
-import de.hdm.itProjektGruppe4.shared.ReportGenerator;
-
 
 
 /**
@@ -16,7 +14,8 @@ import de.hdm.itProjektGruppe4.shared.ReportGenerator;
  * hier keine weitere Dokumentation. Für weitere Informationen siehe das
  * synchrone Interface {@link ReportGenerator}.
  * 
- * @author thies, Yücel
+ * @author thies
+ * @author Oikonomou
  */
 
 public interface ReportGeneratorAsync {

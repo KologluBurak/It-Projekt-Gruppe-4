@@ -21,8 +21,8 @@ public class InfosVonAllenNachrichtenReport extends CompositeReport implements S
 
 	public String getTitle() {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		return null; 
+	}  
 
 	public Object getHeaderData() {
 		// TODO Auto-generated method stub
