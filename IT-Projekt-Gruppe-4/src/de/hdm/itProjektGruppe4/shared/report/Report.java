@@ -3,7 +3,7 @@ package de.hdm.itProjektGruppe4.shared.report;
 import java.io.Serializable;
 import java.util.Date;
 
-import de.hdm.thies.bankProjekt.shared.report.Paragraph;
+import de.hdm.itProjektGruppe4.shared.report.Paragraph;
 
 /**
  * <p>
