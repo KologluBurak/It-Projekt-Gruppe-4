@@ -125,7 +125,12 @@ public class UnterhaltungMapper {
 			//Zuordnungen zwischen der Unterhaltung und den dazugehörigen Nutzern löschen
 			stmt2.executeUpdate("DELETE FROM unterhaltungslisten WHERE unterhaltung_id="+unterhaltung.getId());
 			
+			//Statement stmt3=con.createStatement();
+			//Zuordnungen zwischen Unterhaltung und Nachricht löschen
+			//stmt3.executeUpdate("DELETE FROM nachrichten WHERE unterhaltung_id="+unterhaltung.getId());
+			
 			stmt.close();
+			stmt2.close();
 			con.close();
 		}
 		catch(SQLException e){
