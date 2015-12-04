@@ -8,7 +8,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 		
 	/**
-	 * 
+	 * @author Kologlu
 	 * @author Oikonomou
 	 * @author Thies
 	 *
