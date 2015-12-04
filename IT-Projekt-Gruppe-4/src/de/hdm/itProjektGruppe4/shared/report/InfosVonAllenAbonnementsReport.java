@@ -42,6 +42,7 @@ public class InfosVonAllenAbonnementsReport {
 
 	public InfosVonAbonnementsReport getSubReportAt(int i) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	

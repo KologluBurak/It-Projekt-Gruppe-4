@@ -1,16 +1,13 @@
 package de.hdm.itProjektGruppe4.shared;
 
+
+import java.sql.Timestamp;
+
 import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
-import de.hdm.itProjektGruppe4.shared.report.InfosVonAllenNachrichtenReport;
-import de.hdm.itProjektGruppe4.shared.report.InfosVonNachrichtenReport;
-import de.hdm.itProjektGruppe4.shared.report.Report;
-import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
-import de.hdm.thies.bankProjekt.shared.bo.Customer;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfAllCustomersReport;
-import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
+import de.hdm.itProjektGruppe4.shared.report.*;
 
 
 /**
@@ -40,27 +37,33 @@ import de.hdm.thies.bankProjekt.shared.report.AllAccountsOfCustomerReport;
  * </p>
  * 
  * @author thies
- * @author Yücel 
+ * @author Yücel
+ * @author Oikonomou 
  */
 
 
-@RemoteServiceRelativePath ("reportgenerator")
 public interface ReportGenerator extends RemoteService {
+
+	/**
+	   * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
+	   * RPC zus‰tzlich zum No Argument Constructor der implementierenden Klasse
+	   * PinnwandVerwaltungImpl} notwendig. Bitte diese Methode direkt nach der
+	   * Instantiierung aufrufen.
+	   * 
+	   * @throws IllegalArgumentException
+	   */
 	
 	public void init() throws IllegalArgumentException;
 	
+	public abstract InfosVonNachrichtenReport erstelleInfosVonNachrichtenReport(Nachricht nachricht, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	throws IllegalArgumentException;
 	
+	public abstract InfosVonAbonnementsReport erstelleInfosVonAbonnementsReport(Abonnement abonnement, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt) 
+	throws IllegalArgumentException;
 	
-	public Report alleNachrichtenAnzeigen(Nachricht nachricht) throws IllegalArgumentException;
+	public abstract InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	throws IllegalArgumentException;
 	
-	public Report alleAbonnementsAnzeien(Abonnement abonnement) throws IllegalArgumentException;
-	
-	public Report zeitraumspezifischeNachrichtenAnzeigen (Nachricht nachricht) throws IllegalArgumentException;
-	
-	public Report nutzerspezifischeAbonnementsAnzeigen (Abonnement abonnement) throws IllegalArgumentException;
-	
-	public Report hashtagspezifischeAbonnementsAnzeigen (Abonnement abonnement) throws IllegalArgumentException;
-	
-	public Report nutzerspezifischeNachrichtenAnzeigen (Nachricht nachricht) throws IllegalArgumentException;
-		
-	}
+	public abstract InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	throws IllegalArgumentException;
+}

@@ -1,14 +1,12 @@
 package de.hdm.itProjektGruppe4.shared;
 
+import java.sql.Timestamp;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
-import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
-import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
-import de.hdm.itProjektGruppe4.shared.report.InfosVonAllenNachrichtenReport;
-import de.hdm.itProjektGruppe4.shared.report.InfosVonNachrichtenReport;
-import de.hdm.itProjektGruppe4.shared.report.Report;
-import de.hdm.itProjektGruppe4.shared.ReportGenerator;
+import de.hdm.itProjektGruppe4.shared.bo.*;
+import de.hdm.itProjektGruppe4.shared.report.*;
+
 
 /**
  * Das asynchrone Gegenstück des Interface {@link ReportGenerator}. Es wird
@@ -16,34 +14,28 @@ import de.hdm.itProjektGruppe4.shared.ReportGenerator;
  * hier keine weitere Dokumentation. Für weitere Informationen siehe das
  * synchrone Interface {@link ReportGenerator}.
  * 
- * @author thies, Yücel
+ * @author thies
+ * @author Oikonomou
  */
 
 public interface ReportGeneratorAsync {
 
-void init(AsyncCallback<Void> callback);
 
-void alleNachrichtenAnzeigen(Nachricht nachricht, AsyncCallback<Report> callback);
+	void erstelleInfosVonAllenNachrichtenReport(Timestamp anfangszeitpunkt,
+			Timestamp endzeitpunkt,
+			AsyncCallback<InfosVonAllenNachrichtenReport> callback);
 
-void alleAbonnementsAnzeien(Abonnement abonnement,
-		AsyncCallback<Report> callback);
+	void erstelleInfosVonAllenAbonnementsReport(Timestamp anfangszeitpunkt,
+			Timestamp endzeitpunkt, AsyncCallback<InfosVonAllenAbonnementsReport> callback);
 
-void zeitraumspezifischeNachrichtenAnzeigen(Nachricht nachricht,
-		AsyncCallback<Report> callback);
+	void erstelleInfosVonNachrichtenReport(Nachricht nachricht,
+			Timestamp anfangszeitpunkt, Timestamp endzeitpunkt,
+			AsyncCallback<InfosVonNachrichtenReport> callback);
 
-void nutzerspezifischeAbonnementsAnzeigen(Abonnement abonnement,
-		AsyncCallback<Report> callback);
+	void erstelleInfosVonAbonnementsReport(Abonnement abonnement, Timestamp anfangszeitpunkt,
+			Timestamp endzeitpunkt, AsyncCallback<InfosVonAbonnementsReport> callback);
 
-void hashtagspezifischeAbonnementsAnzeigen(Abonnement abonnement,
-		AsyncCallback<Report> callback);
 
-void nutzerspezifischeNachrichtenAnzeigen(Nachricht nachricht,
-		AsyncCallback<Report> callback);
-
-void createAllMessagesOfUserReport(
-		AsyncCallback<InfosVonNachrichtenReport> callback);
-
-void createAllMessagesOfAllUsersReport(Nutzer n,
-		AsyncCallback<InfosVonAllenNachrichtenReport> callback);
+	void init(AsyncCallback<Void> callback);
 
 }
