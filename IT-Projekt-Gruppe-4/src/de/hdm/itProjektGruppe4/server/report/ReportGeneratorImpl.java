@@ -1,18 +1,21 @@
 package de.hdm.itProjektGruppe4.server.report;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.hdm.itProjektGruppe4.server.db.*;
-import de.hdm.itProjektGruppe4.server.*;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.itProjektGruppe4.server.MessagingAdministrationImpl;
 import de.hdm.itProjektGruppe4.shared.ReportGenerator;
 import de.hdm.itProjektGruppe4.shared.bo.*;
-import java.sql.Timestamp;
+import de.hdm.itProjektGruppe4.shared.report.*;
+import de.hdm.itProjektGruppe4.server.db.*;
 
 
-public class ReportGeneratorImpl extends RemoteServiceServlet
-implements ReportGenerator {
+	@SuppressWarnings("serial")
+	public abstract class ReportGeneratorImpl extends RemoteServiceServlet
+		implements ReportGenerator {
 
 /**
 
@@ -20,7 +23,7 @@ implements ReportGenerator {
 * essentiellen Methoden für die Koexistenz von Datenobjekten (vgl.
 * bo-Package) bietet.
 */
-protected MessagingAdministration messaging = null;
+	protected MessagingAdministration messagingadministration = null;
 
 /**
 * <p>
@@ -37,22 +40,23 @@ protected MessagingAdministration messaging = null;
 * aufgerufen wird, um eine Initialisierung der Instanz vorzunehmen.
 * </p>
 */
-public ReportGeneratorImpl() throws IllegalArgumentException {
-}
+	public ReportGeneratorImpl() throws IllegalArgumentException {
+
+	}
 
 /**
 * Initialsierungsmethode. Siehe dazu Anmerkungen zum No-Argument-Konstruktor.
 * 
 * @see #ReportGeneratorImpl()
 */
-public void init() throws IllegalArgumentException {
+	public void init() throws IllegalArgumentException {
 /*
  * Ein ReportGeneratorImpl-Objekt instantiiert f√ºr seinen Eigenbedarf eine
  * BankVerwaltungImpl-Instanz.
  */
-MessagingAdministrationImpl messaging = new MessagingAdministrationImpl();
-messaging.init();
-this.messaging = messaging;
+MessagingAdministrationImpl m = new MessagingAdministrationImpl();
+	m.init();
+	this.messagingadministration = m;
 }
 
 /**
@@ -60,8 +64,8 @@ this.messaging = messaging;
 * 
 * @return das PinnwandVerwaltungServiceobjekt
 */
-protected MessagingAdministration getMessagingAdministration() {
-return this.messaging;
+	protected MessagingAdministration getMessagingAdministration() {
+		return this.messagingadministration;
 }
 
 /**
@@ -70,47 +74,47 @@ return this.messaging;
 * @param user das Userobjekt bzgl. dessen der Report erstellt werden soll.
 * @return der fertige Report
 */
-public abstract InfosVonAbonnementsReport erstelleInfosVonAbonnementsReport(Abonnement abonnement, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt) 
-		throws IllegalArgumentException; {
-
-if (this.getMessagingAdministration() == null)
-  return null;
+	public InfosVonAbonnementsReport erstelleInfosVonAbonnementsReport (Abonnement abonnement, Date anfangszeitpunkt, Date endzeitpunkt) 
+			throws IllegalArgumentException {
+	
+			if (this.getMessagingAdministration() == null)
+				return null;
 
 /*
  * Zunächst legen wir uns einen leeren Report an.
  */
-InfosVonAbonnementsReport result = new InfosVonAbonnementsReport();
+			InfosVonAbonnementsReport result = new InfosVonAbonnementsReport();
 
-// Jeder Report hat einen Titel (Bezeichnung / √úberschrift).
-result.setTitle("Infos von Abonnement");
+// Jeder Report hat einen Titel (Bezeichnung / úberschrift).
+			result.setTitle("Infos von Abonnement");
 
 /*
- * Datum der Erstellung hinzuf√ºgen. new Date() erzeugt autom. einen
+ * Datum der Erstellung hinzufügen. new Date() erzeugt autom. einen
  * "Timestamp" des Zeitpunkts der Instantiierung des Date-Objekts.
  */
-result.setCreated(new Date());
+			result.setCreated(new Date());
 
 /*
  * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die oben
  * auf dem Report stehen) des Reports. Die Kopfdaten sind mehrzeilig, daher
  * die Verwendung von CompositeParagraph.
  */
-CompositeParagraph header = new CompositeParagraph();
+			CompositeParagraph header = new CompositeParagraph();
 
-// Name und Vorname des Users aufnehmen
-header.addSubParagraph(new SimpleParagraph(Nutzer.getNachname() + ", "
-    + user.getVorname()));
+			// Name und Vorname des Users aufnehmen
+			header.addSubParagraph(new SimpleParagraph(Nutzer.getNachname() + ", "
+					+ Nutzer.getVorname()));
 
-// Anfangszeitpunkt aufnehmen
-header.addSubParagraph(new SimpleParagraph("Anfangszeitpunkt: " + result.getAnfangszeitpunkt()));
-
-
-// Endzeitpunkt aufnehmen
-header.addSubParagraph(new SimpleParagraph("Endzeitpunkt: " + result.getEndzeitpunkt()));
+			// Anfangszeitpunkt aufnehmen
+			header.addSubParagraph(new SimpleParagraph("Anfangszeitpunkt: " + result.getAnfangszeitpunkt()));
 
 
-// Hinzuf√ºgen der zusammengestellten Kopfdaten zu dem Report
-result.setHeaderData(header);
+			// Endzeitpunkt aufnehmen
+			header.addSubParagraph(new SimpleParagraph("Endzeitpunkt: " + result.getEndzeitpunkt()));
+
+
+			// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
+			result.setHeaderData(header);
 
 /*
  * Ab hier erfolgt ein zeilenweises Hinzuf√ºgen von Konto-Informationen.
@@ -128,39 +132,39 @@ Row headline = new Row();
  *  In der Kopfzeile legen wir also entsprechende
  * √úberschriften ab.
  */
-headline.addColumn(new Column("Nutzerabonnements"));
-headline.addColumn(new Column("Hashtagabonnements"));
-headline.addColumn(new Column("Nutzerspezische Nachrichten"));
-headline.addColumn(new Column("Zeitraumspezifische Nachrichten"));
+	headline.addColumn(new Column("Nutzerabonnements"));
+	headline.addColumn(new Column("Hashtagabonnements"));
+	headline.addColumn(new Column("Nutzerspezische Nachrichten"));
+	headline.addColumn(new Column("Zeitraumspezifische Nachrichten"));
 
-// Hinzuf√ºgen der Kopfzeile
-result.addRow(headline);
+// Hinzufügen der Kopfzeile
+	result.addRow(headline);
 
 /*
  * Nun werden s√§mtliche Daten der User ausgelesen und deren Anfangszeitpunkt und
  * Endzeitpunkt in die Tabelle eingetragen.
  */
-ArrayList<Abonnement> abonnement = this.messaging.erstelleInfosVonAbonnementsReport(abonnement1);
+	ArrayList<Abonnement> abonnement1 = this.messagingadministration.erstelleInfosVonAbonnementsReport(abonnement1);
 
-for (Abonnement abonnement : abonnement) {
+	for (Abonnement abonnement : abonnement) {
   // Eine leere Zeile anlegen.
-  Row accountRow = new Row();
+		Row accountRow = new Row();
 
   // Erste Spalte: Kontonummer hinzuf√ºgen
-  accountRow.addColumn(new Column(String.valueOf(abonnement.getId())));
+		accountRow.addColumn(new Column(String.valueOf(abonnement.getId())));
 
   // Zweite Spalte: Anfangszeitpunkt hinzuf¸gen
-  accountRow.addColumn(new Column(String.valueOf(this.InfosVonAbonnements
-      .getAnfangszeitpunkt(abonnement))));
+		accountRow.addColumn(new Column(String.valueOf(this.InfosVonAbonnementsA
+				.getAnfangszeitpunkt(a))));
 
   // und schlie√ülich die Zeile dem Report hinzuf√ºgen.
-  result.addRow(accountRow);
-}
+		result.addRow(accountRow);
+	}
 
 /*
- * Zum Schluss m√ºssen wir noch den fertigen Report zur√ºckgeben.
+ * Zum Schluss müssen wir noch den fertigen Report zurückgeben.
  */
-return result;
+	return result;
 }
 
 /**
@@ -168,28 +172,28 @@ return result;
 * 
 * @return der fertige Report
 */
-public abstract InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
-		throws IllegalArgumentException; {
-
-if (this.getMessaging() == null)
-  return null;
+	public InfosVonAbonnementsReport erstelleInfosVonAbonnementsReport() 
+			throws IllegalArgumentException {
+	
+		if (this.getMessagingAdministration() == null)
+			return null;
 
 /*
  * Zun√§chst legen wir uns einen leeren Report an.
  */
-InfosVonAllenAbonnementsReport result = new InfosVonAllenAbonnementsReport();
+		InfosVonAbonnementsReport result = new InfosVonAbonnementsReport();
 
 // Jeder Report hat einen Titel (Bezeichnung / √ºberschrift).
-result.setTitle("Alle Abonnements aller Nutzer");
+		result.setTitle("Alle Abonnements aller Nutzer");
 
 // Imressum hinzuf√ºgen
-this.addImprint(result);
+		this.addImprint(result);
 
 /*
  * Datum der Erstellung hinzuf√ºgen. new Date() erzeugt autom. einen
  * "Timestamp" des Zeitpunkts der Instantiierung des Date-Objekts.
  */
-result.setCreated(new Date());
+		result.setCreated(new Date());
 
 /*
  * Da AllAccountsOfAllCustomersReport-Objekte aus einer Sammlung von
@@ -206,19 +210,19 @@ result.setCreated(new Date());
  * AllAccountsOfAllCustomersReport, welches eine Subklasse von
  * CompositeReport ist.
  */
-ArrayList<Abonnement> alleAbonnements = this.messaging.getAlleAbonnements();
+		ArrayList<Abonnement> alleAbonnements = this.messagingadministration.getAlleAbonnements();
 
-for (Abonnement abonnement : alleAbonnements) {
+		for (Abonnement abonnement : alleAbonnements) {
   /*
    * Anlegen des jew. Teil-Reports und Hinzuf√ºgen zum Gesamt-Report.
    */
-  result.addSubReport(this.erstelleInfosVonAllenAbonnementsReport(abonnement));
-}
+			result.addSubReport(this.erstelleInfosVonAbonnementsReport(abonnement));
+		}
 
 /*
  * Zu guter Letzt m√ºssen wir noch den fertigen Report zur√ºckgeben.
  */
-return result;
-}
+		return result;
+	}
 
 }
