@@ -12,6 +12,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 	 * @author Oikonomou
 	 * @author Thies
 	 *
+	 *
 	 */
 
 	public class AbonnementMapper {
