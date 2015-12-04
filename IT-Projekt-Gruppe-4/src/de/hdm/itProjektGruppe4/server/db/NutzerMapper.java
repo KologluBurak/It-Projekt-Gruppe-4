@@ -15,7 +15,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 
 /**
- * @author kologlu
+ * @author Kologlu
  * @author Oikonomou
  * @author Thies
  *
@@ -106,7 +106,7 @@ public class NutzerMapper {
 	return nutzer;
 	}
 	
-	public void deleteByKey(int id){
+	public void delete(int id){
 		Connection con =DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
