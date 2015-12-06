@@ -1,5 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+import java.util.ArrayList;
+
 /**
  * @author YÃ¼cel, Nguyen, Oikonomou, kologlu
  */
@@ -12,117 +14,58 @@ public class Nutzer extends BusinessObject {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Die UserId des Benutzers
+	 * Vorname des Nutzers
 	 */
-	private String userId;
+	private String vorname;
 	
 	/**
-	 * Der Username des Benutzers.
+	 * Nachname des Nutzers
 	 */
-	private String userName;
+	private String nachname;
 	
 	/**
-	 * Die E-Mail-Adresse des Benutzers.
+	 * E-Mail-Adresse der Nutzers
 	 */
 	private String email;
 	
 	/**
-	 * Das Passwort des Benutzers
+	 * Nickname der Nutzers
 	 */
-	private String passwort;
+	private String nickname;
 	
 	/**
-	 * Anmelde-Id um den Login per Google durchzufï¿½hren
+	 * Setter- und getter
 	 */
-	private String googleId;
-	
-	/**
-	 * Prüft ob der Benutzer angemeldet ist
-	 */
-	private boolean istAngemeldet;
-
-	/**
-	 * Auslesen der UserId des Benutzers
-	 */
-	public String getUserId() {
-		return userId;
-	}
-	
-	/**
-	 * Setzen der UserID des Benutzers
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public String getVorname() {
+		return vorname;
 	}
 
-	/**
-	 * Auslesen des Benutzernamens des Users
-	 */
-	public String getUserName() {
-		return userName;
+	public void setVorname(String vorname) {
+		this.vorname = vorname;
 	}
 
-	/**
-	 * Setzen des Benutzernamens des Users
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public String getNachname() {
+		return nachname;
 	}
-	
-	/**
-	 * Auslesen der Email des Benutzers
-	 */
+
+	public void setNachname(String nachname) {
+		this.nachname = nachname;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 
-	/**
-	 * Setzen der E-Mail-Adresse
-	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	/**
-	 * Auslesen des Passworts
-	 */
-	public String getPasswort() {
-		return passwort;
+	public String getNickname() {
+		return nickname;
 	}
 
-	/**
-	 * Setzen des Passworts
-	 */
-	public void setPasswort(String passwort) {
-		this.passwort = passwort;
-	}
-
-	/**
-	 * Auslesen der Id vom Google-Account
-	 */
-	public String getGoogleId() {
-		return googleId;
-	}
-
-	/**
-	 * Setzen der Id vom Google-Account
-	 */
-	public void setGoogleId(String googleId) {
-		this.googleId = googleId;
-	}
-
-	/**
-	 * Prüft ob der Nutzer angemeldet ist
-	 */
-	public boolean istAngemeldet() {
-		return istAngemeldet;
-	}
-
-	/**
-	 * Setzen der Anmeldestatus
-	 */
-	public void setIstAngemeldet(boolean istAngemeldet) {
-		this.istAngemeldet = istAngemeldet;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	/**
@@ -133,6 +76,6 @@ public class Nutzer extends BusinessObject {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " " + this.userName;
-	}
+	    return super.toString() + " " + this.nickname + " " + this.vorname + " " + this.nachname +" " + this.email + " ";
+	  }
 }

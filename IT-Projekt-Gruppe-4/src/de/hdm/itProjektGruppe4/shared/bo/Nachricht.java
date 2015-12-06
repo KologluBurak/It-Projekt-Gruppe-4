@@ -5,7 +5,7 @@ package de.hdm.itProjektGruppe4.shared.bo;
  * 
  */
 
-public class Nachricht extends Unterhaltung {
+public class Nachricht extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 	
