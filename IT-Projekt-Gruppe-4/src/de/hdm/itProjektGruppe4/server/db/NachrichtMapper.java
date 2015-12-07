@@ -76,11 +76,7 @@ public class NachrichtMapper {
 	 * @param nachricht
 	 * @return
 	 */
-	public Nachricht insert(Nachricht nachricht){
-		if (nachricht == null) {
-			throw new IllegalArgumentException(
-					"Übergebenes Objekt an insert() ist NULL.");
-		}
+	public Nachricht insert(Nachricht nachricht) throws Exception{
 		//DB-Verbindung herstellen
 		Connection con=DBConnection.connection();
 		try{
@@ -88,30 +84,30 @@ public class NachrichtMapper {
 			Statement stmt=con.createStatement();
 			
 			//Zun�chst wird geschaut welches der momentan h�chste Prim�rschl�ssel ist
-			ResultSet rs=stmt.executeQuery("SELECT MAX(nachricht_id) AS maxID FROM nachrichten");
+			ResultSet rs=stmt.executeQuery("SELECT MAX(nachrichtID) AS maxid FROM nachrichten");
 			
-			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
+			//Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if(rs.next()){
-				int newId = rs.getInt("maxID") + 1;
-				nachricht.setNachrichtId(newId);
+				int newID=rs.getInt("maxid");
+				nachricht.setId(newID);
 				
 				PreparedStatement preStmt;
 				preStmt=con.prepareStatement("INSERT INTO nachrichten "
-							+"(nachricht_id, betreff, text, unterhaltung_id)"
-							+" VALUES (?, ?, ?, ?, ?");
-				
-				preStmt.setInt(1, nachricht.getNachrichtId());
+						+"(nachrichtID, betreff, text, erstellungsZeitpunkt) VALUES(?, ?, ?, ?)");
+				preStmt.setInt(1, newID);
 				preStmt.setString(2, nachricht.getBetreff());
 				preStmt.setString(3, nachricht.getText());
-				preStmt.setInt(4, nachricht.getId());
+				preStmt.setString(4, getSqlDateFormat(nachricht.getErstellungsZeitpunkt()));
 				preStmt.executeUpdate();
 				preStmt.close();
 			}
-			rs.close();
 			stmt.close();
+			rs.close();
+			con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
 		}
 		return nachricht;
 	}
@@ -121,27 +117,22 @@ public class NachrichtMapper {
 	  * @param unterhaltung
 	  * @return
 	  */
-	public Nachricht update(Nachricht nachricht){
-		if(nachricht==null){
-			throw new IllegalArgumentException(
-					"Übergebenes Objekt an update() ist NULL.");
-		}
-		//DB-Verbindung herstellen
+	public Nachricht update(Nachricht nachricht) throws Exception{
 		Connection con = DBConnection.connection();
 		try{
 			PreparedStatement preStmt;
 			preStmt=con.prepareStatement("UPDATE nachrichten SET betreff=?, "
-						+"text=?, unterhaltung_id=? WHERE nachricht_id=?");
-			
+					+"text=?, erstellungsZeitpunkt=? WHERE nachrichtID=" +nachricht.getId());
 			preStmt.setString(1, nachricht.getBetreff());
 			preStmt.setString(2, nachricht.getText());
-			preStmt.setInt(3, nachricht.getId());
-			preStmt.setInt(4, nachricht.getNachrichtId());
+			preStmt.setString(3, getSqlDateFormat(nachricht.getErstellungsZeitpunkt()));
+			preStmt.setInt(4, nachricht.getId());
 			preStmt.executeUpdate();
 			preStmt.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
 		}
 		return nachricht;
 	}
@@ -149,42 +140,16 @@ public class NachrichtMapper {
 	/**
 	   * L�schen der Daten eines <code>Unterhaltung</code>-Objekts aus der Datenbank.
 	   * 
-	   * @param a das aus der DB zu l�schende "Objekt"
+	   * @param nachricht das aus der DB zu l�schende "Objekt"
 	   */
-	public void delete(Nachricht nachricht){
-		//DB-Verbindung holen
+	public void delete(Nachricht nachricht) throws Exception{
 		Connection con = DBConnection.connection();
-		
 		try{
 			Statement stmt = con.createStatement();
 			
 			// Statement ausfuellen und als Query an die DB schicken
-			stmt.executeUpdate("DELETE FROM nachrichten WHERE nachricht_id="+nachricht.getNachrichtId());
+			stmt.executeUpdate("DELETE FROM nachrichten WHERE nachricht_id="+nachricht.getId());
 			stmt.close();
-			
-			UnterhaltungMapper.unterhaltungMapper().delete(nachricht);
-			
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-	}
-	
-	
-	/**
-	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand ihrer ID zu finden und anzuzeigen.
-	 * @param unterhaltung
-	 * @return
-	 */
-	public ArrayList<Nachricht>findNachrichtentoUnterhaltung(Unterhaltung unterhaltung) throws Exception{
-		Connection con=DBConnection.connection();
-		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
-		try{
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT  FROM nachrichten "+
-			"WHERE unterhaltungID="+unterhaltung.getId());
-			
-			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -192,41 +157,85 @@ public class NachrichtMapper {
 		}
 	}
 	
+	/**
+	 * Diese Methode ermöglicht es alle Nachrichten aus der Datenbank in einer Liste auszugeben.
+	 * @return
+	 */
+	public ArrayList<Nachricht> findAllNachrichten() throws Exception{
+		Connection con = DBConnection.connection();
+		ArrayList<Nachricht> allNachrichten=new ArrayList<Nachricht>();
+		try{
+			Statement stmt=con.createStatement();
+			ResultSet rs= stmt.executeQuery("SELECT * FROM nachrichten ORDER BY nachrichtID");
+			
+			while(rs.next()){
+				Nachricht nachricht=new Nachricht();
+				nachricht.setId(rs.getInt("nachrichtID"));
+				nachricht.setBetreff(rs.getString("betreff"));
+				nachricht.setText(rs.getString("text"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				
+				allNachrichten.add(nachricht);
+			}
+			stmt.close();
+			rs.close();
+			con.close();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
+		}
+		return allNachrichten;
+	}
 	
-	
-	
-}	
-	
-	
-	
-/*	
-	
-	
-	
-	
+	/**
+	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand ihrer ID zu finden und anzuzeigen.
+	 * @param unterhaltung
+	 * @return
+	 */
+	public ArrayList<Nachricht>findNachrichtenByUnterhaltung(Nachricht nachricht) throws Exception{
+		Connection con=DBConnection.connection();
+		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, unterhaltungen.erstellungsZeitpunkt, nachrichten.betreff, nachrichten.text "
+					+"nachrichten.erstellungsZeitpunkt FROM nachrichten INNER JOIN unterhaltungen "
+					+"ON nachrichtID="+nachricht.getId()+" ON nachrichten.unterhaltungID=unterhaltung.unterhaltungID "
+					+"ORDER BY unterhaltung.erstellungsZeitpunkt");
+			
+			while(rs.next()){
+				nachricht.setId(rs.getInt(""));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("nachrichten.erstellungsZeitpunkt"));
+				
+				result.add(nachricht);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
+		}
+		return result;
+	}
 	
   /**
    * Diese Methode ermöglicht es einen Nutzer anhand seiner ID das Auszugeben.
    * @param id
    * @return
    */
-  public Nachricht findNachrichtByKey(int id){
-		
+  public Nachricht findNachrichtById(int id){
 	  Connection con = DBConnection.connection();
-	  
 	  try {
 		  Statement stmt = con.createStatement();
-		  
-		  ResultSet rs = stmt.executeQuery("SELECT id, text, betreff FROM nachricht " 
-		  + "WHERE id=" + id + " ORDER by betreff");
+		  ResultSet rs = stmt.executeQuery("SELECT nachrichtID, betreff, text, erstellungsZeitpunkt FROM nachrichten " 
+		  + "WHERE nachrichtID=" + id + " ORDER by nachrichtID");
 		  
 
 		  if (rs.next()) {
 			  Nachricht nachricht = new Nachricht();
-			  nachricht.setId(rs.getInt("nachricht_id"));
-			  nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-			  nachricht.setText(rs.getString("text"));
+			  nachricht.setId(rs.getInt("nachrichtID"));
 			  nachricht.setBetreff(rs.getString("betreff"));
+			  nachricht.setText(rs.getString("text"));
+			  nachricht.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsZeitpunkt"));
 			  return nachricht;
 		  }
 	   }
@@ -237,142 +246,7 @@ public class NachrichtMapper {
 	  }
 	  return null;
 	}
-  
-  /**
-   * Diese Methode ermöglicht es alle angelegten Nachrichten aus der Datenbank in einer Liste auszugeben.
-   * @return
-   */
-  public ArrayList<Nachricht> findAllNachrichten(int id) {
-	    Connection con = DBConnection.connection();
-	    
-	    ArrayList<Nachricht> result = new ArrayList<Nachricht>();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT * FROM nachricht "
-	          + " ORDER BY nachricht_id");
-
-	      
-	      while (rs.next()) {
-	        Nachricht nachricht = new Nachricht();
-	        nachricht.setId(rs.getInt("nachricht_id"));
-	        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-	        nachricht.setText(rs.getString("text"));
-	        nachricht.setBetreff(rs.getString("betreff"));
-
-	        
-	        result.add(nachricht);
-	      }
-	      
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-	    
-	    return result;
-	  }
-  
-  /**
-   * Diese Methode ermöglicht eine Akutalisierung des Nachrichtendatensatzes in der Datenbank
-   * @param nachricht
-   * @return
-   */
-  
-  public Nachricht updateNachricht(Nachricht nachricht) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      stmt.executeUpdate("UPDATE nachricht " + "SET Text=\"" + nachricht.getText()
-	          + "\" " + "WHERE id=" + nachricht.getId());
-
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-	    
-	    DBConnection.closeConnection();
-	    return nachricht;
-	  }
-
-  /**
-   * Diese Methode ermöglicht es eine Nachricht in der Datenbank anzulegen.
-   * @param nachricht
-   * @return
-   */
-  public Nachricht insertNachricht(Nachricht nachricht) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      ResultSet rs = stmt.executeQuery("SELECT MAX(nachricht_id) AS maxid "
-	          + "FROM nachricht ");
-
-	      if (rs.next()) {
-	  
-	        nachricht.setId(rs.getInt("maxid") + 1);
-	        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-
-	        stmt = con.createStatement();
-
-	        stmt.executeUpdate("INSERT INTO nachricht (nachricht_id, text, betreff, datum) " 
-	        + "VALUES (" + nachricht.getId() + "," + nachricht.getText() + "," + nachricht.getErstellungsZeitpunkt() + "");
-	      }
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-
-	    return nachricht;
-	  }
-  
-  /**
-   * Diese Methode ermöglicht das editieren einer Nachricht aus der Datenbank.
-   * @param nachricht
-   * @return
-   */
-  
-  public Nachricht editNachricht(Nachricht nachricht){
-
-		Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      stmt.executeUpdate("UPDATE Kommentar SET Text=\"" + nachricht.getText() + "\" WHERE Kommentar_ID= " + nachricht.getId());
-
-
-	    }
-	    catch (SQLException e) {
-	      e.printStackTrace();
-	    }
-
-	    return nachricht;
-	}
-  
-  /**
-   * Diese Methode ermöglicht es eine Nachricht aus der Datenbank zu löschen.
-   * @param nachricht
-   */
-  
-  public void deleteNachricht(Nachricht nachricht) {
-	    Connection con = DBConnection.connection();
-
-	    try {
-	      Statement stmt = con.createStatement();
-
-	      stmt.executeUpdate("DELETE FROM nachricht " + "WHERE nachricht_id=" + nachricht.getId());
-
-	    }
-	    catch (SQLException e2) {
-	      e2.printStackTrace();
-	    }
-	    return;
-  }
-  
+ 
   /**
    * Diese Methode ermöglicht es alle Nachricht eines Nutzers auszugeben.
    * @param nutzer
@@ -382,31 +256,30 @@ public class NachrichtMapper {
    * @return
    */
   
-  public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis, int id) {
+  public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis) {
 		Connection con = DBConnection.connection();
 		ArrayList <Nachricht> nachrichtenJeNutzer= new ArrayList<Nachricht>();
 
 		try{
 			Statement stmt = con.createStatement();
-			String sql = "SELECT * FROM Nachricht WHERE nutzer_ID =" + nutzer.getId() + " AND Datum between " + von + " AND " + bis + "";
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs=stmt.executeQuery("SELECT * FROM nachrichten WHERE nutzerID =" +nutzer.getId()+
+					" AND Datum BETWEEN " + von + " AND " + bis + "");
 
 			while (rs.next()) {
-				
 		        Nachricht nachricht = new Nachricht();
-		        nachricht.setId(rs.getInt("nutzer_ID"));
-		        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-		        nachricht.setText(rs.getString("Text"));
+		        nachricht.setId(rs.getInt("nutzerID"));
+		        nachricht.setBetreff(rs.getString("betreff"));
+		        nachricht.setText(rs.getString("text"));
+		        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsZeitpunkt"));
 		    
 		        nachrichtenJeNutzer.add(nachricht);
-			}
-			return nachrichtenJeNutzer;		
+			}		
 		}
-		   catch (SQLException e) {
-	    		e.printStackTrace();
-	    		return null;
-		    }
-  
+		catch (SQLException e) {
+	    	e.printStackTrace();
+	    	return null;
+		}
+		return nachrichtenJeNutzer;
   }
   
   /**
@@ -415,30 +288,43 @@ public class NachrichtMapper {
    * @param bis
    * @return
    */
-  public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis, int id) {
+  public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis) {
 		Connection con = DBConnection.connection();
 		ArrayList <Nachricht> nachrichtenJeZeitraum= new ArrayList<Nachricht>();
 		
-		
 		try{
 			Statement stmt = con.createStatement();
-			String sql = "SELECT * FROM Nachricht WHERE Datum between " + von + " AND " + bis + "";
-			ResultSet rs = stmt.executeQuery(sql);
+			ResultSet rs=stmt.executeQuery("SELECT * FROM Nachricht WHERE Datum BETWEEN " + von + " AND " + bis + "");
 
 			while (rs.next()) {
 		        Nachricht nachricht = new Nachricht();
-		        nachricht.setId(rs.getInt("nachricht_ID"));
-		        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("Datum"));
-		        nachricht.setText(rs.getString("Text"));
+		        nachricht.setId(rs.getInt("nachrichtID"));
+		        nachricht.setBetreff(rs.getString("betreff"));
+		        nachricht.setText(rs.getString("text"));
+		        nachricht.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsZeitpunkt"));
 		      
 		        nachrichtenJeZeitraum.add(nachricht);
-			}
-			return nachrichtenJeZeitraum;		
+			}		
 		}
-		   catch (SQLException e) {
-	    		e.printStackTrace();
-	    		return null;
-		    }				
+		catch (SQLException e) {
+	    	e.printStackTrace();
+	    	return null;
+		}
+		return nachrichtenJeZeitraum;
 	 }
-
-
+  
+	/**
+	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
+	 * Format.
+	 * 
+	 * @param date
+	 *            Date das konvertiert werden soll
+	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
+	 */
+	private String getSqlDateFormat(Date date) {
+		String result = "";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		result = dateFormat.format(date);
+		return result;
+	}
+}
