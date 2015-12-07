@@ -18,5 +18,25 @@ public class InfosVonAllenNachrichtenReport extends CompositeReport implements S
 
 	
 	private static final long serialVersionUID = 1L;
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null; 
+	}  
+
+	public Object getHeaderData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Paragraph getImprint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getCreated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

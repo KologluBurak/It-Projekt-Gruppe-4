@@ -1,7 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * <p>
@@ -18,6 +18,7 @@ import java.sql.Timestamp;
  * textuelle Notation in JSON (siehe http://www.json.org/) kodiert.
  * </p>
  * 
+ * @author Kologlu
  * @author Yücel
  * @author Oikonomou
  * @author Thies
@@ -44,14 +45,14 @@ public abstract class BusinessObject implements Serializable {
 	/**
 	 * Es wird durch diese Methode ein Zeitstempel beim Anlegen eines Objekt erstellt. 
 	 */
-	private Timestamp erstellungsZeitpunkt;
+	private Date erstellungsZeitpunkt;
 	
 	
-	public Timestamp getErstellungsZeitpunkt() {
+	public Date getErstellungsZeitpunkt() {
 		return erstellungsZeitpunkt;
 	}
 
-	public void setErstellungsZeitpunkt(Timestamp erstellungsZeitpunkt) {
+	public void setErstellungsZeitpunkt(Date erstellungsZeitpunkt) {
 		this.erstellungsZeitpunkt = erstellungsZeitpunkt;
 	}
 

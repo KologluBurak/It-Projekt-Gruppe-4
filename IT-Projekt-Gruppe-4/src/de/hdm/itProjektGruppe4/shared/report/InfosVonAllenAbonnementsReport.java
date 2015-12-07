@@ -8,11 +8,42 @@ package de.hdm.itProjektGruppe4.shared.report;
  * objektorientiert umgehen zu können.
  * 
  * @author Thies
- * @author Yücel
+ * @author Yücel 
  */
 
 public class InfosVonAllenAbonnementsReport {
 
 	private static final long serialVersionUID = 1L;
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getHeaderData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Paragraph getImprint() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object getCreated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int getNumSubReports() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public InfosVonAbonnementsReport getSubReportAt(int i) {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
 	
 }
