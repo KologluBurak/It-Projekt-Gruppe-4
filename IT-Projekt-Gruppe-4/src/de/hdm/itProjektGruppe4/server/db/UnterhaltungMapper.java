@@ -150,7 +150,7 @@ public class UnterhaltungMapper {
 	}
 	
 	/**
-	 * Diese Methode ermöglicht es alle Unterhaltungen aus der Datenbank in einer Liste zu finden und anzuzeigen.
+	 * Diese Methode ermöglicht es alle Unterhaltungen aus der Datenbank in einer Liste auszugeben.
 	 * @return
 	 */
 	public ArrayList<Unterhaltung> findAllUnterhaltungen(){

@@ -11,6 +11,10 @@ public class Nachricht extends BusinessObject {
 	
 	private String text;
 	private String betreff;
+	
+	/**
+	 * Fremdschlüsselbeziehung
+	 */
 	private int kommentarID=0;
 	
 	

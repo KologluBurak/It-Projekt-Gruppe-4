@@ -8,9 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import com.google.appengine.api.xmpp.Presence;
-
 import java.sql.PreparedStatement;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
@@ -167,7 +164,7 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht es alle Nutzer aus der Datenbank in einer Liste zu finden und anzuzeigen.
 	 * @return alleNutzer
 	 */
-	public ArrayList<Nutzer> findallNutzer() throws Exception{
+	public ArrayList<Nutzer> findAllNutzer() throws Exception{
 		Connection con=DBConnection.connection();
 		ArrayList<Nutzer> alleNutzer = new ArrayList<Nutzer>();
 		try{
@@ -265,8 +262,8 @@ public class NutzerMapper {
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT COUNT(nachrichtID) AS AnzahlNachrichten FROM nachrichten "+
-			"WHERE nachrichtID="+nutzer.getId());
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(userID) AS AnzahlNachrichten FROM nachrichten "+
+			"WHERE userID="+nutzer.getId());
 			
 			return rs.getInt("AnzahlNachrichten");
 		}
@@ -284,8 +281,8 @@ public class NutzerMapper {
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT COUNT(unterhaltungID) AS AnzahlUnterhaltungen FROM unterhaltungslisten "+
-			"WHERE unterhaltungID="+nutzer.getId());
+			ResultSet rs = stmt.executeQuery("SELECT COUNT((absenderID)+(empfaengerID)) AS AnzahlUnterhaltungen FROM unterhaltungslisten "+
+			"WHERE userID="+nutzer.getId());
 			
 			return rs.getInt("AnzahlUnterhaltungen");
 		}
