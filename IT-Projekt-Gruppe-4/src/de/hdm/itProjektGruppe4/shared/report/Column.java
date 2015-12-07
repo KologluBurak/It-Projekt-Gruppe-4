@@ -2,9 +2,6 @@ package de.hdm.itProjektGruppe4.shared.report;
 
 import java.io.Serializable;
 
-import de.hdm.itProjektGruppe4.*;
-import de.hdm.itProjektGruppe4.shared.report.SimpleParagraph;
-
 /**
  * Spalte eines <code>Row</code>-Objekts. <code>Column</code>-Objekte
  * implementieren das <code>Serializable</code>-Interface und können daher als
@@ -83,5 +80,5 @@ public class Column implements Serializable {
 	  @Override
 	public String toString() {
 	    return this.value;
-	  }
 	}
+}

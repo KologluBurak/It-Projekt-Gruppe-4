@@ -175,7 +175,5 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	   * ***************************************************************************
 	   */
-
-	
 	
 }

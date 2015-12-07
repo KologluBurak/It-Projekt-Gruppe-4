@@ -1,11 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
+import java.util.ArrayList;
 
-import org.datanucleus.sco.backed.ArrayList;
-import de.hdm.itProjektGruppe4.shared.report.InfosVonAllenAbonnementsReport;
-import de.hdm.itProjektGruppe4.shared.report.InfosVonAbonnementsReport;
-import de.hdm.itProjektGruppe4.shared.report.ReportWriter;
-import de.hdm.itProjektGruppe4.shared.report.Row;
 
 /**
  * Ein <code>ReportWriter</code>, der Reports mittels Plain Text formatiert. Das
@@ -50,7 +46,7 @@ public class PlainTextReportWriter extends ReportWriter {
     // Wir verwenden eine einfache Trennlinie, um das Report-Ende zu markieren.
     return "___________________________________________";
   }
-  public void process(InfosVonAbonnementsReport r) {
+  public String process1(InfosVonAllenAbonnementsReport r) {
 
 	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
 	    this.resetReportText();
@@ -81,12 +77,7 @@ public class PlainTextReportWriter extends ReportWriter {
 	    result.append("\n");
 	    result.append(r.getImprint() + "\n");
 
-	    /*
-	     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-	     * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-	     * Ergebnis mittels getReportText() auszulesen.
-	     */
-	    this.reportText = result.toString();
+	    return this.reportText = result.toString();
 	  }
 
 	  /**
@@ -129,10 +120,10 @@ public class PlainTextReportWriter extends ReportWriter {
 	       * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
 	       * so müsste hier eine detailliertere Implementierung erfolgen.
 	       */
-	      InfosVonAbonnementsReport subReport = (InfosVonAbonnementsReport) r
+	      InfosVonAllenAbonnementsReport subReport = (InfosVonAllenAbonnementsReport) r
 	          .getSubReportAt(i);
 
-	      this.process(subReport);
+	      this.process1(subReport);
 
 	      // Ein Form Feed wäre hier statt der 5 Leerzeilen auch denkbar...
 	      result.append(this.reportText + "\n\n\n\n\n");
@@ -158,7 +149,7 @@ public class PlainTextReportWriter extends ReportWriter {
    * @param r der zu prozessierende Report
    */
  
-public void process(InfosVonNachrichtenReport r) {
+public String process2(InfosVonAllenNachrichtenReport r) {
 
     // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
@@ -189,12 +180,7 @@ public void process(InfosVonNachrichtenReport r) {
     result.append("\n");
     result.append(r.getImprint() + "\n");
 
-    /*
-     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-     * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-     * Ergebnis mittels getReportText() auszulesen.
-     */
-    this.reportText = result.toString();
+    return this.reportText = result.toString();
   }
 
   /**
@@ -237,7 +223,7 @@ public void process(InfosVonAllenNachrichtenReport r) {
        * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
        * so müsste hier eine detailliertere Implementierung erfolgen.
        */
-      InfosVonNachrichtenReport subReport = (InfosVonNachrichtenReport) r
+      InfosVonAllenNachrichtenReport subReport = (InfosVonAllenNachrichtenReport) r
           .getSubReportAt(i);
 
       this.process(subReport);

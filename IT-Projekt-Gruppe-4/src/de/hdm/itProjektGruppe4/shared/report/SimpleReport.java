@@ -1,9 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
 import java.util.ArrayList;
-import de.hdm.itProjektGruppe4.shared.report.Column;
-import de.hdm.itProjektGruppe4.shared.report.Report;
-import de.hdm.itProjektGruppe4.shared.report.Row;
 
 /**
  * <p>

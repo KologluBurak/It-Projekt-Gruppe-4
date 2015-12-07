@@ -1,6 +1,6 @@
 package de.hdm.itProjektGruppe4.shared;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -21,20 +21,23 @@ import de.hdm.itProjektGruppe4.shared.report.*;
 public interface ReportGeneratorAsync {
 
 
-	void erstelleInfosVonAllenNachrichtenReport(Timestamp anfangszeitpunkt,
-			Timestamp endzeitpunkt,
-			AsyncCallback<InfosVonAllenNachrichtenReport> callback);
+	void erstelleInfosVonAllenNachrichtenReport(Date anfangszeitpunkt,
+			Date endzeitpunkt,AsyncCallback<InfosVonAllenNachrichtenReport> callback);
 
-	void erstelleInfosVonAllenAbonnementsReport(Timestamp anfangszeitpunkt,
-			Timestamp endzeitpunkt, AsyncCallback<InfosVonAllenAbonnementsReport> callback);
+	void erstelleInfosVonAllenAbonnementsReport(Date anfangszeitpunkt,
+			Date endzeitpunkt, AsyncCallback<InfosVonAllenAbonnementsReport> callback);
 
-	void erstelleInfosVonNachrichtenReport(Nachricht nachricht,
-			Timestamp anfangszeitpunkt, Timestamp endzeitpunkt,
-			AsyncCallback<InfosVonNachrichtenReport> callback);
+	void erstelleInfosÜberZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, 
+			Date endzeitpunkt, AsyncCallback<InfosÜberZeitraumspezifischeNachrichtenReport> callback);
 
-	void erstelleInfosVonAbonnementsReport(Abonnement abonnement, Timestamp anfangszeitpunkt,
-			Timestamp endzeitpunkt, AsyncCallback<InfosVonAbonnementsReport> callback);
+	void erstelleInfosÜberNutzerspezifischeNachrichtenReport(Nachricht nachricht, Nutzer nutzer,
+			AsyncCallback<InfosÜberNutzerspezifischeNachrichtenReport> callback);
+	
+	void erstelleInfosÜberNutzerspezifischeAbonnementsReport(Abonnement abonnement, Nutzer nutzer,
+			AsyncCallback<InfosÜberNutzerspezifischeAbonnementsReport> callback);
 
+	void erstelleInfosÜberHashtagspezifischeAbonnementsReport(Abonnement abonnement, Hashtag hashtag,
+			AsyncCallback<InfosÜberHashtagspezifischeAbonnementsReport> callback);
 
 	void init(AsyncCallback<Void> callback);
 

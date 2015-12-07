@@ -1,6 +1,9 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Report, der alle Konten alle Kunden darstellt.
@@ -11,32 +14,64 @@ import java.io.Serializable;
  * 
  * @author Thies
  * @author Yücel
+ * @author Oikonomou
  */
 
-public class InfosVonAllenNachrichtenReport extends CompositeReport implements Serializable {
+public class InfosVonAllenNachrichtenReport extends CompositeReport 
+implements Serializable{
 
 
 	
 	private static final long serialVersionUID = 1L;
 
-	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null; 
-	}  
+	private Date anfangszeitpunkt;
+	private Date endzeitpunkt;
+	
+	
+	public Date getAnfangszeitpunkt() {
+		return anfangszeitpunkt;
+	}
+	
+	public void setAnfangszeitpunkt(Date anfangszeitpunkt) {
+		this.anfangszeitpunkt = anfangszeitpunkt;
+	}
+	
+	public Date getEndzeitpunkt() {
+		return endzeitpunkt;
+	}
+	
+	public void setEndzeitpunkt(Date endzeitpunkt) {
+		this.endzeitpunkt = endzeitpunkt;
+	}
 
-	public Object getHeaderData() {
+	public ArrayList<Row> getRows() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Paragraph getImprint() {
+	public void addRow(Row headline) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
-
-	public Object getCreated() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+//	public String getTitle() {
+//		// TODO Auto-generated method stub
+//		return null; 
+//	}  
+//
+//	public Object getHeaderData() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	public Paragraph getImprint() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	public Object getCreated() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 }

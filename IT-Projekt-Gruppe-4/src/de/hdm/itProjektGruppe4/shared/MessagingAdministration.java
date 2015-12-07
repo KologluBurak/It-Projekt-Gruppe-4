@@ -144,19 +144,11 @@ public interface MessagingAdministration extends RemoteService {
 	//public void createAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException;
 	public void saveAboHashtag (Hashtagabonnement hashtagAbo)throws IllegalArgumentException;
 	public void deleteAboHastag (Hashtagabonnement hashtagAbo)throws IllegalArgumentException;
-	
+
 	/*
 	   * ***************************************************************************
 	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	   * ***************************************************************************
 	   */
 	
-
-
-
-
-
-
-
-
 }
