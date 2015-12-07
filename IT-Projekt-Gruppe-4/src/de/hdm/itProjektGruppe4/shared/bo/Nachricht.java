@@ -9,18 +9,19 @@ public class Nachricht extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int nachrichtId;
 	private String text;
 	private String betreff;
+	private int kommentarID=0;
 	
-	public int getNachrichtId() {
-		return nachrichtId;
+	
+	public int getKommentarID() {
+		return kommentarID;
 	}
-	
-	public void setNachrichtId(int nachrichtId) {
-		this.nachrichtId = nachrichtId;
+
+	public void setKommentarID(int kommentarID) {
+		this.kommentarID = kommentarID;
 	}
-	
+
 	public String getText() {
 		return text;
 	}

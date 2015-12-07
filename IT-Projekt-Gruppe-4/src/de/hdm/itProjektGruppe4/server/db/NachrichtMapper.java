@@ -171,6 +171,27 @@ public class NachrichtMapper {
 	}
 	
 	
+	/**
+	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand ihrer ID zu finden und anzuzeigen.
+	 * @param unterhaltung
+	 * @return
+	 */
+	public ArrayList<Nachricht>findNachrichtentoUnterhaltung(Unterhaltung unterhaltung) throws Exception{
+		Connection con=DBConnection.connection();
+		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT  FROM nachrichten "+
+			"WHERE unterhaltungID="+unterhaltung.getId());
+			
+			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
+		}
+	}
+	
 	
 	
 	

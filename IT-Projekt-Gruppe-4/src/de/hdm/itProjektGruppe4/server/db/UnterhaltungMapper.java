@@ -206,19 +206,18 @@ public class UnterhaltungMapper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Diese Methode ermöglicht es alle beteiligten Nutzer einer Unterhaltung anhand ihrer ID zu finden und anzuzeigen.
-	 * @param id
+	 * @param unterhaltung
 	 * @return
 	 */
-	//Noch nicht fertig
 	public int countNutzerFromUnterhaltung(Unterhaltung unterhaltung) throws Exception{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT COUNT(unterhaltungID) AS AnzahlAllerNutzerEinerUnterhaltung FROM unterhaltungslisten "+
-			"WHERE hashtagAboID="+nutzer.getId());
+			ResultSet rs = stmt.executeQuery("SELECT COUNT((absenderID)+(empfaengerID)) AS AnzahlAllerNutzerEinerUnterhaltung "
+					+"FROM unterhaltungslisten WHERE unterhaltungID="+unterhaltung.getId());
 			
 			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
 		}
@@ -228,4 +227,33 @@ public class UnterhaltungMapper {
 		}
 	}
 	
+	public int countNachrichtenFromUnterhaltung(Unterhaltung unterhaltung) throws Exception{
+		Connection con=DBConnection.connection();
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT( AS AnzahlAllerNutzerEinerUnterhaltung "
+					+"FROM unterhaltungslisten WHERE unterhaltungID="+unterhaltung.getId());
+			
+			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
+		}
+	}
+	
+	/**
+	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
+	 * Format.
+	 * 
+	 * @param date
+	 *            Date das konvertiert werden soll
+	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
+	 */
+	private String getSqlDateFormat(Date date) {
+		String result = "";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		result = dateFormat.format(date);
+		return result;
+	}
 }	 
