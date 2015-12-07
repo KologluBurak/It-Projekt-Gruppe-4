@@ -1,16 +1,19 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+import com.google.gwt.dev.util.Name;
+
 /**
  *
  *@author Yücel
  *@author Oikonomou
+ *@author Kologlu
  */
 
 public class Hashtagabonnement extends Abonnement {
 	
 	private static final long serialVersionUID = 1L;
 
-	//private String name;
+	private String name;
 	/**
 	   * Fremdschlüsselbeziehung zum abonnierten Hashtag
 	   */

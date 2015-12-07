@@ -5,22 +5,27 @@ package de.hdm.itProjektGruppe4.shared.bo;
  * 
  */
 
-public class Nachricht extends Unterhaltung {
+public class Nachricht extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int nachrichtId;
 	private String text;
 	private String betreff;
 	
-	public int getNachrichtId() {
-		return nachrichtId;
-	}
+	/**
+	 * Fremdschlüsselbeziehung
+	 */
+	private int kommentarID=0;
 	
-	public void setNachrichtId(int nachrichtId) {
-		this.nachrichtId = nachrichtId;
-	}
 	
+	public int getKommentarID() {
+		return kommentarID;
+	}
+
+	public void setKommentarID(int kommentarID) {
+		this.kommentarID = kommentarID;
+	}
+
 	public String getText() {
 		return text;
 	}

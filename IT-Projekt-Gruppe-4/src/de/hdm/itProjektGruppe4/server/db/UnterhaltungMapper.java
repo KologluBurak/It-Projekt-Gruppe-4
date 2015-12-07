@@ -75,31 +75,24 @@ public class UnterhaltungMapper {
 	   * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	   *         <code>id</code>.
 	   */
-	public Unterhaltung insert(Unterhaltung unterhaltung){
-		if (unterhaltung == null) {
-			throw new IllegalArgumentException(
-					"Ãœbergebenes Objekt an insert() ist NULL.");
-		}
+	public Unterhaltung insert(Unterhaltung unterhaltung) throws Exception{
 		//DB-Verbindung herstellen
 		Connection con=DBConnection.connection();
 		try{
 			//Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
 			//Zunächst wird geschaut welches der momentan höchste Primärschlüssel ist
-			ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltung_id) AS maxID"+" FROM unterhaltungen");
-				
+			ResultSet rs=stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid "+"FROM unterhaltungen");
+			
 			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if(rs.next()){
-				int newId = rs.getInt("maxID") + 1;
-				unterhaltung.setId(newId);
-					
+				int newID=rs.getInt("maxid");
+				unterhaltung.setId(newID);
+				
 				PreparedStatement preStmt;
-				preStmt=con.prepareStatement("INSERT INTO unterhaltungen "
-							+"(unterhaltung_id, zuletzt_Bearbeitet)"
-							+" VALUES (?, ?)");
-					
-				preStmt.setInt(1, newId);
-				preStmt.setString(2, getSqlDateFormat(unterhaltung.getLastEdited()));
+				preStmt=con.prepareStatement("INSERT INTO unterhaltungen(unterhaltungID, erstellungsZeitpunkt) VALUES(?, ?)");
+				preStmt.setInt(1, newID);
+				preStmt.setString(2, getSqlDateFormat(unterhaltung.getErstellungsZeitpunkt()));
 				preStmt.executeUpdate();
 				preStmt.close();
 			}
@@ -109,6 +102,7 @@ public class UnterhaltungMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
 		}
 		return unterhaltung;
 	}
@@ -119,47 +113,39 @@ public class UnterhaltungMapper {
 	   * @param unterhaltung das Objekt, das in die DB geschrieben werden soll
 	   * @return das als Parameter übergebene Objekt
 	   */
-	public Unterhaltung update(Unterhaltung unterhaltung){
-		if (unterhaltung == null) {
-			throw new IllegalArgumentException(
-				"Ãœbergebenes Objekt an update() ist NULL.");
-		}
-		//DB-Verbindung herstellen
+	public Unterhaltung update(Unterhaltung unterhaltung) throws Exception{
 		Connection con=DBConnection.connection();
 		try{
 			PreparedStatement preStmt;
-			preStmt=con.prepareStatement("UPDATE unterhaltungen SET zuletzt_Bearbeitet=? WHERE nutzer_id=?");
-			
-			preStmt.setString(1, getSqlDateFormat(unterhaltung.getLastEdited()));
-			preStmt.setInt(2, unterhaltung.getId());
+			preStmt=con.prepareStatement("UPDATE nutzer SET erstellungsZeitpunkt=? WHERE unterhaltungID="+unterhaltung.getId());
+			preStmt.setString(1, getSqlDateFormat(unterhaltung.getErstellungsZeitpunkt()));
 			preStmt.executeUpdate();
 			preStmt.close();
 			con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
 		}
-		return unterhaltung;	
+		return unterhaltung;
 	}
 	
 	/**
 	   * Löschen der Daten eines <code>Unterhaltung</code>-Objekts aus der Datenbank.
 	   * 
-	   * @param a das aus der DB zu löschende "Objekt"
+	   * @param id das aus der DB zu löschende "Objekt"
 	   */
-	public void delete(Unterhaltung unterhaltung){
-		//DB-Verbindung holen
+	public void delete(int id) throws Exception{
 		Connection con =DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			// Statement ausfuellen und als Query an die DB schicken
-			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltung_id="+unterhaltung.getId());
+			stmt.executeUpdate("DELETE FROM unterhaltung WHERE unterhaltungID="+id);
 			stmt.close();
 			con.close();
-			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
 		}
 	}
 	
@@ -170,20 +156,15 @@ public class UnterhaltungMapper {
 	public ArrayList<Unterhaltung> findAllUnterhaltungen(){
 		Connection con=DBConnection.connection();
 		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
-		Unterhaltung unterhaltung=new Unterhaltung();
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltung_id");
 	
 			while(rs.next()){
+				Unterhaltung unterhaltung=new Unterhaltung();
 				unterhaltung.setId(rs.getInt("unterhaltung_id"));
+				unterhaltung.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
 
-				Timestamp timestamp=rs.getTimestamp("zuletzt_Bearbeitet");
-				if(timestamp!=null){
-					Date zuletzt_Bearbeitet=new java.util.Date(timestamp.getTime());
-					unterhaltung.setLastEdited(zuletzt_Bearbeitet);
-				}
-				
 				allUnterhaltungen.add(unterhaltung);
 			}
 			stmt.close();
@@ -198,25 +179,22 @@ public class UnterhaltungMapper {
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht es eine Unterhaltung anhand ihrer ID auszugeben.
+	 * Diese Methode ermÃ¶glicht es eine Unterhaltung anhand ihrer ID zu finden und anzuzeigen.
 	 * @param id
 	 * @return
 	 */
-	public Unterhaltung findUnterhaltungByKey(int id){
+	public Unterhaltung findUnterhaltungById(int id){
 		Connection con=DBConnection.connection();
-		Unterhaltung unterhaltung=new Unterhaltung();
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM unterhaltungen WHERE unterhaltung_id= " +id+ " ORDER BY unterhaltung_id");
+			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, erstellungsZeitpunkt FROM unterhaltungen "
+					+"WHERE unterhaltung_id= " +id+ " ORDER BY unterhaltung_id");
 		
 			if(rs.next()){
+				Unterhaltung unterhaltung=new Unterhaltung();
 				unterhaltung.setId(rs.getInt("unterhaltung_id"));
-				
-				Timestamp timestamp=rs.getTimestamp("zuletzt_Bearbeitet");
-				if(timestamp!=null){
-					Date zuletzt_Bearbeitet=new java.util.Date(timestamp.getTime());
-					unterhaltung.setLastEdited(zuletzt_Bearbeitet);
-				}
+				unterhaltung.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+
 				return unterhaltung;
 			}
 			stmt.close();
@@ -227,6 +205,41 @@ public class UnterhaltungMapper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Diese Methode ermÃ¶glicht es alle beteiligten Nutzer einer Unterhaltung anhand ihrer ID zu finden und anzuzeigen.
+	 * @param unterhaltung
+	 * @return
+	 */
+	public int countNutzerFromUnterhaltung(Unterhaltung unterhaltung) throws Exception{
+		Connection con=DBConnection.connection();
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT((absenderID)+(empfaengerID)) AS AnzahlAllerNutzerEinerUnterhaltung "
+					+"FROM unterhaltungslisten WHERE unterhaltungID="+unterhaltung.getId());
+			
+			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
+		}
+	}
+	
+	public int countNachrichtenFromUnterhaltung(Unterhaltung unterhaltung) throws Exception{
+		Connection con=DBConnection.connection();
+		try{
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT( AS AnzahlAllerNutzerEinerUnterhaltung "
+					+"FROM unterhaltungslisten WHERE unterhaltungID="+unterhaltung.getId());
+			
+			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			throw new Exception("Datenbank fehler!" + e.toString());
+		}
 	}
 	
 	/**

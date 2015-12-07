@@ -1,7 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
- *
+ *@author Kologlu
  *@author Yücel
  *@author Oikonomou
  */
@@ -10,7 +10,7 @@ public class Abonnement extends BusinessObject {
 	
 	private static final long serialVersionUID = 1L;
 
-	
+
 	private Nutzerabonnement aboNutzer;
 	private Hashtagabonnement aboHashtag;
 	private Hashtag abonniertesHashtag;
@@ -20,12 +20,15 @@ public class Abonnement extends BusinessObject {
 	public Nutzerabonnement getAboNutzer() {
 		return aboNutzer;
 	}
+	
 	public void setAboNutzer(Nutzerabonnement aboNutzer) {
 		this.aboNutzer = aboNutzer;
 	}
+	
 	public Hashtagabonnement getAboHashtag() {
 		return aboHashtag;
 	}
+	
 	public void setAboHashtag(Hashtagabonnement aboHashtag) {
 		this.aboHashtag = aboHashtag;
 	}
