@@ -1,17 +1,14 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-
 /**
- *@author Yücel, Nguyen, Oikonomou, Kologlu
+ * @author Yücel, Nguyen, Oikonomou, Kologlu
  *
  */
 
-public class Hashtag extends BusinessObject{
+public class Hashtag extends BusinessObject {
 
 	private static final long serialVersionUID = 1L;
 	private String bezeichnung;
-//	private int id; 
-
 
 	public String getBezeichnung() {
 		return bezeichnung;
@@ -20,13 +17,5 @@ public class Hashtag extends BusinessObject{
 	public void setBezeichnung(String bezeichnung) {
 		this.bezeichnung = bezeichnung;
 	}
-	
-//	public int getId() {
-//		return id;
-//	}
-//
-//	public void setId(int id) {
-//		this.id = id;
-//	}
 
 }
