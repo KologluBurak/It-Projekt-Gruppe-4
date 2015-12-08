@@ -10,9 +10,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Unterhaltung</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfï¿½gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gelï¿½scht werden kï¿½nnen. Das Mapping ist bidirektional. D.h., Objekte kï¿½nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Kologlu
@@ -27,6 +27,7 @@ public class UnterhaltungMapper {
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
 	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see UnterhaltungMapper()
@@ -34,7 +35,7 @@ public class UnterhaltungMapper {
 	private static UnterhaltungMapper unterhaltungMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
+	 * Geschï¿½tzter Konstruktor - verhindert die Mï¿½glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected UnterhaltungMapper() {
@@ -62,13 +63,13 @@ public class UnterhaltungMapper {
 	}
 
 	/**
-	 * Einfügen eines <code>Unterhaltung</code>-Objekts in die Datenbank. Dabei
-	 * wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
+	 * Einfï¿½gen eines <code>Unterhaltung</code>-Objekts in die Datenbank. Dabei
+	 * wird auch der Primï¿½rschlï¿½ssel des ï¿½bergebenen Objekts geprï¿½ft und ggf.
 	 * berichtigt.
 	 * 
-	 * @param a
+	 * @param unterhaltung
 	 *            das zu speichernde Objekt
-	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits ï¿½bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
 	public Unterhaltung insert(Unterhaltung unterhaltung) throws Exception {
@@ -77,6 +78,7 @@ public class UnterhaltungMapper {
 		try {
 			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
+			
 			// Zunächst wird geschaut welches der momentan höchste
 			// Primärschlüssel ist
 			ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " + "FROM unterhaltungen");
@@ -90,7 +92,9 @@ public class UnterhaltungMapper {
 				preStmt = con.prepareStatement(
 						"INSERT INTO unterhaltungen(unterhaltungID, erstellungsZeitpunkt) VALUES(?, ?)");
 				preStmt.setInt(1, newID);
-				preStmt.setString(2, getSqlDateFormat(unterhaltung.getErstellungsZeitpunkt()));
+				preStmt.setString(
+						2,
+						getSqlDateFormat(unterhaltung.getErstellungsZeitpunkt()));
 				preStmt.executeUpdate();
 				preStmt.close();
 			}
@@ -164,7 +168,8 @@ public class UnterhaltungMapper {
 			while (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
 				unterhaltung.setId(rs.getInt("unterhaltung_id"));
-				unterhaltung.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				unterhaltung.setErstellungsZeitpunkt(rs
+						.getDate("erstellungsZeitpunkt"));
 
 				allUnterhaltungen.add(unterhaltung);
 			}
@@ -195,7 +200,8 @@ public class UnterhaltungMapper {
 			if (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
 				unterhaltung.setId(rs.getInt("unterhaltung_id"));
-				unterhaltung.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				unterhaltung.setErstellungsZeitpunkt(rs
+						.getDate("erstellungsZeitpunkt"));
 
 				return unterhaltung;
 			}
@@ -222,7 +228,6 @@ public class UnterhaltungMapper {
 			ResultSet rs = stmt
 					.executeQuery("SELECT COUNT((absenderID)+(empfaengerID)) AS AnzahlAllerNutzerEinerUnterhaltung "
 							+ "FROM unterhaltungslisten WHERE unterhaltungID=" + unterhaltung.getId());
-
 			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -236,7 +241,6 @@ public class UnterhaltungMapper {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT COUNT( AS AnzahlAllerNutzerEinerUnterhaltung "
 					+ "FROM unterhaltungslisten WHERE unterhaltungID=" + unterhaltung.getId());
-
 			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
 		} catch (SQLException e) {
 			e.printStackTrace();
