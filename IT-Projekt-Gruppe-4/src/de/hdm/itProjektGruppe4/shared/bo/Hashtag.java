@@ -9,6 +9,9 @@ package de.hdm.itProjektGruppe4.shared.bo;
 public class Hashtag extends BusinessObject{
 
 	private static final long serialVersionUID = 1L;
+	
+	
+	
 	private String bezeichnung;
 //	private int id; 
 
