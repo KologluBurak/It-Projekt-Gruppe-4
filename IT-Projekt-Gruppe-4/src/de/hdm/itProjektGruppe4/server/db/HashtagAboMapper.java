@@ -2,6 +2,7 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
@@ -62,6 +63,126 @@ public class HashtagAboMapper {
 		}
 		return hashtagAboMapper;
 
+	}
+	
+	/**
+	 * Diese Methode ermöglicht es einen Hashtagabonnement in der Datenbank
+	 * anzulegen.
+	 * 
+	 * @param hashtagabonnement
+	 * @return
+	 */
+
+	public Hashtagabonnement insert (
+			Hashtagabonnement hashtagabonnement)throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt
+					.executeQuery("SELECT MAX(hashtagaboID) AS maxid "
+							+ "FROM hashtagabonnement ");
+
+			if (rs.next()) {
+
+				hashtagabonnement.setId(rs.getInt("maxid") + 1);
+				hashtagabonnement.setErstellungsZeitpunkt(rs
+						.getTimestamp("erstellungsdatum"));
+
+				stmt = con.createStatement();
+
+				stmt.executeUpdate("INSERT INTO Hashtagabonnement (hashtagabonnementID, erstellungsdatum) "
+						+ "VALUES ("
+						+ hashtagabonnement.getId()
+						+ ","
+						+ hashtagabonnement.getId() + ")");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}
+
+		return hashtagabonnement;
+	}
+	
+	/**
+	 * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in
+	 * der Datenbank.
+	 * 
+	 * @param hashtagabonnement
+	 * @return
+	 */
+
+	public Hashtagabonnement update(
+			Hashtagabonnement hashtagabonnement)throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("UPDATE Hashtagabonnement " + "SET hashtagID=\""
+					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
+		return hashtagabonnement;
+	}
+	
+	/**
+	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
+	 * Referenzen zu anderen Klassen
+	 * 
+	 * @param hashtagabonnement
+	 */
+
+	public void delete(Hashtagabonnement hashtagabonnement)throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("DELETE FROM Hashtagabonnement "
+					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}
+	}
+	
+	/**
+	 * Diese Methode ermöglicht es alle Hashtags zu finden
+	 * 
+	 * @param hashtagabonnement
+	 * @return
+	 */
+	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(int id){
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
+					+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
+
+			while (rs.next()) {
+				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
+				hashtagAbonnement.setId(rs.getInt("hashtagaboID"));
+
+				alleHashtagabonnements.add(hashtagAbonnement);
+
+			}
+			stmt.close();
+			rs.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return alleHashtagabonnements;
+		
 	}
 
 	/**
@@ -129,128 +250,12 @@ public class HashtagAboMapper {
 
 		catch (SQLException e1) {
 			e1.printStackTrace();
+			
 			return null;
 		}
 
 		return hashtagAboListe;
 
 	}
-
-	/**
-	 * Diese Methode ermöglicht es einen Hashtagabonnement in der Datenbank
-	 * anzulegen.
-	 * 
-	 * @param hashtagabonnement
-	 * @return
-	 */
-
-	public Hashtagabonnement insertHashtagabonnement(
-			Hashtagabonnement hashtagabonnement) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt
-					.executeQuery("SELECT MAX(hashtagaboID) AS maxid "
-							+ "FROM hashtagabonnement ");
-
-			if (rs.next()) {
-
-				hashtagabonnement.setId(rs.getInt("maxid") + 1);
-				hashtagabonnement.setErstellungsZeitpunkt(rs
-						.getTimestamp("erstellungsdatum"));
-
-				stmt = con.createStatement();
-
-				stmt.executeUpdate("INSERT INTO Hashtagabonnement (hashtagabonnementID, erstellungsdatum) "
-						+ "VALUES ("
-						+ hashtagabonnement.getId()
-						+ ","
-						+ hashtagabonnement.getId() + ")");
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		return hashtagabonnement;
-	}
-
-	/**
-	 * Diese Methode ermöglicht es alle Hashtags zu finden
-	 * 
-	 * @param hashtagabonnement
-	 * @return
-	 */
-	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(int id) {
-		// DB-Verbindung herstellen
-		Connection con = DBConnection.connection();
-		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
-
-			while (rs.next()) {
-				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
-				hashtagAbonnement.setId(rs.getInt("hashtagaboID"));
-
-				alleHashtagabonnements.add(hashtagAbonnement);
-
-			}
-			stmt.close();
-			rs.close();
-			con.close();
-			return alleHashtagabonnements;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in
-	 * der Datenbank.
-	 * 
-	 * @param hashtagabonnement
-	 * @return
-	 */
-
-	public Hashtagabonnement updateHashtagabonnement(
-			Hashtagabonnement hashtagabonnement) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE Hashtagabonnement " + "SET hashtagID=\""
-					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		return hashtagabonnement;
-	}
-
-	/**
-	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
-	 * Referenzen zu anderen Klassen
-	 * 
-	 * @param hashtagabonnement
-	 */
-
-	public void deleteHashtagabonnement(Hashtagabonnement hashtagabonnement) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("DELETE FROM Hashtagabonnement "
-					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
+	
 }

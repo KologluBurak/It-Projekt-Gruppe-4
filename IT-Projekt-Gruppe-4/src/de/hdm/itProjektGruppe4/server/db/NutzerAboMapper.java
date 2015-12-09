@@ -10,9 +10,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>NutzerAbo</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfï¿½gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gelï¿½scht werden kï¿½nnen. Das Mapping ist bidirektional. D.h., Objekte kï¿½nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Kologlu
@@ -27,7 +27,7 @@ public class NutzerAboMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see NutzerAboMapper()
@@ -35,7 +35,7 @@ public class NutzerAboMapper {
 	private static NutzerAboMapper nutzerAboMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
+	 * Geschï¿½tzter Konstruktor - verhindert die Mï¿½glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NutzerAboMapper() {
@@ -44,7 +44,7 @@ public class NutzerAboMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NutzerAboMapper.nutzerAboMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine
 	 * einzige Instanz von <code>NutzerAboMapper</code> existiert.
 	 * <p>
 	 * 
@@ -64,23 +64,23 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Einfügen eines <code>Nutzerabonnement</code>-Objekts in die Datenbank.
-	 * Dabei wird auch der Primärschlüssel des übergebenen Objekts geprüft und
+	 * Einfï¿½gen eines <code>Nutzerabonnement</code>-Objekts in die Datenbank.
+	 * Dabei wird auch der Primï¿½rschlï¿½ssel des ï¿½bergebenen Objekts geprï¿½ft und
 	 * ggf. berichtigt.
 	 * 
 	 * @param nutzerabonnement
 	 *            das zu speichernde Objekt
-	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits ï¿½bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement) throws Exception {
+	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
-			// Zunächst wird geschaut welches der momentan höchste
-			// Primärschlüssel ist
+			// Zunï¿½chst wird geschaut welches der momentan hï¿½chste
+			// Primï¿½rschlï¿½ssel ist
 			ResultSet rs = stmt.executeQuery("SELECT MAX(nutzerAboID) AS maxid " + "FROM nutzerabonnements");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
@@ -100,7 +100,7 @@ public class NutzerAboMapper {
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return nutzerabonnement;
 	}
@@ -111,17 +111,17 @@ public class NutzerAboMapper {
 	 * 
 	 * @param nutzerabonnement
 	 */
-	public void delete(int id) throws Exception{
+	public void delete(Nutzerabonnement nutzerabonnement) throws IllegalArgumentException{
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzerabonnements WHERE nutzerAboID=" + id);
+			stmt.executeUpdate("DELETE FROM nutzerabonnements WHERE nutzerAboID=" + nutzerabonnement.getId());
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 	

@@ -15,9 +15,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Nachricht</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfï¿½gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gelï¿½scht werden kï¿½nnen. Das Mapping ist bidirektional. D.h., Objekte kï¿½nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Kologlu
@@ -31,7 +31,7 @@ public class NachrichtMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see NachrichtMapper()
@@ -39,7 +39,7 @@ public class NachrichtMapper {
 	private static NachrichtMapper nachrichtMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
+	 * Geschï¿½tzter Konstruktor - verhindert die Mï¿½glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NachrichtMapper() {
@@ -49,7 +49,7 @@ public class NachrichtMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NachrichtMapper.nachrichtMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine
 	 * einzige Instanz von <code>NachrichtMapper</code> existiert.
 	 * <p>
 	 * 
@@ -74,15 +74,15 @@ public class NachrichtMapper {
 	 * @param nachricht
 	 * @return
 	 */
-	public Nachricht insert(Nachricht nachricht) throws Exception {
+	public Nachricht insert(Nachricht nachricht) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
 
-			// Zunächst wird geschaut welches der momentan höchste
-			// Primärschlüssel ist
+			// Zunï¿½chst wird geschaut welches der momentan hï¿½chste
+			// Primï¿½rschlï¿½ssel ist
 			ResultSet rs = stmt.executeQuery("SELECT MAX(nachrichtID) AS maxid FROM nachrichten");
 
 			// Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
@@ -104,7 +104,7 @@ public class NachrichtMapper {
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return nachricht;
 	}
@@ -116,7 +116,7 @@ public class NachrichtMapper {
 	 * @param unterhaltung
 	 * @return
 	 */
-	public Nachricht update(Nachricht nachricht) throws Exception {
+	public Nachricht update(Nachricht nachricht) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			PreparedStatement preStmt;
@@ -129,7 +129,7 @@ public class NachrichtMapper {
 			preStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return nachricht;
 	}
@@ -140,7 +140,7 @@ public class NachrichtMapper {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Nachricht> findAllNachrichten() throws Exception {
+	public ArrayList<Nachricht> findAllNachrichten() throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
 		try {
@@ -160,7 +160,7 @@ public class NachrichtMapper {
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return allNachrichten;
 	}
@@ -172,7 +172,7 @@ public class NachrichtMapper {
 	 * @param unterhaltung
 	 * @return
 	 */
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) throws Exception {
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 		try {
@@ -192,7 +192,7 @@ public class NachrichtMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return result;
 	}
@@ -236,14 +236,13 @@ public class NachrichtMapper {
 	 * @return
 	 */
 
-	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer, String von, String bis) {
+	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer) {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten WHERE nutzerID =" + nutzer.getId()
-					+ " AND Datum BETWEEN " + von + " AND " + bis + "");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten WHERE nutzerID =" + nutzer.getId());
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();

@@ -26,7 +26,7 @@ public class UnterhaltungMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
@@ -44,7 +44,7 @@ public class UnterhaltungMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>UnterhaltungMapper.unterhaltungMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine
 	 * einzige Instanz von <code>UnterhaltungMapper</code> existiert.
 	 * <p>
 	 * 
@@ -72,15 +72,15 @@ public class UnterhaltungMapper {
 	 * @return das bereits ï¿½bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Unterhaltung insert(Unterhaltung unterhaltung) throws Exception {
+	public Unterhaltung insert(Unterhaltung unterhaltung) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
 			
-			// Zunächst wird geschaut welches der momentan höchste
-			// Primärschlüssel ist
+			// Zunï¿½chst wird geschaut welches der momentan hï¿½chste
+			// Primï¿½rschlï¿½ssel ist
 			ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " + "FROM unterhaltungen");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
@@ -103,7 +103,7 @@ public class UnterhaltungMapper {
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return unterhaltung;
 	}
@@ -113,9 +113,9 @@ public class UnterhaltungMapper {
 	 * 
 	 * @param unterhaltung
 	 *            das Objekt, das in die DB geschrieben werden soll
-	 * @return das als Parameter übergebene Objekt
+	 * @return das als Parameter ï¿½bergebene Objekt
 	 */
-	public Unterhaltung update(Unterhaltung unterhaltung) throws Exception {
+	public Unterhaltung update(Unterhaltung unterhaltung) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			PreparedStatement preStmt;
@@ -127,28 +127,28 @@ public class UnterhaltungMapper {
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return unterhaltung;
 	}
 
 	/**
-	 * Löschen der Daten eines <code>Unterhaltung</code>-Objekts aus der
+	 * Lï¿½schen der Daten eines <code>Unterhaltung</code>-Objekts aus der
 	 * Datenbank.
 	 * 
 	 * @param id
-	 *            das aus der DB zu löschende "Objekt"
+	 *            das aus der DB zu lï¿½schende "Objekt"
 	 */
-	public void delete(int id) throws Exception {
+	public void delete(Unterhaltung unterhaltung) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM unterhaltung WHERE unterhaltungID=" + id);
+			stmt.executeUpdate("DELETE FROM unterhaltung WHERE unterhaltungID=" + unterhaltung.getId());
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 
