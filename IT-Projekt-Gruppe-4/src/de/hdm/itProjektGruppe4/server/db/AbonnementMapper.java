@@ -464,7 +464,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 				try {
 				    	
 				   Statement stmt = con.createStatement();
-=======
+
 			public ArrayList<Abonnement> findHashtagAbonnementByNutzer(String von, String bis, int id) {
 				 Connection con = DBConnection.connection();
 				 ArrayList <Abonnement> hashtagAboListe = new ArrayList<Abonnement> ();
@@ -506,7 +506,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			 * @return
 			 */
 			  
-<<<<<<< HEAD
+
 //			  public ArrayList<Abonnement> findAllHastagabonnements() {
 //				    Connection con = DBConnection.connection();
 //

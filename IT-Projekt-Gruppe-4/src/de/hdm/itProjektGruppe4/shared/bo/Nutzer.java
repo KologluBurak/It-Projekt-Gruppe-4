@@ -7,9 +7,10 @@ import java.util.ArrayList;
  */
 
 public class Nutzer extends BusinessObject {
-	
+
 	/**
-	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse ben�tigt.
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
+	 * ben�tigt.
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -17,27 +18,37 @@ public class Nutzer extends BusinessObject {
 	 * Vorname des Nutzers
 	 */
 	private String vorname;
-	
+
 	/**
 	 * Nachname des Nutzers
 	 */
 	private String nachname;
-	
+
 	/**
 	 * E-Mail-Adresse der Nutzers
 	 */
 	private String email;
-	
+
 	/**
 	 * Nickname der Nutzers
 	 */
 	private String nickname;
-	
+
+	private ArrayList<Abonnement> abo = new ArrayList<Abonnement>();
+
 	/**
 	 * Setter- und getter
 	 */
 	public String getVorname() {
 		return vorname;
+	}
+
+	public ArrayList<Abonnement> getAbo() {
+		return abo;
+	}
+
+	public void setAbo(ArrayList<Abonnement> abo) {
+		this.abo = abo;
 	}
 
 	public void setVorname(String vorname) {
@@ -76,6 +87,7 @@ public class Nutzer extends BusinessObject {
 	 */
 	@Override
 	public String toString() {
-	    return super.toString() + " " + this.nickname + " " + this.vorname + " " + this.nachname +" " + this.email + " ";
-	  }
+		return super.toString() + " " + this.nickname + " " + this.vorname + " " + this.nachname + " " + this.email
+				+ " ";
+	}
 }

@@ -16,9 +16,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Nutzer</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfï¿½gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gelï¿½scht werden kï¿½nnen. Das Mapping ist bidirektional. D.h., Objekte kï¿½nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Kologlu
@@ -31,8 +31,8 @@ public class NutzerMapper {
 	   * Die Klasse NutzerMapper wird nur einmal instantiiert. Man spricht hierbei
 	   * von einem sogenannten <b>Singleton</b>.
 	   * <p>
-	   * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal für
-	   * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
+	   * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal fï¿½r
+	   * sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert die
 	   * einzige Instanz dieser Klasse.
 	   * 
 	   * @see NutzerMapper()
@@ -40,7 +40,7 @@ public class NutzerMapper {
 	private static NutzerMapper nutzerMapper = null;
 	
 	/**
-	   * Geschützter Konstruktor - verhindert die Möglichkeit, mit <code>new</code>
+	   * Geschï¿½tzter Konstruktor - verhindert die Mï¿½glichkeit, mit <code>new</code>
 	   * neue Instanzen dieser Klasse zu erzeugen.
 	   */
 	protected NutzerMapper(){
@@ -50,7 +50,7 @@ public class NutzerMapper {
 	/**
 	   * Diese statische Methode kann aufgrufen werden durch
 	   * <code>NutzerMapper.nutzerMapper()</code>. Sie stellt die
-	   * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine einzige
+	   * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine einzige
 	   * Instanz von <code>NutzerMapper</code> existiert.
 	   * <p>
 	   * 
@@ -68,21 +68,21 @@ public class NutzerMapper {
 	}
 	
 	/**
-	   * Einfügen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
-	   * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
+	   * Einfï¿½gen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
+	   * auch der Primï¿½rschlï¿½ssel des ï¿½bergebenen Objekts geprï¿½ft und ggf.
 	   * berichtigt.
 	   * 
 	   * @param a das zu speichernde Objekt
-	   * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
+	   * @return das bereits ï¿½bergebene Objekt, jedoch mit ggf. korrigierter
 	   *         <code>id</code>.
 	   */
-	public Nutzer insert(Nutzer nutzer) throws Exception{
+	public Nutzer insert(Nutzer nutzer) throws IllegalArgumentException{
 		//DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try{
 			//Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
-			//Zunächst wird geschaut welches der momentan höchste Primärschlüssel ist
+			//Zunï¿½chst wird geschaut welches der momentan hï¿½chste Primï¿½rschlï¿½ssel ist
 			ResultSet rs=stmt.executeQuery("SELECT MAX(userID) AS maxid "+"FROM nutzer");
 			
 			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
@@ -108,7 +108,7 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return nutzer;
 	}
@@ -117,9 +117,9 @@ public class NutzerMapper {
 	   * Wiederholtes Schreiben eines Objekts in die Datenbank.
 	   * 
 	   * @param unterhaltung das Objekt, das in die DB geschrieben werden soll
-	   * @return das als Parameter übergebene Objekt
+	   * @return das als Parameter ï¿½bergebene Objekt
 	   */
-	public Nutzer update(Nutzer nutzer) throws Exception{
+	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			PreparedStatement preStmt;
@@ -136,27 +136,27 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return nutzer;
 	}
 	
 	/**
-	   * Löschen der Daten eines <code>Unterhaltung</code>-Objekts aus der Datenbank.
+	   * Lï¿½schen der Daten eines <code>Unterhaltung</code>-Objekts aus der Datenbank.
 	   * 
-	   * @param a das aus der DB zu löschende "Objekt"
+	   * @param a das aus der DB zu lï¿½schende "Objekt"
 	   */
-	public void delete(int id) throws Exception{
+	public void delete(Nutzer nutzer) throws IllegalArgumentException{
 		Connection con =DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzer WHERE userID="+id);
+			stmt.executeUpdate("DELETE FROM nutzer WHERE userID="+nutzer.getId());
 			stmt.close();
 			con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class NutzerMapper {
 	 * Diese Methode ermÃ¶glicht es alle Nutzer aus der Datenbank in einer Liste zu finden und anzuzeigen.
 	 * @return alleNutzer
 	 */
-	public ArrayList<Nutzer> findAllNutzer() throws Exception{
+	public ArrayList<Nutzer> findAllNutzer() throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		ArrayList<Nutzer> alleNutzer = new ArrayList<Nutzer>();
 		try{
@@ -189,7 +189,7 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return alleNutzer;
 	}
@@ -198,7 +198,7 @@ public class NutzerMapper {
 	 * Diese Methode ermÃ¶glicht einen Nutzer anhand seines Nachnamens zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public Nutzer findNutzerByNachname(String nachname) throws Exception{
+	public Nutzer findNutzerByNachname(String nachname) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
@@ -219,16 +219,16 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return null;
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht einen Nutzer anhand des Primärschlüssels zu finden und anzuzeigen.
+	 * Diese Methode ermÃ¶glicht einen Nutzer anhand des Primï¿½rschlï¿½ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public Nutzer findNutzerById(int userID) throws Exception{
+	public Nutzer findNutzerById(int userID) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
@@ -249,16 +249,16 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return null;
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht es alle Nachrichten eines Nutzers anhand des Primärschlüssels zu finden und anzuzeigen.
+	 * Diese Methode ermÃ¶glicht es alle Nachrichten eines Nutzers anhand des Primï¿½rschlï¿½ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public int countNachrichtenFromNutzer(Nutzer nutzer) throws Exception{
+	public int countNachrichtenFromNutzer(Nutzer nutzer) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
@@ -269,15 +269,15 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht es alle Unterhaltungen eines Nutzers anhand des Primärschlüssels zu finden und anzuzeigen.
+	 * Diese Methode ermÃ¶glicht es alle Unterhaltungen eines Nutzers anhand des Primï¿½rschlï¿½ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public int countUnterhaltungenFromNutzer(Nutzer nutzer) throws Exception{
+	public int countUnterhaltungenFromNutzer(Nutzer nutzer) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
@@ -288,15 +288,15 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht es alle HashtagAbos eines Nutzers anhand des Primärschlüssels zu finden und anzuzeigen.
+	 * Diese Methode ermÃ¶glicht es alle HashtagAbos eines Nutzers anhand des Primï¿½rschlï¿½ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public int countHashtagAbosFromNutzer(Nutzer nutzer) throws Exception{
+	public int countHashtagAbosFromNutzer(Nutzer nutzer) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
@@ -307,12 +307,12 @@ public class NutzerMapper {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht es alle abonnierten Nutzer eines Nutzers anhand des Primärschlüssels zu finden und anzuzeigen.
+	 * Diese Methode ermÃ¶glicht es alle abonnierten Nutzer eines Nutzers anhand des Primï¿½rschlï¿½ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
 	public int countAbonnierteNutzer(Nutzer nutzer) throws Exception{
@@ -331,7 +331,7 @@ public class NutzerMapper {
 	}
 	
 	/**
-	 * Diese Methode ermÃ¶glicht es alle Follower eines Nutzers anhand des Primärschlüssels zu finden und anzuzeigen.
+	 * Diese Methode ermÃ¶glicht es alle Follower eines Nutzers anhand des Primï¿½rschlï¿½ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
 	public int countFollowerFromNutzer(Nutzer nutzer) throws Exception{

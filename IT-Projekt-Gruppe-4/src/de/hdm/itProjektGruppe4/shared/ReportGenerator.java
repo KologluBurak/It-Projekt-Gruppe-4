@@ -1,7 +1,7 @@
 package de.hdm.itProjektGruppe4.shared;
 
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -14,9 +14,9 @@ import de.hdm.itProjektGruppe4.shared.report.*;
  * <p>
  * Synchrone Schnittstelle für eine RPC-fähige Klasse zur Erstellung von
  * Reports. Diese Schnittstelle benutzt die gleiche Realisierungsgrundlage wir
- * das Paar {@link BankAdministration} und {@lBankAdministrationImplImpl}. Zu
+ * das Paar {@link MessagingAdministration} und {@link MessagingAdministrationImpl}. Zu
  * technischen Erläuterung etwa bzgl. GWT RPC bzw. {@link RemoteServiceServlet}
- * siehe {@link BankAdministration} undBankAdministrationImpltungImpl}.
+ * siehe {@link MessagingAdministration} und {@link MessagingAdministrationImpl}.
  * </p>
  * <p>
  * Ein ReportGenerator bietet die Möglichkeit, eine Menge von Berichten
@@ -46,8 +46,8 @@ public interface ReportGenerator extends RemoteService {
 
 	/**
 	   * Initialisierung des Objekts. Diese Methode ist vor dem Hintergrund von GWT
-	   * RPC zus‰tzlich zum No Argument Constructor der implementierenden Klasse
-	   * PinnwandVerwaltungImpl} notwendig. Bitte diese Methode direkt nach der
+	   * RPC zusätzlich zum No Argument Constructor der implementierenden Klasse
+	   * MessagingAdministrationImpl} notwendig. Bitte diese Methode direkt nach der
 	   * Instantiierung aufrufen.
 	   * 
 	   * @throws IllegalArgumentException
@@ -55,15 +55,23 @@ public interface ReportGenerator extends RemoteService {
 	
 	public void init() throws IllegalArgumentException;
 	
-	public abstract InfosVonNachrichtenReport erstelleInfosVonNachrichtenReport(Nachricht nachricht, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	public abstract InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Date anfangszeitpunkt, Date endzeitpunkt)
 	throws IllegalArgumentException;
 	
-	public abstract InfosVonAbonnementsReport erstelleInfosVonAbonnementsReport(Abonnement abonnement, Timestamp anfangszeitpunkt, Timestamp endzeitpunkt) 
+	public abstract InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport(Date anfangszeitpunkt, Date endzeitpunkt)
 	throws IllegalArgumentException;
 	
-	public abstract InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	public abstract InfosÜberZeitraumspezifischeNachrichtenReport erstelleInfosÜberZeitraumspezifischeNachrichtenReport (Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt) 
 	throws IllegalArgumentException;
 	
-	public abstract InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport(Timestamp anfangszeitpunkt, Timestamp endzeitpunkt)
+	public abstract InfosÜberNutzerspezifischeNachrichtenReport erstelleInfosÜberNutzerspezifischeNachrichtenReport (Nachricht nachricht, Nutzer nutzer) 
 	throws IllegalArgumentException;
+	
+	public abstract InfosÜberNutzerspezifischeAbonnementsReport erstelleInfosÜberNutzerspezifischeAbonnementsReport (Abonnement abonnement, Nutzer nutzer) 
+	throws IllegalArgumentException;
+	
+	public abstract InfosÜberHashtagspezifischeAbonnementsReport erstelleInfosÜberHashtagspezifischeAbonnementsReport (Abonnement abonnement, Hashtag hashtag) 
+	throws IllegalArgumentException;
+		
 }
+

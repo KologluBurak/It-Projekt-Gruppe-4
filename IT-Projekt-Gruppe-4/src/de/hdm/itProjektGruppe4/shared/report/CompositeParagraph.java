@@ -97,9 +97,6 @@ public class CompositeParagraph extends Paragraph implements Serializable {
 	     * Schließlich wird der Buffer in einen String umgewandelt und
 	     * zurückgegeben.
 	     */
-	    return result.toString();
-	  }
+	   return result.toString();
 	}
-
-  
-
+}

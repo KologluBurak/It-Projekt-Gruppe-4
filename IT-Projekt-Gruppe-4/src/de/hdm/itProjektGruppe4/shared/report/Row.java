@@ -2,8 +2,6 @@ package de.hdm.itProjektGruppe4.shared.report;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import de.hdm.itProjektGruppe4.shared.report.Column;
-import de.hdm.itProjektGruppe4.shared.report.SimpleReport;
 
 /**
  * Zeile einer Tabelle eines <code>SimpleReport</code>-Objekts. <code>Row</code>

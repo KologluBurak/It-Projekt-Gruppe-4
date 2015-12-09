@@ -1,40 +1,41 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+import java.util.ArrayList;
+
 /**
- *@author Yücel
- *@author Oikonomou
+ * @author Yücel
+ * @author Oikonomou
+ * @author Kologlu
  */
 
 public class Nutzerabonnement extends BusinessObject {
 
 	private static final long serialVersionUID = 1L;
-	
-//	private String nutzername;
-//
-//	
-//	public String getNutzername() {
-//		return nutzername;
-//	}
-//
-//	public void setNutzername(String nutzername) {
-//		this.nutzername = nutzername;
-//	
-//	}
+
+	private Nutzer nutzer;
 	/**
-	   * Fremdschlüsselbeziehung zum Nutzer der Abonniert.
-	   */
+	 * Fremdschlüsselbeziehung zum Nutzer der Abonniert.
+	 */
 	private int aboNutzerId;
-	
+
 	/**
-	   * Fremdschlüsselbeziehung zum Nutzer der Beobachtet werden.
-	   */
+	 * Fremdschlüsselbeziehung zum Nutzer der Beobachtet werden.
+	 */
 	private int derBeobachteteId;
 
 	/**
-	   * Getter und Setter.
-	   */
+	 * Getter und Setter.
+	 */
 	public int getAboNutzerId() {
 		return aboNutzerId;
+	}
+
+	public Nutzer getNutzer() {
+		return nutzer;
+	}
+
+	public void setNutzer(Nutzer nutzer) {
+		this.nutzer = nutzer;
 	}
 
 	public void setAboNutzerId(int aboNutzerId) {
@@ -48,7 +49,5 @@ public class Nutzerabonnement extends BusinessObject {
 	public void setDerBeobachteteId(int derBeobachteteId) {
 		this.derBeobachteteId = derBeobachteteId;
 	}
-	
-	
-	
+
 }

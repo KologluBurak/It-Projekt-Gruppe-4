@@ -1,7 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.report;
 
 import java.util.ArrayList;
-import de.hdm.itProjektGruppe4.shared.report.*;
 
 /**
  * Ein <code>ReportWriter</code>, der Reports mittels HTML formatiert. Das im
@@ -11,6 +10,7 @@ import de.hdm.itProjektGruppe4.shared.report.*;
  * 
  * @author Thies
  * @author Yücel
+ * @author Oikonomou
  */
 public class HTMLReportWriter extends ReportWriter {
 
@@ -95,8 +95,8 @@ public class HTMLReportWriter extends ReportWriter {
    * 
    * @param r der zu prozessierende Report
    */
-  @Override
-public void process(InfosVonAbonnementsReport r) {
+
+public String process1(InfosVonAllenAbonnementsReport r) {
     // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
 
@@ -146,12 +146,7 @@ public void process(InfosVonAbonnementsReport r) {
 
     result.append("</table>");
 
-    /*
-     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-     * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-     * Ergebnis mittels getReportText() auszulesen.
-     */
-    this.reportText = result.toString();
+    return this.reportText = result.toString();
   }
 
   /**
@@ -161,70 +156,7 @@ public void process(InfosVonAbonnementsReport r) {
    * @param r der zu prozessierende Report
    */
   @Override
-public void process(InfosVonAllenAbonnementsReport r) {
-    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
-    this.resetReportText();
-
-    /*
-     * In diesen Buffer schreiben wir während der Prozessierung sukzessive
-     * unsere Ergebnisse.
-     */
-    StringBuffer result = new StringBuffer();
-
-    /*
-     * Nun werden Schritt für Schritt die einzelnen Bestandteile des Reports
-     * ausgelesen und in HTML-Form übersetzt.
-     */
-    result.append("<H1>" + r.getTitle() + "</H1>");
-    result.append("<table><tr>");
-
-    if (r.getHeaderData() != null) {
-      result.append("<td>" + paragraph2HTML(r.getHeaderData()) + "</td>");
-    }
-
-    result.append("<td>" + paragraph2HTML(r.getImprint()) + "</td>");
-    result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
-        + "</td></tr></table>");
-
-    /*
-     * Da InfosVonAllenAbonnementsReport ein CompositeReport ist, enthält r
-     * eine Menge von Teil-Reports des Typs InfosVonAbonnementsReport. Für
-     * jeden dieser Teil-Reports rufen wir processInfosVonAllenAbonnementsReport
-     * auf. Das Ergebnis des jew. Aufrufs fügen wir dem Buffer hinzu.
-     */
-    for (int i = 0; i < r.getNumSubReports(); i++) {
-    	/*
-         * InfosVonAbonnementsReport wird als Typ der SubReports vorausgesetzt.
-         * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
-         * so müsste hier eine detailliertere Implementierung erfolgen.
-         */
-        InfosVonAbonnementsReport subReport = (InfosVonAbonnementsReport) r
-            .getSubReportAt(i);
-
-        this.process(subReport);
-
-        result.append(this.reportText + "\n");
-
-        /*
-         * Nach jeder Übersetzung eines Teilreports und anschließendem Auslesen
-         * sollte die Ergebnisvariable zurückgesetzt werden.
-         */
-        this.resetReportText();
-      }
-
-      /*
-       * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-       * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-       * Ergebnis mittels getReportText() auszulesen.
-       */
-      this.reportText = result.toString();
-    }
-  private String paragraph2HTML(Object headerData) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-public void process(InfosVonNachrichtenReport r) {
+  public String process2(InfosVonAllenNachrichtenReport r) {
 	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
 	    this.resetReportText();
 
@@ -248,6 +180,7 @@ public void process(InfosVonNachrichtenReport r) {
 	        + "</td></tr></table>");
 
 	    ArrayList<Row> rows = r.getRows();
+	    
 	    result.append("<table style=\"width:400px\">");
 
 	    for (int i = 0; i < rows.size(); i++) {
@@ -273,88 +206,17 @@ public void process(InfosVonNachrichtenReport r) {
 
 	    result.append("</table>");
 
-	    /*
-	     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-	     * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-	     * Ergebnis mittels getReportText() auszulesen.
-	     */
 	    this.reportText = result.toString();
+	    return reportText;
 	  }
-
-	  /**
-	   * Prozessieren des übergebenen Reports und Ablage im Zielformat. Ein Auslesen
-	   * des Ergebnisses kann später mittels <code>getReportText()</code> erfolgen.
-	   * 
-	   * @param r der zu prozessierende Report
-	   */
-	  @Override
-	public void process(InfosVonAllenNachrichtenReport r) {
-	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
-	    this.resetReportText();
-
-	    /*
-	     * In diesen Buffer schreiben wir während der Prozessierung sukzessive
-	     * unsere Ergebnisse.
-	     */
-	    StringBuffer result = new StringBuffer();
-
-	    /*
-	     * Nun werden Schritt für Schritt die einzelnen Bestandteile des Reports
-	     * ausgelesen und in HTML-Form übersetzt.
-	     */
-	    result.append("<H1>" + r.getTitle() + "</H1>");
-	    result.append("<table><tr>");
-
-	    if (r.getHeaderData() != null) {
-	      result.append("<td>" + paragraph2HTML(r.getHeaderData()) + "</td>");
-	    }
-
-	    result.append("<td>" + paragraph2HTML(r.getImprint()) + "</td>");
-	    result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
-	        + "</td></tr></table>");
-
-	    /*
-	     * Da InfosVonAllenNachrichtenReport ein CompositeReport ist, enthält r
-	     * eine Menge von Teil-Reports des Typs InfosVonNachrichtenReport. Für
-	     * jeden dieser Teil-Reports rufen wir processAlleNachrichtenReport
-	     * auf. Das Ergebnis des jew. Aufrufs fügen wir dem Buffer hinzu.
-	     */
-	    for (int i = 0; i < r.getNumSubReports(); i++) {
-	    	/*
-	         * InfosVonNachrichtenReport wird als Typ der SubReports vorausgesetzt.
-	         * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
-	         * so müsste hier eine detailliertere Implementierung erfolgen.
-	         */
-	        InfosVonNachrichtenReport subReport = (InfosVonNachrichtenReport) r
-	            .getSubReportAt(i);
-
-	        this.process(subReport);
-
-	        result.append(this.reportText + "\n");
-
-	        /*
-	         * Nach jeder Übersetzung eines Teilreports und anschließendem Auslesen
-	         * sollte die Ergebnisvariable zurückgesetzt werden.
-	         */
-	        this.resetReportText();
-	      }
-
-	      /*
-	       * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
-	       * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
-	       * Ergebnis mittels getReportText() auszulesen.
-	       */
-	      this.reportText = result.toString();
-	    }
-	    
-	  /**
-	   * Auslesen des Ergebnisses der zuletzt aufgerufenen Prozessierungsmethode.
-	   * 
-	   * @return ein String im HTML-Format
-	   */
-	  public String getReportText() {
-	    return this.getHeader() + this.reportText + this.getTrailer();
-	  }    	
-    }
-
-
+  
+  /**
+   * Auslesen des Ergebnisses der zuletzt aufgerufenen Prozessierungsmethode.
+   * 
+   * @return ein String im HTML-Format
+   */
+  public String getReportText() {
+    return this.getHeader() + this.reportText + this.getTrailer();
+  }
+  
+}
