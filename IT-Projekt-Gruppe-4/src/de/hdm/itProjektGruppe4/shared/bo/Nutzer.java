@@ -1,7 +1,5 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-import java.util.ArrayList;
-
 /**
  * @author Yücel, Nguyen, Oikonomou, kologlu
  */
@@ -34,47 +32,74 @@ public class Nutzer extends BusinessObject {
 	 */
 	private String nickname;
 
-	private ArrayList<Abonnement> abo = new ArrayList<Abonnement>();
-
 	/**
-	 * Setter- und getter
+	 * Ausgabe des Vornamens
+	 * 
+	 * @return
 	 */
 	public String getVorname() {
 		return vorname;
 	}
 
-	public ArrayList<Abonnement> getAbo() {
-		return abo;
-	}
-
-	public void setAbo(ArrayList<Abonnement> abo) {
-		this.abo = abo;
-	}
-
+	/**
+	 * Setzen des Vornamens
+	 * 
+	 * @param vorname
+	 */
 	public void setVorname(String vorname) {
 		this.vorname = vorname;
 	}
 
+	/**
+	 * Ausgabe des Nachnamens
+	 * 
+	 * @return
+	 */
 	public String getNachname() {
 		return nachname;
 	}
 
+	/**
+	 * Setzen des Nachnamens
+	 * 
+	 * @param nachname
+	 */
 	public void setNachname(String nachname) {
 		this.nachname = nachname;
 	}
 
+	/**
+	 * Ausgabe der E-Mail-Adresse
+	 * 
+	 * @return
+	 */
 	public String getEmail() {
 		return email;
 	}
 
+	/**
+	 * Setzen der E-Mail-Adresse
+	 * 
+	 * @param email
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * Ausgabe des Nicknames
+	 * 
+	 * @return
+	 */
 	public String getNickname() {
 		return nickname;
 	}
 
+	/**
+	 * Setzen des Nicknames
+	 * 
+	 * @param nickname
+	 */
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
@@ -82,8 +107,8 @@ public class Nutzer extends BusinessObject {
 	/**
 	 * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
 	 * Diese besteht aus dem Text, der durch die <code>toString()</code>-Methode
-	 * der Superklasse erzeugt wird, erg�nzt durch den Vor- und Nachnamen des
-	 * jeweiligen Kunden.
+	 * der Superklasse erzeugt wird, erg�nzt durch den Vor- und Nachnamen, des
+	 * Nicknamen und der E-Mail-Adresse des jeweiligen Nutzers.
 	 */
 	@Override
 	public String toString() {

@@ -1,7 +1,5 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-import java.util.ArrayList;
-
 /**
  * @author YÃ¼cel
  * @author Oikonomou
@@ -10,44 +8,78 @@ import java.util.ArrayList;
 
 public class Nutzerabonnement extends BusinessObject {
 
+	/**
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
+	 * benï¿½tigt.
+	 */
 	private static final long serialVersionUID = 1L;
 
-	private Nutzer nutzer;
 	/**
-	 * FremdschlÃ¼sselbeziehung zum Nutzer der Abonniert.
+	 * Fremdschlüsselbeziehung zu abonnierten Nutzer
 	 */
-	private int aboNutzerId;
-
-	/**
-	 * FremdschlÃ¼sselbeziehung zum Nutzer der Beobachtet werden.
-	 */
-	private int derBeobachteteId;
+	private int followerID = 0;
 
 	/**
-	 * Getter und Setter.
+	 * Fremdschlüsselbeziehung zu abonnierenden Nutzer
 	 */
-	public int getAboNutzerId() {
-		return aboNutzerId;
+	private int derBeobachteteID = 0;
+
+	/**
+	 * Fremdschluesselbeziehung zur abstrakten Klasse Abonnement
+	 */
+	private int abonnementID = 0;
+
+	/**
+	 * Ausgabe der Follower ID
+	 * 
+	 * @return followerID
+	 */
+	public int getFollowerID() {
+		return followerID;
 	}
 
-	public Nutzer getNutzer() {
-		return nutzer;
+	/**
+	 * Setzen der Follower ID
+	 * 
+	 * @param followerID
+	 */
+	public void setFollowerID(int followerID) {
+		this.followerID = followerID;
 	}
 
-	public void setNutzer(Nutzer nutzer) {
-		this.nutzer = nutzer;
+	/**
+	 * Ausgabe des Beobachteten ID
+	 * 
+	 * @return derBeobachteteID
+	 */
+	public int getDerBeobachteteID() {
+		return derBeobachteteID;
 	}
 
-	public void setAboNutzerId(int aboNutzerId) {
-		this.aboNutzerId = aboNutzerId;
+	/**
+	 * Setzen des Beobachteten ID
+	 * 
+	 * @param derBeobachteteID
+	 */
+	public void setDerBeobachteteID(int derBeobachteteID) {
+		this.derBeobachteteID = derBeobachteteID;
 	}
 
-	public int getDerBeobachteteId() {
-		return derBeobachteteId;
+	/**
+	 * Ausgabe der Abonnement ID
+	 * 
+	 * @return abonnementID
+	 */
+	public int getAbonnementID() {
+		return abonnementID;
 	}
 
-	public void setDerBeobachteteId(int derBeobachteteId) {
-		this.derBeobachteteId = derBeobachteteId;
+	/**
+	 * Setzen der Abonnement ID
+	 * 
+	 * @param abonnementID
+	 */
+	public void setAbonnementID(int abonnementID) {
+		this.abonnementID = abonnementID;
 	}
-
 }

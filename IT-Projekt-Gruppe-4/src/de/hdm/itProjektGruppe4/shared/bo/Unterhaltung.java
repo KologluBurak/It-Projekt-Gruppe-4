@@ -1,58 +1,61 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * 
- * @author YÃ¼cel, Nguyen, Kologlu
+ * @author Yuecel, Nguyen, Kologlu
  *
  */
 
 public class Unterhaltung extends BusinessObject{
 	
+	/**
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
+	 * benï¿½tigt.
+	 */
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Nachricht>refNachricht;
-	private Nutzer sender;
-	private Nutzer receiver;
-	
 	/**
-	 * Fremdschlüsselbeziehung zu den Nachrichten, die in der jeweiligen Nachricht beinhaltet sind
+	 * Referenz Nachricht die hinzugefuegt werden soll
 	 */
-	private int nachrichtID;
-	
+	private String refNachricht;
+
 	/**
-	 * Setter und getter
+	 * Gibt an, wann das letzte Mal in die jeweilige Unterhaltung
+	 * geschrieben wurde
 	 */
-	public ArrayList<Nachricht> getRefNachricht() {
+	private Date zuletztBearbeitet;
+
+	/**
+	 * Ausgabe der zuletzt bearbeiteten Zeit
+	 * @return zuletztBearbeitet
+	 */
+	public Date getZuletztBearbeitet() {
+		return zuletztBearbeitet;
+	}
+
+	/**
+	 * Setzen der zuletzt bearbeiteten Zeit
+	 * @param zuletztBearbeitet
+	 */
+	public void setZuletztBearbeitet(Date zuletztBearbeitet) {
+		this.zuletztBearbeitet = zuletztBearbeitet;
+	}
+
+	/**
+	 * Ausgabe der referenzierten Nachricht
+	 * @return refNachricht
+	 */
+	public String getRefNachricht() {
 		return refNachricht;
 	}
 
-	public int getNachrichtID() {
-		return nachrichtID;
-	}
-
-	public void setNachrichtID(int nachrichtID) {
-		this.nachrichtID = nachrichtID;
-	}
-
-	public void setRefNachricht(ArrayList<Nachricht> refNachricht) {
+	/**
+	 * Setzen der referenzierten Nachricht
+	 * @param refNachricht
+	 */
+	public void setRefNachricht(String refNachricht) {
 		this.refNachricht = refNachricht;
-	}
-
-	public Nutzer getSender() {
-		return sender;
-	}
-
-	public void setSender(Nutzer sender) {
-		this.sender = sender;
-	}
-
-	public Nutzer getReceiver() {
-		return receiver;
-	}
-
-	public void setReceiver(Nutzer receiver) {
-		this.receiver = receiver;
 	}
 }
