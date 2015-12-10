@@ -74,10 +74,11 @@ implements ReportGenerator {
 	 * Erstellen von <code>InfosVonAllenAbonnementsReport</code>-Objekten.
 	 * 
 	 * @param user das Abonnementobjekt bzgl. dessen der Report erstellt werden soll.
+	 * @return 
 	 * @return der fertige Report
 	 */
 	
-	public InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport (Abonnement abonnement, Date anfangszeitpunkt, Date endzeitpunkt) 
+	public String erstelleInfosVonAllenAbonnementsReport (Abonnement aboNutzer, Abonnement aboHashtag) 
 		throws IllegalArgumentException {
 	
 		if (this.getMessagingAdministration() == null)
@@ -89,7 +90,8 @@ implements ReportGenerator {
 		InfosVonAllenAbonnementsReport result = new InfosVonAllenAbonnementsReport();
 
 		// Jeder Report hat einen Titel (Bezeichnung / úberschrift).
-		result.setTitle("Alle Abonnements" + abonnement.getAboNutzer() + " " + abonnement.getAboHashtag());
+		result.setTitle("Alle Abonnements" + aboNutzer.getAboNutzer() + 
+				" " + aboHashtag.getAboHashtag());
 
 		/*
 		 * Datum der Erstellung hinzufügen. new Date() erzeugt autom. einen
@@ -105,17 +107,14 @@ implements ReportGenerator {
 		CompositeParagraph header = new CompositeParagraph();
 		
 		// Den Abonnenten aufnehmen
-		header.addSubParagraph(new SimpleParagraph(abonnement.getAbonnent() + ", "));
+		header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnent() + ", "));
 		
 		// Den abonnierten Nutzer aufnehmen
-		header.addSubParagraph(new SimpleParagraph(abonnement.getAbonnierterNutzer() + ", "));
+		header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnierterNutzer() + ", "));
 		
 		// Den abonniertes Hashtag aufnehmen 
-		header.addSubParagraph(new SimpleParagraph(abonnement.getAbonniertesHashtag() + ", "));
+		header.addSubParagraph(new SimpleParagraph(aboHashtag.getAbonniertesHashtag() + ", "));
 		
-		// Den Zeitraum aufnehmen
-		header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + anfangszeitpunkt + " Bis: "
-		        + endzeitpunkt));
 		
 		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
 		result.setHeaderData(header);
@@ -142,12 +141,12 @@ implements ReportGenerator {
 			result.addRow(headline);
 
 			/*
-			 * Nun werden sämtliche Daten der Abonnements ausgelesen und deren Anfangszeitpunkt und
-			 * Endzeitpunkt in die Tabelle eingetragen.
+			 * Nun werden sämtliche Daten der Abonnements ausgelesen und in die Tabelle eingetragen.
 			 */
-			ArrayList<Abonnement> abonnements = AbonnementMapper.abonnementMapper().getAboErstellungsZeitpunkt(anfangszeitpunkt, endzeitpunkt);
-					
-			for (Abonnement a : abonnements) {
+			ArrayList<Abonnement> abonnements = AbonnementMapper.abonnementMapper().findAllAbonnements();
+			
+			
+			for (Abonnement abonnement : abonnements) {
 				// Eine leere Zeile anlegen.
 				Row accountRow = new Row();
 
@@ -181,7 +180,7 @@ implements ReportGenerator {
 * 
 * @return der fertige Report
 */
-public InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Nutzer nutzer, Unterhaltung unterhaltung, Date anfangszeitpunkt, Date endzeitpunkt) 
+public String erstelleInfosVonAllenNachrichtenReport(Nutzer nutzer, Unterhaltung unterhaltung, Nachricht n, String von, String bis) 
 		throws IllegalArgumentException {
 	
 		if (this.getMessagingAdministration() == null)
@@ -212,8 +211,8 @@ public InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Nut
 	    
 	    // Zeitraum der Report Suchanfrage in die Kopfzeile hinzufügen
 	     
-	    header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + anfangszeitpunkt + " Bis: "
-	        + endzeitpunkt));
+	    header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + von + " Bis: "
+	        + bis));
 
 	    // Name und Vorname des Nutzers aufnehmen
 	    header.addSubParagraph(new SimpleParagraph(nutzer.getVorname() + ", "
@@ -223,8 +222,8 @@ public InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Nut
 	    header.addSubParagraph(new SimpleParagraph("Email:" + nutzer.getEmail()));
 	    
 	    // Den Zeitraum aufnehmen
-	 	header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + anfangszeitpunkt + " Bis: "
-	 		        + endzeitpunkt));
+	 	header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + bis + " Bis: "
+	 		        + bis));
 
 	    // Hinzufügen der zusammengestellten Kopfdaten zu dem Report
 	    result.setHeaderData(header);
@@ -258,9 +257,11 @@ public InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Nut
  * InfosVonAllenNachrichten-Objekt erzeugt. Diese Objekte werden sukzessive der result-Variable hinzugefügt. 
  * Sie ist vom Typ InfosVonAllenNachrichten Report, welches eine Subklasse von CompositeReport ist.
  */
-		ArrayList<Unterhaltung> alleNachrichten = UnterhaltungMapper.unterhaltungMapper().getUnterhaltungsZeitraum(anfangszeitpunkt, endzeitpunkt);
+		//ArrayList<Unterhaltung> alleNachrichten = UnterhaltungMapper.unterhaltungMapper().getUnterhaltungsZeitraum(anfangszeitpunkt, endzeitpunkt);
+	    ArrayList<Nachricht> alleNachrichten = NachrichtMapper.nachrichtMapper().alleNachrichtenJeZeitraum(von, bis);
 
-		for (Unterhaltung u : alleNachrichten) {
+		//for (Unterhaltung u : alleNachrichten) {
+	    for (Nachricht nachricht : alleNachrichten) {
 
 			// Erste Spalte: Unterhaltungs ID hinzufügen
 			accountRow.addColumn(new Column(String.valueOf(unterhaltung.getId())));
@@ -271,7 +272,10 @@ public InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Nut
 			//Dritte Spalte: Nachrichtenempfänger hinzfügen
 			accountRow.addColumn(new Column(String.valueOf(unterhaltung.getReceiver())));
 
-			
+			// Vierte Spalte Nachrichten ID hinzufügen
+			accountRow.addColumn(new Column(String.valueOf(nachricht.getId())));
+
+		
 			// und schließlich die Zeile dem Report hinzufügen.
 			result.addRow(accountRow);
 		}
