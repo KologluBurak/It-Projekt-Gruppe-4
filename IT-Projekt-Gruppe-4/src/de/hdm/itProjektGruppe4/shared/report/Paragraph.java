@@ -4,7 +4,7 @@ package de.hdm.itProjektGruppe4.shared.report;
 import java.io.Serializable;
 
 /**
- * Reports benötigen die MÖglichkeit, Text strukturiert abspeichern zu können.
+ * Reports benötigen die Möglichkeit, Text strukturiert abspeichern zu können.
  * Dieser Text kann später durch <code>ReportWriter</code> in verschiedene
  * Zielformate konvertiert werden. Die Verwendung der Klasse <code>String</code>
  * reicht hier nicht aus, da allein das Hinzufügen eines Zeilenumbruchs zur

@@ -55,10 +55,10 @@ public interface ReportGenerator extends RemoteService {
 	
 	public void init() throws IllegalArgumentException;
 	
-	public abstract InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(Date anfangszeitpunkt, Date endzeitpunkt)
+	public abstract InfosVonAllenNachrichtenReport erstelleInfosVonAllenNachrichtenReport(String von, String bis)
 	throws IllegalArgumentException;
 	
-	public abstract InfosVonAllenAbonnementsReport erstelleInfosVonAllenAbonnementsReport(Date anfangszeitpunkt, Date endzeitpunkt)
+	public abstract String erstelleInfosVonAllenAbonnementsReport(Abonnement aboNutzer, Abonnement aboHashtag)
 	throws IllegalArgumentException;
 	
 	public abstract InfosÜberZeitraumspezifischeNachrichtenReport erstelleInfosÜberZeitraumspezifischeNachrichtenReport (Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt) 

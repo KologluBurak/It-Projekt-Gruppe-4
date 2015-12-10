@@ -21,11 +21,11 @@ import de.hdm.itProjektGruppe4.shared.report.*;
 public interface ReportGeneratorAsync {
 
 
-	void erstelleInfosVonAllenNachrichtenReport(Date anfangszeitpunkt,
-			Date endzeitpunkt,AsyncCallback<InfosVonAllenNachrichtenReport> callback);
+	void erstelleInfosVonAllenNachrichtenReport(String von,
+			String bis,AsyncCallback<InfosVonAllenNachrichtenReport> callback);
 
-	void erstelleInfosVonAllenAbonnementsReport(Date anfangszeitpunkt,
-			Date endzeitpunkt, AsyncCallback<InfosVonAllenAbonnementsReport> callback);
+	void erstelleInfosVonAllenAbonnementsReport(Abonnement aboNutzer, Abonnement aboHashtag,
+			AsyncCallback<String> callback);
 
 	void erstelleInfosÜberZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, 
 			Date endzeitpunkt, AsyncCallback<InfosÜberZeitraumspezifischeNachrichtenReport> callback);
