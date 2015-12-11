@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,28 +84,36 @@ public class NutzerMapper {
 			//Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
 			//Zun�chst wird geschaut welches der momentan h�chste Prim�rschl�ssel ist
-			ResultSet rs=stmt.executeQuery("SELECT MAX(userID) AS maxid "+"FROM nutzer");
+			ResultSet rs=stmt.executeQuery("SELECT MAX(nutzerID) AS maxid "+"FROM nutzer");
 			
 			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if(rs.next()){
 				int newID=rs.getInt("maxid");
 				nutzer.setId(newID);
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				Date d = null;
+				try {
+					d = sdf.parse("21/12/2015");
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				nutzer.setErstellungsZeitpunkt(d);
 				
 				PreparedStatement preStmt;
-				preStmt=con.prepareStatement("INSERT INTO nutzer "
-						+"(userID, vorname, nachname, email, nickname, erstellungsZeitpunkt) VALUES(?, ?, ?, ?, ?, ?)");
-				preStmt.setInt(1, newID);
-				preStmt.setString(2, nutzer.getVorname());
-				preStmt.setString(3, nutzer.getNachname());
-				preStmt.setString(4, nutzer.getEmail());
-				preStmt.setString(5, nutzer.getNickname());
-				preStmt.setString(6, getSqlDateFormat(nutzer.getErstellungsZeitpunkt()));
+				preStmt=con.prepareStatement("INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) VALUES ( null,?,?,?,?,?)");
+				//preStmt.setInt(1, newID);
+				preStmt.setString(1, nutzer.getVorname());
+				preStmt.setString(2, nutzer.getNachname());
+				preStmt.setString(3, nutzer.getEmail());
+				preStmt.setString(4, nutzer.getNickname());
+				preStmt.setString(5, getSqlDateFormat(nutzer.getErstellungsZeitpunkt()));
 				preStmt.executeUpdate();
 				preStmt.close();
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -124,7 +133,7 @@ public class NutzerMapper {
 		try{
 			PreparedStatement preStmt;
 			preStmt=con.prepareStatement("UPDATE nutzer SET vorname=?, "
-					+ "nachname=?, email=?, nickname=?, erstellungsZeitpunkt=? WHERE userID="+nutzer.getId());
+					+ "nachname=?, email=?, nickname=?, erstellungsZeitpunkt=? WHERE nutzerID="+nutzer.getId());
 			preStmt.setString(1, nutzer.getVorname());
 			preStmt.setString(2, nutzer.getNachname());
 			preStmt.setString(3, nutzer.getEmail());
@@ -200,19 +209,19 @@ public class NutzerMapper {
 	 */
 	public Nutzer findNutzerByNachname(String nachname) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
+		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT userID, vorname, nachname, email, nickname, erstellungsZeitpunkt "
-					+ "FROM nutzer WHERE nachname="+nachname+" ORDER BY nachname");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nachname='" + nachname + "' ORDER BY nachname");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
-				nutzer.setId(rs.getInt("userID"));
+				nutzer.setId(rs.getInt("nutzerID"));
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
 				
 				return nutzer;
 			}

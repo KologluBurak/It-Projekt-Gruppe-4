@@ -90,8 +90,8 @@ implements ReportGenerator {
 		InfosVonAllenAbonnementsReport result = new InfosVonAllenAbonnementsReport();
 
 		// Jeder Report hat einen Titel (Bezeichnung / úberschrift).
-		result.setTitle("Alle Abonnements" + aboNutzer.getAboNutzer() + 
-				" " + aboHashtag.getAboHashtag());
+//		result.setTitle("Alle Abonnements" + aboNutzer.getAboNutzer() + 
+//				" " + aboHashtag.getAboHashtag());
 
 		/*
 		 * Datum der Erstellung hinzufügen. new Date() erzeugt autom. einen
@@ -107,13 +107,13 @@ implements ReportGenerator {
 		CompositeParagraph header = new CompositeParagraph();
 		
 		// Den Abonnenten aufnehmen
-		header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnent() + ", "));
+		// raus gemacht header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnent() + ", "));
 		
 		// Den abonnierten Nutzer aufnehmen
-		header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnierterNutzer() + ", "));
+		// raus gemacht header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnierterNutzer() + ", "));
 		
 		// Den abonniertes Hashtag aufnehmen 
-		header.addSubParagraph(new SimpleParagraph(aboHashtag.getAbonniertesHashtag() + ", "));
+		// raus gemachtheader.addSubParagraph(new SimpleParagraph(aboHashtag.getAbonniertesHashtag() + ", "));
 		
 		
 		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
@@ -154,10 +154,10 @@ implements ReportGenerator {
 				accountRow.addColumn(new Column(String.valueOf(abonnement.getId())));
 
 				// Zweite Spalte: Abonutzer hinzufügen
-				accountRow.addColumn(new Column(String.valueOf(abonnement.getAboNutzer())));
+				//raus gemacht accountRow.addColumn(new Column(String.valueOf(abonnement.getAboNutzer())));
 	
 				//Dritte Spalte: Abohashtag hinzfügen
-				accountRow.addColumn(new Column(String.valueOf(abonnement.getAboHashtag())));
+				// raus gemacht accountRow.addColumn(new Column(String.valueOf(abonnement.getAboHashtag())));
 	
 				// und schließlich die Zeile dem Report hinzufügen.
 				result.addRow(accountRow);
@@ -267,10 +267,10 @@ public String erstelleInfosVonAllenNachrichtenReport(Nutzer nutzer, Unterhaltung
 			accountRow.addColumn(new Column(String.valueOf(unterhaltung.getId())));
 
 			// Zweite Spalte: Nachrichtenabsender hinzufügen
-			accountRow.addColumn(new Column(String.valueOf(unterhaltung.getSender())));
+			// raus gemacht accountRow.addColumn(new Column(String.valueOf(unterhaltung.getSender())));
 
 			//Dritte Spalte: Nachrichtenempfänger hinzfügen
-			accountRow.addColumn(new Column(String.valueOf(unterhaltung.getReceiver())));
+			// raus gemacht accountRow.addColumn(new Column(String.valueOf(unterhaltung.getReceiver())));
 
 			// Vierte Spalte Nachrichten ID hinzufügen
 			accountRow.addColumn(new Column(String.valueOf(nachricht.getId())));

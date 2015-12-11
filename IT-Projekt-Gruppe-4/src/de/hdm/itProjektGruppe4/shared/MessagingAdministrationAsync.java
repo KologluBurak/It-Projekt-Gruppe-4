@@ -51,7 +51,8 @@ public interface MessagingAdministrationAsync {
 
 	void findAllNutzer(AsyncCallback<ArrayList<Nutzer>> callback);
 
-	void getNutzerByNachname(String nachname, AsyncCallback<Nutzer> callback);
+	void getNutzerByNachname(String nachname,
+			AsyncCallback<Nutzer> callback);
 	
 	
 	/*

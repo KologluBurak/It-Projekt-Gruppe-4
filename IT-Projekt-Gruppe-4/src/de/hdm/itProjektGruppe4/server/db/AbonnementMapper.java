@@ -173,8 +173,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 				  while (rs.next()) {
 				  Nutzerabonnement abonnement = new Nutzerabonnement();
 				  abonnement.setId(rs.getInt("nutzer_id"));
-				  abonnement.setAboNutzerId(rs.getInt("abonnierterNutzer"));
-				  abonnement.setNutzerabo(rs.getString("nutzername"));
+//				  abonnement.setAboNutzerId(rs.getInt("abonnierterNutzer"));
+//				  abonnement.setNutzerabo(rs.getString("nutzername"));
 				  abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 				    nutzerAboListe.add(abonnement);
@@ -187,7 +187,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 				   return null;
 				 }
 
-			return nutzerAboListe;
+			return null; // nutzerAboListe;
 				    
 		}
 
@@ -209,7 +209,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			      while (rs.next()) {
 			        Abonnement abonnement = new Abonnement();
 			        abonnement.setId(rs.getInt("nutzerabo_id"));
-			        abonnement.setNutzerabo(rs.getString("nutzername"));
+			        //abonnement.setNutzerabo(rs.getString("nutzername"));
 			        
 			        allNutzerAbos.add(abonnement);
 					}

@@ -58,4 +58,12 @@ public class Unterhaltung extends BusinessObject{
 	public void setRefNachricht(String refNachricht) {
 		this.refNachricht = refNachricht;
 	}
+	
+	public void setSender(Nutzer n){
+		
+	}
+	
+	public void setReceiver(Nutzer n){
+		
+	}
 }
