@@ -69,14 +69,11 @@ public interface MessagingAdministrationAsync {
 	
 	void createNachricht(String text, AsyncCallback<Nachricht> callback);
 	
-	void senden(Nachricht Senden, AsyncCallback<Void> callback);
-
-	void empfangen(Nachricht Empfangen, AsyncCallback<Void> callback);
-
+	
 	void getAlleNachrichtbyNutzer(Nutzer nutzer,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
-	void findNachrichtenByUnterhaltung(Nachricht nachricht,
+	void findNachrichtenByUnterhaltung(Unterhaltung unterhaltung,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
 	void getAllNachrichten(AsyncCallback<ArrayList<Nachricht>> callback);
@@ -96,7 +93,7 @@ public interface MessagingAdministrationAsync {
 	void createUnterhaltung(Nutzer sender, Nutzer receiver,
 			AsyncCallback<Unterhaltung> callback);
 
-	void delete(Unterhaltung u, AsyncCallback<Unterhaltung> callback);
+	void delete(Unterhaltung u, AsyncCallback<Void> callback);
 	
 	void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
 

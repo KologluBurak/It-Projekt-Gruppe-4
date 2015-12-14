@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 
 
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.server.db.*;
@@ -86,25 +87,24 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	
 	/**
 	   * Löschen eines Nutzers. Der Nutzer wird in der Datenbank gelöscht.
+	   * zugehörende nachrichten werden auch gelöscht
+		 
 	      */	
 
 	public void delete (Nutzer nutzer) throws IllegalArgumentException{
-		/*
-		 * zugehörende nachrichten werden auch gelöscht
 		 
 		ArrayList <Nachricht> nachrichten = this.getAlleNachrichtbyNutzer(nutzer);
 		
-		/*
-		 * Die Verbindung zum Abonnement wird aufgelöst. 
+		//Die Verbindung zum Abonnement wird aufgelöst. 
 		
-		ArrayList <Nutzerabonnement> nutzerabo = this.findAbonnementByNutzer(nutzer);
+		ArrayList <Nutzerabonnement> nutzerabo = this.findNutzerAbonnementByNutzer(nutzer);
+		
 		if (nutzerabo!=null){
 			for (Nutzerabonnement nabo : nutzerabo){
 				this.delete(nabo);
 			}
 			
-			/*
-			 * Die Nachrichten die eine Verbindung zum Nutzer haben werden gelöscht.
+			// Die Nachrichten die eine Verbindung zum Nutzer haben werden gelöscht.
 			 
 			
 		if (nachrichten != null){
@@ -114,7 +114,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		} 
 		this.nutzerMapper.delete(nutzer);
 		
-		} */
+		} 
 		
 	}
 	
@@ -154,7 +154,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		na.setText(text);	
 		return this.nachrichtMapper.insert(na);
 	}
-
+	public void delete (Nachricht nachricht) throws IllegalArgumentException{
+		this.nachrichtMapper.delete(nachricht);
+	}
 	
 	
 	/**
@@ -184,9 +186,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	/**
 	 * Auslesen von Nachrichten in einer Unterhaltung
 	 */
-	public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht)
+	public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
 			throws IllegalArgumentException{
-		return this.nachrichtMapper.findNachrichtenByUnterhaltung(nachricht);
+		return this.nachrichtMapper.findNachrichtenByUnterhaltung(unterhaltung);
 	}
 
 	/*
@@ -233,20 +235,19 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	 * Löschen einer Unterhaltung. Hierbei werden die Nutzer,
 	 * die in der Unterhaltung teilgenommen haben nicht gelöscht.
 	 */
-	public Unterhaltung delete(Unterhaltung u){
+	public void delete(Unterhaltung unterhaltung){
 		/*
-		 * Zugehörige Nachrichten von der Unterhaltung werden gelöscht
-		 
-	ArrayList <Nachricht> nachrichten = this.findNachrichtenByUnterhaltung(u);
+		  Zugehörige Nachrichten von der Unterhaltung werden gelöscht
+		 */
+	ArrayList <Nachricht> nachrichten = this.findNachrichtenByUnterhaltung(unterhaltung);
 	
 	
 	if (nachrichten != null){
 		for (Nachricht n: nachrichten){
 			this.delete(n);
 		}
-	}
-	return this.unterhaltungMapper.delete(u); */
-		return null;
+	} 
+	this.unterhaltungMapper.delete(unterhaltung); 
 	}
 	
 	
@@ -363,7 +364,14 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	public void delete (Nutzerabonnement nutzerAbo)throws IllegalArgumentException{	
 		nutzerAboMapper.delete(nutzerAbo);;
 		
-		//
+	}
+	
+	/**
+	   * Auslesen von Nutzer Abonnements.
+	      */
+	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(Nutzer nutzer) 
+			throws IllegalArgumentException{
+		return this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
 	}
 	
 	
@@ -384,7 +392,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	 */
 	public Hashtagabonnement createHashtagAbonnement (Hashtag bezeichnung)throws IllegalArgumentException{
 		Hashtagabonnement b = new Hashtagabonnement();
-		//b.getAboHashtagId();
+		b.getHastagID();
 		return hashtagAboMapper.insert(b);	
 		}
 
@@ -397,18 +405,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		hashtagAboMapper.delete(hashtagAbo);
 
 }
+	
 
-	@Override
-	public void senden(Nachricht Senden) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void empfangen(Nachricht Empfangen) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/*
 	   * ***************************************************************************
