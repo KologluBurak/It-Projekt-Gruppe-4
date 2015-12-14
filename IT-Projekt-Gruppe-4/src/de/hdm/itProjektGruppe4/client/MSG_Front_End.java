@@ -98,7 +98,7 @@ package de.hdm.itProjektGruppe4.client;
 			menu.addItem("Report", repM);
 			
 			
-			vertipanel.add(new HTML("Unreal Messenger GR"));
+			vertipanel.add(new HTML("MSG Gruppe 4"));
 			
 			horipanel1.add(rechts);
 			vertipanel.add(menu);
