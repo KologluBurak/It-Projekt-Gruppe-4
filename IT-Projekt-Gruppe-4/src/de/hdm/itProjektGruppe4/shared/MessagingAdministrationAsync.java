@@ -73,7 +73,7 @@ public interface MessagingAdministrationAsync {
 	void getAlleNachrichtbyNutzer(Nutzer nutzer,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
-	void findNachrichtenByUnterhaltung(Nachricht nachricht,
+	void findNachrichtenByUnterhaltung(Unterhaltung unterhaltung,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
 	void getAllNachrichten(AsyncCallback<ArrayList<Nachricht>> callback);

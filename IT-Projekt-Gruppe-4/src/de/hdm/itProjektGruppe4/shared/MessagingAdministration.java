@@ -5,20 +5,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
@@ -66,7 +52,7 @@ public interface MessagingAdministration extends RemoteService {
 	public Nachricht createNachricht (String text) throws IllegalArgumentException;
 	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException;
 	public ArrayList <Nachricht> getAlleNachrichtbyNutzer(Nutzer nutzer);
-	public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht);
+	public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung);
 	/*
 	   * ***************************************************************************
 	   * ABSCHNITT, Ende: Methoden für Nachricht-Objekte

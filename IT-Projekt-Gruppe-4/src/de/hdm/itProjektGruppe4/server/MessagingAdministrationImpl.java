@@ -97,7 +97,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		
 		//Die Verbindung zum Abonnement wird aufgelöst. 
 		
-		ArrayList <Nutzerabonnement> nutzerabo = this.findNutzerAbonnementByNutzer(von, bis, id);
+		ArrayList <Nutzerabonnement> nutzerabo = this.findNutzerAbonnementByNutzer(nutzer);
 		
 		if (nutzerabo!=null){
 			for (Nutzerabonnement nabo : nutzerabo){
@@ -369,9 +369,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	/**
 	   * Auslesen von Nutzer Abonnements.
 	      */
-	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(String von, String bis, int id) 
+	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(Nutzer nutzer) 
 			throws IllegalArgumentException{
-		return this.nutzerAboMapper.findNutzerAbonnementByNutzer(von, bis, id);
+		return this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
 	}
 	
 	

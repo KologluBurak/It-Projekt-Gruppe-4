@@ -208,8 +208,7 @@ public class NutzerAboMapper {
 	 * @return
 	 */
 
-	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(String von,
-			String bis, int id) {
+	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(Nutzer nutzer) {
 		Connection con = DBConnection.connection();
 		ArrayList<Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement>();
 
@@ -218,7 +217,7 @@ public class NutzerAboMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "
-					+ "WHERE nutzerAboID=" + id + " ORDER BY nutzerAboID");
+					+ "WHERE nutzerAboID=" + nutzer.getId() + " ORDER BY nutzerAboID");
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
