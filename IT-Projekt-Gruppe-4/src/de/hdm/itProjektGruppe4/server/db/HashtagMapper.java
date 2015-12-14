@@ -70,7 +70,8 @@ public class HashtagMapper {
 	 * @return
 	 */
 
-	public Hashtag insert(Hashtag hashtagBezeichnung)throws IllegalArgumentException {
+	public Hashtag insert(Hashtag hashtagBezeichnung)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -93,7 +94,8 @@ public class HashtagMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 		}
 
 		return hashtagBezeichnung;
@@ -106,7 +108,7 @@ public class HashtagMapper {
 	 * @param hashtag
 	 * @return
 	 */
-	public Hashtag update(Hashtag hashtag)throws IllegalArgumentException {
+	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -118,7 +120,8 @@ public class HashtagMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 		}
 
 		return hashtag;
@@ -130,7 +133,8 @@ public class HashtagMapper {
 	 * 
 	 * @param hashtagBezeichnung
 	 */
-	public void delete(Hashtag hashtagBezeichnung)throws IllegalArgumentException {
+	public void delete(Hashtag hashtagBezeichnung)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -141,7 +145,8 @@ public class HashtagMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 		}
 	}
 

@@ -63,8 +63,6 @@ public interface MessagingAdministration extends RemoteService {
 	   * ***************************************************************************
 	   */
 	
-	public void senden (Nachricht Senden) throws IllegalArgumentException;
-	public void empfangen (Nachricht Empfangen) throws IllegalArgumentException;
 	public Nachricht createNachricht (String text) throws IllegalArgumentException;
 	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException;
 	public ArrayList <Nachricht> getAlleNachrichtbyNutzer(Nutzer nutzer);
@@ -84,7 +82,7 @@ public interface MessagingAdministration extends RemoteService {
 	public Unterhaltung createUnterhaltung (Nutzer sender, Nutzer receiver) throws IllegalArgumentException;
 	public ArrayList<Unterhaltung> getAllUnterhaltungen() throws IllegalArgumentException;
 	public Unterhaltung getUnterhaltungbyId(int id)throws IllegalArgumentException;
-	public Unterhaltung delete(Unterhaltung u);
+	public void delete(Unterhaltung u);
 	
 	/*
 	   * ***************************************************************************

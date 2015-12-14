@@ -9,8 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.sql.PreparedStatement;
+
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
@@ -23,6 +23,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * @author Kologlu
  * @author Oikonomou
  * @author Thies
+ * @author Yücel
  */
 public class NachrichtMapper {
 
@@ -133,6 +134,29 @@ public class NachrichtMapper {
 		}
 		return nachricht;
 	}
+	
+	/**
+	 * Diese Methode ermöglicht das Löschen einer Nachricht und dessen Referenzen
+	 * zu anderen Klassen.
+	 * 
+	 * @param hashtagBezeichnung
+	 */
+	public void delete(Nachricht nachricht)
+			throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+
+			stmt.executeUpdate("DELETE FROM nachrichten " + "WHERE nachrichtID="
+					+ nachricht.getId());
+
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
+		}
+	}
 
 	/**
 	 * Diese Methode ermöglicht es alle Nachrichten aus der Datenbank in einer
@@ -172,7 +196,8 @@ public class NachrichtMapper {
 	 * @param unterhaltung
 	 * @return
 	 */
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) throws IllegalArgumentException {
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) 
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 		try {
@@ -302,5 +327,11 @@ public class NachrichtMapper {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		result = dateFormat.format(date);
 		return result;
+	}
+
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
+			Unterhaltung unterhaltung) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

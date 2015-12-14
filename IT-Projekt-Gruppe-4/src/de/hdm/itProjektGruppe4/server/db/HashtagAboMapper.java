@@ -2,7 +2,6 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
-
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
@@ -203,12 +202,12 @@ public class HashtagAboMapper {
 			// Zunächst wird geschaut welches der momentan höchste
 			// Primärschlüssel ist
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagabo_id=" + id + " ORDER by hashtagabo_id");
+					+ "WHERE hashtagAboID=" + id + " ORDER by hashtagAboID");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
-				hashtagAbonnement.setId(rs.getInt("hashtagaboID"));
+				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
 
 				return hashtagAbonnement;
 			}
@@ -237,11 +236,11 @@ public class HashtagAboMapper {
 			Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagaboID=" + id + " ORDER BY hashtagaboID");
+					+ "WHERE hashtagAboID=" + id + " ORDER BY hashtagAboID");
 
 			while (rs.next()) {
 				Hashtagabonnement hashtagabonnement = new Hashtagabonnement();
-				hashtagabonnement.setId(rs.getInt("hashtagaboID"));
+				hashtagabonnement.setId(rs.getInt("hashtagAboID"));
 
 				hashtagAboListe.add(hashtagabonnement);
 			}

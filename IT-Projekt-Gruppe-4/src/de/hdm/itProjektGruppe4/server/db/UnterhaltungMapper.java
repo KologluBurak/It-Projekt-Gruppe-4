@@ -18,6 +18,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * @author Kologlu
  * @author Oikonomou
  * @author Thies
+ * @author Yücel
  */
 public class UnterhaltungMapper {
 
@@ -112,7 +113,7 @@ public class UnterhaltungMapper {
 	 * Wiederholtes Schreiben eines Objekts in die Datenbank.
 	 * 
 	 * @param unterhaltung
-	 *            das Objekt, das in die DB geschrieben werden soll
+	 * das Objekt, das in die DB geschrieben werden soll
 	 * @return das als Parameter �bergebene Objekt
 	 */
 	public Unterhaltung update(Unterhaltung unterhaltung) throws IllegalArgumentException {
@@ -137,7 +138,7 @@ public class UnterhaltungMapper {
 	 * Datenbank.
 	 * 
 	 * @param id
-	 *            das aus der DB zu l�schende "Objekt"
+	 * das aus der DB zu l�schende "Objekt"
 	 */
 	public void delete(Unterhaltung unterhaltung) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
@@ -163,11 +164,11 @@ public class UnterhaltungMapper {
 		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltung_id");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltungID");
 
 			while (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltung_id"));
+				unterhaltung.setId(rs.getInt("unterhaltungID"));
 				unterhaltung.setErstellungsZeitpunkt(rs
 						.getDate("erstellungsZeitpunkt"));
 
@@ -195,11 +196,11 @@ public class UnterhaltungMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, erstellungsZeitpunkt FROM unterhaltungen "
-					+ "WHERE unterhaltung_id= " + id + " ORDER BY unterhaltung_id");
+					+ "WHERE unterhaltungID= " + id + " ORDER BY unterhaltungID");
 
 			if (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltung_id"));
+				unterhaltung.setId(rs.getInt("unterhaltungID"));
 				unterhaltung.setErstellungsZeitpunkt(rs
 						.getDate("erstellungsZeitpunkt"));
 
@@ -212,40 +213,6 @@ public class UnterhaltungMapper {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * Diese Methode ermöglicht es alle beteiligten Nutzer einer Unterhaltung
-	 * anhand ihrer ID zu finden und anzuzeigen.
-	 * 
-	 * @param unterhaltung
-	 * @return
-	 */
-	public int countNutzerFromUnterhaltung(Unterhaltung unterhaltung) throws Exception {
-		Connection con = DBConnection.connection();
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT COUNT((absenderID)+(empfaengerID)) AS AnzahlAllerNutzerEinerUnterhaltung "
-							+ "FROM unterhaltungslisten WHERE unterhaltungID=" + unterhaltung.getId());
-			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
-		}
-	}
-
-	public int countNachrichtenFromUnterhaltung(Unterhaltung unterhaltung) throws Exception {
-		Connection con = DBConnection.connection();
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT COUNT( AS AnzahlAllerNutzerEinerUnterhaltung "
-					+ "FROM unterhaltungslisten WHERE unterhaltungID=" + unterhaltung.getId());
-			return rs.getInt("AnzahlAllerNutzerEinerUnterhaltung");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new Exception("Datenbank fehler!" + e.toString());
-		}
 	}
 
 	/**
