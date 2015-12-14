@@ -101,7 +101,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			  Statement stmt = con.createStatement();
 			  
 			  ResultSet rs = stmt.executeQuery("SELECT * FROM abonnement " 
-			  + "WHERE abonnement_id=" + id + " ORDER by aboArt");
+			  + "WHERE abonnementID=" + id + " ORDER by abonnementID");
 			  
 
 			  if (rs.next()) {
@@ -132,22 +132,22 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 
 		    try {
 		      Statement stmt = con.createStatement();
+		      ResultSet rs = stmt.executeQuery("SELECT abonnementID, erstellungsZeitpunkt FROM abonnement ORDER BY abonnementID");
 
-		      ResultSet rs = stmt.executeQuery("SELECT abonnement_id FROM abonnement "
-		          + " ORDER BY abonnement_id");
-
-		      
 		      while (rs.next()) {
 		        Abonnement abonnement = new Abonnement();
-		        abonnement.setId(rs.getInt("abonnement_id"));
+		        abonnement.setId(rs.getInt("abonnementID"));
+		        abonnement.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
 
 		        aboListe.add(abonnement);
 		      }
+		      stmt.close();
+		      rs.close();
+		      con.close();
 		    }
 		    catch (SQLException e1) {
 		      e1.printStackTrace();
 		    }
-
 		    return aboListe;
 		  }
 
@@ -158,100 +158,6 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 		 * @return
 		 */
 
-//		public Abonnement findNutzerAboByKey(int id){
-//				
-//			Connection con = DBConnection.connection();
-//				  
-//			try {
-//				Statement stmt = con.createStatement();
-//					  
-//				ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement " 
-//				+ "WHERE nutzerabo_id=" + id + " ORDER by nutzerabo_id");
-//					  
-//
-//				if (rs.next()) {
-//				Abonnement abonnement = new Abonnement();
-//				
-//					abonnement.setId(rs.getInt("nutzerabo_id"));
-//					abonnement.setNutzerabo(rs.getString("nutzername"));
-//					
-//						  
-//					return abonnement;
-//					}
-//				}
-//			catch (SQLException e1) {
-//				e1.printStackTrace();
-//				return null;
-//					  
-//				}
-//				return null;
-//		}
-		public Nutzerabonnement findNutzerAboByKey(int id){
-			
-			Connection con = DBConnection.connection();
-				  
-			try {
-				Statement stmt = con.createStatement();
-					  
-				ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement " 
-				+ "WHERE nutzerabo_id=" + id + " ORDER by nutzerabo_id");
-					  
-
-				if (rs.next()) {
-				Nutzerabonnement abonnement = new Nutzerabonnement();
-				
-					abonnement.setId(rs.getInt("nutzerabo_id"));
-					abonnement.setAboNutzerId(rs.getInt("abonnierterNutzerId"));
-					
-						  
-					return abonnement;
-					}
-				}
-			catch (SQLException e1) {
-				e1.printStackTrace();
-				return null;
-					  
-				}
-				return null;
-		}
-			  
-		/**
-		 * Diese Methode ermöglicht eine Ausgabe über die Nutzerabonnements eines Nutzers, in einer Liste.
-		 * @param id
-		 * @return
-		 */
-			  
-//		public ArrayList<Abonnement> findNutzerAbonnementByNutzer(int id) {
-//			 Connection con = DBConnection.connection();
-//			 ArrayList <Abonnement> nutzerAboListe = new ArrayList<Abonnement> ();
-//				    
-//				try {
-//				    	
-//				   Statement stmt = con.createStatement();
-//
-//				   ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement "
-//				        + "WHERE nutzerabo_id=" + id + " ORDER BY nutzerabo_id");
-//
-//
-//				  while (rs.next()) {
-//				  Abonnement abonnement = new Abonnement();
-//				  abonnement.setId(rs.getInt("nutzer_id"));
-//				  abonnement.setNutzerabo(rs.getString("nutzername"));
-//
-//				    nutzerAboListe.add(abonnement);
-//				  }
-//				      
-//				}
-//				    
-//				catch (SQLException e1) {
-//				   e1.printStackTrace();
-//				   return null;
-//				 }
-//
-//			return nutzerAboListe;
-//				    
-//		}
-		public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(int id) {
 		public ArrayList<Abonnement> findNutzerAbonnementByNutzer(String von, String bis, int id) {
 			 Connection con = DBConnection.connection();
 			 ArrayList <Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement> ();
@@ -267,8 +173,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 				  while (rs.next()) {
 				  Nutzerabonnement abonnement = new Nutzerabonnement();
 				  abonnement.setId(rs.getInt("nutzer_id"));
-				  abonnement.setAboNutzerId(rs.getInt("abonnierterNutzer"));
-				  abonnement.setNutzerabo(rs.getString("nutzername"));
+//				  abonnement.setAboNutzerId(rs.getInt("abonnierterNutzer"));
+//				  abonnement.setNutzerabo(rs.getString("nutzername"));
 				  abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
 
 				    nutzerAboListe.add(abonnement);
@@ -281,7 +187,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 				   return null;
 				 }
 
-			return nutzerAboListe;
+			return null; // nutzerAboListe;
 				    
 		}
 
@@ -289,284 +195,29 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 		 * Diese Methode ermöglicht es alle Nutzerabonnements aus der Datenbank in einer Liste auszugeben.
 		 * @return
 		 */
-		  
-
-//		  public ArrayList<Abonnement> findAllNutzerabonnements() {
-//			    Connection con = DBConnection.connection();
-//
-//			    ArrayList<Abonnement> allNutzerAbos = new ArrayList<Abonnement>();
-//
-//			    try {
-//			      Statement stmt = con.createStatement();
-//
-//			      ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement "
-//			          + " ORDER BY nutzerabo_id");
-//
-//			      
-//			      while (rs.next()) {
-//			        Abonnement abonnement = new Abonnement();
-//			        abonnement.setId(rs.getInt("nutzerabo_id"));
-//			        abonnement.setNutzerabo(rs.getString("nutzername"));
-//			        
-//			        allNutzerAbos.add(abonnement);
-//			      }
-//			    }
-//			    catch (SQLException e1) {
-//			      e1.printStackTrace();
-//			    }
-//
-//			    return allNutzerAbos;
-//			  }
-		public ArrayList<Nutzerabonnement> findAllNutzerabonnements() {
-		    Connection con = DBConnection.connection();
-		  public ArrayList<Abonnement> findAllNutzerabonnements(String von, String bis, int id) {
+		  public ArrayList<Abonnement> findAllNutzerabonnements() {
 			    Connection con = DBConnection.connection();
 
-		    ArrayList<Nutzerabonnement> allNutzerAbos = new ArrayList<Nutzerabonnement>();
+			    ArrayList<Abonnement> allNutzerAbos = new ArrayList<Abonnement>();
 
-		    try {
-		      Statement stmt = con.createStatement();
+			    try {
+			      Statement stmt = con.createStatement();
+			      ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement "
+			          + " ORDER BY nutzerabo_id");
 
-		      ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement "
-		          + " ORDER BY nutzerabo_id");
-
-		      
-		      while (rs.next()) {
-		        Nutzerabonnement abonnement = new Nutzerabonnement();
-		        abonnement.setId(rs.getInt("nutzerabo_id"));
-		        abonnement.setAboNutzerId(rs.getInt("abonnierterNutzer"));
-		        
-		        allNutzerAbos.add(abonnement);
-		      }
-		    }
-		    catch (SQLException e1) {
-		      e1.printStackTrace();
-		    }
 			      
 			      while (rs.next()) {
 			        Abonnement abonnement = new Abonnement();
 			        abonnement.setId(rs.getInt("nutzerabo_id"));
-			        abonnement.setNutzerabo(rs.getString("nutzername"));
-			        abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-
+			        //abonnement.setNutzerabo(rs.getString("nutzername"));
+			        
 			        allNutzerAbos.add(abonnement);
-			      }
+					}
 			    }
 			    catch (SQLException e1) {
 			      e1.printStackTrace();
 			    }
 
-		    return allNutzerAbos;
-		  }
-		  
-
-			/**
-			 * Diese Methode ermöglicht es eine Ausgabe über einen Hashtagabonnements in der Datenbank, anhand deren ID.
-			 * @param id
-			 * @return
-			 */
-
-//			public Abonnement findHashtagAboByKey(int id){
-//					
-//				Connection con = DBConnection.connection();
-//					  
-//				try {
-//					Statement stmt = con.createStatement();
-//						  
-//					ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement " 
-//					+ "WHERE nutzerabo_id=" + id + " ORDER by nutzerabo_id");
-//						  
-//
-//					if (rs.next()) {
-//					Abonnement abonnement = new Abonnement();
-//						abonnement.setId(rs.getInt("nutzerabo_id"));
-//						abonnement.setNutzerabo(rs.getString("nutzername"));
-//							  
-//						return abonnement;
-//						}
-//					}
-//				catch (SQLException e1) {
-//					e1.printStackTrace();
-//					return null;
-//						  
-//					}
-//					return null;
-//			}
-		public Hashtagabonnement findHashtagAboByKey(int id){
-			
-			Connection con = DBConnection.connection();
-				  
-			try {
-				Statement stmt = con.createStatement();
-					  
-				ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement " 
-				+ "WHERE nutzerabo_id=" + id + " ORDER by nutzerabo_id");
-					  
-
-				if (rs.next()) {
-				Hashtagabonnement abonnement = new Hashtagabonnement();
-					abonnement.setId(rs.getInt("nutzerabo_id"));
-					abonnement.setAboHashtagId(rs.getInt("hashtagAboId"));
-						  
-					return abonnement;
-					}
-				}
-			catch (SQLException e1) {
-				e1.printStackTrace();
-				return null;
-					  
-				}
-				return null;
-		}
-		  
-		  /**
-			 * Diese Methode ermöglicht eine Ausgabe über die Nutzerabonnements eines Nutzers, in einer Liste.
-			 * @param id
-			 * @return
-			 */
-				  
-
-//			public ArrayList<Abonnement> findHashtagAbonnementByNutzer(int id) {
-//				 Connection con = DBConnection.connection();
-//				 ArrayList <Abonnement> hashtagAboListe = new ArrayList<Abonnement> ();
-//					    
-//					try {
-//					    	
-//					   Statement stmt = con.createStatement();
-//
-//					   ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement "
-//					        + "WHERE nutzerabo_id=" + id + " ORDER BY nutzerabo_id");
-//
-//
-//					  while (rs.next()) {
-//					  Abonnement abonnement = new Abonnement();
-//					  abonnement.setId(rs.getInt("nutzerabo_id"));
-//					  abonnement.setHashtagabo(rs.getString("nutzername"));
-//
-//
-//					    hashtagAboListe.add(abonnement);
-//					  }
-//					      
-//					}
-//					    
-//					catch (SQLException e1) {
-//					   e1.printStackTrace();
-//					   return null;
-//					 }
-//
-//				return hashtagAboListe;
-//					    
-//		}
-		public ArrayList<Hashtagabonnement> findHashtagAbonnementByNutzer(int id) {
-			 Connection con = DBConnection.connection();
-			 ArrayList <Hashtagabonnement> hashtagAboListe = new ArrayList<Hashtagabonnement> ();
-				    
-				try {
-				    	
-				   Statement stmt = con.createStatement();
-
-			public ArrayList<Abonnement> findHashtagAbonnementByNutzer(String von, String bis, int id) {
-				 Connection con = DBConnection.connection();
-				 ArrayList <Abonnement> hashtagAboListe = new ArrayList<Abonnement> ();
-					    
-					try {
-					    	
-					   Statement stmt = con.createStatement();
-
-				   ResultSet rs = stmt.executeQuery("SELECT * FROM Abonnement "
-				        + "WHERE nutzerabo_id=" + id + " ORDER BY nutzerabo_id");
-
-
-				  while (rs.next()) {
-				  Hashtagabonnement abonnement = new Hashtagabonnement();
-				  abonnement.setId(rs.getInt("nutzerabo_id"));
-				  abonnement.setAboHashtagId(rs.getInt("hashtagId"));
-					  while (rs.next()) {
-					  Abonnement abonnement = new Abonnement();
-					  abonnement.setId(rs.getInt("nutzerabo_id"));
-					  abonnement.setHashtagabo(rs.getString("nutzername"));
-					  abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-
-				    hashtagAboListe.add(abonnement);
-				  }
-				      
-				}
-				    
-				catch (SQLException e1) {
-				   e1.printStackTrace();
-				   return null;
-				 }
-
-			return hashtagAboListe;
-				    
-	}
-			
-			/**
-			 * Diese Methode ermöglicht es alle Hashtagabonnements aus der Datenbank in einer Liste auszugeben.
-			 * @return
-			 */
-			  
-
-//			  public ArrayList<Abonnement> findAllHastagabonnements() {
-//				    Connection con = DBConnection.connection();
-//
-//				    ArrayList<Abonnement> allHashtagAbos = new ArrayList<Abonnement>();
-//
-//				    try {
-//				      Statement stmt = con.createStatement();
-//
-//				      ResultSet rs = stmt.executeQuery("SELECT abonnement_id FROM abonnement "
-//				          + " ORDER BY abonnement_id");
-//
-//				      
-//				      while (rs.next()) {
-//				        Abonnement abonnement = new Abonnement();
-//				        abonnement.setId(rs.getInt("hashtagabo_id"));
-//				        abonnement.setHashtagabo(rs.getString("hashtagname"));
-//
-//				        
-//				        allHashtagAbos.add(abonnement);
-//				      }
-//				    }
-//				    catch (SQLException e1) {
-//				      e1.printStackTrace();
-//				    }
-//
-//				    return allHashtagAbos;
-//			}
-		public ArrayList<Hashtagabonnement> findAllHastagabonnements() {
-		    Connection con = DBConnection.connection();
-			  public ArrayList<Abonnement> findAllHastagabonnements(String von, String bis, int id) {
-				    Connection con = DBConnection.connection();
-		    ArrayList<Hashtagabonnement> allHashtagAbos = new ArrayList<Hashtagabonnement>();
-
-		    try {
-		      Statement stmt = con.createStatement();
-
-		      ResultSet rs = stmt.executeQuery("SELECT abonnement_id FROM abonnement "
-		          + " ORDER BY abonnement_id");
-
-		      
-		      while (rs.next()) {
-		        Hashtagabonnement abonnement = new Hashtagabonnement();
-		        abonnement.setId(rs.getInt("hashtagabo_id"));
-		        abonnement.setAboHashtagId(rs.getInt("hashtagId"));
-				      
-				      while (rs.next()) {
-				        Abonnement abonnement = new Abonnement();
-				        abonnement.setId(rs.getInt("hashtagabo_id"));
-				        abonnement.setHashtagabo(rs.getString("hashtagname"));
-				        abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-
-		        
-		        allHashtagAbos.add(abonnement);
-		      }
-		    }
-		    catch (SQLException e1) {
-		      e1.printStackTrace();
-		    }
-
-		    return allHashtagAbos;
-	}
-			  
+			    return allNutzerAbos;
+			  }
 }

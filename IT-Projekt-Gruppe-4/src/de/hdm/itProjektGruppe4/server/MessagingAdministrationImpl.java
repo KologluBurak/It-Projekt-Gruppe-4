@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 
 
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.server.db.*;
@@ -90,12 +91,12 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	public void delete (Nutzer nutzer) throws IllegalArgumentException{
 		/*
 		 * zugehörende nachrichten werden auch gelöscht
-		 */
+		 
 		ArrayList <Nachricht> nachrichten = this.getAlleNachrichtbyNutzer(nutzer);
 		
 		/*
 		 * Die Verbindung zum Abonnement wird aufgelöst. 
-		 */
+		
 		ArrayList <Nutzerabonnement> nutzerabo = this.findAbonnementByNutzer(nutzer);
 		if (nutzerabo!=null){
 			for (Nutzerabonnement nabo : nutzerabo){
@@ -104,16 +105,16 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 			
 			/*
 			 * Die Nachrichten die eine Verbindung zum Nutzer haben werden gelöscht.
-			 */
+			 
 			
 		if (nachrichten != null){
 			for (Nachricht n : nachrichten){
 				this.delete(n);
 			}
-		}
+		} 
 		this.nutzerMapper.delete(nutzer);
 		
-		}
+		} */
 		
 	}
 	
@@ -153,22 +154,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		na.setText(text);	
 		return this.nachrichtMapper.insert(na);
 	}
-	
-	/**
-	 * Senden einer Nachricht
-	 */
-	public void senden (Nachricht senden) 
-			throws IllegalArgumentException {
-		//nachrichtMapper.updateNachricht(senden);
-	}
-	
-	/**
-	 * Empfangen einer Nachricht
-	 */
-	public void empfangen (Nachricht empfangen) 
-			throws IllegalArgumentException{
-		//nachrichtMapper.updateNachricht(empfangen);  
-		}
+
 	
 	
 	/**
@@ -250,7 +236,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	public Unterhaltung delete(Unterhaltung u){
 		/*
 		 * Zugehörige Nachrichten von der Unterhaltung werden gelöscht
-		 */
+		 
 	ArrayList <Nachricht> nachrichten = this.findNachrichtenByUnterhaltung(u);
 	
 	
@@ -259,7 +245,8 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 			this.delete(n);
 		}
 	}
-	this.unterhaltungMapper.delete(u);
+	return this.unterhaltungMapper.delete(u); */
+		return null;
 	}
 	
 	
@@ -280,17 +267,12 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	public Abonnement createAbonnement(Nutzerabonnement aboNutzer, Hashtagabonnement aboHashtag) 
 			throws IllegalArgumentException{
 		Abonnement a = new Abonnement();
-		a.setAboNutzer(aboNutzer);
-		a.setAboHashtag(aboHashtag);
+		//a.setAboNutzer(aboNutzer);
+		//a.setAboHashtag(aboHashtag);
 		return abonnementMapper.insertAbonnement(a);
 		//
 		}
 	
-	public void save (Abonnement abo) 
-			throws IllegalArgumentException {
-		abonnementMapper.updateAbonnement(abo);
-		//
-	}
 	
 	/**
 	   * Auslesen aller Abonnements.
@@ -370,8 +352,8 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	public Nutzerabonnement createNutzerabonnement (Nutzer derBeobachtete, Nutzer follower)
 			throws IllegalArgumentException{
 	Nutzerabonnement nutzabo = new Nutzerabonnement();
-	nutzabo.getDerBeobachteteId();
-	nutzabo.getAboNutzerId();
+	 //nutzabo.getDerBeobachteteId();
+	 //nutzabo.getAboNutzerId();
 	return nutzerAboMapper.insert(nutzabo); 
 }
 	
@@ -402,7 +384,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 	 */
 	public Hashtagabonnement createHashtagAbonnement (Hashtag bezeichnung)throws IllegalArgumentException{
 		Hashtagabonnement b = new Hashtagabonnement();
-		b.getAboHashtagId();
+		//b.getAboHashtagId();
 		return hashtagAboMapper.insert(b);	
 		}
 
@@ -415,6 +397,18 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		hashtagAboMapper.delete(hashtagAbo);
 
 }
+
+	@Override
+	public void senden(Nachricht Senden) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void empfangen(Nachricht Empfangen) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
 
 	/*
 	   * ***************************************************************************

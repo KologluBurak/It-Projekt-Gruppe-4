@@ -4,24 +4,32 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import com.google.appengine.api.utils.SystemProperty;
 
+
 public class DBConnection {
 
-	//Variablen f�r den Verbindungsaufbau
+	//Variablen für den Verbindungsaufbau
 	private static Connection con = null;
 	private static String googleUrl = null;
     private static String localUrl = "jdbc:mysql://localhost:3306/messaging_administration?user=root";
-        
+
     public static Connection connection() {
+    	System.out.println("Connection aufgerufen!");
         // Wenn es bisher keine Conncetion zur DB gab, ...
         if (con == null) {
-            String url = null;
+            String url = "";
             try {
-                if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-                    Class.forName("com.mysql.jdbc.GoogleDriver");
-                    url = googleUrl;
-                } else {
+//                if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+//                    Class.forName("com.mysql.jdbc.GoogleDriver");
+//                    url = googleUrl;
+//                } else {
+            	try{
                     Class.forName("com.mysql.jdbc.Driver");
                     url = localUrl;
+                    System.out.println("URL von DB: "+url);
+                }catch(Exception e){
+                    System.err.println("Treiber konnte nicht erstellt werden.");
+                	con = null;
+                    e.printStackTrace();
                 }
                 con = DriverManager.getConnection(url);
                 

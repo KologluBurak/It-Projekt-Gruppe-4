@@ -3,6 +3,7 @@ package de.hdm.itProjektGruppe4.shared;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 
@@ -16,6 +17,10 @@ import com.google.gwt.user.client.rpc.RemoteService;
 
 
 
+
+
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
@@ -24,7 +29,8 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * @author Yücel, Nguyen, Raue
  *
  */
-
+ 
+@RemoteServiceRelativePath("messagingAdmin")
 public interface MessagingAdministration extends RemoteService {
 		
 	/*
@@ -49,12 +55,7 @@ public interface MessagingAdministration extends RemoteService {
 	public Nutzer createNutzer(String vorname, String nachname, String email, String nickname) throws IllegalArgumentException;
 	public void delete (Nutzer nutzer) throws IllegalArgumentException;
 	public ArrayList<Nutzer> findAllNutzer() throws IllegalArgumentException;
-	public Nutzer getNutzerByNachname(String nachname)throws IllegalArgumentException;
-	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für Nutzer-Objekte
-	   * ***************************************************************************
-	   */
+	Nutzer getNutzerByNachname(String nachname);
 	
 	/*
 	   * ***************************************************************************

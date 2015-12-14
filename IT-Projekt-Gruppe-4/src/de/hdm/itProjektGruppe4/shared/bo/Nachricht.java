@@ -1,35 +1,83 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+import java.util.ArrayList;
+
 /**
- *@author Yücel, Nguyen, Oikonomou, Kologlu
+ * @author Yücel, Nguyen, Oikonomou, Kologlu
  * 
  */
 
 public class Nachricht extends BusinessObject {
-	
-	private static final long serialVersionUID = 1L;
-	
-	private String text;
-	
-	/**
-	 * Fremdschl�sselbeziehung
-	 */
-	private int kommentarID=0;
-	
-	
-	public int getKommentarID() {
-		return kommentarID;
-	}
 
-	public void setKommentarID(int kommentarID) {
-		this.kommentarID = kommentarID;
-	}
+	/**
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
+	 * ben�tigt.
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Textinhalt der Nachricht
+	 */
+	private String text;
+
+	/**
+	 * Absender einer Nachricht
+	 */
+	private Nutzer absender;
+
+	/**
+	 * Empfaenger einer Nachricht
+	 */
+	private ArrayList<Nutzer> empfaenger;
 
 	public String getText() {
 		return text;
 	}
-	
+
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	/**
+	 * Ausgabe des Absenders
+	 * 
+	 * @return absender
+	 */
+	public Nutzer getAbsender() {
+		return absender;
+	}
+
+	/**
+	 * Setzen des Absenders
+	 * 
+	 * @param absender
+	 */
+	public void setAbsender(Nutzer absender) {
+		this.absender = absender;
+	}
+
+	/**
+	 * Ausgabe der Empfaenger als Liste vom Typ ArrayLIst<>
+	 * 
+	 * @return empfaenger
+	 */
+	public ArrayList<Nutzer> getEmpfaenger() {
+		ArrayList<Nutzer> allEmpfaenger = new ArrayList<Nutzer>();
+		for (Nutzer nutzer : this.empfaenger) {
+			allEmpfaenger.add(nutzer);
+		}
+		return empfaenger;
+	}
+
+	/**
+	 * Setzen der Empfaenger in Listen, falls an mehrere Nutzer gesendet wird,
+	 * vom Typ Nutzer
+	 * 
+	 * @param empfaenger
+	 */
+	public void setEmpfaenger(Nutzer empfaenger) {
+		if (empfaenger != null) {
+			this.empfaenger.add(empfaenger);
+		}
 	}
 }

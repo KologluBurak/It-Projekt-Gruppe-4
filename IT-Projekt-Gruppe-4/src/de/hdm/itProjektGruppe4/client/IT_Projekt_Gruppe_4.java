@@ -1,6 +1,10 @@
 package de.hdm.itProjektGruppe4.client;
 
 import de.hdm.itProjektGruppe4.shared.FieldVerifier;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,17 +35,36 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
-
+	//private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+	MessagingAdministrationAsync maAsync = GWT.create(MessagingAdministration.class);
+	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 		
+		System.out.println("on Module load");
+		final TextBox nameField = new TextBox();
 		
+
+		maAsync.getNutzerByNachname("Mustermann", new AsyncCallback<Nutzer>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println("Ein fehler ist aufgetreten: " + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Nutzer result) {
+				// TODO Auto-generated method stub
+				System.out.println(result.getVorname());
+				
+			}
+		});
 		
 		final Button sendButton = new Button("Send");
-		final TextBox nameField = new TextBox();
+		
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
 
@@ -50,9 +73,9 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
-		RootPanel.get("nameFieldContainer").add(nameField);
-		RootPanel.get("sendButtonContainer").add(sendButton);
-		RootPanel.get("errorLabelContainer").add(errorLabel);
+		RootPanel.get("root").add(nameField);
+		RootPanel.get("root").add(sendButton);
+		//RootPanel.get("errorLabelContainer").add(errorLabel);
 
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
@@ -107,37 +130,25 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 			/**
 			 * Send the name from the nameField to the server and wait for a response.
 			 */
+			
 			private void sendNameToServer() {
-				// First, we validate the input.
-				errorLabel.setText("");
-				String textToServer = nameField.getText();
-				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
-					return;
-				}
+				
+				maAsync.createNutzer(nameField.getText(), "NachnameVonEinemUser", "user@hdm-stuttgart.de", "user123", new AsyncCallback<Nutzer>() {
 
-				// Then, we send the input to the server.
-				sendButton.setEnabled(false);
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer, new AsyncCallback<String>() {
+					@Override
 					public void onFailure(Throwable caught) {
-						// Show the RPC error message to the user
-						dialogBox.setText("Remote Procedure Call - Failure");
-						serverResponseLabel.addStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(SERVER_ERROR);
-						dialogBox.center();
-						closeButton.setFocus(true);
+						// TODO Auto-generated method stub
+						System.out.println("Nutzer konnte nicht anlegt werden." + caught.getMessage());
 					}
 
-					public void onSuccess(String result) {
-						dialogBox.setText("Remote Procedure Call");
-						serverResponseLabel.removeStyleName("serverResponseLabelError");
-						serverResponseLabel.setHTML(result);
-						dialogBox.center();
-						closeButton.setFocus(true);
+					@Override
+					public void onSuccess(Nutzer result) {
+						
+						System.out.println("Nutzer wurde anlegt.");
+						
 					}
 				});
+				
 			}
 		}
 
