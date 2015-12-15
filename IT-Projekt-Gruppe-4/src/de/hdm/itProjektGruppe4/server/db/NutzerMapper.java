@@ -88,8 +88,6 @@ public class NutzerMapper {
 			
 			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if(rs.next()){
-				int newID=rs.getInt("maxid");
-				nutzer.setId(newID);
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date d = null;
 				try {
@@ -101,13 +99,12 @@ public class NutzerMapper {
 				nutzer.setErstellungsZeitpunkt(d);
 				
 				PreparedStatement preStmt;
-				preStmt=con.prepareStatement("INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) VALUES ( null,?,?,?,?,?)");
-				//preStmt.setInt(1, newID);
+				preStmt=con.prepareStatement("INSERT INTO nutzer(nutzerID, vorname, nachname, email, nickname, datum) VALUES ( null,?,?,?,?,?)");
 				preStmt.setString(1, nutzer.getVorname());
 				preStmt.setString(2, nutzer.getNachname());
 				preStmt.setString(3, nutzer.getEmail());
 				preStmt.setString(4, nutzer.getNickname());
-				preStmt.setString(5, getSqlDateFormat(nutzer.getErstellungsZeitpunkt()));
+				preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
 			}
@@ -133,15 +130,15 @@ public class NutzerMapper {
 		try{
 			PreparedStatement preStmt;
 			preStmt=con.prepareStatement("UPDATE nutzer SET vorname=?, "
-					+ "nachname=?, email=?, nickname=?, erstellungsZeitpunkt=? WHERE nutzerID="+nutzer.getId());
+					+ "nachname=?, email=?, nickname=?, datum=? WHERE nutzerID="+nutzer.getId());
 			preStmt.setString(1, nutzer.getVorname());
 			preStmt.setString(2, nutzer.getNachname());
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
-			preStmt.setString(5, getSqlDateFormat(nutzer.getErstellungsZeitpunkt()));
+			preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 			preStmt.close();
-			con.close();
+			//con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -159,9 +156,9 @@ public class NutzerMapper {
 		Connection con =DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzer WHERE userID="+nutzer.getId());
+			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzerID="+nutzer.getId());
 			stmt.close();
-			con.close();
+			//con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -178,23 +175,23 @@ public class NutzerMapper {
 		ArrayList<Nutzer> alleNutzer = new ArrayList<Nutzer>();
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT userID, vorname, nachname, email, nickname, erstellungsZeitpunkt "
-					+ "FROM nutzer ORDER BY userID");
+			ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, email, nickname, datum "
+					+ "FROM nutzer ORDER BY nutzerID");
 		
 			while(rs.next()){
 				Nutzer nutzer = new Nutzer();
-				nutzer.setId(rs.getInt("userID"));
+				nutzer.setId(rs.getInt("nutzerID"));
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
 			
 				alleNutzer.add(nutzer);
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -237,12 +234,12 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht einen Nutzer anhand des Prim�rschl�ssels zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public Nutzer findNutzerById(int userID) throws IllegalArgumentException{
+	public Nutzer findNutzerById(int nutzerID) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT userID, vorname, nachname, email, nickname, erstellungsZeitpunkt "
-					+ "FROM nutzer WHERE userID="+userID+" ORDER BY userID");
+					+ "FROM nutzer WHERE userID="+nutzerID+" ORDER BY userID");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
@@ -261,22 +258,5 @@ public class NutzerMapper {
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return null;
-	}
-	
-	
-	
-	/**
-	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
-	 * Format.
-	 * 
-	 * @param date
-	 *            Date das konvertiert werden soll
-	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
-	 */
-	private String getSqlDateFormat(Date date) {
-		String result = "";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		result = dateFormat.format(date);
-		return result;
 	}
 }
