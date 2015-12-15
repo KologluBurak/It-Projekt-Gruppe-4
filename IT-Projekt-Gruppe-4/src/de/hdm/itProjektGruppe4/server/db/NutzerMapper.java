@@ -82,12 +82,12 @@ public class NutzerMapper {
 		Connection con = DBConnection.connection();
 		try{
 			//Insert-Statement erzeugen
-			Statement stmt = con.createStatement();
+			//Statement stmt = con.createStatement();
 			//Zun�chst wird geschaut welches der momentan h�chste Prim�rschl�ssel ist
-			ResultSet rs=stmt.executeQuery("SELECT MAX(nutzerID) AS maxid "+"FROM nutzer");
+			//ResultSet rs=stmt.executeQuery("SELECT MAX(nutzerID) AS maxid "+"FROM nutzer");
 			
 			//Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			if(rs.next()){
+			//if(rs.next()){
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 				Date d = null;
 				try {
@@ -99,7 +99,7 @@ public class NutzerMapper {
 				nutzer.setErstellungsZeitpunkt(d);
 				
 				PreparedStatement preStmt;
-				preStmt=con.prepareStatement("INSERT INTO nutzer(nutzerID, vorname, nachname, email, nickname, datum) VALUES ( null,?,?,?,?,?)");
+				preStmt=con.prepareStatement("INSERT INTO nutzer(nutzerID, vorname, nachname, email, nickname, datum) VALUES (null,?,?,?,?,?)");
 				preStmt.setString(1, nutzer.getVorname());
 				preStmt.setString(2, nutzer.getNachname());
 				preStmt.setString(3, nutzer.getEmail());
@@ -107,9 +107,9 @@ public class NutzerMapper {
 				preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
-			}
-			stmt.close();
-			rs.close();
+			//}
+			//stmt.close();
+			//rs.close();
 			//con.close();
 		}
 		catch(SQLException e){
@@ -238,8 +238,8 @@ public class NutzerMapper {
 		Connection con=DBConnection.connection();
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT userID, vorname, nachname, email, nickname, erstellungsZeitpunkt "
-					+ "FROM nutzer WHERE userID="+nutzerID+" ORDER BY userID");
+			ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, email, nickname, datum "
+					+ "FROM nutzer WHERE nutzerID="+nutzerID+" ORDER BY nutzerID");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
@@ -248,7 +248,7 @@ public class NutzerMapper {
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
 				
 				return nutzer;
 			}

@@ -80,29 +80,25 @@ public class NachrichtMapper {
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
-			Statement stmt = con.createStatement();
+			//Statement stmt = con.createStatement();
 
 			// Zun�chst wird geschaut welches der momentan h�chste
 			// Prim�rschl�ssel ist
-			ResultSet rs = stmt.executeQuery("SELECT MAX(nachrichtID) AS maxid FROM nachrichten");
+			//ResultSet rs = stmt.executeQuery("SELECT MAX(nachrichtID) AS maxid FROM nachrichten");
 
 			// Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
-			if (rs.next()) {
-				int newID = rs.getInt("maxid");
-				nachricht.setId(newID);
+			//if (rs.next()) {
 
 				PreparedStatement preStmt;
-				preStmt = con.prepareStatement("INSERT INTO nachrichten "
-						+ "(nachrichtID, text, erstellungsZeitpunkt) VALUES(?, ?, ?)");
-				preStmt.setInt(1, newID);
-				preStmt.setString(2, nachricht.getText());
-				preStmt.setString(3, getSqlDateFormat(nachricht.getErstellungsZeitpunkt()));
+				preStmt = con.prepareStatement("INSERT INTO nachrichten(nachrichtID, text, datum) VALUES(null, ?, ?)");
+				preStmt.setString(1, nachricht.getText());
+				preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
-			}
-			stmt.close();
-			rs.close();
-			con.close();
+			//}
+			//stmt.close();
+			//rs.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -122,12 +118,12 @@ public class NachrichtMapper {
 		try {
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement("UPDATE nachrichten SET text=?, "
-					+"erstellungsZeitpunkt=? WHERE nachrichtID=" + nachricht.getId());
+					+"datum=? WHERE nachrichtID=" + nachricht.getId());
 			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, getSqlDateFormat(nachricht.getErstellungsZeitpunkt()));
-			preStmt.setInt(3, nachricht.getId());
+			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 			preStmt.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -153,8 +149,7 @@ public class NachrichtMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
 		}
 	}
 
@@ -175,13 +170,14 @@ public class NachrichtMapper {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				allNachrichten.add(nachricht);
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -203,15 +199,15 @@ public class NachrichtMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT unterhaltungID, unterhaltungen.erstellungsZeitpunkt nachrichten.text "
-							+ "nachrichten.erstellungsZeitpunkt FROM nachrichten INNER JOIN unterhaltungen "
+					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
+							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
 							+ "ON nachrichtID=" + nachricht.getId()
 							+ " ON nachrichten.unterhaltungID=unterhaltung.unterhaltungID "
-							+ "ORDER BY unterhaltung.erstellungsZeitpunkt");
+							+ "ORDER BY unterhaltung.datum");
 
 			while (rs.next()) {
-				nachricht.setId(rs.getInt(""));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("nachrichten.erstellungsZeitpunkt"));
+				nachricht.setId(rs.getInt("nachrichtID"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("nachrichten.datum"));
 
 				result.add(nachricht);
 			}
@@ -233,7 +229,7 @@ public class NachrichtMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, text, erstellungsZeitpunkt FROM nachrichten "
+			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, text, datum FROM nachrichten "
 					+ "WHERE nachrichtID=" + id + " ORDER by nachrichtID");
 
 			if (rs.next()) {
@@ -273,7 +269,7 @@ public class NachrichtMapper {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nutzerID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				nachrichtenJeNutzer.add(nachricht);
 			}
@@ -312,21 +308,6 @@ public class NachrichtMapper {
 			return null;
 		}
 		return nachrichtenJeZeitraum;
-	}
-
-	/**
-	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
-	 * Format.
-	 * 
-	 * @param date
-	 *            Date das konvertiert werden soll
-	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
-	 */
-	private String getSqlDateFormat(Date date) {
-		String result = "";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		result = dateFormat.format(date);
-		return result;
 	}
 
 	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(

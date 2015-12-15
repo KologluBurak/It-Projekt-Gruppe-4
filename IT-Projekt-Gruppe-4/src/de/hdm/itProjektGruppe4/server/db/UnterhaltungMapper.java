@@ -78,30 +78,25 @@ public class UnterhaltungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
-			Statement stmt = con.createStatement();
+			//Statement stmt = con.createStatement();
 			
 			// Zun�chst wird geschaut welches der momentan h�chste
 			// Prim�rschl�ssel ist
-			ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " + "FROM unterhaltungen");
+			//ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " + "FROM unterhaltungen");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			if (rs.next()) {
-				int newID = rs.getInt("maxid");
-				unterhaltung.setId(newID);
+			//if (rs.next()) {
 
 				PreparedStatement preStmt;
 				preStmt = con.prepareStatement(
-						"INSERT INTO unterhaltungen(unterhaltungID, erstellungsZeitpunkt) VALUES(?, ?)");
-				preStmt.setInt(1, newID);
-				preStmt.setString(
-						2,
-						getSqlDateFormat(unterhaltung.getErstellungsZeitpunkt()));
+						"INSERT INTO unterhaltungen(unterhaltungID, datum) VALUES(null, ?)");
+				preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
-			}
-			stmt.close();
-			rs.close();
-			con.close();
+			//}
+			//stmt.close();
+			//rs.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -121,11 +116,11 @@ public class UnterhaltungMapper {
 		try {
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(
-					"UPDATE nutzer SET erstellungsZeitpunkt=? WHERE unterhaltungID=" + unterhaltung.getId());
-			preStmt.setString(1, getSqlDateFormat(unterhaltung.getErstellungsZeitpunkt()));
+					"UPDATE unterhaltungen SET datum=? WHERE unterhaltungID=" + unterhaltung.getId());
+			preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 			preStmt.close();
-			con.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -144,9 +139,9 @@ public class UnterhaltungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM unterhaltung WHERE unterhaltungID=" + unterhaltung.getId());
+			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID=" + unterhaltung.getId());
 			stmt.close();
-			con.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -169,14 +164,14 @@ public class UnterhaltungMapper {
 			while (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
 				unterhaltung.setId(rs.getInt("unterhaltungID"));
-				unterhaltung.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+				unterhaltung.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				allUnterhaltungen.add(unterhaltung);
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
+			
 			return allUnterhaltungen;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -195,14 +190,13 @@ public class UnterhaltungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, erstellungsZeitpunkt FROM unterhaltungen "
-					+ "WHERE unterhaltungID= " + id + " ORDER BY unterhaltungID");
+			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, datum FROM unterhaltungen "
+					+ "WHERE unterhaltungID= " + id);
 
 			if (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
 				unterhaltung.setId(rs.getInt("unterhaltungID"));
-				unterhaltung.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+				unterhaltung.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				return unterhaltung;
 			}
@@ -213,20 +207,5 @@ public class UnterhaltungMapper {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
-	 * Format.
-	 * 
-	 * @param date
-	 *            Date das konvertiert werden soll
-	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
-	 */
-	private String getSqlDateFormat(Date date) {
-		String result = "";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		result = dateFormat.format(date);
-		return result;
 	}
 }

@@ -80,30 +80,24 @@ public class NutzerAboMapper {
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
-			Statement stmt = con.createStatement();
+			//Statement stmt = con.createStatement();
+			
 			// Zun�chst wird geschaut welches der momentan h�chste
 			// Prim�rschl�ssel ist
-			ResultSet rs = stmt
-					.executeQuery("SELECT MAX(nutzerAboID) AS maxid "
-							+ "FROM nutzerabonnements");
+			//ResultSet rs = stmt.executeQuery("SELECT MAX(nutzerAboID) AS maxid FROM nutzerabonnements");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			if (rs.next()) {
-				int newID = rs.getInt("maxid");
-				nutzerabonnement.setId(newID);
+			//if (rs.next()) {
 
 				PreparedStatement preStmt;
-				preStmt = con
-						.prepareStatement("INSERT INTO nutzerabonnements, erstellungsZeitpunkt VALUES(?, ?)");
-				preStmt.setInt(1, newID);
-				preStmt.setString(2, getSqlDateFormat(nutzerabonnement
-						.getErstellungsZeitpunkt()));
+				preStmt = con.prepareStatement("INSERT INTO nutzerabonnements, datum VALUES(null, ?)");
+				preStmt.setString(1, nutzerabonnement.getErstellungsZeitpunkt().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
-			}
-			stmt.close();
-			rs.close();
-			con.close();
+			//}
+			//stmt.close();
+			//rs.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
@@ -124,14 +118,12 @@ public class NutzerAboMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzerabonnements WHERE nutzerAboID="
-					+ nutzerabonnement.getId());
+			stmt.executeUpdate("DELETE FROM nutzerabonnements WHERE nutzerAboID="+ nutzerabonnement.getId());
 			stmt.close();
-			con.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 	}
 
@@ -147,18 +139,19 @@ public class NutzerAboMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltungID");
+					.executeQuery("SELECT * FROM nutzerabonnements ORDER BY nutzerAboID");
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
-				nutzerabonnement.setId(rs.getInt("unterhaltungID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getDate("datum"));
+				
 				allNutzerabonnements.add(nutzerabonnement);
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
+			
 			return allNutzerabonnements;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -173,27 +166,23 @@ public class NutzerAboMapper {
 	 * @param id
 	 * @return
 	 */
-	public Unterhaltung findUnterhaltungById(int id) {
+	public Nutzerabonnement findNutzerabonnementByID(int id) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT unterhaltungID, erstellungsZeitpunkt FROM unterhaltungen "
-							+ "WHERE unterhaltung_id= "
-							+ id
-							+ " ORDER BY unterhaltung_id");
+			ResultSet rs = stmt.executeQuery("SELECT nutzerAboID, datum FROM nutzerabonnements "+ "WHERE nutzerAboID= "+ id
+							+ " ORDER BY nutzerAboID");
 
 			if (rs.next()) {
-				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltung_id"));
-				unterhaltung.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+				Nutzerabonnement nutzerabo = new Nutzerabonnement();
+				nutzerabo.setId(rs.getInt("nutzerAboID"));
+				nutzerabo.setErstellungsZeitpunkt(rs.getDate("datum"));
 
-				return unterhaltung;
+				return nutzerabo;
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -213,46 +202,22 @@ public class NutzerAboMapper {
 		ArrayList<Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement>();
 
 		try {
-
 			Statement stmt = con.createStatement();
-
 			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "
 					+ "WHERE nutzerAboID=" + nutzer.getId() + " ORDER BY nutzerAboID");
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
-				nutzerabonnement.setId(rs.getInt("nutzerID"));
-				nutzerabonnement.setDerBeobachteteID(rs
-						.getInt("derBeobachteteID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs
-						.getTimestamp("datum"));
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				nutzerAboListe.add(nutzerabonnement);
 			}
-
 		}
-
 		catch (SQLException e1) {
 			e1.printStackTrace();
 			return null;
 		}
-
-		return null; // nutzerAboListe;
-
-	}
-
-	/**
-	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
-	 * Format.
-	 * 
-	 * @param date
-	 *            Date das konvertiert werden soll
-	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
-	 */
-	private String getSqlDateFormat(Date date) {
-		String result = "";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		result = dateFormat.format(date);
-		return result;
+		return nutzerAboListe;
 	}
 }
