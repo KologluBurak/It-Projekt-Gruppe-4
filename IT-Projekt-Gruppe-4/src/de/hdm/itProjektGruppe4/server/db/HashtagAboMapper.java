@@ -63,7 +63,7 @@ public class HashtagAboMapper {
 		return hashtagAboMapper;
 
 	}
-	
+
 	/**
 	 * Diese Methode ermöglicht es einen Hashtagabonnement in der Datenbank
 	 * anzulegen.
@@ -72,8 +72,8 @@ public class HashtagAboMapper {
 	 * @return
 	 */
 
-	public Hashtagabonnement insert (
-			Hashtagabonnement hashtagabonnement)throws IllegalArgumentException {
+	public Hashtagabonnement insert(Hashtagabonnement hashtagabonnement)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -99,12 +99,13 @@ public class HashtagAboMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 
 		return hashtagabonnement;
 	}
-	
+
 	/**
 	 * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in
 	 * der Datenbank.
@@ -113,8 +114,8 @@ public class HashtagAboMapper {
 	 * @return
 	 */
 
-	public Hashtagabonnement update(
-			Hashtagabonnement hashtagabonnement)throws IllegalArgumentException {
+	public Hashtagabonnement update(Hashtagabonnement hashtagabonnement)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -129,7 +130,7 @@ public class HashtagAboMapper {
 
 		return hashtagabonnement;
 	}
-	
+
 	/**
 	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
 	 * Referenzen zu anderen Klassen
@@ -137,7 +138,8 @@ public class HashtagAboMapper {
 	 * @param hashtagabonnement
 	 */
 
-	public void delete(Hashtagabonnement hashtagabonnement)throws IllegalArgumentException {
+	public void delete(Hashtagabonnement hashtagabonnement)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -148,17 +150,18 @@ public class HashtagAboMapper {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 	}
-	
+
 	/**
 	 * Diese Methode ermöglicht es alle Hashtags zu finden
 	 * 
 	 * @param hashtagabonnement
 	 * @return
 	 */
-	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(int id){
+	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(int id) {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
@@ -181,7 +184,7 @@ public class HashtagAboMapper {
 			e.printStackTrace();
 		}
 		return alleHashtagabonnements;
-		
+
 	}
 
 	/**
@@ -193,14 +196,18 @@ public class HashtagAboMapper {
 	 */
 
 	public Hashtagabonnement findHashtagAboByID(int id) {
+
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
 			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
-			// Zunächst wird geschaut welches der momentan höchste
-			// Primärschlüssel ist
+
+			/*
+			 * Zunächst wird geschaut welches der momentan höchste
+			 * Primärschlüssel ist
+			 */
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
 					+ "WHERE hashtagAboID=" + id + " ORDER by hashtagAboID");
 
@@ -249,12 +256,12 @@ public class HashtagAboMapper {
 
 		catch (SQLException e1) {
 			e1.printStackTrace();
-			
+
 			return null;
 		}
 
 		return hashtagAboListe;
 
 	}
-	
+
 }

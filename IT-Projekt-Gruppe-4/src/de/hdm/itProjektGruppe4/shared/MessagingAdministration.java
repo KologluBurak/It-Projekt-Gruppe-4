@@ -82,7 +82,7 @@ public interface MessagingAdministration extends RemoteService {
 	   * ***************************************************************************
 	   */
 	
-	public Abonnement createAbonnement (Nutzerabonnement aboNutzer, Hashtagabonnement aboHashtag) throws IllegalArgumentException;
+	
 	public ArrayList<Abonnement> getAllAbonnements();
 	public Abonnement getAbonnementbyId(int id);
 	

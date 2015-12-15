@@ -111,8 +111,7 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	
-	void createAbonnement(Nutzerabonnement aboNutzer, Hashtagabonnement aboHashtag,
-			AsyncCallback<Abonnement> callback);
+	
 	
 	void getAllAbonnements(AsyncCallback<ArrayList<Abonnement>> callback);
 
@@ -163,7 +162,7 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 
-	//public void createAboHashtag (Hashtagabonnement HashtagAbo)throws IllegalArgumentException;
+	
 	void createHashtagAbonnement(Hashtag bezeichnung,
 			AsyncCallback<Hashtagabonnement> callback);
 

@@ -2,80 +2,149 @@ package de.hdm.itProjektGruppe4.server;
 
 import java.sql.Date;
 import java.util.ArrayList;
-
-
-
-
-
-
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import de.hdm.itProjektGruppe4.server.db.*;
 import de.hdm.itProjektGruppe4.shared.*;
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
-
 /**
+ * <p>
+ * Implementierungsklasse des Interface <code>MessagingAdministration</code>.
+ * Diese Klasse ist <em>die</em> Klasse, die neben {@link ReportGeneratorImpl}
+ * sämtliche Applikationslogik (oder engl. Business Logic) aggregiert. Sie ist
+ * wie eine Spinne, die sämtliche Zusammenhänge in ihrem Netz (in unserem Fall
+ * die Daten der Applikation) überblickt und für einen geordneten Ablauf und
+ * dauerhafte Konsistenz der Daten und Abläufe sorgt.
+ * </p>
+ * <p>
+ * Die Applikationslogik findet sich in den Methoden dieser Klasse. Jede dieser
+ * Methoden kann als <em>Transaction Script</em> bezeichnet werden. Dieser Name
+ * lässt schon vermuten, dass hier analog zu Datenbanktransaktion pro
+ * Transaktion gleiche mehrere Teilaktionen durchgeführt werden, die das System
+ * von einem konsistenten Zustand in einen anderen, auch wieder konsistenten
+ * Zustand überführen. Wenn dies zwischenzeitig scheitern sollte, dann ist das
+ * jeweilige Transaction Script dafür verwantwortlich, eine Fehlerbehandlung
+ * durchzuführen.
+ * </p>
+ * <p>
+ * Diese Klasse steht mit einer Reihe weiterer Datentypen in Verbindung. Dies
+ * sind:
+ * <ol>
+ * <li>{@link MessagingAdministration}: Dies ist das <em>lokale</em> - also
+ * Server-seitige - Interface, das die im System zur Verfügung gestellten
+ * Funktionen deklariert.</li>
+ * <li>{@link MessagingAdministrationAsync}:
+ * <code>MessagingAminidstrationImpl</code> und
+ * <code>MessagingAdministration</code> bilden nur die Server-seitige Sicht der
+ * Applikationslogik ab. Diese basiert vollständig auf synchronen
+ * Funktionsaufrufen. Wir müssen jedoch in der Lage sein, Client-seitige
+ * asynchrone Aufrufe zu bedienen. Dies bedingt ein weiteres Interface, das in
+ * der Regel genauso benannt wird, wie das synchrone Interface, jedoch mit dem
+ * zusätzlichen Suffix "Async". Es steht nur mittelbar mit dieser Klasse in
+ * Verbindung. Die Erstellung und Pflege der Async Interfaces wird durch das
+ * Google Plugin semiautomatisch unterstützt. Weitere Informationen unter
+ * {@link MessagingAdministrationAsync}.</li>
+ * <li> {@link RemoteServiceServlet}: Jede Server-seitig instantiierbare und
+ * Client-seitig über GWT RPC nutzbare Klasse muss die Klasse
+ * <code>RemoteServiceServlet</code> implementieren. Sie legt die funktionale
+ * Basis für die Anbindung von <code>MessagingAdministrationImpl</code> an die
+ * Runtime des GWT RPC-Mechanismus.</li>
+ * </ol>
+ * </p>
+ * <p>
+ * <b>Wichtiger Hinweis:</b> Diese Klasse bedient sich sogenannter
+ * Mapper-Klassen. Sie gehören der Datenbank-Schicht an und bilden die
+ * objektorientierte Sicht der Applikationslogik auf die relationale
+ * organisierte Datenbank ab. Zuweilen kommen "kreative" Zeitgenossen auf die
+ * Idee, in diesen Mappern auch Applikationslogik zu realisieren. Siehe dazu
+ * auch die Hinweise in {@link #delete(Customer)} Einzig nachvollziehbares
+ * Argument für einen solchen Ansatz ist die Steigerung der Performance
+ * umfangreicher Datenbankoperationen. Doch auch dieses Argument zieht nur dann,
+ * wenn wirklich große Datenmengen zu handhaben sind. In einem solchen Fall
+ * würde man jedoch eine entsprechend erweiterte Architektur realisieren, die
+ * wiederum sämtliche Applikationslogik in der Applikationsschicht isolieren
+ * würde. Also, keine Applikationslogik in die Mapper-Klassen "stecken" sondern
+ * dies auf die Applikationsschicht konzentrieren!
+ * </p>
+ * <p>
+ * Beachten Sie, dass sämtliche Methoden, die mittels GWT RPC aufgerufen werden
+ * können ein <code>throws IllegalArgumentException</code> in der
+ * Methodendeklaration aufweisen. Diese Methoden dürfen also Instanzen von
+ * {@link IllegalArgumentException} auswerfen. Mit diesen Exceptions können z.B.
+ * Probleme auf der Server-Seite in einfacher Weise auf die Client-Seite
+ * transportiert und dort systematisch in einem Catch-Block abgearbeitet werden.
+ * </p>
+ * <p>
+ * Es gibt sicherlich noch viel mehr über diese Klasse zu schreiben. Weitere
+ * Infos erhalten Sie in der Lehrveranstaltung.
+ * </p>
+ * 
+ * @see MessagingAdministration
+ * @see MessagingAdministrationAsync
+ * @see RemoteServiceServle
  * 
  * @author Thies
- * @author Yücel, Nguyen, Raue
+ * @author Yücel
+ * @author Nguyen
+ * @author Raue
  * 
  *
  */
 
-	public class MessagingAdministrationImpl extends RemoteServiceServlet 
-	implements MessagingAdministration {
+public class MessagingAdministrationImpl extends RemoteServiceServlet implements
+		MessagingAdministration {
 
-	
 	private NutzerMapper nutzerMapper = null;
-	private AbonnementMapper abonnementMapper= null;
-	private NutzerAboMapper nutzerAboMapper=null;
-	private HashtagAboMapper hashtagAboMapper=null;
-	private NachrichtMapper nachrichtMapper= null;
-	private HashtagMapper hashtagMapper= null;
-	private UnterhaltungMapper unterhaltungMapper= null;
-	
-	
+	private AbonnementMapper abonnementMapper = null;
+	private NutzerAboMapper nutzerAboMapper = null;
+	private HashtagAboMapper hashtagAboMapper = null;
+	private NachrichtMapper nachrichtMapper = null;
+	private HashtagMapper hashtagMapper = null;
+	private UnterhaltungMapper unterhaltungMapper = null;
+
 	/**
-	 * No-Argument   Konstruktor
+	 * No-Argument Konstruktor
 	 */
-	
-	public MessagingAdministrationImpl()throws IllegalArgumentException{
-		
+	public MessagingAdministrationImpl() throws IllegalArgumentException {
+
 	}
-	
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Initialisierung
-	   * ***************************************************************************
-	   */
-	public void init()throws IllegalArgumentException{
-		this.nutzerMapper= NutzerMapper.nutzerMapper();
-		this.abonnementMapper= AbonnementMapper.abonnementMapper();
-		this.nutzerAboMapper= NutzerAboMapper.nutzerAboMapper();
-		this.hashtagAboMapper= HashtagAboMapper.hashtagAboMapper();
-		this.nachrichtMapper= NachrichtMapper.nachrichtMapper();
-		this.hashtagMapper= HashtagMapper.hashtagMapper();
-		this.unterhaltungMapper= UnterhaltungMapper.unterhaltungMapper();	
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Initialisierung
+	 * ***************************************
+	 * ************************************
+	 */
+	public void init() throws IllegalArgumentException {
+		this.nutzerMapper = NutzerMapper.nutzerMapper();
+		this.abonnementMapper = AbonnementMapper.abonnementMapper();
+		this.nutzerAboMapper = NutzerAboMapper.nutzerAboMapper();
+		this.hashtagAboMapper = HashtagAboMapper.hashtagAboMapper();
+		this.nachrichtMapper = NachrichtMapper.nachrichtMapper();
+		this.hashtagMapper = HashtagMapper.hashtagMapper();
+		this.unterhaltungMapper = UnterhaltungMapper.unterhaltungMapper();
 	}
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Initialisierung
-	   * ***************************************************************************
-	   */
-	
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Initialisierung
+	 * *****************************************
+	 * **********************************
+	 */
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
-	   * ***************************************************************************
-	   */
-	
-	  /**
-	   * Anlegen eines neuen Nutzers. Der neuer Nutzer wird in die Datenbank gespeichert.
-	      */	
-	public Nutzer createNutzer (String vorname, String nachname, String email, String nickname) 
-			throws IllegalArgumentException {
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
+	 * ***************************
+	 * ************************************************
+	 */
+
+	/**
+	 * Anlegen eines neuen Nutzers. Der neuer Nutzer wird in die Datenbank
+	 * gespeichert.
+	 */
+	public Nutzer createNutzer(String vorname, String nachname, String email,
+			String nickname) throws IllegalArgumentException {
 		Nutzer n = new Nutzer();
 		n.setVorname(vorname);
 		n.setNachname(nachname);
@@ -84,335 +153,331 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 		return this.nutzerMapper.insert(n);
 
 	}
-	
-	/**
-	   * Löschen eines Nutzers. Der Nutzer wird in der Datenbank gelöscht.
-	   * zugehörende nachrichten werden auch gelöscht
-		 
-	      */	
 
-	public void delete (Nutzer nutzer) throws IllegalArgumentException{
-		 
-		ArrayList <Nachricht> nachrichten = this.getAlleNachrichtbyNutzer(nutzer);
-		
-		//Die Verbindung zum Abonnement wird aufgelöst. 
-		
-		ArrayList <Nutzerabonnement> nutzerabo = this.findNutzerAbonnementByNutzer(nutzer);
-		
-		if (nutzerabo!=null){
-			for (Nutzerabonnement nabo : nutzerabo){
+	/**
+	 * Löschen eines Nutzers. Der Nutzer wird in der Datenbank gelöscht.
+	 * zugehörende nachrichten werden auch gelöscht
+	 */
+	public void delete(Nutzer nutzer) throws IllegalArgumentException {
+
+		ArrayList<Nachricht> nachrichten = this
+				.getAlleNachrichtbyNutzer(nutzer);
+		/*
+		 * Die Verbindung zum Abonnement wird aufgelöst.
+		 */
+		ArrayList<Nutzerabonnement> nutzerabo = this
+				.findNutzerAbonnementByNutzer(nutzer);
+
+		if (nutzerabo != null) {
+			for (Nutzerabonnement nabo : nutzerabo) {
 				this.delete(nabo);
 			}
-			
-			// Die Nachrichten die eine Verbindung zum Nutzer haben werden gelöscht.
-			 
-			
-		if (nachrichten != null){
-			for (Nachricht n : nachrichten){
-				this.delete(n);
+
+			/* Die Nachrichten die eine Verbindung zum Nutzer haben werden
+			* gelöscht.
+			*/
+			if (nachrichten != null) {
+				for (Nachricht n : nachrichten) {
+					this.delete(n);
+				}
 			}
-		} 
-		this.nutzerMapper.delete(nutzer);
-		
-		} 
-		
+			this.nutzerMapper.delete(nutzer);
+
+		}
+
 	}
-	
+
 	/**
 	 * Auslesen aller Nutzer Objekte
 	 */
-		
-	public ArrayList<Nutzer> findAllNutzer() throws IllegalArgumentException{
+	public ArrayList<Nutzer> findAllNutzer() throws IllegalArgumentException {
 		return this.nutzerMapper.findAllNutzer();
 	}
-	
+
 	/**
 	 * Auslesen eines Nutzers anhand seines Nachnames.
 	 */
-
-	public Nutzer getNutzerByNachname(String nachname)throws IllegalArgumentException{
+	public Nutzer getNutzerByNachname(String nachname)
+			throws IllegalArgumentException {
 		return this.nutzerMapper.findNutzerByNachname(nachname);
 	}
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für Nutzer-Objekte
-	   * ***************************************************************************
-	   */
-	
-	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
-	   * ***************************************************************************
-	   */
-	
-	/**
-	 * Anlegen einer neuen Nachricht. Die Nachricht wird in der Datenbank gespeichert.
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für Nutzer-Objekte
+	 * *****************************
+	 * **********************************************
 	 */
-	public Nachricht createNachricht (String text) 
-			throws IllegalArgumentException{
-		Nachricht na = new Nachricht ();
-		na.setText(text);	
+
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
+	 * ************************
+	 * ***************************************************
+	 */
+
+	/**
+	 * Anlegen einer neuen Nachricht. Die Nachricht wird in der Datenbank
+	 * gespeichert.
+	 */
+	public Nachricht createNachricht(String text)
+			throws IllegalArgumentException {
+		Nachricht na = new Nachricht();
+		na.setText(text);
 		return this.nachrichtMapper.insert(na);
 	}
-	public void delete (Nachricht nachricht) throws IllegalArgumentException{
+
+	public void delete(Nachricht nachricht) throws IllegalArgumentException {
 		this.nachrichtMapper.delete(nachricht);
 	}
-	
-	
+
 	/**
-	   * Auslesen aller Nachrichten aus der Datenbank.
-	      */
-	public ArrayList<Nachricht> getAllNachrichten() 
-			throws IllegalArgumentException{
+	 * Auslesen aller Nachrichten aus der Datenbank.
+	 */
+	public ArrayList<Nachricht> getAllNachrichten()
+			throws IllegalArgumentException {
 		return this.nachrichtMapper.findAllNachrichten();
 	}
-	
+
 	/**
-	   * Auslesen Nachrichten anhand der Id.
-	      */
-	public Nachricht getNachrichtbyId(int id)
-			throws IllegalArgumentException{
+	 * Auslesen Nachrichten anhand der Id.
+	 */
+	public Nachricht getNachrichtbyId(int id) throws IllegalArgumentException {
 		return this.nachrichtMapper.findNachrichtById(id);
 	}
 
-	/** 
+	/**
 	 * Auslesen von Nachrichten eines Nutzers.
 	 */
-	public ArrayList <Nachricht> getAlleNachrichtbyNutzer(Nutzer nutzer)
-			throws IllegalArgumentException{
+	public ArrayList<Nachricht> getAlleNachrichtbyNutzer(Nutzer nutzer)
+			throws IllegalArgumentException {
 		return this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 	}
-	
+
 	/**
 	 * Auslesen von Nachrichten in einer Unterhaltung
 	 */
-	public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
-			throws IllegalArgumentException{
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
+			Unterhaltung unterhaltung) throws IllegalArgumentException {
 		return this.nachrichtMapper.findNachrichtenByUnterhaltung(unterhaltung);
 	}
 
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für Nachricht-Objekte
-	   * ***************************************************************************
-	   */
-	
-	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
-	   * ***************************************************************************
-	   */
-	
-	/**
-	 * Anlegen einer Unterhaltung. Die Unterhaltung wird in der Datenbank gespeichert.
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für Nachricht-Objekte
+	 * **************************
+	 * *************************************************
 	 */
-	public Unterhaltung createUnterhaltung (Nutzer sender, Nutzer receiver) 
-			throws IllegalArgumentException{
-		Unterhaltung u = new Unterhaltung ();
+
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
+	 * *********************
+	 * ******************************************************
+	 */
+
+	/**
+	 * Anlegen einer Unterhaltung. Die Unterhaltung wird in der Datenbank
+	 * gespeichert.
+	 */
+	public Unterhaltung createUnterhaltung(Nutzer sender, Nutzer receiver)
+			throws IllegalArgumentException {
+		Unterhaltung u = new Unterhaltung();
 		u.setSender(sender);
 		u.setReceiver(receiver);
 		return unterhaltungMapper.insert(u);
-		
+
 	}
-	
+
 	/**
-	   * Auslesen von allen Unterhaltungen aus der Datenbank.
-	      */
-	public ArrayList<Unterhaltung> getAllUnterhaltungen() 
-			throws IllegalArgumentException{
+	 * Auslesen von allen Unterhaltungen aus der Datenbank.
+	 */
+	public ArrayList<Unterhaltung> getAllUnterhaltungen()
+			throws IllegalArgumentException {
 		return this.unterhaltungMapper.findAllUnterhaltungen();
 	}
-	
+
 	/**
-	   * Auslesen von Unterhaltungen anhand der ID.
-	      */
+	 * Auslesen von Unterhaltungen anhand der ID.
+	 */
 	public Unterhaltung getUnterhaltungbyId(int id)
-			throws IllegalArgumentException{
+			throws IllegalArgumentException {
 		return this.unterhaltungMapper.findUnterhaltungById(id);
 	}
-	
+
 	/**
-	 * Löschen einer Unterhaltung. Hierbei werden die Nutzer,
-	 * die in der Unterhaltung teilgenommen haben nicht gelöscht.
+	 * Löschen einer Unterhaltung. Hierbei werden die Nutzer, die in der
+	 * Unterhaltung teilgenommen haben nicht gelöscht.
 	 */
-	public void delete(Unterhaltung unterhaltung){
+	public void delete(Unterhaltung unterhaltung) {
 		/*
-		  Zugehörige Nachrichten von der Unterhaltung werden gelöscht
+		 * Zugehörige Nachrichten von der Unterhaltung werden gelöscht
 		 */
-	ArrayList <Nachricht> nachrichten = this.findNachrichtenByUnterhaltung(unterhaltung);
-	
-	
-	if (nachrichten != null){
-		for (Nachricht n: nachrichten){
-			this.delete(n);
+		ArrayList<Nachricht> nachrichten = this
+				.findNachrichtenByUnterhaltung(unterhaltung);
+
+		if (nachrichten != null) {
+			for (Nachricht n : nachrichten) {
+				this.delete(n);
+			}
 		}
-	} 
-	this.unterhaltungMapper.delete(unterhaltung); 
+		this.unterhaltungMapper.delete(unterhaltung);
 	}
-	
-	
+
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
+	 * ***********************
+	 * ****************************************************
+	 */
+
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
+	 * ***********************
+	 * ****************************************************
+	 */
 
 	
-	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
-	   * ***************************************************************************
-	   */
-	
-	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
-	   * ***************************************************************************
-	   */
-	
-	public Abonnement createAbonnement(Nutzerabonnement aboNutzer, Hashtagabonnement aboHashtag) 
-			throws IllegalArgumentException{
-		Abonnement a = new Abonnement();
-		//a.setAboNutzer(aboNutzer);
-		//a.setAboHashtag(aboHashtag);
-		return abonnementMapper.insertAbonnement(a);
-		//
-		}
-	
-	
 	/**
-	   * Auslesen aller Abonnements.
-	      */
-	public ArrayList<Abonnement> getAllAbonnements() 
-			throws IllegalArgumentException{
+	 * Auslesen aller Abonnements.
+	 */
+	public ArrayList<Abonnement> getAllAbonnements()
+			throws IllegalArgumentException {
 		return this.abonnementMapper.findAllAbonnements();
 	}
-	
+
 	/**
-	   * Auslesen aller Abonnements anhand deren Id.
-	      */
-	public Abonnement getAbonnementbyId(int id)
-			throws IllegalArgumentException{
+	 * Auslesen aller Abonnements anhand deren Id.
+	 */
+	public Abonnement getAbonnementbyId(int id) throws IllegalArgumentException {
 		return this.abonnementMapper.findAbonnementByKey(id);
 	}
-	
 
-	
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für Abonnement-Objekte
-	   * ***************************************************************************
-	   */
-	
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für Abonnement-Objekte
+	 * *************************
+	 * **************************************************
+	 */
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
-	   * ***************************************************************************
-	   */
-	/** 
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
+	 * **************************
+	 * *************************************************
+	 */
+	
+	/**
 	 * Anlegen eines Hashtags
 	 */
-	public Hashtag createHashtag (String bezeichnung) 
+	public Hashtag createHashtag(String bezeichnung)
 			throws IllegalArgumentException {
-		Hashtag hash = new Hashtag ();
+		Hashtag hash = new Hashtag();
 		hash.setBezeichnung(bezeichnung);
 		return hashtagMapper.insert(hash);
 	}
-	
+
 	/**
 	 * Speichern eines geänderten Hashtags
 	 */
-	public void save (Hashtag hashtag) 
-			throws IllegalArgumentException{
+	public void save(Hashtag hashtag) throws IllegalArgumentException {
 		hashtagMapper.update(hashtag);
 		//
 	}
-	
+
 	/**
 	 * LÖschen eines Hashtags
 	 */
-	public void delete (Hashtag hashtag)
-			throws IllegalArgumentException{
+	public void delete(Hashtag hashtag) throws IllegalArgumentException {
 		/*
-		 * zugehörende Hashtagabo wird nicht gelöscht, 
-		 * da der Nutzer der das gelöschte Hashtag wieder hinzufügen muss
+		 * zugehörende Hashtagabo wird nicht gelöscht, da der Nutzer der das
+		 * gelöschte Hashtag wieder hinzufügen muss
 		 */
 		hashtagMapper.delete(hashtag);
 	}
-	
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für Hashtag-Objekte
-	   * ***************************************************************************
-	   */
-	
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für Hashtag-Objekte
+	 * ****************************
+	 * ***********************************************
+	 */
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
-	   * ***************************************************************************
-	   */
-	
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
+	 * ************************
+	 * ***************************************************
+	 */
+
 	/*
 	 * Anlegen eines Nutzerabonnements
 	 */
-	public Nutzerabonnement createNutzerabonnement (Nutzer derBeobachtete, Nutzer follower)
-			throws IllegalArgumentException{
-	Nutzerabonnement nutzabo = new Nutzerabonnement();
-	 //nutzabo.getDerBeobachteteId();
-	 //nutzabo.getAboNutzerId();
-	return nutzerAboMapper.insert(nutzabo); 
-}
-	
+	public Nutzerabonnement createNutzerabonnement(Nutzer derBeobachtete,
+			Nutzer follower) throws IllegalArgumentException {
+		Nutzerabonnement nutzabo = new Nutzerabonnement();
+		 nutzabo.setDerBeobachteteID(derBeobachtete.getId());
+		 nutzabo.setFollowerID(follower.getId());
+		return nutzerAboMapper.insert(nutzabo);
+	}
+
 	/*
 	 * Löschen eines Nutzerabonnement
 	 */
-	public void delete (Nutzerabonnement nutzerAbo)throws IllegalArgumentException{	
-		nutzerAboMapper.delete(nutzerAbo);;
-		
+	public void delete(Nutzerabonnement nutzerAbo)
+			throws IllegalArgumentException {
+		nutzerAboMapper.delete(nutzerAbo);
+		;
+
 	}
-	
+
 	/**
-	   * Auslesen von Nutzer Abonnements.
-	      */
-	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(Nutzer nutzer) 
-			throws IllegalArgumentException{
+	 * Auslesen von Nutzer Abonnements.
+	 */
+	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(
+			Nutzer nutzer) throws IllegalArgumentException {
 		return this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
 	}
-	
-	
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
-	   * ***************************************************************************
-	   */
-	
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
+	 * **************************
+	 * *************************************************
+	 */
+
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
-	   * ***************************************************************************
-	   */
-	
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
+	 * ***********************
+	 * ****************************************************
+	 */
+
 	/**
 	 * Anlegen eines Hashtagabonnements.
 	 */
-	public Hashtagabonnement createHashtagAbonnement (Hashtag bezeichnung)throws IllegalArgumentException{
+	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung)
+			throws IllegalArgumentException {
 		Hashtagabonnement b = new Hashtagabonnement();
-		b.getHastagID();
-		return hashtagAboMapper.insert(b);	
-		}
-
+		b.setHastagID(bezeichnung.getId());
+		return hashtagAboMapper.insert(b);
+	}
 
 	/**
 	 * Löschen eines Hashtagsabonnement.
 	 */
-	public void delete (Hashtagabonnement hashtagAbo)
-			throws IllegalArgumentException{
+	public void delete(Hashtagabonnement hashtagAbo)
+			throws IllegalArgumentException {
 		hashtagAboMapper.delete(hashtagAbo);
 
-}
-	
-
-
+	}
 
 	/*
-	   * ***************************************************************************
-	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
-	   * ***************************************************************************
-	   */
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
+	 * *************************
+	 * **************************************************
+	 */
 
 }

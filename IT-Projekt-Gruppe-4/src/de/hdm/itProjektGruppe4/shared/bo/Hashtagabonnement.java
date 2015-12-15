@@ -1,7 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
- *
+ * Eine Klasse Hashtagabonnement, die aus der Klasse Abonnement erbt.
  * @author Yücel
  * @author Oikonomou
  * @author Kologlu
@@ -11,7 +11,7 @@ public class Hashtagabonnement extends Abonnement {
 
 	/**
 	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * benötigt.
 	 */
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
+ * Eine Klasse Nutzerabonnement, die aus der Klasse BusinessObject erbt.
  * @author Yücel
  * @author Oikonomou
  * @author Kologlu
@@ -10,17 +11,17 @@ public class Nutzerabonnement extends BusinessObject {
 
 	/**
 	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * benötigt.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Fremdschl�sselbeziehung zu abonnierten Nutzer
+	 * Fremdschlüsselbeziehung zu abonnierten Nutzer
 	 */
 	private int followerID = 0;
 
 	/**
-	 * Fremdschl�sselbeziehung zu abonnierenden Nutzer
+	 * Fremdschlüsselbeziehung zu abonnierenden Nutzer
 	 */
 	private int derBeobachteteID = 0;
 

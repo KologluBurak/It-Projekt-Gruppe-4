@@ -2,7 +2,8 @@ package de.hdm.itProjektGruppe4.shared.bo;
 
 import java.util.ArrayList;
 
-/**
+/** 
+ * Eine Klasse Nachricht, die aus der Klasse BusinessObject erbt.
  * @author Yücel, Nguyen, Oikonomou, Kologlu
  * 
  */
@@ -11,7 +12,7 @@ public class Nachricht extends BusinessObject {
 
 	/**
 	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * benötigt.
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -57,7 +58,7 @@ public class Nachricht extends BusinessObject {
 	}
 
 	/**
-	 * Ausgabe der Empfaenger als Liste vom Typ ArrayLIst<>
+	 * Ausgabe der Empfaenger als Liste vom Typ ArrayList<>
 	 * 
 	 * @return empfaenger
 	 */

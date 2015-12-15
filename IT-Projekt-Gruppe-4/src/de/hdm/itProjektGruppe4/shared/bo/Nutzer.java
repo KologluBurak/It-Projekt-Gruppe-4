@@ -1,6 +1,7 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
+ * Eine Klasse Nutzer, die aus der Klasse BusinessObect erbt.
  * @author Yücel, Nguyen, Oikonomou, kologlu
  */
 
@@ -8,7 +9,7 @@ public class Nutzer extends BusinessObject {
 
 	/**
 	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * benötigt.
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -107,12 +108,12 @@ public class Nutzer extends BusinessObject {
 	/**
 	 * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
 	 * Diese besteht aus dem Text, der durch die <code>toString()</code>-Methode
-	 * der Superklasse erzeugt wird, erg�nzt durch den Vor- und Nachnamen, des
+	 * der Superklasse erzeugt wird, ergänzt durch den Vor- und Nachnamen, des
 	 * Nicknamen und der E-Mail-Adresse des jeweiligen Nutzers.
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " " + this.nickname + " " + this.vorname + " " + this.nachname + " " + this.email
-				+ " ";
+		return super.toString() + " " + this.nickname + " " + 
+					this.vorname + " " + this.nachname + " " + this.email + " ";
 	}
 }
