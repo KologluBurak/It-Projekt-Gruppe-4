@@ -117,6 +117,7 @@ public interface MessagingAdministrationAsync {
 	void getAllAbonnements(AsyncCallback<ArrayList<Abonnement>> callback);
 
 	void getAbonnementbyId(int id, AsyncCallback<Abonnement> callback);
+	
 
 	/*
 	   * ***************************************************************************
