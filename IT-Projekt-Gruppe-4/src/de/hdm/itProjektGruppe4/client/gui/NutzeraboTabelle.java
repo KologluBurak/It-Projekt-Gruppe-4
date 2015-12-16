@@ -2,15 +2,24 @@ package de.hdm.itProjektGruppe4.client.gui;
 
 
 
-	import com.google.gwt.user.cellview.client.CellTable;
-	import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-	import com.google.gwt.user.cellview.client.TextColumn;
-	import com.google.gwt.user.client.Window;
-	import com.google.gwt.user.client.ui.Button;
-	import com.google.gwt.user.client.ui.VerticalPanel;
-	import com.google.gwt.user.client.ui.Widget;
-	import com.google.gwt.view.client.SelectionChangeEvent;
-	import com.google.gwt.view.client.SingleSelectionModel;
+	import java.util.ArrayList;
+
+import com.google.gwt.core.client.GWT;
+
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
+
+import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
 
 
@@ -24,14 +33,38 @@ package de.hdm.itProjektGruppe4.client.gui;
 		String entfernen = new String();
 		Button nAbohin = new Button("Nutzer Hinzufuegen");
 		
+		MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		
 		
 			public Widget zeigeTabelle() {
 		
-			CellTable<NutzeraboTabelle> tabelle = new CellTable<NutzeraboTabelle>();
+			
+		    CellTable<NutzeraboTabelle> tabelle = new CellTable<NutzeraboTabelle>();
 			
 	    	tabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 	       
+	    	
+	    	
+	    	myAsync.findNutzerAbonnementByNutzer(null, new AsyncCallback<ArrayList<Nutzerabonnement>> () {
+
+				@Override
+				public void onFailure(Throwable caught) {
+				
+				
+					
+				}
+
+				@Override
+				public void onSuccess(ArrayList<Nutzerabonnement> result) {
+				
+					
+					
+				}
+			
+			
+			});
+	    	
+	    	
 	    	// Hinzufügen einer Spalte Nachname
 	    	
 	        TextColumn<NutzeraboTabelle> nnameColumn = new TextColumn<NutzeraboTabelle>() {
