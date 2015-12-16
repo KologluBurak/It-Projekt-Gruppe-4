@@ -7,17 +7,17 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>messagingAdmin</servlet-name>
-    <servlet-class>de.hdm.itProjektGruppe4.server.MessagingAdministrationImpl</servlet-class>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>de.hdm.itProjektGruppe4.server.LoginServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>messagingAdmin</servlet-name>
-    <url-pattern>/it_projekt_gruppe_4/messagingAdmin</url-pattern>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/it_projekt_gruppe_4/login</url-pattern>
   </servlet-mapping>
   
-  messagingAdmin
-  <!-- Default page to serve -->
+  
+  <!-- messagingAdmin Default page to serve -->
   <welcome-file-list>
     <welcome-file>IT_Projekt_Gruppe_4.html</welcome-file>
   </welcome-file-list>
