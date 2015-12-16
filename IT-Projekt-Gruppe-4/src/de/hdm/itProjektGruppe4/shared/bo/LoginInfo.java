@@ -2,6 +2,12 @@ package de.hdm.itProjektGruppe4.shared.bo;
 
 import java.io.Serializable;
 
+/**
+ * Klasse enthält alle Daten hinsichtlich 
+ * einer aktuellen Nutzersession.
+ * @author Raue
+ *
+ */
 public class LoginInfo implements Serializable {
 
   private static final long serialVersionUID = 1L;
