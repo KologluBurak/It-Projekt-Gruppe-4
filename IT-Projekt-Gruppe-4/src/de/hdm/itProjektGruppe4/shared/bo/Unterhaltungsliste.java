@@ -8,12 +8,12 @@ public class Unterhaltungsliste extends BusinessObject {
 	private int unterhaltundID;
 	
 	/**
-	 * Fremdschlüsselbeziehung zur Klasse Nachricht
+	 * Fremdschlüsselbeziehung zur Klasse Nutzer
 	 */
 	private int absenderID;
 	
 	/**
-	 * Fremdschlüsselbeziehung zur Klasse Nachricht
+	 * Fremdschlüsselbeziehung zur Klasse Nutzer
 	 */
 	private int empfaengerID;
 

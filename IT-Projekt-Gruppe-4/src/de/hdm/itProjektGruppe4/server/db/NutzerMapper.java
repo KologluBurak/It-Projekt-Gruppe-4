@@ -204,18 +204,18 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht einen Nutzer anhand seines Nachnamens zu finden und anzuzeigen.
 	 * @return uebergebener Paramater
 	 */
-	public Nutzer findNutzerByNachname(String nachname) throws IllegalArgumentException{
+	public Nutzer findNutzerByNickname(String nickname) throws IllegalArgumentException{
 		Connection con=DBConnection.connection();
 		
 		try{
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nachname='" + nachname + "' ORDER BY nachname");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nickname='" + nickname + "'");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
 				nutzer.setId(rs.getInt("nutzerID"));
-				nutzer.setVorname(rs.getString("vorname"));
-				nutzer.setNachname(rs.getString("nachname"));
+				//nutzer.setVorname(rs.getString("vorname"));
+				//nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
 				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));

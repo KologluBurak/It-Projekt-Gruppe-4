@@ -21,6 +21,24 @@ public class Nachricht extends BusinessObject {
 	 */
 	private String text;
 
+	private int nutzerID, unterhaltungID;
+	
+	public int getNutzerID() {
+		return nutzerID;
+	}
+
+	public void setNutzerID(int nutzerID) {
+		this.nutzerID = nutzerID;
+	}
+
+	public int getUnterhaltungID() {
+		return unterhaltungID;
+	}
+
+	public void setUnterhaltungID(int unterhaltungID) {
+		this.unterhaltungID = unterhaltungID;
+	}
+
 	/**
 	 * Absender einer Nachricht
 	 */

@@ -78,6 +78,9 @@ public class NachrichtMapper {
 	public Nachricht insert(Nachricht nachricht) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		
+		
+		
 		try {
 			// Insert-Statement erzeugen
 			//Statement stmt = con.createStatement();
@@ -89,12 +92,16 @@ public class NachrichtMapper {
 			// Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
 			//if (rs.next()) {
 
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement("INSERT INTO nachrichten(nachrichtID, text, datum) VALUES(null, ?, ?)");
-				preStmt.setString(1, nachricht.getText());
-				preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
+			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
+				
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, nachricht.getText());
+			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
+			preStmt.setInt(3, nachricht.getNutzerID());
+			preStmt.setInt(4, nachricht.getUnterhaltungID());
+			preStmt.executeUpdate();
+			preStmt.close();
 			//}
 			//stmt.close();
 			//rs.close();
@@ -137,13 +144,10 @@ public class NachrichtMapper {
 	 * 
 	 * @param hashtagBezeichnung
 	 */
-	public void delete(Nachricht nachricht)
-			throws IllegalArgumentException {
+	public void delete(Nachricht nachricht)throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
-
 		try {
 			Statement stmt = con.createStatement();
-
 			stmt.executeUpdate("DELETE FROM nachrichten " + "WHERE nachrichtID="
 					+ nachricht.getId());
 
@@ -192,8 +196,7 @@ public class NachrichtMapper {
 	 * @param unterhaltung
 	 * @return
 	 */
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) 
-			throws IllegalArgumentException {
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 		try {
@@ -202,7 +205,7 @@ public class NachrichtMapper {
 					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
 							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
 							+ "ON nachrichtID=" + nachricht.getId()
-							+ " ON nachrichten.unterhaltungID=unterhaltung.unterhaltungID "
+							+ " ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
 							+ "ORDER BY unterhaltung.datum");
 
 			while (rs.next()) {
@@ -223,20 +226,20 @@ public class NachrichtMapper {
 	 * Auszugeben.
 	 * 
 	 * @param id
-	 * @return
+	 * @return nachricht
 	 */
-	public Nachricht findNachrichtById(int id) {
+	public Nachricht findNachrichtById(int id) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, text, datum FROM nachrichten "
-					+ "WHERE nachrichtID=" + id + " ORDER by nachrichtID");
+					+ "WHERE nachrichtID=" + id);
 
 			if (rs.next()) {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
 				return nachricht;
 			}
 		} catch (SQLException e2) {
@@ -257,7 +260,7 @@ public class NachrichtMapper {
 	 * @return
 	 */
 
-	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer) {
+	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
@@ -287,19 +290,19 @@ public class NachrichtMapper {
 	 * @param bis
 	 * @return
 	 */
-	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis) {
+	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> nachrichtenJeZeitraum = new ArrayList<Nachricht>();
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Nachricht WHERE Datum BETWEEN " + von + " AND " + bis + "");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten WHERE datum BETWEEN " + von + " AND " + bis + "");
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getTimestamp("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
 
 				nachrichtenJeZeitraum.add(nachricht);
 			}

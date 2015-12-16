@@ -202,7 +202,7 @@ public class UnterhaltungMapper {
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

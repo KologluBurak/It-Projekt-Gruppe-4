@@ -197,9 +197,9 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Nutzers anhand seines Nachnames.
 	 */
-	public Nutzer getNutzerByNachname(String nachname)
+	public Nutzer getNutzerByNachname(String nickname)
 			throws IllegalArgumentException {
-		return this.nutzerMapper.findNutzerByNachname(nachname);
+		return this.nutzerMapper.findNutzerByNickname(nickname);
 	}
 
 	/*
@@ -222,7 +222,17 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Nachricht createNachricht(String text)
 			throws IllegalArgumentException {
+		
 		Nachricht na = new Nachricht();
+		// NutzerID durch emailadresse heraussuchen
+		Nutzer nutzer = new Nutzer();
+		Unterhaltung unterhaltung = new Unterhaltung();
+		
+		//nutzer = this.nutzerMapper.findNutzerByNickname(nickname);
+		//		unterhaltung = 
+		
+		na.setNutzerID(nutzer.getId());
+		na.setUnterhaltungID(unterhaltung.getId());
 		na.setText(text);
 		return this.nachrichtMapper.insert(na);
 	}
