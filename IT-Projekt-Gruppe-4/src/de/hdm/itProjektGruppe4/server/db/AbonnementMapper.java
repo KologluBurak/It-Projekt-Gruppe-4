@@ -31,13 +31,48 @@ public class AbonnementMapper {
 	}
 
 	/**
+	 * Diese Methode ermöglicht es einen Abonnement in der Datenbank anzulegen.
+	 * 
+	 * @param abonnement
+	 * @return abonnement
+	 */
+	public Abonnement insertAbonnement(Abonnement abonnement) {
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+
+		try {
+			//Statement stmt = con.createStatement();
+			//ResultSet rs = stmt.executeQuery("SELECT MAX(abonnementID) AS maxid "	+ "FROM abonnement ");
+
+			//if (rs.next()) {
+
+				String sql ="INSERT INTO `abonnements`(`abonnementID`, `datum`) VALUES (NULL, ?)";
+			
+				PreparedStatement preStmt;
+				preStmt = con.prepareStatement(sql);
+				preStmt.setString(1, abonnement.getErstellungsZeitpunkt().toString());
+				preStmt.executeUpdate();
+				preStmt.close();
+			
+			//}
+			//stmt.close();
+			//rs.close();
+			//con.close();
+		} catch(SQLException e1) {
+			e1.printStackTrace();
+		}
+
+		return abonnement;
+	}
+	
+
+	/**
 	 * Diese Methode ermöglicht eine Akutalisierung des Abonnementsdatensatzes
 	 * in der Datenbank
 	 * 
 	 * @param abonnement
-	 * @return
+	 * @return abonnement
 	 */
-
 	public Abonnement updateAbonnement(Abonnement abonnement) {
 		Connection con = DBConnection.connection();
 
@@ -47,40 +82,6 @@ public class AbonnementMapper {
 			stmt.executeUpdate("UPDATE abonnement " + "SET aboArt=\""
 					+ "WHERE abonnementID=" + abonnement.getId());
 
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		return abonnement;
-	}
-
-	/**
-	 * Diese Methode ermöglicht es einen Abonnement in der Datenbank anzulegen.
-	 * 
-	 * @param abonnement
-	 * @return
-	 */
-
-	public Abonnement insertAbonnement(Abonnement abonnement) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt
-					.executeQuery("SELECT MAX(abonnementID) AS maxid "
-							+ "FROM abonnement ");
-
-			if (rs.next()) {
-
-				abonnement.setId(rs.getInt("maxid") + 1);
-				abonnement.setErstellungsZeitpunkt(rs.getTimestamp("datum"));
-
-				stmt = con.createStatement();
-
-				stmt.executeUpdate("INSERT INTO abonnement (abonnementID, datum,) "
-						+ "VALUES (" + abonnement.getId() + ")");
-			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

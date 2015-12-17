@@ -1,7 +1,20 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+/**
+* Eine Klasse Markierungsliste, die aus der Klasse BusinessObject erbt.
+* @author Yücel
+* @author Kologlu
+*
+*/
+
 public class Markierungsliste extends BusinessObject{
 
+	/**
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
+	 * benötigt.
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Fremdschlüsselbeziehung zur Klasse Nachricht 
 	 */

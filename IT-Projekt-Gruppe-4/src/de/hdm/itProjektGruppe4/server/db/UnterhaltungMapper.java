@@ -87,10 +87,12 @@ public class UnterhaltungMapper {
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			//if (rs.next()) {
 
+				String sql ="INSERT INTO `unterhaltungen`(`unterhaltungID`, `datum`, `zuletztBearbeitet`) VALUES (NULL, ?, ?)";
+			
 				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(
-						"INSERT INTO unterhaltungen(unterhaltungID, datum) VALUES(null, ?)");
+				preStmt = con.prepareStatement(sql);
 				preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
+				preStmt.setString(2, unterhaltung.getZuletztBearbeitet().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
 			//}

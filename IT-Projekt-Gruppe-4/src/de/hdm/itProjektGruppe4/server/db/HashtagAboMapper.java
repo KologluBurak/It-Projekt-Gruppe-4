@@ -69,38 +69,38 @@ public class HashtagAboMapper {
 	 * anzulegen.
 	 * 
 	 * @param hashtagabonnement
-	 * @return
+	 * @return hashtagabonnement
 	 */
-
 	public Hashtagabonnement insert(Hashtagabonnement hashtagabonnement)
 			throws IllegalArgumentException {
+		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			Statement stmt = con.createStatement();
+			//Statement stmt = con.createStatement();
+			//ResultSet rs = stmt.executeQuery("SELECT MAX(hashtagaboID) AS maxid "+ "FROM hashtagabonnement ");
 
-			ResultSet rs = stmt
-					.executeQuery("SELECT MAX(hashtagaboID) AS maxid "
-							+ "FROM hashtagabonnement ");
-
-			if (rs.next()) {
-
-				hashtagabonnement.setId(rs.getInt("maxid") + 1);
-				hashtagabonnement.setErstellungsZeitpunkt(rs
-						.getTimestamp("erstellungsdatum"));
-
-				stmt = con.createStatement();
-
-				stmt.executeUpdate("INSERT INTO Hashtagabonnement (hashtagabonnementID, erstellungsdatum) "
-						+ "VALUES ("
-						+ hashtagabonnement.getId()
-						+ ","
-						+ hashtagabonnement.getId() + ")");
-			}
+			//if (rs.next()) {
+				
+				String sql = "INSERT INTO `hashtagabonnements`(`hashtagAboID`, `datum`, `hashtagID`, `abonnementID`, `nutzerID`) "
+							+ "VALUES (NULL, ?, ?, ?, ?)";
+			
+				PreparedStatement preStmt;
+				preStmt = con.prepareStatement(sql);
+				preStmt.setString(1, hashtagabonnement.getErstellungsZeitpunkt().toString());
+				preStmt.setInt(2, hashtagabonnement.getHastagID());
+				preStmt.setInt(3, hashtagabonnement.getAbonnementID());
+				preStmt.setInt(4, hashtagabonnement.getNutzerID());
+				preStmt.executeUpdate();
+				preStmt.close();
+			
+			//}
+			//stmt.close();
+			//rs.close();
+			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 
 		return hashtagabonnement;
@@ -111,7 +111,7 @@ public class HashtagAboMapper {
 	 * der Datenbank.
 	 * 
 	 * @param hashtagabonnement
-	 * @return
+	 * @return hashtagabonnement
 	 */
 
 	public Hashtagabonnement update(Hashtagabonnement hashtagabonnement)

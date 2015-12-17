@@ -10,15 +10,15 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>NutzerAbo</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verf�gung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfï¿½gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
+ * gelï¿½scht werden kï¿½nnen. Das Mapping ist bidirektional. D.h., Objekte kï¿½nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Kologlu
  * @author Oikonomou
  * @author Thies
- * @author Yücel
+ * @author YÃ¼cel
  */
 
 public class NutzerAboMapper {
@@ -28,7 +28,7 @@ public class NutzerAboMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see NutzerAboMapper()
@@ -36,7 +36,7 @@ public class NutzerAboMapper {
 	private static NutzerAboMapper nutzerAboMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschï¿½tzter Konstruktor - verhindert die Mï¿½glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NutzerAboMapper() {
@@ -45,7 +45,7 @@ public class NutzerAboMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NutzerAboMapper.nutzerAboMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine
 	 * einzige Instanz von <code>NutzerAboMapper</code> existiert.
 	 * <p>
 	 * 
@@ -65,13 +65,13 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Einf�gen eines <code>Nutzerabonnement</code>-Objekts in die Datenbank.
-	 * Dabei wird auch der Prim�rschl�ssel des �bergebenen Objekts gepr�ft und
+	 * Einfï¿½gen eines <code>Nutzerabonnement</code>-Objekts in die Datenbank.
+	 * Dabei wird auch der Primï¿½rschlï¿½ssel des ï¿½bergebenen Objekts geprï¿½ft und
 	 * ggf. berichtigt.
 	 * 
 	 * @param nutzerabonnement
 	 *            das zu speichernde Objekt
-	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits ï¿½bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
 	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement)
@@ -82,16 +82,21 @@ public class NutzerAboMapper {
 			// Insert-Statement erzeugen
 			//Statement stmt = con.createStatement();
 			
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
+			// Zunï¿½chst wird geschaut welches der momentan hï¿½chste
+			// Primï¿½rschlï¿½ssel ist
 			//ResultSet rs = stmt.executeQuery("SELECT MAX(nutzerAboID) AS maxid FROM nutzerabonnements");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			//if (rs.next()) {
-
+				String sql= "INSERT INTO `nutzerabonnements`(`nutzerAboID`, `datum`, `abonnementID`, `derBeobachteteID`, `followerID`) "
+							+ "VALUES (NULL, ?, ?, ?, ?)";
+			
 				PreparedStatement preStmt;
-				preStmt = con.prepareStatement("INSERT INTO nutzerabonnements, datum VALUES(null, ?)");
+				preStmt = con.prepareStatement(sql);
 				preStmt.setString(1, nutzerabonnement.getErstellungsZeitpunkt().toString());
+				preStmt.setInt(2, nutzerabonnement.getAbonnementID());
+				preStmt.setInt(3, nutzerabonnement.getDerBeobachteteID());
+				preStmt.setInt(4, nutzerabonnement.getFollowerID());
 				preStmt.executeUpdate();
 				preStmt.close();
 			//}
@@ -100,14 +105,13 @@ public class NutzerAboMapper {
 			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return nutzerabonnement;
 	}
 
 	/**
-	 * Diese Methode ermöglicht das Löschen eines Nutzerabonnements und dessen
+	 * Diese Methode ermÃ¶glicht das LÃ¶schen eines Nutzerabonnements und dessen
 	 * Referenzen zu anderen Klassen
 	 * 
 	 * @param nutzerabonnement
@@ -128,7 +132,7 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nutzerabonnements aus der Datenbank in
+	 * Diese Methode ermÃ¶glicht es alle Nutzerabonnements aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
 	 * @return
@@ -160,7 +164,7 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es ein Nutzerabonnement anhand ihrer ID zu
+	 * Diese Methode ermÃ¶glicht es ein Nutzerabonnement anhand ihrer ID zu
 	 * finden und anzuzeigen.
 	 * 
 	 * @param id
@@ -190,7 +194,7 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es eine Ausgabe über einen Nutzerabonnements in
+	 * Diese Methode ermÃ¶glicht es eine Ausgabe Ã¼ber einen Nutzerabonnements in
 	 * der Datenbank, anhand deren ID.
 	 * 
 	 * @param id

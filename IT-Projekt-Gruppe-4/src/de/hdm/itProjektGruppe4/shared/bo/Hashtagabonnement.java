@@ -16,8 +16,7 @@ public class Hashtagabonnement extends Abonnement {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Fremschluesselbeziehung zur Hashtag Klasse Eindeutige ID der Hashtags,
-	 * die abonniert wurden
+	 * Fremschluesselbeziehung zur Klasse Hashtag
 	 */
 	private int hastagID = 0;
 

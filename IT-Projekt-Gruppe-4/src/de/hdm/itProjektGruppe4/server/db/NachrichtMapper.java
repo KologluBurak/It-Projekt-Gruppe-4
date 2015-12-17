@@ -40,7 +40,7 @@ public class NachrichtMapper {
 	private static NachrichtMapper nachrichtMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NachrichtMapper() {

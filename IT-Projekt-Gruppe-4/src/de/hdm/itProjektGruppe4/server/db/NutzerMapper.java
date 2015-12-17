@@ -98,8 +98,11 @@ public class NutzerMapper {
 				}
 				nutzer.setErstellungsZeitpunkt(d);
 				
+				String sql= "INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) "
+							+"VALUES (NULL, ?, ?, ?, ?, ?)";
+				
 				PreparedStatement preStmt;
-				preStmt=con.prepareStatement("INSERT INTO nutzer(nutzerID, vorname, nachname, email, nickname, datum) VALUES (null,?,?,?,?,?)");
+				preStmt=con.prepareStatement(sql);
 				preStmt.setString(1, nutzer.getVorname());
 				preStmt.setString(2, nutzer.getNachname());
 				preStmt.setString(3, nutzer.getEmail());

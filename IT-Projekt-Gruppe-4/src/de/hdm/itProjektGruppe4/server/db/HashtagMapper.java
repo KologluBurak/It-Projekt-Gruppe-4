@@ -34,7 +34,7 @@ public class HashtagMapper {
 	private static HashtagMapper hashtagMapper = null;
 
 	/**
-	 * Geschätzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 
@@ -66,39 +66,41 @@ public class HashtagMapper {
 	/**
 	 * Diese Methode ermöglicht es einen Hashtag in der Datenbank anzulegen.
 	 * 
-	 * @param hashtagBezeichnung
-	 * @return
+	 * @param hashtag
+	 * @return hashtag
 	 */
-
-	public Hashtag insert(Hashtag hashtagBezeichnung)
+	public Hashtag insert(Hashtag hashtag)
 			throws IllegalArgumentException {
+		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			Statement stmt = con.createStatement();
+			//Statement stmt = con.createStatement();
+			//ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
+			//		+ "FROM nachricht ");
 
-			ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-					+ "FROM nachricht ");
+			//if (rs.next()) {
+				//hashtagBezeichnung.setId(rs.getInt("maxid") + 1);
+				//stmt = con.createStatement();
+				
+				String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
 
-			if (rs.next()) {
-
-				hashtagBezeichnung.setId(rs.getInt("maxid") + 1);
-
-				stmt = con.createStatement();
-
-				stmt.executeUpdate("INSERT INTO hashtag (hashtagID, bezeichnung) "
-						+ "VALUES ("
-						+ hashtagBezeichnung.getId()
-						+ ","
-						+ hashtagBezeichnung.getBezeichnung() + ")");
-			}
+				PreparedStatement preStmt;
+				preStmt = con.prepareStatement(sql);
+				preStmt.setString(1, hashtag.getBezeichnung());
+				preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
+				preStmt.executeUpdate();
+				preStmt.close();
+				
+			//}
+			//stmt.close();
+			//rs.close();
+			//con.close();
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
 		}
-
-		return hashtagBezeichnung;
+		return hashtag;
 	}
 
 	/**
@@ -106,7 +108,7 @@ public class HashtagMapper {
 	 * der Datenbank.
 	 * 
 	 * @param hashtag
-	 * @return
+	 * @return hashtag
 	 */
 	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
@@ -131,9 +133,9 @@ public class HashtagMapper {
 	 * Diese Methode ermöglicht das Löschen eines Nutzer und dessen Referenzen
 	 * zu anderen Klassen.
 	 * 
-	 * @param hashtagBezeichnung
+	 * @param hashtag
 	 */
-	public void delete(Hashtag hashtagBezeichnung)
+	public void delete(Hashtag hashtag)
 			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
@@ -141,12 +143,11 @@ public class HashtagMapper {
 			Statement stmt = con.createStatement();
 
 			stmt.executeUpdate("DELETE FROM hashtag " + "WHERE hashtagID="
-					+ hashtagBezeichnung.getId());
+					+ hashtag.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
 		}
 	}
 
@@ -154,7 +155,7 @@ public class HashtagMapper {
 	 * Diese Methode ermöglicht es alle Hashtag aus der datenbank in einer Liste
 	 * auszugeben.
 	 * 
-	 * @return
+	 * @return result
 	 */
 	public ArrayList<Hashtag> findAllHashtags() {
 		Connection con = DBConnection.connection();
@@ -187,9 +188,8 @@ public class HashtagMapper {
 	 * Datenbank.
 	 * 
 	 * @param id
-	 * @return
+	 * @return hashtag
 	 */
-
 	public Hashtag findHashtagByID(int id) {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
