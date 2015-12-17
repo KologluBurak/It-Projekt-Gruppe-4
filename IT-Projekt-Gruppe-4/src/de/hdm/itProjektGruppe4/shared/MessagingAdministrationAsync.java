@@ -67,14 +67,13 @@ public interface MessagingAdministrationAsync {
 	   * ***************************************************************************
 	   */
 	
-	void createNachricht(String text, AsyncCallback<Nachricht> callback);
+	void createNachricht(String text, String nickname, Unterhaltung unterhaltung, AsyncCallback<Nachricht> callback);
 	
 	
 	void getAlleNachrichtbyNutzer(Nutzer nutzer,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
-	void findNachrichtenByUnterhaltung(Unterhaltung unterhaltung,
-			AsyncCallback<ArrayList<Nachricht>> callback);
+	void findNachrichtenByUnterhaltung(Unterhaltung unterhaltung, AsyncCallback<ArrayList<Nachricht>> callback);
 
 	void getAllNachrichten(AsyncCallback<ArrayList<Nachricht>> callback);
 
@@ -151,11 +150,14 @@ public interface MessagingAdministrationAsync {
 
 	void delete(Nutzerabonnement nutzerAbo,
 			AsyncCallback<Void> callback);
+	
+	void findNutzerAbonnementByNutzer(Nutzer nutzer, AsyncCallback<ArrayList<Nutzerabonnement>> callback);
 	/*
 	   * ***************************************************************************
 	   * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
 	   * ***************************************************************************
 	   */
+	
 	
 	/*
 	   * ***************************************************************************
@@ -174,6 +176,8 @@ public interface MessagingAdministrationAsync {
 	   * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	   * ***************************************************************************
 	   */
+
+
 
 	
 }

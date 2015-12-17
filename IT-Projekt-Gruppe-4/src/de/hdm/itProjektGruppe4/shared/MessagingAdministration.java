@@ -49,9 +49,10 @@ public interface MessagingAdministration extends RemoteService {
 	   * ***************************************************************************
 	   */
 	
-	public Nachricht createNachricht (String text) throws IllegalArgumentException;
+	public Nachricht createNachricht (String text, String nickname, Unterhaltung unterhaltung) throws IllegalArgumentException;
 	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException;
 	public ArrayList <Nachricht> getAlleNachrichtbyNutzer(Nutzer nutzer);
+	//public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht, Unterhaltung unterhaltung);
 	public ArrayList <Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung);
 	/*
 	   * ***************************************************************************
@@ -116,12 +117,15 @@ public interface MessagingAdministration extends RemoteService {
 	
 	public Nutzerabonnement createNutzerabonnement (Nutzer derBeobachtete, Nutzer follower)throws IllegalArgumentException;
 	public void delete (Nutzerabonnement nutzerAbo)throws IllegalArgumentException;
+	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer (Nutzer nutzer) throws IllegalArgumentException;
 	
 	/*
 	   * ***************************************************************************
 	   * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
 	   * ***************************************************************************
 	   */
+	
+	
 	
 	/*
 	   * ***************************************************************************

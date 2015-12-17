@@ -43,7 +43,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 			
 	    	tabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 	       
-	    	
+	    
 	    	
 	    	myAsync.findNutzerAbonnementByNutzer(null, new AsyncCallback<ArrayList<Nutzerabonnement>> () {
 
@@ -65,7 +65,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 			});
 	    	
 	    	
-	    	// Hinzufügen einer Spalte Nachname
+	    	// Hinzufï¿½gen einer Spalte Nachname
 	    	
 	        TextColumn<NutzeraboTabelle> nnameColumn = new TextColumn<NutzeraboTabelle>() {
 	         
@@ -76,7 +76,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 	        };
 	        tabelle.addColumn(nnameColumn, "Nachname");
 	        
-	        // Hinzufügen einer Spalte Vorname
+	        // Hinzufï¿½gen einer Spalte Vorname
 	    	
 	        TextColumn<NutzeraboTabelle> vnameColumn = new TextColumn<NutzeraboTabelle>() {
 	         
@@ -87,7 +87,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 	        };
 	        tabelle.addColumn(vnameColumn, "Vorname");
 	        
-	     // Hinzufügen einer Spalte Email
+	     // Hinzufï¿½gen einer Spalte Email
 	        
 	        TextColumn<NutzeraboTabelle> eMailColumn = new TextColumn<NutzeraboTabelle>() {
 	            
@@ -98,7 +98,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 	        };
 	        tabelle.addColumn(eMailColumn, "EMail");
 	        
-	     // Hinzufügen einer Spalte Nickname
+	     // Hinzufï¿½gen einer Spalte Nickname
 	        
 	        TextColumn<NutzeraboTabelle> nicknameColumn = new TextColumn<NutzeraboTabelle>() {
 	            
@@ -109,7 +109,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 	        };
 	        tabelle.addColumn(nicknameColumn, "Nickname");
 	        
-	        // Hinzufügen einer Spalte emtfernen
+	        // Hinzufï¿½gen einer Spalte emtfernen
 	        
 	        TextColumn<NutzeraboTabelle> entfernenColumn = new TextColumn<NutzeraboTabelle>() {
 	            

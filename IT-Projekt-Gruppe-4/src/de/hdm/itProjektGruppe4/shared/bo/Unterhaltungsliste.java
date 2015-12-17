@@ -19,7 +19,7 @@ public class Unterhaltungsliste extends BusinessObject {
 	/**
 	 * Fremdschlüsselbeziehung zur Klasse Unterhaltung
 	 */
-	private int unterhaltundID;
+	private int unterhaltungID;
 	
 	/**
 	 * Fremdschlüsselbeziehung zur Klasse Nutzer
@@ -36,15 +36,15 @@ public class Unterhaltungsliste extends BusinessObject {
 	 * @return unterhaltungID
 	 */
 	public int getUnterhaltundID() {
-		return unterhaltundID;
+		return unterhaltungID;
 	}
 
 	/**
 	 * Setzen der UnterhaltungID
 	 * @param unterhaltundID
 	 */
-	public void setUnterhaltundID(int unterhaltundID) {
-		this.unterhaltundID = unterhaltundID;
+	public void setUnterhaltungID(int unterhaltungID) {
+		this.unterhaltungID = unterhaltungID;
 	}
 
 	/**

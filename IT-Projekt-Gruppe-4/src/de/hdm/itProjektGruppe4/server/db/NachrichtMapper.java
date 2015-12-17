@@ -196,21 +196,67 @@ public class NachrichtMapper {
 	 * @param unterhaltung
 	 * @return
 	 */
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) throws IllegalArgumentException {
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht, Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
-							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
-							+ "ON nachrichtID=" + nachricht.getId()
-							+ " ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
-							+ "ORDER BY unterhaltung.datum");
+			//Neu
+			Statement stmt2= con.createStatement();
+			ResultSet rs2= stmt2.executeQuery("SELECT unterhaltungID, nachrichtID, text, nachrichten.datum FROM unterhaltungen "
+					+ "INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
+					+ "WHERE unterhaltungen.unterhaltungenID= "+ unterhaltung.getId());
+			
+			//Alt
+//			Statement stmt = con.createStatement();
+//			ResultSet rs = stmt.executeQuery(
+//					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
+//							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
+//							+ "ON nachrichtID=" + nachricht.getId()
+//							+ " ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
+//							+ "ORDER BY unterhaltung.datum");
 
-			while (rs.next()) {
-				nachricht.setId(rs.getInt("nachrichtID"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("nachrichten.datum"));
+			while (rs2.next()) {
+				nachricht.setUnterhaltungID(rs2.getInt("nachrichten.unterhaltungID"));
+				nachricht.setId(rs2.getInt("nachrichtID"));
+				nachricht.setText(rs2.getString("text"));
+				nachricht.setErstellungsZeitpunkt(rs2.getDate("nachrichten.datum"));
+
+				result.add(nachricht);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}
+		return result;
+	}
+	
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
+		try {
+			//Neu
+			Statement stmt2= con.createStatement();
+			ResultSet rs2= stmt2.executeQuery("SELECT unterhaltungID, nachrichtID, text, nachrichten.datum FROM unterhaltungen "
+					+ "INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
+					+ "WHERE unterhaltungen.unterhaltungenID= "+ unterhaltung.getId());
+			
+			//Alt
+//			Statement stmt = con.createStatement();
+//			ResultSet rs = stmt.executeQuery(
+//					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
+//							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
+//							+ "ON nachrichtID=" + nachricht.getId()
+//							+ " ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
+//							+ "ORDER BY unterhaltung.datum");
+
+			Nachricht nachricht = new Nachricht();
+			while (rs2.next()) {
+				nachricht.setUnterhaltungID(rs2.getInt("nachrichten.unterhaltungID"));
+				nachricht.setId(rs2.getInt("nachrichtID"));
+				nachricht.setText(rs2.getString("text"));
+				nachricht.setErstellungsZeitpunkt(rs2.getDate("nachrichten.datum"));
 
 				result.add(nachricht);
 			}
@@ -265,12 +311,17 @@ public class NachrichtMapper {
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
+			//Alt
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten WHERE nutzerID =" + nutzer.getId());
+			ResultSet rs = stmt.executeQuery("SELECT text, datum FROM nachrichten WHERE nutzerID =" + nutzer.getId());
+			
+			//Neu
+			Statement stmt2 = con.createStatement();
+			ResultSet rs2 = stmt2.executeQuery("SELECT nutzer.nickname, text, datum FROM nutzer INNER JOIN nachrichten "
+					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzerID=" +nutzer.getId());
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
-				nachricht.setId(rs.getInt("nutzerID"));
 				nachricht.setText(rs.getString("text"));
 				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
 
@@ -311,11 +362,5 @@ public class NachrichtMapper {
 			return null;
 		}
 		return nachrichtenJeZeitraum;
-	}
-
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
-			Unterhaltung unterhaltung) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

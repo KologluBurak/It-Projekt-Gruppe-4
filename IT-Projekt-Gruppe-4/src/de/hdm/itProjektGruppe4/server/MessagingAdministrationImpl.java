@@ -101,7 +101,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	private NachrichtMapper nachrichtMapper = null;
 	private HashtagMapper hashtagMapper = null;
 	private UnterhaltungMapper unterhaltungMapper = null;
-
+	private UnterhaltungslisteMapper unterhaltungslisteMapper = null;
 	/**
 	 * No-Argument Konstruktor
 	 */
@@ -123,6 +123,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		this.nachrichtMapper = NachrichtMapper.nachrichtMapper();
 		this.hashtagMapper = HashtagMapper.hashtagMapper();
 		this.unterhaltungMapper = UnterhaltungMapper.unterhaltungMapper();
+		this.unterhaltungslisteMapper = UnterhaltungslisteMapper.unterhaltungslisteMapper();
 	}
 
 	/*
@@ -220,19 +221,28 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Anlegen einer neuen Nachricht. Die Nachricht wird in der Datenbank
 	 * gespeichert.
 	 */
-	public Nachricht createNachricht(String text)
+	public Nachricht createNachricht(String text, String nickname, Unterhaltung unterhaltung)
 			throws IllegalArgumentException {
 		
 		Nachricht na = new Nachricht();
 		// NutzerID durch emailadresse heraussuchen
-		Nutzer nutzer = new Nutzer();
-		Unterhaltung unterhaltung = new Unterhaltung();
+		Nutzer absender = new Nutzer();
+		//Nutzer empfaenger = new Nutzer();
+
+		//Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 		
-		//nutzer = this.nutzerMapper.findNutzerByNickname(nickname);
-		//		unterhaltung = 
+		// erster Fremdschlüssel
+		absender = this.nutzerMapper.findNutzerByNickname(nickname);
 		
-		na.setNutzerID(nutzer.getId());
+		// zweiter Fremdschlüssel
+		//unterhaltungsliste = this.unterhaltungslisteMapper.findByAbsender(absender);
+		
+		// 3. Fremschlüssel
+		// empfaenger = this.nutzerMapper.findNutzerByNickname(empfaengerNickname);
+		
+		na.setNutzerID(absender.getId());
 		na.setUnterhaltungID(unterhaltung.getId());
+		
 		na.setText(text);
 		return this.nachrichtMapper.insert(na);
 	}
@@ -267,10 +277,16 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen von Nachrichten in einer Unterhaltung
 	 */
+//	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
+//			Nachricht nachricht, Unterhaltung unterhaltung) throws IllegalArgumentException {
+//		return this.nachrichtMapper.findNachrichtenByUnterhaltung(nachricht, unterhaltung);
+//	}
+	
 	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
 			Unterhaltung unterhaltung) throws IllegalArgumentException {
 		return this.nachrichtMapper.findNachrichtenByUnterhaltung(unterhaltung);
 	}
+	
 
 	/*
 	 * ***************************************************************************
@@ -323,8 +339,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		/*
 		 * Zugehörige Nachrichten von der Unterhaltung werden gelöscht
 		 */
-		ArrayList<Nachricht> nachrichten = this
-				.findNachrichtenByUnterhaltung(unterhaltung);
+		ArrayList<Nachricht> nachrichten = this.findNachrichtenByUnterhaltung(unterhaltung);
 
 		if (nachrichten != null) {
 			for (Nachricht n : nachrichten) {
