@@ -64,30 +64,6 @@ public class AbonnementMapper {
 
 		return abonnement;
 	}
-	
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Abonnementsdatensatzes
-	 * in der Datenbank
-	 * 
-	 * @param abonnement
-	 * @return abonnement
-	 */
-	public Abonnement updateAbonnement(Abonnement abonnement) {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE abonnement " + "SET aboArt=\""
-					+ "WHERE abonnementID=" + abonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		return abonnement;
-	}
 
 	/**
 	 * Diese Methode ermöglicht es eine Ausgabe über die Abonnements in der

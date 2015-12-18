@@ -79,10 +79,6 @@ public class HashtagMapper {
 			//ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
 			//		+ "FROM nachricht ");
 
-			//if (rs.next()) {
-				//hashtagBezeichnung.setId(rs.getInt("maxid") + 1);
-				//stmt = con.createStatement();
-				
 				String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
 
 				PreparedStatement preStmt;
@@ -91,8 +87,7 @@ public class HashtagMapper {
 				preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
 				preStmt.executeUpdate();
 				preStmt.close();
-				
-			//}
+		
 			//stmt.close();
 			//rs.close();
 			//con.close();

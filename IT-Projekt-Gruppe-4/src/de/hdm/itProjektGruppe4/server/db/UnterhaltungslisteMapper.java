@@ -93,11 +93,11 @@ public class UnterhaltungslisteMapper {
 		return unterhaltungsliste;
 	}
 	
-	public Unterhaltungsliste findByAbsender(Nutzer nutzer){
+	public Unterhaltungsliste findByAbsender(String absenderNickname){
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + nutzer.getId();
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname;
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -121,11 +121,11 @@ public class UnterhaltungslisteMapper {
 		return null;
 	}
 	
-	public Unterhaltungsliste findByEmpfaenger(Nutzer nutzer){
+	public Unterhaltungsliste findByEmpfaenger(String empfaengerNickname){
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + nutzer.getId();
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaengerNickname;
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
