@@ -12,9 +12,10 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * gel�scht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
+ * 
+ * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Thies
  * @author Yücel
  */
 
@@ -69,36 +70,36 @@ public class HashtagMapper {
 	 * @param hashtag
 	 * @return hashtag
 	 */
-	public Hashtag insert(Hashtag hashtag)
-			throws IllegalArgumentException {
+	public Hashtag insert(Hashtag hashtag) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			//Statement stmt = con.createStatement();
-			//ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-			//		+ "FROM nachricht ");
+			// Statement stmt = con.createStatement();
+			// ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
+			// + "FROM nachricht ");
 
-			//if (rs.next()) {
-				//hashtagBezeichnung.setId(rs.getInt("maxid") + 1);
-				//stmt = con.createStatement();
-				
-				String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
+			// if (rs.next()) {
+			// hashtagBezeichnung.setId(rs.getInt("maxid") + 1);
+			// stmt = con.createStatement();
 
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(sql);
-				preStmt.setString(1, hashtag.getBezeichnung());
-				preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
-				
-			//}
-			//stmt.close();
-			//rs.close();
-			//con.close();
+			String sql = "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
+
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, hashtag.getBezeichnung());
+			preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
+			preStmt.executeUpdate();
+			preStmt.close();
+
+			// }
+			// stmt.close();
+			// rs.close();
+			// con.close();
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 		}
 		return hashtag;
 	}
@@ -135,8 +136,7 @@ public class HashtagMapper {
 	 * 
 	 * @param hashtag
 	 */
-	public void delete(Hashtag hashtag)
-			throws IllegalArgumentException {
+	public void delete(Hashtag hashtag) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -147,7 +147,8 @@ public class HashtagMapper {
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 		}
 	}
 
@@ -190,7 +191,7 @@ public class HashtagMapper {
 	 * @param id
 	 * @return hashtag
 	 */
-	public Hashtag findHashtagByID(int id) {
+	public Hashtag findHashtagByID(int id) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
@@ -211,7 +212,8 @@ public class HashtagMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 
 		}
 		return null;

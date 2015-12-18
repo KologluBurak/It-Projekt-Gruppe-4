@@ -15,9 +15,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
+ * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Thies
  * @author Yücel
  */
 public class UnterhaltungMapper {
@@ -27,9 +27,9 @@ public class UnterhaltungMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
-	 * speichert die einzige Instanz dieser Klasse.
+	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie f�r
+	 * s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert
+	 * die einzige Instanz dieser Klasse.
 	 * 
 	 * @see UnterhaltungMapper()
 	 */
@@ -73,35 +73,40 @@ public class UnterhaltungMapper {
 	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Unterhaltung insert(Unterhaltung unterhaltung) throws IllegalArgumentException {
+	public Unterhaltung insert(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
-			//Statement stmt = con.createStatement();
-			
+			// Statement stmt = con.createStatement();
+
 			// Zun�chst wird geschaut welches der momentan h�chste
 			// Prim�rschl�ssel ist
-			//ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " + "FROM unterhaltungen");
+			// ResultSet rs =
+			// stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " +
+			// "FROM unterhaltungen");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			//if (rs.next()) {
+			// if (rs.next()) {
 
-				String sql ="INSERT INTO `unterhaltungen`(`unterhaltungID`, `datum`, `zuletztBearbeitet`) VALUES (NULL, ?, ?)";
-			
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(sql);
-				preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
-				preStmt.setString(2, unterhaltung.getZuletztBearbeitet().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
-			//}
-			//stmt.close();
-			//rs.close();
-			//con.close();
+			String sql = "INSERT INTO `unterhaltungen`(`unterhaltungID`, `datum`, `zuletztBearbeitet`) VALUES (NULL, ?, ?)";
+
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt()
+					.toString());
+			preStmt.setString(2, unterhaltung.getZuletztBearbeitet().toString());
+			preStmt.executeUpdate();
+			preStmt.close();
+			// }
+			// stmt.close();
+			// rs.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return unterhaltung;
 	}
@@ -110,22 +115,26 @@ public class UnterhaltungMapper {
 	 * Wiederholtes Schreiben eines Objekts in die Datenbank.
 	 * 
 	 * @param unterhaltung
-	 * das Objekt, das in die DB geschrieben werden soll
+	 *            das Objekt, das in die DB geschrieben werden soll
 	 * @return das als Parameter �bergebene Objekt
 	 */
-	public Unterhaltung update(Unterhaltung unterhaltung) throws IllegalArgumentException {
+	public Unterhaltung update(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			PreparedStatement preStmt;
-			preStmt = con.prepareStatement(
-					"UPDATE unterhaltungen SET datum=? WHERE unterhaltungID=" + unterhaltung.getId());
-			preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
+			preStmt = con
+					.prepareStatement("UPDATE unterhaltungen SET datum=? WHERE unterhaltungID="
+							+ unterhaltung.getId());
+			preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt()
+					.toString());
 			preStmt.executeUpdate();
 			preStmt.close();
-			//con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return unterhaltung;
 	}
@@ -135,18 +144,21 @@ public class UnterhaltungMapper {
 	 * Datenbank.
 	 * 
 	 * @param id
-	 * das aus der DB zu l�schende "Objekt"
+	 *            das aus der DB zu l�schende "Objekt"
 	 */
-	public void delete(Unterhaltung unterhaltung) throws IllegalArgumentException {
+	public void delete(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID=" + unterhaltung.getId());
+			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID="
+					+ unterhaltung.getId());
 			stmt.close();
-			//con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 	}
 
@@ -161,7 +173,8 @@ public class UnterhaltungMapper {
 		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltungID");
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltungID");
 
 			while (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
@@ -172,8 +185,8 @@ public class UnterhaltungMapper {
 			}
 			stmt.close();
 			rs.close();
-			//con.close();
-			
+			// con.close();
+
 			return allUnterhaltungen;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -192,8 +205,9 @@ public class UnterhaltungMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, datum FROM unterhaltungen "
-					+ "WHERE unterhaltungID= " + id);
+			ResultSet rs = stmt
+					.executeQuery("SELECT unterhaltungID, datum FROM unterhaltungen "
+							+ "WHERE unterhaltungID= " + id);
 
 			if (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
@@ -204,7 +218,7 @@ public class UnterhaltungMapper {
 			}
 			stmt.close();
 			rs.close();
-			//con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

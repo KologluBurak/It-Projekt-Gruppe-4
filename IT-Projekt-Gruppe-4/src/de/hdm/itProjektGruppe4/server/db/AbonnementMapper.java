@@ -8,9 +8,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 
 /**
+ * 
+ * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Thies
  * @author Yücel
  */
 
@@ -36,35 +37,40 @@ public class AbonnementMapper {
 	 * @param abonnement
 	 * @return abonnement
 	 */
-	public Abonnement insertAbonnement(Abonnement abonnement) {
+	public Abonnement insertAbonnement(Abonnement abonnement)
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			//Statement stmt = con.createStatement();
-			//ResultSet rs = stmt.executeQuery("SELECT MAX(abonnementID) AS maxid "	+ "FROM abonnement ");
+			// Statement stmt = con.createStatement();
+			// ResultSet rs =
+			// stmt.executeQuery("SELECT MAX(abonnementID) AS maxid " +
+			// "FROM abonnement ");
 
-			//if (rs.next()) {
+			// if (rs.next()) {
 
-				String sql ="INSERT INTO `abonnements`(`abonnementID`, `datum`) VALUES (NULL, ?)";
-			
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(sql);
-				preStmt.setString(1, abonnement.getErstellungsZeitpunkt().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
-			
-			//}
-			//stmt.close();
-			//rs.close();
-			//con.close();
-		} catch(SQLException e1) {
+			String sql = "INSERT INTO `abonnements`(`abonnementID`, `datum`) VALUES (NULL, ?)";
+
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, abonnement.getErstellungsZeitpunkt()
+					.toString());
+			preStmt.executeUpdate();
+			preStmt.close();
+
+			// }
+			// stmt.close();
+			// rs.close();
+			// con.close();
+		} catch (SQLException e1) {
 			e1.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 		}
 
 		return abonnement;
 	}
-	
 
 	/**
 	 * Diese Methode ermöglicht eine Akutalisierung des Abonnementsdatensatzes
@@ -73,7 +79,8 @@ public class AbonnementMapper {
 	 * @param abonnement
 	 * @return abonnement
 	 */
-	public Abonnement updateAbonnement(Abonnement abonnement) {
+	public Abonnement updateAbonnement(Abonnement abonnement)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -84,6 +91,8 @@ public class AbonnementMapper {
 
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 		}
 
 		return abonnement;
@@ -97,7 +106,8 @@ public class AbonnementMapper {
 	 * @return
 	 */
 
-	public Abonnement findAbonnementByKey(int id) {
+	public Abonnement findAbonnementByKey(int id)
+			throws IllegalArgumentException {
 
 		Connection con = DBConnection.connection();
 
@@ -115,7 +125,8 @@ public class AbonnementMapper {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			return null;
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 
 		}
 		return null;
@@ -128,7 +139,8 @@ public class AbonnementMapper {
 	 * @return
 	 */
 
-	public ArrayList<Abonnement> findAllAbonnements() {
+	public ArrayList<Abonnement> findAllAbonnements()
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		ArrayList<Abonnement> aboListe = new ArrayList<Abonnement>();
@@ -151,6 +163,8 @@ public class AbonnementMapper {
 			con.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 		}
 		return aboListe;
 	}
