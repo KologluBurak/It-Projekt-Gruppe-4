@@ -141,7 +141,6 @@ public class NutzerMapper {
 			preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 			preStmt.close();
-			//con.close();
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -217,8 +216,8 @@ public class NutzerMapper {
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
 				nutzer.setId(rs.getInt("nutzerID"));
-				//nutzer.setVorname(rs.getString("vorname"));
-				//nutzer.setNachname(rs.getString("nachname"));
+				nutzer.setVorname(rs.getString("vorname"));
+				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
 				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
@@ -246,7 +245,7 @@ public class NutzerMapper {
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
-				nutzer.setId(rs.getInt("userID"));
+				nutzer.setId(rs.getInt("nutzerID"));
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));

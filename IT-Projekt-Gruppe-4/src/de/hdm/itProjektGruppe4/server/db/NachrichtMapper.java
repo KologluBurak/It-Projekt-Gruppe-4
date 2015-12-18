@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,8 +78,6 @@ public class NachrichtMapper {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		
-		
-		
 		try {
 			// Insert-Statement erzeugen
 			//Statement stmt = con.createStatement();
@@ -106,31 +103,6 @@ public class NachrichtMapper {
 			//stmt.close();
 			//rs.close();
 			//con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
-		}
-		return nachricht;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des
-	 * Unterhaltungsdatensatzes in der Datenbank.
-	 * 
-	 * @param unterhaltung
-	 * @return
-	 */
-	public Nachricht update(Nachricht nachricht) throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-		try {
-			PreparedStatement preStmt;
-			preStmt = con.prepareStatement("UPDATE nachrichten SET text=?, "
-					+"datum=? WHERE nachrichtID=" + nachricht.getId());
-			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
-			preStmt.executeUpdate();
-			preStmt.close();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
@@ -188,48 +160,6 @@ public class NachrichtMapper {
 		}
 		return allNachrichten;
 	}
-
-	/**
-	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand
-	 * ihrer ID zu finden und anzuzeigen.
-	 * 
-	 * @param unterhaltung
-	 * @return
-	 */
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht, Unterhaltung unterhaltung)
-			throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
-		try {
-			//Neu
-			Statement stmt2= con.createStatement();
-			ResultSet rs2= stmt2.executeQuery("SELECT unterhaltungID, nachrichtID, text, nachrichten.datum FROM unterhaltungen "
-					+ "INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
-					+ "WHERE unterhaltungen.unterhaltungenID= "+ unterhaltung.getId());
-			
-			//Alt
-//			Statement stmt = con.createStatement();
-//			ResultSet rs = stmt.executeQuery(
-//					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
-//							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
-//							+ "ON nachrichtID=" + nachricht.getId()
-//							+ " ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
-//							+ "ORDER BY unterhaltung.datum");
-
-			while (rs2.next()) {
-				nachricht.setUnterhaltungID(rs2.getInt("nachrichten.unterhaltungID"));
-				nachricht.setId(rs2.getInt("nachrichtID"));
-				nachricht.setText(rs2.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs2.getDate("nachrichten.datum"));
-
-				result.add(nachricht);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
-		}
-		return result;
-	}
 	
 	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
 			throws IllegalArgumentException {
@@ -238,9 +168,9 @@ public class NachrichtMapper {
 		try {
 			//Neu
 			Statement stmt2= con.createStatement();
-			ResultSet rs2= stmt2.executeQuery("SELECT unterhaltungID, nachrichtID, text, nachrichten.datum FROM unterhaltungen "
+			ResultSet rs2= stmt2.executeQuery("SELECT text, nachrichten.datum FROM unterhaltungen "
 					+ "INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
-					+ "WHERE unterhaltungen.unterhaltungenID= "+ unterhaltung.getId());
+					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId());
 			
 			//Alt
 //			Statement stmt = con.createStatement();
@@ -253,8 +183,6 @@ public class NachrichtMapper {
 
 			Nachricht nachricht = new Nachricht();
 			while (rs2.next()) {
-				nachricht.setUnterhaltungID(rs2.getInt("nachrichten.unterhaltungID"));
-				nachricht.setId(rs2.getInt("nachrichtID"));
 				nachricht.setText(rs2.getString("text"));
 				nachricht.setErstellungsZeitpunkt(rs2.getDate("nachrichten.datum"));
 
@@ -285,7 +213,7 @@ public class NachrichtMapper {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
 				return nachricht;
 			}
 		} catch (SQLException e2) {
@@ -311,13 +239,9 @@ public class NachrichtMapper {
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
-			//Alt
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT text, datum FROM nachrichten WHERE nutzerID =" + nutzer.getId());
-			
 			//Neu
-			Statement stmt2 = con.createStatement();
-			ResultSet rs2 = stmt2.executeQuery("SELECT nutzer.nickname, text, datum FROM nutzer INNER JOIN nachrichten "
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT nutzer.nickname, text, datum FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzerID=" +nutzer.getId());
 
 			while (rs.next()) {
@@ -353,7 +277,7 @@ public class NachrichtMapper {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				nachrichtenJeZeitraum.add(nachricht);
 			}
