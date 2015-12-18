@@ -227,12 +227,13 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		Nachricht na = new Nachricht();
 		// NutzerID durch emailadresse heraussuchen
 		Nutzer absender = new Nutzer();
-		//Nutzer empfaenger = new Nutzer();
-
-		//Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 		
 		// erster Fremdschlüssel
 		absender = this.nutzerMapper.findNutzerByNickname(nickname);
+		
+		//Nutzer empfaenger = new Nutzer();
+		
+		//Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 		
 		// zweiter Fremdschlüssel
 		//unterhaltungsliste = this.unterhaltungslisteMapper.findByAbsender(absender);
