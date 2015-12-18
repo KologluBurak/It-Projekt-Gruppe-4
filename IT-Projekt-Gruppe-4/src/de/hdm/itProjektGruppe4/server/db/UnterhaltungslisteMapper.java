@@ -2,8 +2,12 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 /**
@@ -89,5 +93,87 @@ public class UnterhaltungslisteMapper {
 		return unterhaltungsliste;
 	}
 	
+	public Unterhaltungsliste findByAbsender(Nutzer nutzer){
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		try {
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + nutzer.getId();
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if(rs.next()){
+				Unterhaltungsliste uliste=new Unterhaltungsliste();
+				uliste.setId(rs.getInt("nutzerID"));
+				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
+				uliste.setAbsenderID(rs.getInt("absenderID"));
+				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
+
+				return uliste;
+			}
+			
+			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+		}
+		
+		return null;
+	}
 	
+	public Unterhaltungsliste findByEmpfaenger(Nutzer nutzer){
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		try {
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + nutzer.getId();
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if(rs.next()){
+				Unterhaltungsliste uliste=new Unterhaltungsliste();
+				uliste.setId(rs.getInt("nutzerID"));
+				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
+				uliste.setAbsenderID(rs.getInt("absenderID"));
+				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
+
+				return uliste;
+			}
+			
+			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+		}
+		
+		return null;
+	}
+	
+	public Unterhaltungsliste findByUnterhaltung(Unterhaltung unterhaltung){
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		try {
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `unterhaltungID` = " + unterhaltung.getId();
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if(rs.next()){
+				Unterhaltungsliste unterhaltungsliste=new Unterhaltungsliste();
+				unterhaltungsliste.setId(rs.getInt("nutzerID"));
+				unterhaltungsliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
+				unterhaltungsliste.setAbsenderID(rs.getInt("absenderID"));
+				unterhaltungsliste.setEmpfaengerID(rs.getInt("empfaengerID"));
+
+				return unterhaltungsliste;
+			}
+			
+			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+		}
+		
+		return null;
+	}
 }

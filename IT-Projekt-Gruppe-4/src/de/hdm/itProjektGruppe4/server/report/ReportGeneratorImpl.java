@@ -12,12 +12,8 @@ import de.hdm.itProjektGruppe4.shared.ReportGenerator;
 import de.hdm.itProjektGruppe4.shared.bo.*;
 import de.hdm.itProjektGruppe4.shared.report.*;
 
-
-
-
 @SuppressWarnings("serial")
-public abstract class ReportGeneratorImpl extends RemoteServiceServlet
-implements ReportGenerator {
+public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportGenerator {
 
 	/**
 	 * Ein ReportGenerator benötigt Zugriff auf die Messaging, da diese die
@@ -30,8 +26,8 @@ implements ReportGenerator {
 	 * <p>
 	 * Ein <code>RemoteServiceServlet</code> wird unter GWT mittels
 	 * <code>GWT.create(Klassenname.class)</code> Client-seitig erzeugt. Hierzu
-	 * ist ein solcher No-Argument-Konstruktor anzulegen. Ein Aufruf eines anderen
-	 * Konstruktors ist durch die Client-seitige Instantiierung durch
+	 * ist ein solcher No-Argument-Konstruktor anzulegen. Ein Aufruf eines
+	 * anderen Konstruktors ist durch die Client-seitige Instantiierung durch
 	 * <code>GWT.create(Klassenname.class)</code> nach derzeitigem Stand nicht
 	 * möglich.
 	 * </p>
@@ -46,14 +42,16 @@ implements ReportGenerator {
 	}
 
 	/**
-	 * Initialsierungsmethode. Siehe dazu Anmerkungen zum No-Argument-Konstruktor.
+	 * Initialsierungsmethode. Siehe dazu Anmerkungen zum
+	 * No-Argument-Konstruktor.
 	 * 
 	 * @see #ReportGeneratorImpl()
 	 */
+	@Override
 	public void init() throws IllegalArgumentException {
 		/*
-		 * Ein ReportGeneratorImpl-Objekt instantiiert für seinen Eigenbedarf eine
-		 * MessagingAdministrationsImpl-Instanz.
+		 * Ein ReportGeneratorImpl-Objekt instantiiert für seinen Eigenbedarf
+		 * eine MessagingAdministrationsImpl-Instanz.
 		 */
 		MessagingAdministrationImpl m = new MessagingAdministrationImpl();
 		m.init();
@@ -69,29 +67,29 @@ implements ReportGenerator {
 		return this.messagingadministration;
 	}
 
-	
-	/**	
-	 * Erstellen von <code>InfosVonAllenAbonnementsReport</code>-Objekten.
+	/**
+	 * Erstellen von <code>AlleAbonnementsReport</code>-Objekten.
 	 * 
-	 * @param user das Abonnementobjekt bzgl. dessen der Report erstellt werden soll.
-	 * @return 
+	 * @param user
+	 *            das Abonnementobjekt bzgl. dessen der Report erstellt werden
+	 *            soll.
+	 * @return
 	 * @return der fertige Report
 	 */
-	
-	public String erstelleInfosVonAllenAbonnementsReport (Abonnement aboNutzer, Abonnement aboHashtag) 
-		throws IllegalArgumentException {
-	
+
+	public AlleAbonnementsReport erstelleAlleAbonnementsReport(Abonnement aboNutzer, Abonnement aboHashtag)
+			throws IllegalArgumentException {
+
 		if (this.getMessagingAdministration() == null)
 			return null;
 
 		/*
 		 * Zunächst legen wir uns einen leeren Report an.
 		 */
-		InfosVonAllenAbonnementsReport result = new InfosVonAllenAbonnementsReport();
+		AlleAbonnementsReport result = new AlleAbonnementsReport();
 
 		// Jeder Report hat einen Titel (Bezeichnung / úberschrift).
-//		result.setTitle("Alle Abonnements" + aboNutzer.getAboNutzer() + 
-//				" " + aboHashtag.getAboHashtag());
+		result.setTitle("Alle Abonnements");
 
 		/*
 		 * Datum der Erstellung hinzufügen. new Date() erzeugt autom. einen
@@ -100,100 +98,100 @@ implements ReportGenerator {
 		result.setCreated(new Date());
 
 		/*
-		 * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die oben
-		 * auf dem Report stehen) des Reports. Die Kopfdaten sind mehrzeilig, daher
-		 * die Verwendung von CompositeParagraph.
+		 * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die
+		 * oben auf dem Report stehen) des Reports. Die Kopfdaten sind
+		 * mehrzeilig, daher die Verwendung von CompositeParagraph.
 		 */
 		CompositeParagraph header = new CompositeParagraph();
-		
+
 		// Den Abonnenten aufnehmen
-		// raus gemacht header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnent() + ", "));
-		
+		// raus gemacht header.addSubParagraph(new
+		// SimpleParagraph(aboNutzer.getAbonnent() + ", "));
+
 		// Den abonnierten Nutzer aufnehmen
-		// raus gemacht header.addSubParagraph(new SimpleParagraph(aboNutzer.getAbonnierterNutzer() + ", "));
-		
-		// Den abonniertes Hashtag aufnehmen 
-		// raus gemachtheader.addSubParagraph(new SimpleParagraph(aboHashtag.getAbonniertesHashtag() + ", "));
-		
-		
+		// raus gemacht header.addSubParagraph(new
+		// SimpleParagraph(aboNutzer.getAbonnierterNutzer() + ", "));
+
+		// Den abonniertes Hashtag aufnehmen
+		// raus gemachtheader.addSubParagraph(new
+		// SimpleParagraph(aboHashtag.getAbonniertesHashtag() + ", "));
+
 		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
 		result.setHeaderData(header);
 
-			/**
-			 * Ab hier erfolgt ein zeilenweises Hinzufügen von Abonnement-Informationen.
-			 */
+		/**
+		 * Ab hier erfolgt ein zeilenweises Hinzufügen von
+		 * Abonnement-Informationen.
+		 */
 
-			/*
-			 * Zunächst legen wir eine Kopfzeile für die Abonnementinfos-Tabelle an.
-			 */
-			Row headline = new Row();
+		/*
+		 * Zunächst legen wir eine Kopfzeile für die Abonnementinfos-Tabelle an.
+		 */
+		Row headline = new Row();
 
-			/*
-			 * Wir wollen Zeilen mit 2 Spalten in der Tabelle erzeugen. In die erste
-			 * Spalte schreiben wir den jeweiligen Abonnement, in die zweite Spalte schreiben wir den Anfangszeitpunkt und 
-			 * in die letzte Zeile schreiben wir den Endzeitpunkt.In der Kopfzeile legen wir also entsprechende
-			 * Überschriften ab.
-			 */
-			headline.addColumn(new Column("Nutzerabonnements"));
-			headline.addColumn(new Column("Hashtagabonnements"));
+		/*
+		 * Wir wollen Zeilen mit 2 Spalten in der Tabelle erzeugen. In die erste
+		 * Spalte schreiben wir den jeweiligen Abonnement, in die zweite Spalte
+		 * schreiben wir den Anfangszeitpunkt und in die letzte Zeile schreiben
+		 * wir den Endzeitpunkt.In der Kopfzeile legen wir also entsprechende
+		 * Überschriften ab.
+		 */
+		headline.addColumn(new Column("Nutzerabonnements"));
+		headline.addColumn(new Column("Hashtagabonnements"));
 
-			// Hinzufügen der Kopfzeile
-			result.addRow(headline);
+		// Hinzufügen der Kopfzeile
+		result.addRow(headline);
 
-			/*
-			 * Nun werden sämtliche Daten der Abonnements ausgelesen und in die Tabelle eingetragen.
-			 */
-			ArrayList<Abonnement> abonnements = AbonnementMapper.abonnementMapper().findAllAbonnements();
-			
-			
-			for (Abonnement abonnement : abonnements) {
-				// Eine leere Zeile anlegen.
-				Row accountRow = new Row();
+		/*
+		 * Nun werden sämtliche Daten der Abonnements ausgelesen und in die
+		 * Tabelle eingetragen.
+		 */
+		ArrayList<Abonnement> abonnements = AbonnementMapper.abonnementMapper().findAllAbonnements();
 
-				// Erste Spalte: Abonnement ID hinzufügen
-				accountRow.addColumn(new Column(String.valueOf(abonnement.getId())));
+		for (Abonnement abonnement : abonnements) {
+			// Eine leere Zeile anlegen.
+			Row accountRow = new Row();
 
-				// Zweite Spalte: Abonutzer hinzufügen
-				//raus gemacht accountRow.addColumn(new Column(String.valueOf(abonnement.getAboNutzer())));
+			// Erste Spalte: Abonnement ID hinzufügen
+			accountRow.addColumn(new Column(String.valueOf(abonnement.getId())));
+
+			// Zweite Spalte: Abonutzer hinzufügen
+			// raus gemacht accountRow.addColumn(new
+			// Column(String.valueOf(abonnement.getAboNutzer())));
+
+			// Dritte Spalte: Abohashtag hinzfügen
+			// raus gemacht accountRow.addColumn(new
+			// Column(String.valueOf(abonnement.getAboHashtag())));
+
+			// und schließlich die Zeile dem Report hinzufügen.
+			result.addRow(accountRow);
+		}
+
+	/*
+	 * Jetzt muss noch der fertige Report zurückgegeben werden.
+	 */
+	return result;
 	
-				//Dritte Spalte: Abohashtag hinzfügen
-				// raus gemacht accountRow.addColumn(new Column(String.valueOf(abonnement.getAboHashtag())));
-	
-				// und schließlich die Zeile dem Report hinzufügen.
-				result.addRow(accountRow);
-			}
+	}
 
-			/**
-			 * Übergebe den erstellten Report dem HTMLReportWriter um HTML zu erzeugen
-			 */
-			HTMLReportWriter writer = new HTMLReportWriter();
-			writer.process1(result);
-    
-			/**
-			 * Zum Schluss müssen wir noch den fertigen HTML-Report zurückgeben.
-			 */
-    return writer.getReportText();
-}
-  
-/**
-* Erstellen von <code>InfosVonAllenNachrichten</code>-Objekten.
-* 
-* @return der fertige Report
-*/
-public String erstelleInfosVonAllenNachrichtenReport(Nutzer nutzer, Unterhaltung unterhaltung, Nachricht n, String von, String bis) 
-		throws IllegalArgumentException {
-	
+	/**
+	 * Erstellen von <code>AlleNachrichtenReport</code>-Objekten.
+	 * 
+	 * @return der fertige Report
+	 */
+	public AlleNachrichtenReport erstelleAlleNachrichtenReport(Nutzer nutzer, Unterhaltung unterhaltung, Nachricht n,
+			String von, String bis) throws IllegalArgumentException {
+
 		if (this.getMessagingAdministration() == null)
 			return null;
 
 		/*
 		 * Zunächst legen wir uns einen leeren Report an.
 		 */
-		InfosVonAllenNachrichtenReport result = new InfosVonAllenNachrichtenReport();
-		
+		AlleNachrichtenReport result = new AlleNachrichtenReport();
+
 		// Jeder Report hat einen Titel (Bezeichnung / überschrift).
 		result.setTitle("Alle Nachrichten");
-
 
 		/*
 		 * Datum der Erstellung hinzufügen. new Date() erzeugt autom. einen
@@ -202,94 +200,128 @@ public String erstelleInfosVonAllenNachrichtenReport(Nutzer nutzer, Unterhaltung
 		result.setCreated(new Date());
 
 		/*
-	     * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die oben
-	     * auf dem Report stehen) des Reports. Die Kopfdaten sind mehrzeilig, daher
-	     * die Verwendung von CompositeParagraph.
-	     */
-	    CompositeParagraph header = new CompositeParagraph();
+		 * Ab hier erfolgt die Zusammenstellung der Kopfdaten (die Dinge, die
+		 * oben auf dem Report stehen) des Reports. Die Kopfdaten sind
+		 * mehrzeilig, daher die Verwendung von CompositeParagraph.
+		 */
+		CompositeParagraph header = new CompositeParagraph();
 
-	    
-	    // Zeitraum der Report Suchanfrage in die Kopfzeile hinzufügen
-	     
-	    header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + von + " Bis: "
-	        + bis));
+		// Zeitraum der Report Suchanfrage in die Kopfzeile hinzufügen
 
-	    // Name und Vorname des Nutzers aufnehmen
-	    header.addSubParagraph(new SimpleParagraph(nutzer.getVorname() + ", "
-	        + nutzer.getNachname()));
+		header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + von + " Bis: " + bis));
 
-	    // Email-Adresse aufnehmen
-	    header.addSubParagraph(new SimpleParagraph("Email:" + nutzer.getEmail()));
-	    
-	    // Den Zeitraum aufnehmen
-	 	header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + bis + " Bis: "
-	 		        + bis));
+		// Name und Vorname des Nutzers aufnehmen
+		header.addSubParagraph(new SimpleParagraph(nutzer.getVorname() + ", " + nutzer.getNachname()));
 
-	    // Hinzufügen der zusammengestellten Kopfdaten zu dem Report
-	    result.setHeaderData(header);
+		// Email-Adresse aufnehmen
+		header.addSubParagraph(new SimpleParagraph("Email:" + nutzer.getEmail()));
 
-	    /**
-	     * Zunächst legen wir eine Kopfzeile für die Nachrichten-Tabelle an.
-	     */
-	    Row headline = new Row();
+		// Den Zeitraum aufnehmen
+		header.addSubParagraph(new SimpleParagraph("Zeitraum Von: " + bis + " Bis: " + bis));
 
-	    /**
-	     * Wir wollen Zeilen mit 3 Spalten in der Tabelle erzeugen. In die erste
-	     * Spalte schreiben wir die den jeweiligen Unterhaltungszeitraum (Erstellungszeitraum). 
-	     * Die zweite den Nachrichtenabsender und in der dritten Spalte dann den Nachrichtenempfänger.
-	     * In der Kopfzeile legen wir also entsprechende überschriften ab.
-	     */
-	    
-	    headline.addColumn(new Column("Unterhaltungszeitraum"));
-	    headline.addColumn(new Column("Nachrichtenabsender"));
-	    headline.addColumn(new Column("Nachrichtenempfänger"));
-	    
-	  
-	    // Hinzufügen der Kopfzeile
-	    result.addRow(headline);   
-	    
-	    Row accountRow = new Row();
-	    
+		// Hinzufügen der zusammengestellten Kopfdaten zu dem Report
+		result.setHeaderData(header);
 
-/*
- * Nun müssen sämtliche Nachrichten-Objekte ausgelesen werden. Anschließend wir
- * für jedes Nachrichtenobjekt r ein Aufruf von InfosVonAllenNachrichten durchgeführt und somit jeweils ein
- * InfosVonAllenNachrichten-Objekt erzeugt. Diese Objekte werden sukzessive der result-Variable hinzugefügt. 
- * Sie ist vom Typ InfosVonAllenNachrichten Report, welches eine Subklasse von CompositeReport ist.
- */
-		//ArrayList<Unterhaltung> alleNachrichten = UnterhaltungMapper.unterhaltungMapper().getUnterhaltungsZeitraum(anfangszeitpunkt, endzeitpunkt);
-	    ArrayList<Nachricht> alleNachrichten = NachrichtMapper.nachrichtMapper().alleNachrichtenJeZeitraum(von, bis);
+		/**
+		 * Zunächst legen wir eine Kopfzeile für die Nachrichten-Tabelle an.
+		 */
+		Row headline = new Row();
 
-		//for (Unterhaltung u : alleNachrichten) {
-	    for (Nachricht nachricht : alleNachrichten) {
+		/**
+		 * Wir wollen Zeilen mit 3 Spalten in der Tabelle erzeugen. In die erste
+		 * Spalte schreiben wir die den jeweiligen Unterhaltungszeitraum
+		 * (Erstellungszeitraum). Die zweite den Nachrichtenabsender und in der
+		 * dritten Spalte dann den Nachrichtenempfänger. In der Kopfzeile legen
+		 * wir also entsprechende überschriften ab.
+		 */
+
+		headline.addColumn(new Column("Unterhaltungszeitraum"));
+		headline.addColumn(new Column("Unterhaltungsliste"));
+		headline.addColumn(new Column("Nachrichtenabsender"));
+		headline.addColumn(new Column("Nachrichtenempfänger"));
+
+		// Hinzufügen der Kopfzeile
+		result.addRow(headline);
+
+		Row accountRow = new Row();
+
+		/*
+		 * Nun müssen sämtliche Nachrichten-Objekte ausgelesen werden.
+		 * Anschließend wir für jedes Nachrichtenobjekt r ein Aufruf von
+		 * InfosVonAllenNachrichten durchgeführt und somit jeweils ein
+		 * InfosVonAllenNachrichten-Objekt erzeugt. Diese Objekte werden
+		 * sukzessive der result-Variable hinzugefügt. Sie ist vom Typ
+		 * InfosVonAllenNachrichten Report, welches eine Subklasse von
+		 * CompositeReport ist.
+		 */
+		// ArrayList<Unterhaltung> alleNachrichten =
+		// UnterhaltungMapper.unterhaltungMapper().getUnterhaltungsZeitraum(anfangszeitpunkt,
+		// endzeitpunkt);
+		ArrayList<Nachricht> alleNachrichten = NachrichtMapper.nachrichtMapper().findAllNachrichten();
+
+		// for (Unterhaltung u : alleNachrichten) {
+		for (Nachricht nachricht : alleNachrichten) {
 
 			// Erste Spalte: Unterhaltungs ID hinzufügen
 			accountRow.addColumn(new Column(String.valueOf(unterhaltung.getId())));
 
 			// Zweite Spalte: Nachrichtenabsender hinzufügen
-			// raus gemacht accountRow.addColumn(new Column(String.valueOf(unterhaltung.getSender())));
+			// raus gemacht accountRow.addColumn(new
+			// Column(String.valueOf(unterhaltung.getSender())));
 
-			//Dritte Spalte: Nachrichtenempfänger hinzfügen
-			// raus gemacht accountRow.addColumn(new Column(String.valueOf(unterhaltung.getReceiver())));
+			// Dritte Spalte: Nachrichtenempfänger hinzfügen
+			// raus gemacht accountRow.addColumn(new
+			// Column(String.valueOf(unterhaltung.getReceiver())));
 
 			// Vierte Spalte Nachrichten ID hinzufügen
 			accountRow.addColumn(new Column(String.valueOf(nachricht.getId())));
 
-		
 			// und schließlich die Zeile dem Report hinzufügen.
 			result.addRow(accountRow);
 		}
 
-		/**
-		 * Übergebe den erstellten Report dem HTMLReportWriter um HTML zu erzeugen
-		 */
-		HTMLReportWriter writer = new HTMLReportWriter();
-		writer.process2(result);
+		return result;
+	}
 
-		/**
-		 * Zum Schluss müssen wir noch den fertigen HTML-Report zurückgeben.
-		 */
-		return writer.getReportText();
+	@Override
+	public ZeitraumspezifischeNachrichtenReport erstelleZeitraumspezifischeNachrichtenReport(Nachricht nachricht,
+			Date anfangszeitpunkt, Date endzeitpunkt) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NutzerspezifischeNachrichtenReport erstelleNutzerspezifischeNachrichtenReport(Nachricht nachricht,
+			Nutzer nutzer) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NutzerspezifischeAbonnementsReport erstelleNutzerspezifischeAbonnementsReport(Abonnement abonnement,
+			Nutzer nutzer) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashtagspezifischeAbonnementsReport erstelleHashtagspezifischeAbonnementsReport(Abonnement abonnement,
+			Hashtag hashtag) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AlleNachrichtenReport erstelleAlleNachrichtenReport(Nutzer nutzer, Nachricht nachricht, Date von, Date bis)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AlleAbonnementsReport erstelleAlleAbonnementsReport(Abonnement abonnement, Nutzer nutzer, Hashtag hashtag)
+			throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
-

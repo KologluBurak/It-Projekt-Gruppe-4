@@ -4,9 +4,16 @@ import java.util.Date;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.hdm.itProjektGruppe4.shared.bo.*;
-import de.hdm.itProjektGruppe4.shared.report.*;
-
+import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
+import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
+import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.report.AlleAbonnementsReport;
+import de.hdm.itProjektGruppe4.shared.report.AlleNachrichtenReport;
+import de.hdm.itProjektGruppe4.shared.report.HashtagspezifischeAbonnementsReport;
+import de.hdm.itProjektGruppe4.shared.report.NutzerspezifischeAbonnementsReport;
+import de.hdm.itProjektGruppe4.shared.report.NutzerspezifischeNachrichtenReport;
+import de.hdm.itProjektGruppe4.shared.report.ZeitraumspezifischeNachrichtenReport;
 
 /**
  * Das asynchrone Gegenstück des Interface {@link ReportGenerator}. Es wird
@@ -20,25 +27,24 @@ import de.hdm.itProjektGruppe4.shared.report.*;
 
 public interface ReportGeneratorAsync {
 
+	void erstelleAlleAbonnementsReport(Abonnement abonnement, Nutzer nutzer, Hashtag hashtag,
+			AsyncCallback<AlleAbonnementsReport> callback);
 
-	void erstelleInfosVonAllenNachrichtenReport(String von,
-			String bis,AsyncCallback<InfosVonAllenNachrichtenReport> callback);
+	void erstelleAlleNachrichtenReport(Nutzer nutzer, Nachricht nachricht, Date von, Date bis,
+			AsyncCallback<AlleNachrichtenReport> callback);
 
-	void erstelleInfosVonAllenAbonnementsReport(Abonnement aboNutzer, Abonnement aboHashtag,
-			AsyncCallback<String> callback);
+	void erstelleZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt,
+			AsyncCallback<ZeitraumspezifischeNachrichtenReport> callback);
 
-	void erstelleInfosÜberZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, 
-			Date endzeitpunkt, AsyncCallback<InfosÜberZeitraumspezifischeNachrichtenReport> callback);
+	void erstelleNutzerspezifischeNachrichtenReport(Nachricht nachricht, Nutzer nutzer,
+			AsyncCallback<NutzerspezifischeNachrichtenReport> callback);
 
-	void erstelleInfosÜberNutzerspezifischeNachrichtenReport(Nachricht nachricht, Nutzer nutzer,
-			AsyncCallback<InfosÜberNutzerspezifischeNachrichtenReport> callback);
+	void erstelleNutzerspezifischeAbonnementsReport(Abonnement abonnement, Nutzer nutzer,
+			AsyncCallback<NutzerspezifischeAbonnementsReport> callback);
 	
-	void erstelleInfosÜberNutzerspezifischeAbonnementsReport(Abonnement abonnement, Nutzer nutzer,
-			AsyncCallback<InfosÜberNutzerspezifischeAbonnementsReport> callback);
-
-	void erstelleInfosÜberHashtagspezifischeAbonnementsReport(Abonnement abonnement, Hashtag hashtag,
-			AsyncCallback<InfosÜberHashtagspezifischeAbonnementsReport> callback);
-
+	void erstelleHashtagspezifischeAbonnementsReport(Abonnement abonnement, Hashtag hashtag,
+			AsyncCallback<HashtagspezifischeAbonnementsReport> callback);
+	
 	void init(AsyncCallback<Void> callback);
 
 }

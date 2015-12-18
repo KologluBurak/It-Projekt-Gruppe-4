@@ -15,6 +15,9 @@ package de.hdm.itProjektGruppe4.client;
 	import de.hdm.itProjektGruppe4.client.gui.NachrichtenForm;
 	import de.hdm.itProjektGruppe4.client.gui.NutzeraboTabelle;
 	import de.hdm.itProjektGruppe4.client.gui.UnterhaltungsForm;
+//import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
+import de.hdm.itProjektGruppe4.client.gui.ReportAuswahl;
+//import de.hdm.itProjektGruppe4.shared.ReportGenerator.*;
 
 	public class MSG_Front_End {
 
@@ -47,7 +50,7 @@ package de.hdm.itProjektGruppe4.client;
 			Command hashtagAnzeigen = new Command() {
 				public void execute() {
 					rechts.clear();
-					rechts.add(new HTML("Hier sehen Sie ihre Hashtagabonnements"));
+					rechts.add(new HTML("<h2>Hier sehen Sie ihre Hashtagabonnements</h2>"));
 					HashtagTabelle hashT = new HashtagTabelle ();
 					rechts.add(hashT.zeigeTabelle());
 					
@@ -57,7 +60,7 @@ package de.hdm.itProjektGruppe4.client;
 			Command nutzeraboAnzeigen = new Command() {
 				public void execute() {
 				rechts.clear();
-				rechts.add(new HTML("Hier sehen Sie ihre Nutzerabonnements"));
+				rechts.add(new HTML("<h2>Hier sehen Sie ihre Nutzerabonnements</h2>"));
 				NutzeraboTabelle naboT = new NutzeraboTabelle();
 				rechts.add(naboT.zeigeTabelle());
 					
@@ -67,10 +70,19 @@ package de.hdm.itProjektGruppe4.client;
 			Command unterhaltungAnzeigen = new Command() {
 				public void execute() {
 				rechts.clear();
-				rechts.add(new HTML("Hier sehen Sie ihre Unterhaltungen"));
+				rechts.add(new HTML("<h2>Hier sehen Sie ihre Unterhaltungen</h2>"));
 				UnterhaltungsForm uForm = new UnterhaltungsForm();
 				rechts.add(uForm.zeigeTabelle());
 				
+						}
+			};
+			
+			Command reportAuswahlAnzeigen = new Command() {
+				public void execute() {
+				rechts.clear();
+				rechts.add(new HTML("<h2>Hier können Sie ihre Reports auswählen</h2>"));
+				ReportAuswahl rpForm = new ReportAuswahl();
+				rechts.add(rpForm);
 						}
 			};
 						
@@ -87,6 +99,8 @@ package de.hdm.itProjektGruppe4.client;
 			MenuBar aboM = new MenuBar(true);
 			aboM.addItem("Nutzerabonnement Anzeigen", nutzeraboAnzeigen);
 			MenuBar repM = new MenuBar(true);
+			repM.addItem("Reportauswahl anzeigen", reportAuswahlAnzeigen);
+			
 			
 			MenuBar menu = new MenuBar();
 			menu.setAutoOpen(true);
