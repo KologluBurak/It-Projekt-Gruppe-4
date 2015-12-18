@@ -89,12 +89,16 @@ public class NachrichtMapper {
 			// Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
 			//if (rs.next()) {
 
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			Date date = new Date();
 			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
-				
+			
+			System.out.println(sql);
+
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
+			preStmt.setString(2, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
 			preStmt.setInt(3, nachricht.getNutzerID());
 			preStmt.setInt(4, nachricht.getUnterhaltungID());
 			preStmt.executeUpdate();

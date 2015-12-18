@@ -93,6 +93,19 @@ public class UnterhaltungslisteMapper {
 		return unterhaltungsliste;
 	}
 	
+	public void delete(Unterhaltungsliste unterhaltungsliste){
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM nachrichten " + "WHERE nachrichtID="
+					+ unterhaltungsliste.getId());
+
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+		}
+	}
+	
 	public Unterhaltungsliste findByAbsender(String absenderNickname){
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();

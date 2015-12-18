@@ -241,6 +241,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// 3. Fremschlüssel
 		// empfaenger = this.nutzerMapper.findNutzerByNickname(empfaengerNickname);
 		
+		System.out.println(absender.getId() + " " + unterhaltung.getId());
+		
 		na.setNutzerID(absender.getId());
 		na.setUnterhaltungID(unterhaltung.getId());
 		
