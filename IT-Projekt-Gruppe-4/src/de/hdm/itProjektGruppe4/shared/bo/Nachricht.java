@@ -2,7 +2,8 @@ package de.hdm.itProjektGruppe4.shared.bo;
 
 import java.util.ArrayList;
 
-/**
+/** 
+ * Eine Klasse Nachricht, die aus der Klasse BusinessObject erbt.
  * @author Yücel, Nguyen, Oikonomou, Kologlu
  * 
  */
@@ -11,7 +12,7 @@ public class Nachricht extends BusinessObject {
 
 	/**
 	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * benötigt.
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -19,6 +20,48 @@ public class Nachricht extends BusinessObject {
 	 * Textinhalt der Nachricht
 	 */
 	private String text;
+
+	/**
+	 * Fremdschlüsselbeziehung zur Klasse Nutzer
+	 */
+	private int nutzerID;
+	
+	/**
+	 * Fremdschlüsselbeziehung zur Klasse Unterhaltung
+	 */
+	private int unterhaltungID;
+	
+	/**
+	 * Ausgabe der NutzerID
+	 * @return nutzerID
+	 */
+	public int getNutzerID() {
+		return nutzerID;
+	}
+
+	/**
+	 * Setzen der NutzerID
+	 * @param nutzerID
+	 */
+	public void setNutzerID(int nutzerID) {
+		this.nutzerID = nutzerID;
+	}
+
+	/**
+	 * Ausgabe der UnterhaltungsID
+	 * @return unterhaltungID
+	 */
+	public int getUnterhaltungID() {
+		return unterhaltungID;
+	}
+
+	/**
+	 * Setzen der UnterhaltungsID
+	 * @param unterhaltungID
+	 */
+	public void setUnterhaltungID(int unterhaltungID) {
+		this.unterhaltungID = unterhaltungID;
+	}
 
 	/**
 	 * Absender einer Nachricht
@@ -57,8 +100,7 @@ public class Nachricht extends BusinessObject {
 	}
 
 	/**
-	 * Ausgabe der Empfaenger als Liste vom Typ ArrayLIst<>
-	 * 
+	 * Ausgabe der Empfaenger als Liste vom Typ ArrayList<>
 	 * @return empfaenger
 	 */
 	public ArrayList<Nutzer> getEmpfaenger() {
@@ -72,7 +114,6 @@ public class Nachricht extends BusinessObject {
 	/**
 	 * Setzen der Empfaenger in Listen, falls an mehrere Nutzer gesendet wird,
 	 * vom Typ Nutzer
-	 * 
 	 * @param empfaenger
 	 */
 	public void setEmpfaenger(Nutzer empfaenger) {

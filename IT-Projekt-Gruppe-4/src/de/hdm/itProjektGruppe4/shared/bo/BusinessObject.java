@@ -28,7 +28,7 @@ public abstract class BusinessObject implements Serializable {
 
 	/**
 	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * benötigt.
 	 */
 	private static final long serialVersionUID = 1L;
 

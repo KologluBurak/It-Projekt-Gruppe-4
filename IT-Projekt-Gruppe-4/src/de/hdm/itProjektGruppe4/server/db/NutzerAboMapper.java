@@ -10,14 +10,15 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>NutzerAbo</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verf�gung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfï¿½gung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
- * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
+ * gelï¿½scht werden kï¿½nnen. Das Mapping ist bidirektional. D.h., Objekte
+ * kï¿½nnen in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
+ * 
+ * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Thies
  * @author Yücel
  */
 
@@ -28,7 +29,7 @@ public class NutzerAboMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * fï¿½r sï¿½mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see NutzerAboMapper()
@@ -36,7 +37,7 @@ public class NutzerAboMapper {
 	private static NutzerAboMapper nutzerAboMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschï¿½tzter Konstruktor - verhindert die Mï¿½glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NutzerAboMapper() {
@@ -45,7 +46,7 @@ public class NutzerAboMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NutzerAboMapper.nutzerAboMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafï¿½r sorgt, dass nur eine
 	 * einzige Instanz von <code>NutzerAboMapper</code> existiert.
 	 * <p>
 	 * 
@@ -65,13 +66,13 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Einf�gen eines <code>Nutzerabonnement</code>-Objekts in die Datenbank.
-	 * Dabei wird auch der Prim�rschl�ssel des �bergebenen Objekts gepr�ft und
-	 * ggf. berichtigt.
+	 * Einfï¿½gen eines <code>Nutzerabonnement</code>-Objekts in die Datenbank.
+	 * Dabei wird auch der Primï¿½rschlï¿½ssel des ï¿½bergebenen Objekts
+	 * geprï¿½ft und ggf. berichtigt.
 	 * 
 	 * @param nutzerabonnement
 	 *            das zu speichernde Objekt
-	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits ï¿½bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
 	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement)
@@ -80,30 +81,31 @@ public class NutzerAboMapper {
 		Connection con = DBConnection.connection();
 		try {
 			// Insert-Statement erzeugen
-			Statement stmt = con.createStatement();
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			ResultSet rs = stmt
-					.executeQuery("SELECT MAX(nutzerAboID) AS maxid "
-							+ "FROM nutzerabonnements");
+			// Statement stmt = con.createStatement();
+
+			// Zunï¿½chst wird geschaut welches der momentan hï¿½chste
+			// Primï¿½rschlï¿½ssel ist
+			// ResultSet rs =
+			// stmt.executeQuery("SELECT MAX(nutzerAboID) AS maxid FROM nutzerabonnements");
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			if (rs.next()) {
-				int newID = rs.getInt("maxid");
-				nutzerabonnement.setId(newID);
+			// if (rs.next()) {
+			String sql = "INSERT INTO `nutzerabonnements`(`nutzerAboID`, `datum`, `abonnementID`, `derBeobachteteID`, `followerID`) "
+					+ "VALUES (NULL, ?, ?, ?, ?)";
 
-				PreparedStatement preStmt;
-				preStmt = con
-						.prepareStatement("INSERT INTO nutzerabonnements, erstellungsZeitpunkt VALUES(?, ?)");
-				preStmt.setInt(1, newID);
-				preStmt.setString(2, getSqlDateFormat(nutzerabonnement
-						.getErstellungsZeitpunkt()));
-				preStmt.executeUpdate();
-				preStmt.close();
-			}
-			stmt.close();
-			rs.close();
-			con.close();
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, nutzerabonnement.getErstellungsZeitpunkt()
+					.toString());
+			preStmt.setInt(2, nutzerabonnement.getAbonnementID());
+			preStmt.setInt(3, nutzerabonnement.getDerBeobachteteID());
+			preStmt.setInt(4, nutzerabonnement.getFollowerID());
+			preStmt.executeUpdate();
+			preStmt.close();
+			// }
+			// stmt.close();
+			// rs.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
@@ -113,7 +115,7 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht das Löschen eines Nutzerabonnements und dessen
+	 * Diese Methode ermÃ¶glicht das LÃ¶schen eines Nutzerabonnements und dessen
 	 * Referenzen zu anderen Klassen
 	 * 
 	 * @param nutzerabonnement
@@ -127,7 +129,7 @@ public class NutzerAboMapper {
 			stmt.executeUpdate("DELETE FROM nutzerabonnements WHERE nutzerAboID="
 					+ nutzerabonnement.getId());
 			stmt.close();
-			con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
@@ -136,123 +138,107 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nutzerabonnements aus der Datenbank in
+	 * Diese Methode ermÃ¶glicht es alle Nutzerabonnements aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
 	 * @return
 	 */
-	public ArrayList<Nutzerabonnement> findAllNutzerabonnements() {
+	public ArrayList<Nutzerabonnement> findAllNutzerabonnements()
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltungID");
+					.executeQuery("SELECT * FROM nutzerabonnements ORDER BY nutzerAboID");
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
-				nutzerabonnement.setId(rs.getInt("unterhaltungID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getDate("datum"));
+
 				allNutzerabonnements.add(nutzerabonnement);
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			// con.close();
+
 			return allNutzerabonnements;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
-		return null;
+
 	}
 
 	/**
-	 * Diese Methode ermöglicht es ein Nutzerabonnement anhand ihrer ID zu
+	 * Diese Methode ermÃ¶glicht es ein Nutzerabonnement anhand ihrer ID zu
 	 * finden und anzuzeigen.
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public Unterhaltung findUnterhaltungById(int id) {
+	public Nutzerabonnement findNutzerabonnementByID(int id)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT unterhaltungID, erstellungsZeitpunkt FROM unterhaltungen "
-							+ "WHERE unterhaltung_id= "
+					.executeQuery("SELECT nutzerAboID, datum FROM nutzerabonnements "
+							+ "WHERE nutzerAboID= "
 							+ id
-							+ " ORDER BY unterhaltung_id");
+							+ " ORDER BY nutzerAboID");
 
 			if (rs.next()) {
-				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltung_id"));
-				unterhaltung.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+				Nutzerabonnement nutzerabo = new Nutzerabonnement();
+				nutzerabo.setId(rs.getInt("nutzerAboID"));
+				nutzerabo.setErstellungsZeitpunkt(rs.getDate("datum"));
 
-				return unterhaltung;
+				return nutzerabo;
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return null;
 	}
 
 	/**
-	 * Diese Methode ermöglicht es eine Ausgabe über einen Nutzerabonnements in
-	 * der Datenbank, anhand deren ID.
+	 * Diese Methode ermÃ¶glicht es eine Ausgabe Ã¼ber einen Nutzerabonnements
+	 * in der Datenbank, anhand deren ID.
 	 * 
 	 * @param id
 	 * @return
 	 */
 
-	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(Nutzer nutzer) {
+	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(
+			Nutzer nutzer) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement>();
 
 		try {
-
 			Statement stmt = con.createStatement();
-
 			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "
-					+ "WHERE nutzerAboID=" + nutzer.getId() + " ORDER BY nutzerAboID");
+					+ "WHERE nutzerAboID=" + nutzer.getId()
+					+ " ORDER BY nutzerAboID");
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
-				nutzerabonnement.setId(rs.getInt("nutzerID"));
-				nutzerabonnement.setDerBeobachteteID(rs
-						.getInt("derBeobachteteID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs
-						.getTimestamp("datum"));
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getDate("datum"));
 
 				nutzerAboListe.add(nutzerabonnement);
 			}
-
-		}
-
-		catch (SQLException e1) {
+		} catch (SQLException e1) {
 			e1.printStackTrace();
-			return null;
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 		}
-
-		return null; // nutzerAboListe;
-
-	}
-
-	/**
-	 * Wandelt aus einem Date Objekt einen String in passendem SQL Übergabe
-	 * Format.
-	 * 
-	 * @param date
-	 *            Date das konvertiert werden soll
-	 * @return String mit Date im Format yyyy-MM-dd HH:mm:ss
-	 */
-	private String getSqlDateFormat(Date date) {
-		String result = "";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		result = dateFormat.format(date);
-		return result;
+		return nutzerAboListe;
 	}
 }

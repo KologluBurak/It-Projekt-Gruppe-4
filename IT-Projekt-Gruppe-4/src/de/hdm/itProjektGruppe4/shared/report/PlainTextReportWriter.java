@@ -46,7 +46,7 @@ public class PlainTextReportWriter extends ReportWriter {
     // Wir verwenden eine einfache Trennlinie, um das Report-Ende zu markieren.
     return "___________________________________________";
   }
-  public String process1(InfosVonAllenAbonnementsReport r) {
+  public String process1(AlleAbonnementsReport r) {
 
 	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
 	    this.resetReportText();
@@ -86,7 +86,7 @@ public class PlainTextReportWriter extends ReportWriter {
 	   * 
 	   * @param r der zu prozessierende Report
 	   */
-  public void process(InfosVonAllenAbonnementsReport r) {
+  public void process(AlleAbonnementsReport r) {
 
 	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
 	    this.resetReportText();
@@ -120,7 +120,7 @@ public class PlainTextReportWriter extends ReportWriter {
 	       * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
 	       * so müsste hier eine detailliertere Implementierung erfolgen.
 	       */
-	      InfosVonAllenAbonnementsReport subReport = (InfosVonAllenAbonnementsReport) r
+	      AlleAbonnementsReport subReport = (AlleAbonnementsReport) r
 	          .getSubReportAt(i);
 
 	      this.process1(subReport);
@@ -149,7 +149,7 @@ public class PlainTextReportWriter extends ReportWriter {
    * @param r der zu prozessierende Report
    */
  
-public String process2(InfosVonAllenNachrichtenReport r) {
+public String process2(AlleNachrichtenReport r) {
 
     // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
@@ -189,7 +189,7 @@ public String process2(InfosVonAllenNachrichtenReport r) {
    * 
    * @param r der zu prozessierende Report
    */
-public void process(InfosVonAllenNachrichtenReport r) {
+public void process(AlleNachrichtenReport r) {
 
     // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
@@ -223,7 +223,7 @@ public void process(InfosVonAllenNachrichtenReport r) {
        * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
        * so müsste hier eine detailliertere Implementierung erfolgen.
        */
-      InfosVonAllenNachrichtenReport subReport = (InfosVonAllenNachrichtenReport) r
+      AlleNachrichtenReport subReport = (AlleNachrichtenReport) r
           .getSubReportAt(i);
 
       this.process(subReport);

@@ -1,6 +1,10 @@
 package de.hdm.itProjektGruppe4.client;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,7 +16,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.hdm.itProjektGruppe4.shared.LoginService;
 import de.hdm.itProjektGruppe4.shared.LoginServiceAsync;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.LoginInfo;
+import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
+import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 
 public class IT_Projekt_Gruppe_4 implements EntryPoint {
 
@@ -21,8 +29,9 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 	  private Label loginLabel = new Label(
 	      "Please sign in to your Google Account to access the StockWatcher application.");
 	  private Anchor signInLink = new Anchor("Sign In");
-	
+	  MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 	   public void onModuleLoad() {
+
 			 // DialogBox d1 = new DialogBox();
 	    	 // d1.setText("On Module Load funktioniert!");
 	    	 //d1.show();
@@ -38,14 +47,39 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 
 		      public void onSuccess(LoginInfo result) {
 		        
-		 //   	  DialogBox d = new DialogBox();
-		 //   	  d.setText("Angemeldet: " + result.getNickname());
-		 //   	  d.show();
-		    	  
+//				   DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+//				   Date date = new Date();
+//				DialogBox d = new DialogBox();
+//				d.setText("Fehler: " + dateFormat.format(date));
+//				d.show();
+				
 		    	  loginInfo = result;
 		        if(loginInfo.isLoggedIn()) {
-		        	// TODO Logik zum überprüfen von User: ist User mit Email in DB? Wenn ja -> zeige loadView -> nein dann lege User in Db
-		          loadView();
+		        	// TODO Logik zum ï¿½berprï¿½fen von User: ist User mit Email in DB? Wenn ja -> zeige loadView -> nein dann lege User in Db
+//		 		   Unterhaltung unterhaltung = new Unterhaltung();
+//				   unterhaltung.setId(1);
+//
+//					
+//				   myAsync.createNachricht("Hallo Welt", "burak61", unterhaltung, new AsyncCallback<Nachricht>() {
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//
+//					}
+//
+//					@Override
+//					public void onSuccess(Nachricht result) {
+//						// TODO Auto-generated method stub
+//						DialogBox d = new DialogBox();
+//						d.setText("Geschafft: " + result.getText());
+//						d.show();
+//					}
+//				});
+		        	
+		        
+		        	loadView();
+		          
 		        } else {
 		          loadLogin();
 		        }
@@ -63,6 +97,8 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 		  }
 	   
 	   public void loadView(){
+
+
 		   MSG_Front_End neu = new MSG_Front_End();
 			neu.anzeigenMenu();
 			
