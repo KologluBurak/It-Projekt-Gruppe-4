@@ -1,8 +1,12 @@
 package de.hdm.itProjektGruppe4.server;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import de.hdm.itProjektGruppe4.server.db.*;
 import de.hdm.itProjektGruppe4.shared.*;
 import de.hdm.itProjektGruppe4.shared.bo.*;
@@ -154,6 +158,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.nutzerMapper.insert(n);
 
 	}
+	
+	/**
+	 * Ändern von Attributen eines Nutzers. 
+	 */
+	
+	public Nutzer update(Nutzer nutzer)throws IllegalArgumentException{
+		return nutzerMapper.update(nutzer);
+	}
 
 	/**
 	 * Löschen eines Nutzers. Der Nutzer wird in der Datenbank gelöscht.
@@ -191,16 +203,24 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen aller Nutzer Objekte
 	 */
-	public ArrayList<Nutzer> findAllNutzer() throws IllegalArgumentException {
+	public ArrayList<Nutzer> getAllNutzer() throws IllegalArgumentException {
 		return this.nutzerMapper.findAllNutzer();
 	}
 
 	/**
-	 * Auslesen eines Nutzers anhand seines Nachnames.
+	 * Auslesen eines Nutzers anhand seines Nickname.
 	 */
-	public Nutzer getNutzerByNachname(String nickname)
+	public Nutzer getNutzerByNickame(String nickname)
 			throws IllegalArgumentException {
 		return this.nutzerMapper.findNutzerByNickname(nickname);
+	}
+	
+	/**
+	 * Auslesen eines Nutzers anhand seiner ID.
+	 */
+	public Nutzer getNutzerById (int id)
+			throws IllegalArgumentException{
+		return this.nutzerMapper.findNutzerById(id);
 	}
 
 	/*
@@ -261,7 +281,15 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			throws IllegalArgumentException {
 		return this.nachrichtMapper.findAllNachrichten();
 	}
-
+	
+	/**
+	 * Auslesen aller Nachrichten einer Unterhaltung aus der Datenbank.
+	 */
+	public ArrayList<Nachricht> getNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
+			throws IllegalArgumentException{
+		return this.nachrichtMapper.findNachrichtenByUnterhaltung(unterhaltung);
+	}
+	
 	/**
 	 * Auslesen Nachrichten anhand der Id.
 	 */
@@ -272,23 +300,20 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen von Nachrichten eines Nutzers.
 	 */
-	public ArrayList<Nachricht> getAlleNachrichtbyNutzer(Nutzer nutzer)
+	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer)
 			throws IllegalArgumentException {
 		return this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 	}
 
 	/**
-	 * Auslesen von Nachrichten in einer Unterhaltung
+	 * Auslesen von Nachrichten innerhalb eines Zeitraums
 	 */
-//	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
-//			Nachricht nachricht, Unterhaltung unterhaltung) throws IllegalArgumentException {
-//		return this.nachrichtMapper.findNachrichtenByUnterhaltung(nachricht, unterhaltung);
-//	}
-	
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
-			Unterhaltung unterhaltung) throws IllegalArgumentException {
-		return this.nachrichtMapper.findNachrichtenByUnterhaltung(unterhaltung);
+	public ArrayList<Nachricht>getAlleNachrichtenJeZeitraum(String von, String bis)
+			throws IllegalArgumentException{
+		return this.nachrichtMapper.alleNachrichtenJeZeitraum(von, bis);
 	}
+	
+	
 	
 
 	/*
@@ -309,31 +334,23 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Anlegen einer Unterhaltung. Die Unterhaltung wird in der Datenbank
 	 * gespeichert.
 	 */
-	public Unterhaltung createUnterhaltung(Nutzer sender, Nutzer receiver)
+	public Unterhaltung createUnterhaltung(Date datum)
 			throws IllegalArgumentException {
-		Unterhaltung u = new Unterhaltung();
-		u.setSender(sender);
-		u.setReceiver(receiver);
-		return unterhaltungMapper.insert(u);
+//		Unterhaltung u = new Unterhaltung();
+//		
+//		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//		Date date= new Date();
+//		dateFormat.format(date);
+//		
+//		
+//		u.setErstellungsZeitpunkt(datum);
+		return null;
+//		return unterhaltungMapper.insert(datum);
 
 	}
-
-	/**
-	 * Auslesen von allen Unterhaltungen aus der Datenbank.
-	 */
-	public ArrayList<Unterhaltung> getAllUnterhaltungen()
-			throws IllegalArgumentException {
-		return this.unterhaltungMapper.findAllUnterhaltungen();
-	}
-
-	/**
-	 * Auslesen von Unterhaltungen anhand der ID.
-	 */
-	public Unterhaltung getUnterhaltungbyId(int id)
-			throws IllegalArgumentException {
-		return this.unterhaltungMapper.findUnterhaltungById(id);
-	}
-
+	
+	
+	
 	/**
 	 * Löschen einer Unterhaltung. Hierbei werden die Nutzer, die in der
 	 * Unterhaltung teilgenommen haben nicht gelöscht.
@@ -352,6 +369,24 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		this.unterhaltungMapper.delete(unterhaltung);
 	}
 
+	/**
+	 * Auslesen von allen Unterhaltungen aus der Datenbank.
+	 */
+	public ArrayList<Unterhaltung> getAllUnterhaltungen()
+			throws IllegalArgumentException {
+		return this.unterhaltungMapper.findAllUnterhaltungen();
+	}
+
+	/**
+	 * Auslesen von Unterhaltungen anhand der ID.
+	 */
+	public Unterhaltung getUnterhaltungbyId(int id)
+			throws IllegalArgumentException {
+		return this.unterhaltungMapper.findUnterhaltungById(id);
+	}
+
+	
+
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
@@ -365,7 +400,17 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * ***********************
 	 * ****************************************************
 	 */
-
+	/**
+	 * Anlegen eines Abonnements. Das Abonnement wird in der Datenbank
+	 * gespeichert.
+	 */
+	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt)
+			throws IllegalArgumentException{
+		Abonnement abo= new Abonnement();
+		abo.setId(id);
+		abo.setErstellungsZeitpunkt(erstellungsZeitpunkt);
+		return this.abonnementMapper.insertAbonnement(abo);
+	}
 	
 	/**
 	 * Auslesen aller Abonnements.
@@ -378,7 +423,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen aller Abonnements anhand deren Id.
 	 */
-	public Abonnement getAbonnementbyId(int id) throws IllegalArgumentException {
+	public Abonnement getAbonnementById(int id) throws IllegalArgumentException {
 		return this.abonnementMapper.findAbonnementByKey(id);
 	}
 
@@ -406,24 +451,44 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return hashtagMapper.insert(hash);
 	}
 
-	/**
-	 * Speichern eines geänderten Hashtags
-	 */
-	public void save(Hashtag hashtag) throws IllegalArgumentException {
-		hashtagMapper.update(hashtag);
-		//
-	}
+	
 
 	/**
 	 * LÖschen eines Hashtags
 	 */
-	public void delete(Hashtag hashtag) throws IllegalArgumentException {
+	public void delete(Hashtag hashtag) 
+			throws IllegalArgumentException {
 		/*
-		 * zugehörende Hashtagabo wird nicht gelöscht, da der Nutzer der das
-		 * gelöschte Hashtag wieder hinzufügen muss
+		 * Die Verbindung zum Hashtagabonnement wird aufgelöst.
 		 */
+//		//Muss noch verbessert werden
+//		ArrayList<Hashtagabonnement> hashtagabo = this.getHashtagAbonnementByNutzer(hashtag);
+//						
+//		
+//		if (hashtagabo != null) {
+//			for (Hashtagabonnement hashabo : hashtagabo) {
+//				this.delete(hashabo);
+//			}
 		hashtagMapper.delete(hashtag);
+		}	
+	
+	
+	/**
+	 * Auslesen aller Hashtags.
+	 */
+	public ArrayList<Hashtag>getAllHashtags()
+			throws IllegalArgumentException{
+		return this.hashtagMapper.findAllHashtags();
 	}
+	
+	/**
+	 * Auslesen eines Hashtag anhand seiner ID.
+	 */
+	public Hashtag getHashtagById(int id)
+			throws IllegalArgumentException{
+		return this.hashtagMapper.findHashtagByID(id);
+	}
+
 
 	/*
 	 * ***************************************************************************
@@ -459,11 +524,28 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		;
 
 	}
-
+	
 	/**
-	 * Auslesen von Nutzer Abonnements.
+	 * Auslesen von allen Nutzerabonnements.
 	 */
-	public ArrayList<Nutzerabonnement> findNutzerAbonnementByNutzer(
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnements()
+			throws IllegalArgumentException {
+		return this.nutzerAboMapper.findAllNutzerabonnements();
+	}
+	
+	/**
+	 * Auslesen eines Nutzerabonnements anhand seiner ID.
+	 */
+	public Nutzerabonnement getNutzerabonnementById(int id)
+			throws IllegalArgumentException {
+		return this.getNutzerabonnementById(id);
+	}
+			
+	
+	/**
+	 * Auslesen von Nutzer die die Rolle des des Beobachteten haben .
+	 */
+	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(
 			Nutzer nutzer) throws IllegalArgumentException {
 		return this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
 	}
@@ -489,7 +571,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			throws IllegalArgumentException {
 		Hashtagabonnement b = new Hashtagabonnement();
 		b.setHastagID(bezeichnung.getId());
-		return hashtagAboMapper.insert(b);
+		return this.hashtagAboMapper.insert(b);
 	}
 
 	/**
@@ -497,13 +579,117 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public void delete(Hashtagabonnement hashtagAbo)
 			throws IllegalArgumentException {
-		hashtagAboMapper.delete(hashtagAbo);
+		this.hashtagAboMapper.delete(hashtagAbo);
 
+	}
+	
+	/**
+	 * Auslesen aller Hashtagabonnements.
+	 */
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements()
+			throws IllegalArgumentException {
+		this.hashtagAboMapper.findAllHashtagabonnements();	
+	}
+	
+	/**
+	 * Auslesen eines Hashtagabonnements anhand einer Id.
+	 */
+	public Hashtagabonnement getHashtagabonnementById(int id)
+			throws IllegalArgumentException {
+		return this.hashtagAboMapper.findHashtagAboByID(id);
+	}
+	
+	/**
+	 * Auslesen eines Hashtagabonnements anhand des Nutzers.
+	 */
+	public ArrayList<Hashtagabonnement> getHashtagAbonnementByNutzer(Nutzer nutzer)
+			throws IllegalArgumentException{
+//		return this.hashtagAboMapper.findHashtagAbonnementByNutzer(nutzer);
+		return null;
 	}
 
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
+	 * *************************
+	 * **************************************************
+	 */
+	
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Markierungsliste-Objekte
+	 * ***********************
+	 * ****************************************************
+	 */
+	
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden für Markierungsliste-Objekte
+	 * *************************
+	 * **************************************************
+	 */
+	
+	/**
+	 * Anlegen einer Markierungsliste.
+	 */
+	public Markierungsliste createMarkierungsliste(String text,String hashtag)
+			throws IllegalArgumentException{
+		Markierungsliste markierungsliste= new Markierungsliste();
+		Nachricht nachricht= new Nachricht();
+		Hashtag hash= new Hashtag();
+		//muss noch gemacht werden
+		return null;
+		
+	}
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Beginn: Methoden für Unterhaltungsliste-Objekte
+	 * ***********************
+	 * ****************************************************
+	 */
+	
+	/**
+	 * Anlegen einer Unterhaltungsliste.
+	 */
+	public Unterhaltungsliste createUnterhaltungsliste(Unterhaltung u, String sender, String empf)
+			throws IllegalArgumentException{
+		Unterhaltungsliste UListe= new Unterhaltungsliste();
+		Unterhaltung unterhaltung = new Unterhaltung();
+		Nutzer absender = new Nutzer();
+		Nutzer empfaenger = new Nutzer();
+		//muss noch gemacht werden
+		return null;
+
+		
+	}
+	
+	/**
+	 * Auslesen einer Unterhaltungsliste anhand des Absender.
+	 */
+	public Unterhaltungsliste getByAbsender(String absenderNickname) 
+			throws IllegalArgumentException {
+		return this.unterhaltungslisteMapper.findByAbsender(absenderNickname);
+	}
+	
+	/**
+	 * Auslesen einer Unterhaltungsliste anhand des Empfängers.
+	 */
+	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname) 
+			throws IllegalArgumentException {
+		return this.unterhaltungslisteMapper.findByEmpfaenger(empfaengerNickname);
+	}
+	
+	/**
+	 * Auslesen einer Unterhaltungsliste anhand einer Unterhaltung.
+	 */
+	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung)
+			throws IllegalArgumentException{
+		return this.unterhaltungslisteMapper.findByUnterhaltung(unterhaltung);
+	}
+	
+	/*
+	 * ***************************************************************************
+	 * ABSCHNITT, Ende: Methoden Unterhaltungsliste-Objekte
 	 * *************************
 	 * **************************************************
 	 */
