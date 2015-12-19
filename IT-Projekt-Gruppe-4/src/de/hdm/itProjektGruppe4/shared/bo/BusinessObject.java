@@ -40,7 +40,7 @@ public abstract class BusinessObject implements Serializable {
 	/**
 	 * Zeit an dem die jeweilige Instanz erzeugt/aktualisert usw. wurde
 	 */
-	private Date erstellungsZeitpunkt;
+	private String erstellungsZeitpunkt;
 
 	/**
 	 * Ausgabe der ID
@@ -65,17 +65,17 @@ public abstract class BusinessObject implements Serializable {
 	 * 
 	 * @return
 	 */
-	public Date getErstellungsZeitpunkt() {
+	public String getErstellungsZeitpunkt() {
 		return erstellungsZeitpunkt;
 	}
 
 	/**
 	 * Setzen des Zeit
 	 * 
-	 * @param erstellungsZeitpunkt
+	 * @param datum
 	 */
-	public void setErstellungsZeitpunkt(Date erstellungsZeitpunkt) {
-		this.erstellungsZeitpunkt = erstellungsZeitpunkt;
+	public void setErstellungsZeitpunkt(String datum) {
+		this.erstellungsZeitpunkt = datum;
 	}
 
 	/**

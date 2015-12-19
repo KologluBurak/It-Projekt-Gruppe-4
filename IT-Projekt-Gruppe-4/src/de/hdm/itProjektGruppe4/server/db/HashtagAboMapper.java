@@ -167,15 +167,15 @@ public class HashtagAboMapper {
 	 * @param hashtagabonnement
 	 * @return
 	 */
-	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(int id)
+	public ArrayList<Hashtagabonnement> findAllHashtagabonnements()
 			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement");
+					//+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
 
 			while (rs.next()) {
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();

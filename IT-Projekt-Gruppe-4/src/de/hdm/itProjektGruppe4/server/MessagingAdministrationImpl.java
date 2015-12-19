@@ -174,12 +174,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public void delete(Nutzer nutzer) throws IllegalArgumentException {
 
 		ArrayList<Nachricht> nachrichten = this
-				.getAlleNachrichtbyNutzer(nutzer);
+				.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 		/*
 		 * Die Verbindung zum Abonnement wird aufgelöst.
 		 */
-		ArrayList<Nutzerabonnement> nutzerabo = this
-				.findNutzerAbonnementByNutzer(nutzer);
+		ArrayList<Nutzerabonnement> nutzerabo = 
+				this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
 
 		if (nutzerabo != null) {
 			for (Nutzerabonnement nabo : nutzerabo) {
@@ -336,15 +336,15 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Unterhaltung createUnterhaltung(Date datum)
 			throws IllegalArgumentException {
-//		Unterhaltung u = new Unterhaltung();
+		Unterhaltung u = new Unterhaltung();
 //		
-//		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//		Date date= new Date();
-//		dateFormat.format(date);
-//		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
+		u.setZuletztBearbeitet(dateFormat.format(datum));
+		u.setErstellungsZeitpunkt(dateFormat.format(datum));
+		return this.unterhaltungMapper.insert(u);
 //		
 //		u.setErstellungsZeitpunkt(datum);
-		return null;
 //		return unterhaltungMapper.insert(datum);
 
 	}
@@ -359,7 +359,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		/*
 		 * Zugehörige Nachrichten von der Unterhaltung werden gelöscht
 		 */
-		ArrayList<Nachricht> nachrichten = this.findNachrichtenByUnterhaltung(unterhaltung);
+		ArrayList<Nachricht> nachrichten = this.getNachrichtenByUnterhaltung(unterhaltung);
 
 		if (nachrichten != null) {
 			for (Nachricht n : nachrichten) {
@@ -404,7 +404,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Anlegen eines Abonnements. Das Abonnement wird in der Datenbank
 	 * gespeichert.
 	 */
-	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt)
+	public Abonnement createAbonnement(int id, String erstellungsZeitpunkt)
 			throws IllegalArgumentException{
 		Abonnement abo= new Abonnement();
 		abo.setId(id);
@@ -588,7 +588,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public ArrayList<Hashtagabonnement> getAllHashtagabonnements()
 			throws IllegalArgumentException {
-		this.hashtagAboMapper.findAllHashtagabonnements();	
+		return this.hashtagAboMapper.findAllHashtagabonnements();	
 	}
 	
 	/**
@@ -668,6 +668,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Unterhaltungsliste getByAbsender(String absenderNickname) 
 			throws IllegalArgumentException {
+		//nickanme die Id ermitteln und das muss man dan in die findByAbsender weiter geben.
 		return this.unterhaltungslisteMapper.findByAbsender(absenderNickname);
 	}
 	
@@ -676,6 +677,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname) 
 			throws IllegalArgumentException {
+		//nickanme die Id ermitteln und das muss man dan in die findByAbsender weiter geben.
 		return this.unterhaltungslisteMapper.findByEmpfaenger(empfaengerNickname);
 	}
 	
@@ -685,6 +687,78 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung)
 			throws IllegalArgumentException{
 		return this.unterhaltungslisteMapper.findByUnterhaltung(unterhaltung);
+	}
+
+	@Override
+	public Nutzer getNutzerByNickname(String nickname) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Nachricht> getAlleNachrichtJeZeitraum(String von, String bis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Nachricht getNachrichtByID(int id) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Unterhaltung update(Unterhaltung unterhaltung) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Abonnement updateAbonnement(Abonnement abonnement) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Nutzerabonnement getNutzerabonnemntById(int id) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements(int id) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Hashtagabonnement getHashtagAboById(int id) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(int id) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Unterhaltungsliste getByAbsender(Nutzer nutzer) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Unterhaltungsliste getByEmpfaenger(Nutzer nutzer) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/*
