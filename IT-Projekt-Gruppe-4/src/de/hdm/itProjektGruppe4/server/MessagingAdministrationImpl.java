@@ -287,7 +287,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public ArrayList<Nachricht> getNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
 			throws IllegalArgumentException{
-		return this.nachrichtMapper.findNachrichtenByUnterhaltung(unterhaltung);
+		return this.unterhaltungMapper.findNachrichtenByUnterhaltung(unterhaltung);
 	}
 	
 	/**
@@ -375,14 +375,6 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public ArrayList<Unterhaltung> getAllUnterhaltungen()
 			throws IllegalArgumentException {
 		return this.unterhaltungMapper.findAllUnterhaltungen();
-	}
-
-	/**
-	 * Auslesen von Unterhaltungen anhand der ID.
-	 */
-	public Unterhaltung getUnterhaltungbyId(int id)
-			throws IllegalArgumentException {
-		return this.unterhaltungMapper.findUnterhaltungById(id);
 	}
 
 	

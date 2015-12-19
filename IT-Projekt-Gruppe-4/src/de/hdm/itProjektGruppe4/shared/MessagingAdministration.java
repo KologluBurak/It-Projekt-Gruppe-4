@@ -103,9 +103,6 @@ public interface MessagingAdministration extends RemoteService {
 	public ArrayList<Unterhaltung> getAllUnterhaltungen()
 			throws IllegalArgumentException;
 
-	public Unterhaltung getUnterhaltungbyId(int id)
-			throws IllegalArgumentException;
-
 	public void delete(Unterhaltung unterhaltung)
 			throws IllegalArgumentException;
 
