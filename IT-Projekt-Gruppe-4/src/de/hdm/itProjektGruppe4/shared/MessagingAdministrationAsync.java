@@ -114,8 +114,6 @@ public interface MessagingAdministrationAsync {
 
 	void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
 
-	void getUnterhaltungbyId(int id, AsyncCallback<Unterhaltung> callback);
-
 	void update(Unterhaltung unterhaltung, AsyncCallback<Unterhaltung> callback);
 
 	;

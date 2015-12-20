@@ -92,15 +92,15 @@ public class NutzerMapper {
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			// if(rs.next()){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Date d = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date d = new Date();
 			try {
 				d = sdf.parse("21/12/2015");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			nutzer.setErstellungsZeitpunkt(d);
+			nutzer.setErstellungsZeitpunkt(sdf.format(d));
 
 			String sql = "INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) "
 					+ "VALUES (NULL, ?, ?, ?, ?, ?)";
@@ -206,7 +206,7 @@ public class NutzerMapper {
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				alleNutzer.add(nutzer);
 			}
@@ -249,7 +249,7 @@ public class NutzerMapper {
 
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzer;
 			}
@@ -284,7 +284,7 @@ public class NutzerMapper {
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzer;
 			}
