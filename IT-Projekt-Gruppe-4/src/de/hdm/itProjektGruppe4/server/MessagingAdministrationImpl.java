@@ -85,7 +85,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * 
  * @see MessagingAdministration
  * @see MessagingAdministrationAsync
- * @see RemoteServiceServle
+ * @see RemoteServiceServlet
  * 
  * @author Thies
  * @author Yücel
@@ -106,6 +106,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	private HashtagMapper hashtagMapper = null;
 	private UnterhaltungMapper unterhaltungMapper = null;
 	private UnterhaltungslisteMapper unterhaltungslisteMapper = null;
+	private MarkierungslisteMapper markierungslisteMapper = null;
 	/**
 	 * No-Argument Konstruktor
 	 */
@@ -128,6 +129,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		this.hashtagMapper = HashtagMapper.hashtagMapper();
 		this.unterhaltungMapper = UnterhaltungMapper.unterhaltungMapper();
 		this.unterhaltungslisteMapper = UnterhaltungslisteMapper.unterhaltungslisteMapper();
+		this.markierungslisteMapper = MarkierungslisteMapper.markierungslisteMapper();
 	}
 
 	/*
@@ -210,10 +212,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Nutzers anhand seines Nickname.
 	 */
-	public Nutzer getNutzerByNickame(String nickname)
+	public Nutzer getNutzerByNickname(String nickname)
 			throws IllegalArgumentException {
 		return this.nutzerMapper.findNutzerByNickname(nickname);
 	}
+	
+
 	
 	/**
 	 * Auslesen eines Nutzers anhand seiner ID.
@@ -293,9 +297,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen Nachrichten anhand der Id.
 	 */
-	public Nachricht getNachrichtbyId(int id) throws IllegalArgumentException {
+	
+	public Nachricht getNachrichtById(int id) throws IllegalArgumentException {
 		return this.nachrichtMapper.findNachrichtById(id);
 	}
+	
+
 
 	/**
 	 * Auslesen von Nachrichten eines Nutzers.
@@ -312,6 +319,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			throws IllegalArgumentException{
 		return this.nachrichtMapper.alleNachrichtenJeZeitraum(von, bis);
 	}
+	
+
 	
 	
 	
@@ -404,6 +413,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.abonnementMapper.insertAbonnement(abo);
 	}
 	
+
 	/**
 	 * Auslesen aller Abonnements.
 	 */
@@ -442,7 +452,6 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		hash.setBezeichnung(bezeichnung);
 		return hashtagMapper.insert(hash);
 	}
-
 	
 
 	/**
@@ -532,7 +541,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			throws IllegalArgumentException {
 		return this.getNutzerabonnementById(id);
 	}
-			
+	
 	
 	/**
 	 * Auslesen von Nutzer die die Rolle des des Beobachteten haben .
@@ -582,23 +591,25 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			throws IllegalArgumentException {
 		return this.hashtagAboMapper.findAllHashtagabonnements();	
 	}
-	
+
 	/**
 	 * Auslesen eines Hashtagabonnements anhand einer Id.
 	 */
-	public Hashtagabonnement getHashtagabonnementById(int id)
+	public Hashtagabonnement getHashtagAboById(int id)
 			throws IllegalArgumentException {
 		return this.hashtagAboMapper.findHashtagAboByID(id);
 	}
-	
+
 	/**
 	 * Auslesen eines Hashtagabonnements anhand des Nutzers.
 	 */
-	public ArrayList<Hashtagabonnement> getHashtagAbonnementByNutzer(Nutzer nutzer)
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(Nutzer nutzer)
 			throws IllegalArgumentException{
 //		return this.hashtagAboMapper.findHashtagAbonnementByNutzer(nutzer);
 		return null;
 	}
+	
+
 
 	/*
 	 * ***************************************************************************
@@ -654,7 +665,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 		
 	}
-	
+
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand des Absender.
 	 */
@@ -663,6 +674,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		//nickanme die Id ermitteln und das muss man dan in die findByAbsender weiter geben.
 		return this.unterhaltungslisteMapper.findByAbsender(absenderNickname);
 	}
+	
 	
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand des Empfängers.
@@ -681,85 +693,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.unterhaltungslisteMapper.findByUnterhaltung(unterhaltung);
 	}
 
-	@Override
-	public Nutzer getNutzerByNickname(String nickname) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public ArrayList<Nachricht> getAlleNachrichtJeZeitraum(String von, String bis) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Nachricht getNachrichtByID(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Unterhaltung update(Unterhaltung unterhaltung) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Abonnement updateAbonnement(Abonnement abonnement) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Nutzerabonnement getNutzerabonnemntById(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<Hashtagabonnement> getAllHashtagabonnements(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Hashtagabonnement getHashtagAboById(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(int id) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Unterhaltungsliste getByAbsender(Nutzer nutzer) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Unterhaltungsliste getByEmpfaenger(Nutzer nutzer) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden Unterhaltungsliste-Objekte

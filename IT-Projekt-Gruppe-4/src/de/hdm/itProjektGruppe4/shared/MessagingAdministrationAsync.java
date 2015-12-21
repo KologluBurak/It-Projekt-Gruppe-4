@@ -75,7 +75,7 @@ public interface MessagingAdministrationAsync {
 	 * ***************************************************
 	 */
 
-	void getNachrichtByID(int id, AsyncCallback<Nachricht> callback);
+	void getNachrichtById(int id, AsyncCallback<Nachricht> callback);
 
 	void createNachricht(String text, String nickname,
 			Unterhaltung unterhaltung, AsyncCallback<Nachricht> callback);
@@ -88,7 +88,7 @@ public interface MessagingAdministrationAsync {
 	void getNachrichtenByUnterhaltung(Unterhaltung unterhaltung,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
-	void getAlleNachrichtJeZeitraum(String von, String bis,
+	void getAlleNachrichtenJeZeitraum(String von, String bis,
 			AsyncCallback<ArrayList<Nachricht>> callback);
 
 	void delete(Nachricht nachricht, AsyncCallback<Void> callback);
@@ -113,7 +113,7 @@ public interface MessagingAdministrationAsync {
 
 	void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
 
-	void update(Unterhaltung unterhaltung, AsyncCallback<Unterhaltung> callback);
+
 
 	;
 
@@ -133,10 +133,7 @@ public interface MessagingAdministrationAsync {
 
 	void getAbonnementById(int id, AsyncCallback<Abonnement> callback);
 
-	void createAbonnement(int id, Date erstellungsZeitpunkt,
-			AsyncCallback<Abonnement> callback);
-
-	void updateAbonnement(Abonnement abonnement,
+	void createAbonnement(int id, String erstellungsZeitpunkt,
 			AsyncCallback<Abonnement> callback);
 
 	void getAllAbonnements(AsyncCallback<ArrayList<Abonnement>> callback);
@@ -155,8 +152,6 @@ public interface MessagingAdministrationAsync {
 	 * *************************************************
 	 */
 	void createHashtag(String bezeichnung, AsyncCallback<Hashtag> callback);
-
-	void update(Hashtag hashtag, AsyncCallback<Hashtag> callback);
 
 	void delete(Hashtag hashtag, AsyncCallback<Void> callback);
 
@@ -185,7 +180,7 @@ public interface MessagingAdministrationAsync {
 	void getAllNutzerabonnements(
 			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
 
-	void getNutzerabonnemntById(int id, AsyncCallback<Nutzerabonnement> callback);
+	void getNutzerabonnementById(int id, AsyncCallback<Nutzerabonnement> callback);
 
 	void getNutzerAbonnementByNutzer(Nutzer nutzer,
 			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
@@ -211,10 +206,10 @@ public interface MessagingAdministrationAsync {
 
 	void getHashtagAboById(int id, AsyncCallback<Hashtagabonnement> callback);
 
-	void getHashtagabonnementByNutzer(int id,
+	void getHashtagabonnementByNutzer(Nutzer nutzer,
 			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
-	void getAllHashtagabonnements(int id,
+	void getAllHashtagabonnements(
 			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
 	/*
@@ -250,7 +245,7 @@ public interface MessagingAdministrationAsync {
 	 * *************************************************************
 	 */
 
-	void getByEmpfaenger(Nutzer nutzer,
+	void getByEmpfaenger(String empfaengerNickname,
 			AsyncCallback<Unterhaltungsliste> callback);
 
 	void createUnterhaltungsliste(Unterhaltung u, String sender, String empf,
@@ -259,7 +254,7 @@ public interface MessagingAdministrationAsync {
 	void getByUnterhaltung(Unterhaltung unterhaltung,
 			AsyncCallback<Unterhaltungsliste> callback);
 
-	void getByAbsender(Nutzer nutzer, AsyncCallback<Unterhaltungsliste> callback);
+	void getByAbsender(String absenderNickanme, AsyncCallback<Unterhaltungsliste> callback);
 
 	/*
 	 * ***************************************************************************
