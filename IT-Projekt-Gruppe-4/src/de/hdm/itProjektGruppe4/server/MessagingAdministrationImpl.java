@@ -754,7 +754,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt) throws IllegalArgumentException {
+	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt)
+			throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}

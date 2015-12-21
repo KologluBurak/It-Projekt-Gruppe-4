@@ -1,23 +1,37 @@
 package de.hdm.itProjektGruppe4.client;
 
-    import com.google.gwt.user.client.Command;
-	import com.google.gwt.user.client.ui.Button;
-	import com.google.gwt.user.client.ui.HTML;
-	import com.google.gwt.user.client.ui.HorizontalPanel;
-	import com.google.gwt.user.client.ui.Label;
-	import com.google.gwt.user.client.ui.MenuBar;
-	import com.google.gwt.user.client.ui.RootPanel;
-	import com.google.gwt.user.client.ui.TextBox;
-	import com.google.gwt.user.client.ui.VerticalPanel;
+    import java.util.ArrayList;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 	
 
+
+
+
+
+
+
 	import de.hdm.itProjektGruppe4.client.gui.HashtagTabelle;
-	import de.hdm.itProjektGruppe4.client.gui.NachrichtenForm;
-	import de.hdm.itProjektGruppe4.client.gui.NutzeraboTabelle;
-	import de.hdm.itProjektGruppe4.client.gui.UnterhaltungsForm;
+import de.hdm.itProjektGruppe4.client.gui.NachrichtenForm;
+import de.hdm.itProjektGruppe4.client.gui.NutzeraboTabelle;
+import de.hdm.itProjektGruppe4.client.gui.UnterhaltungsForm;
 //import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.client.gui.ReportAuswahl;
 //import de.hdm.itProjektGruppe4.shared.ReportGenerator.*;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
+import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 
 	public class MSG_Front_End {
 
@@ -34,7 +48,7 @@ import de.hdm.itProjektGruppe4.client.gui.ReportAuswahl;
 		//Anzeigen von dem Menue
 		
 		public void anzeigenMenu () {
-			
+
 			//Hier werden verschiedene Commands angelegt
 			
 			Command nachrichtenErstellen = new Command(){
@@ -43,7 +57,32 @@ import de.hdm.itProjektGruppe4.client.gui.ReportAuswahl;
 					rechts.add(new HTML("<h2> Hier koennen Sie die Nachricht verfassen</h2>"));
 					NachrichtenForm nf = new NachrichtenForm();
 					rechts.add(nf);
-						}};
+					MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT.create(MessagingAdministration.class);
+					
+					myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							DialogBox d = new DialogBox();
+							d.setText("Fehler: " + caught);
+							d.show();	
+						}
+
+						@Override
+						public void onSuccess(ArrayList<Nutzer> result) {
+							DialogBox d = new DialogBox();
+							String nutzer = "Anzahl: "+result.size()+" ";
+							
+							for(Nutzer n : result){
+								nutzer = nutzer + n.getNickname() + " ";
+							}	
+							
+							d.setText(nutzer);
+							d.show();
+							
+						}
+					});
+			}};
 			
 			//Hier werden verschiedene Commands angezeigt
 						

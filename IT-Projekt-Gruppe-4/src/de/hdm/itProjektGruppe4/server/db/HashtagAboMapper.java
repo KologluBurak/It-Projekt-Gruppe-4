@@ -24,10 +24,12 @@ public class HashtagAboMapper {
 	/**
 	 * Die Klasse HashtagAboMapper wird nur einmal instantiiert. Man spricht
 	 * hierbei von einem sogenannten <b>Singleton</b>.
+	 * 
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
 	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
+	 * </p>
 	 * 
 	 * @see HashtagAbomapper()
 	 */

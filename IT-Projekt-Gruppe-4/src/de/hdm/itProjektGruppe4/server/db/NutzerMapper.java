@@ -272,8 +272,7 @@ public class NutzerMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT nutzerID, vorname, nachname, email, nickname, datum "
-					+ "FROM nutzer WHERE nutzerID="+nutzerID+" ORDER BY nutzerID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID= "+nutzerID+" ORDER BY nutzerID");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
@@ -284,7 +283,7 @@ public class NutzerMapper {
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
+				//nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzer;
 			}

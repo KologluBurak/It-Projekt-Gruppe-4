@@ -28,14 +28,11 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 	  private LoginInfo loginInfo = null;
 	  private VerticalPanel loginPanel = new VerticalPanel();
 	  private Label loginLabel = new Label(
-	      "Please sign in to your Google Account to access the StockWatcher application.");
+	      "Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
 	  private Anchor signInLink = new Anchor("Sign In");
 	  
 	   public void onModuleLoad() {
 
-			 // DialogBox d1 = new DialogBox();
-	    	 // d1.setText("On Module Load funktioniert!");
-	    	 //d1.show();
 		    // Check login status using login service.
 		    LoginServiceAsync loginService = GWT.create(LoginService.class);
 		    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
@@ -47,17 +44,12 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 		      }
 
 		      public void onSuccess(LoginInfo result) {
-		        
-//				   DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
-//				   Date date = new Date();
-//				DialogBox d = new DialogBox();
-//				d.setText("Fehler: " + dateFormat.format(date));
-//				d.show();
 				
-		    	  loginInfo = result;
+		    	loginInfo = result;
 		        if(loginInfo.isLoggedIn()) {
 		        	MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		        	// TODO Logik zum �berpr�fen von User: ist User mit Email in DB? Wenn ja -> zeige loadView -> nein dann lege User in Db
+
 //		 		   Unterhaltung unterhaltung = new Unterhaltung();
 //				   unterhaltung.setId(1);
 //
@@ -99,6 +91,9 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 //						}
 //					});
 //		        
+
+
+
 		        	loadView();
 		          
 		        } else {

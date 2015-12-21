@@ -18,7 +18,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  *
  */
 
-//@RemoteServiceRelativePath("messagingAdmin")
+@RemoteServiceRelativePath("messagingAdmin")
 public interface MessagingAdministration extends RemoteService {
 
 	/*

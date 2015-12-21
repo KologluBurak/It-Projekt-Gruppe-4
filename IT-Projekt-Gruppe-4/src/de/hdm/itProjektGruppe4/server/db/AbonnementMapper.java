@@ -150,13 +150,12 @@ public class AbonnementMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT abonnementID, erstellungsZeitpunkt FROM abonnements ORDER BY abonnementID");
+					.executeQuery("SELECT * FROM abonnements ORDER BY abonnementID");
 
 			while (rs.next()) {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
-				abonnement.setErstellungsZeitpunkt(rs
-						.getString("erstellungsZeitpunkt"));
+				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				aboListe.add(abonnement);
 			}
