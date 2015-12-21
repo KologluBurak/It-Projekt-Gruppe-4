@@ -18,7 +18,7 @@ public class Hashtagabonnement extends Abonnement {
 	/**
 	 * Fremschluesselbeziehung zur Klasse Hashtag
 	 */
-	private int hastagID = 0;
+	private int hashtagID = 0;
 
 	/**
 	 * Fremschluesselbeziehung zur abstrakten Klasse Abonnement
@@ -35,8 +35,8 @@ public class Hashtagabonnement extends Abonnement {
 	 * 
 	 * @return hashtagID
 	 */
-	public int getHastagID() {
-		return hastagID;
+	public int getHashtagID() {
+		return hashtagID;
 	}
 
 	/**
@@ -44,8 +44,8 @@ public class Hashtagabonnement extends Abonnement {
 	 * 
 	 * @param hastagID
 	 */
-	public void setHastagID(int hastagID) {
-		this.hastagID = hastagID;
+	public void setHashtagID(int hashtagID) {
+		this.hashtagID = hashtagID;
 	}
 
 	/**
