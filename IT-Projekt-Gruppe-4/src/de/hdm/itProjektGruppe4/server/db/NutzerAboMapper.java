@@ -155,7 +155,7 @@ public class NutzerAboMapper {
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				allNutzerabonnements.add(nutzerabonnement);
 			}
@@ -193,7 +193,7 @@ public class NutzerAboMapper {
 			if (rs.next()) {
 				Nutzerabonnement nutzerabo = new Nutzerabonnement();
 				nutzerabo.setId(rs.getInt("nutzerAboID"));
-				nutzerabo.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nutzerabo.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzerabo;
 			}
@@ -230,7 +230,7 @@ public class NutzerAboMapper {
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				nutzerAboListe.add(nutzerabonnement);
 			}

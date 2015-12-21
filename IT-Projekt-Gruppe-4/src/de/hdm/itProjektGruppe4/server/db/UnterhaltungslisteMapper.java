@@ -119,8 +119,6 @@ public class UnterhaltungslisteMapper {
 
 			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname;
 
-
-
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -190,8 +188,7 @@ public class UnterhaltungslisteMapper {
 			if (rs.next()) {
 				Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 				unterhaltungsliste.setId(rs.getInt("nutzerID"));
-				unterhaltungsliste.setUnterhaltungID(rs
-						.getInt("unterhaltungID"));
+				unterhaltungsliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				unterhaltungsliste.setAbsenderID(rs.getInt("absenderID"));
 				unterhaltungsliste.setEmpfaengerID(rs.getInt("empfaengerID"));
 
@@ -203,7 +200,6 @@ public class UnterhaltungslisteMapper {
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
 		}
-
 		return null;
 	}
 }

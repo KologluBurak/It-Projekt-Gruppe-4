@@ -113,31 +113,6 @@ public class HashtagAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in
-	 * der Datenbank.
-	 * 
-	 * @param hashtagabonnement
-	 * @return hashtagabonnement
-	 */
-
-	public Hashtagabonnement update(Hashtagabonnement hashtagabonnement)
-			throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE Hashtagabonnement " + "SET hashtagID=\""
-					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		return hashtagabonnement;
-	}
-
-	/**
 	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
 	 * Referenzen zu anderen Klassen
 	 * 

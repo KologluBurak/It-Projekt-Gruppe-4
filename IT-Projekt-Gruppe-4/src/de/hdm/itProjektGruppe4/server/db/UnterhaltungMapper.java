@@ -119,10 +119,10 @@ public class UnterhaltungMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Unterhaltungen mit all ihren beinhalteten Nachrichhten aus der Datenbank in
+	 * Diese Methode ermöglicht es alle Unterhaltungen mit allen beinhalteten Nachrichten aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
-	 * @return
+	 * @return allUnterhaltungen
 	 */
 	public ArrayList<Unterhaltung> findAllUnterhaltungen() {
 		Connection con = DBConnection.connection();
@@ -172,13 +172,14 @@ public class UnterhaltungMapper {
 
 			Nachricht nachricht = new Nachricht();
 			while (rs.next()) {
-				nachricht.setUnterhaltungID(rs.getInt("nachrichten.unterhaltungID"));
-				nachricht.setId(rs.getInt("nachrichtID"));
+				nachricht.setUnterhaltungID(rs.getInt("unterhaltungen.unterhaltungID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				result.add(nachricht);
 			}
+			stmt.close();
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"

@@ -80,21 +80,7 @@ public class NachrichtMapper {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
-		
-
-
 		try {
-			// Insert-Statement erzeugen
-			// Statement stmt = con.createStatement();
-
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			// ResultSet rs =
-			// stmt.executeQuery("SELECT MAX(nachrichtID) AS maxid FROM nachrichten");
-
-			// Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
-			// if (rs.next()) {
-
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
 			Date date = new Date();
 			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
@@ -109,37 +95,7 @@ public class NachrichtMapper {
 			preStmt.setInt(4, nachricht.getUnterhaltungID());
 			preStmt.executeUpdate();
 	
-			// stmt.close();
-			// rs.close();
 			// con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
-		}
-		return nachricht;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Unterhaltungsdatensatzes
-	 * in der Datenbank.
-	 * 
-	 * @param unterhaltung
-	 * @return
-	 */
-	public Nachricht update(Nachricht nachricht)
-			throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-		try {
-			PreparedStatement preStmt;
-			preStmt = con.prepareStatement("UPDATE nachrichten SET text=?, "
-					+ "datum=? WHERE nachrichtID=" + nachricht.getId());
-			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
-			preStmt.executeUpdate();
-			preStmt.close();
-
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
@@ -159,7 +115,7 @@ public class NachrichtMapper {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM nachrichten "
-					+ "WHERE nachrichtID=" + nachricht.getId());
+					+ "WHERE nachrichten.nachrichtID=" + nachricht.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
@@ -169,31 +125,32 @@ public class NachrichtMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nachrichten aus der Datenbank in einer
+	 * Diese Methode ermöglicht es alle Nachrichten eines Nutzers in einer
 	 * Liste auszugeben.
 	 * 
-	 * @return
+	 * @return allNachrichten
 	 */
-	public ArrayList<Nachricht> findAllNachrichten()
+	public ArrayList<Nachricht> findAllNachrichten(Nutzer nutzer)
 			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM nachrichten ORDER BY nachrichtID");
+			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
+					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID =" +nutzer.getId());
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
+				
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
 
 				allNachrichten.add(nachricht);
 			}
 			stmt.close();
 			rs.close();
-			// con.close();
+			//con.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -210,7 +167,8 @@ public class NachrichtMapper {
 	 * @return nachricht
 	 * @throws IllegalArgumentException
 	 */
-	public Nachricht findNachrichtById(int id) throws IllegalArgumentException {
+	public Nachricht findNachrichtById(int id)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
@@ -226,8 +184,6 @@ public class NachrichtMapper {
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
-
 		}
 		return null;
 	}

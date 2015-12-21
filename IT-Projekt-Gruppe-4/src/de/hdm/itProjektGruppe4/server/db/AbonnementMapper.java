@@ -156,7 +156,7 @@ public class AbonnementMapper {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
 				abonnement.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+						.getString("erstellungsZeitpunkt"));
 
 				aboListe.add(abonnement);
 			}

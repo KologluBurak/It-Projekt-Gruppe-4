@@ -73,60 +73,21 @@ public class HashtagMapper {
 	public Hashtag insert(Hashtag hashtag) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
-
 		try {
-			// Statement stmt = con.createStatement();
-			// ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-			// + "FROM nachricht ");
+			String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
 
-
-				String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
-
-
-
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(sql);
-				preStmt.setString(1, hashtag.getBezeichnung());
-				preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
-
-			// }
-			// stmt.close();
-			// rs.close();
-			// con.close();
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, hashtag.getBezeichnung());
+			preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
+			preStmt.executeUpdate();
+			preStmt.close();
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
 		}
-		return hashtag;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Aktualisierung des Hashtagdatensatzes in
-	 * der Datenbank.
-	 * 
-	 * @param hashtag
-	 * @return hashtag
-	 */
-	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE hashtag " + "SET bezeichnung=\""
-					+ hashtag.getBezeichnung() + "\" " + "WHERE hashtagID="
-					+ hashtag.getId());
-
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
-		}
-
 		return hashtag;
 	}
 
