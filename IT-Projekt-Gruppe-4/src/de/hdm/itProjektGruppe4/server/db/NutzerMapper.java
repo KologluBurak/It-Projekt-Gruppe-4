@@ -243,10 +243,6 @@ public class NutzerMapper {
 
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
-
-				// nutzer.setVorname(rs.getString("vorname"));
-				// nutzer.setNachname(rs.getString("nachname"));
-
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
 				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
@@ -261,6 +257,42 @@ public class NutzerMapper {
 		return null;
 	}
 
+	/**
+	 * Diese Methode ermöglicht einen Nutzer anhand seiner Email zu finden
+	 * und anzuzeigen.
+	 * 
+	 * @return uebergebener Paramater
+	 */
+	public Nutzer findNutzerByEmail(String email)
+			throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM nutzer WHERE email='"
+							+ email + "'");
+
+			if (rs.next()) {
+				Nutzer nutzer = new Nutzer();
+				nutzer.setId(rs.getInt("nutzerID"));
+
+				nutzer.setVorname(rs.getString("vorname"));
+				nutzer.setNachname(rs.getString("nachname"));
+				nutzer.setEmail(rs.getString("email"));
+				nutzer.setNickname(rs.getString("nickname"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
+
+				return nutzer;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
+		}
+		return null;
+	}
+	
 	/**
 	 * Diese Methode ermöglicht einen Nutzer anhand des Prim�rschl�ssels zu
 	 * finden und anzuzeigen.

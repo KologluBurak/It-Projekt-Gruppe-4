@@ -100,8 +100,7 @@ public interface MessagingAdministration extends RemoteService {
 	public Unterhaltung createUnterhaltung(Date datum)
 			throws IllegalArgumentException;
 
-	public ArrayList<Unterhaltung> getAllUnterhaltungen()
-			throws IllegalArgumentException;
+	//public ArrayList<Unterhaltung> getAllUnterhaltungen() throws IllegalArgumentException;
 
 	public void delete(Unterhaltung unterhaltung)
 			throws IllegalArgumentException;
