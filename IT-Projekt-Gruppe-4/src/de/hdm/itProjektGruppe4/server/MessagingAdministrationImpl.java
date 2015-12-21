@@ -279,7 +279,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public ArrayList<Nachricht> getAllNachrichten()
 			throws IllegalArgumentException {
-		return this.nachrichtMapper.findAllNachrichten();
+		return null; //this.nachrichtMapper.findAllNachrichten();
 	}
 	
 	/**
@@ -749,6 +749,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	@Override
 	public Unterhaltungsliste getByEmpfaenger(Nutzer nutzer) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}
