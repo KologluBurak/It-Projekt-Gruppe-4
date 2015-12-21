@@ -111,7 +111,7 @@ public interface MessagingAdministrationAsync {
 
 	void delete(Unterhaltung u, AsyncCallback<Void> callback);
 
-	void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
+	//void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
 
 	void update(Unterhaltung unterhaltung, AsyncCallback<Unterhaltung> callback);
 

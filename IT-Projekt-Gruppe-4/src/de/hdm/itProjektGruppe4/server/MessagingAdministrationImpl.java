@@ -371,11 +371,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/**
 	 * Auslesen von allen Unterhaltungen aus der Datenbank.
-	 */
-	public ArrayList<Unterhaltung> getAllUnterhaltungen()
+	 
+	public ArrayList<Nachticht> getAllUnterhaltungen(Unterhaltung unterhaltung)
 			throws IllegalArgumentException {
-		return this.unterhaltungMapper.findAllUnterhaltungen();
-	}
+		return this.unterhaltungMapper.findNachrichtenByUnterhaltung(unterhaltung);
+	}*/
 
 	
 

@@ -118,36 +118,41 @@ public class UnterhaltungMapper {
 		}
 	}
 
-	/**
-	 * Diese Methode ermöglicht es alle Unterhaltungen mit allen beinhalteten Nachrichten aus der Datenbank in
-	 * einer Liste auszugeben.
-	 * 
-	 * @return allUnterhaltungen
-	 */
-	public ArrayList<Unterhaltung> findAllUnterhaltungen() {
-		Connection con = DBConnection.connection();
-		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, datum FROM unterhaltungen INNER JOIN nachrichten "
-						+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID ");
-
-			while (rs.next()) {
-				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltungen.unterhaltungID"));
-
-				allUnterhaltungen.add(unterhaltung);
-			}
-			stmt.close();
-			rs.close();
-			// con.close();
-
-			return allUnterhaltungen;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * Diese Methode ermöglicht es alle Unterhaltungen mit allen beinhalteten Nachrichten aus der Datenbank in
+//	 * einer Liste auszugeben.
+//	 * 
+//	 * @return allUnterhaltungen
+//	 */
+//	public ArrayList<Unterhaltung> findAllUnterhaltungen() {
+//		Connection con = DBConnection.connection();
+//		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
+//		try {
+//			Statement stmt = con.createStatement();
+//			ResultSet rs = stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, nachrichten.datum "
+//					+ "FROM unterhaltungen INNER JOIN nachrichten "
+//						+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID ");
+//
+//			while (rs.next()) {
+//				Unterhaltung unterhaltung = new Unterhaltung();
+//				unterhaltung.setId(rs.getInt("unterhaltungID"));
+//				
+//				Nachricht nachricht = new Nachricht();
+//				nachricht.setText(rs.getString("text"));
+//				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
+//
+//				allUnterhaltungen.add(unterhaltung);
+//			}
+//			stmt.close();
+//			rs.close();
+//			// con.close();
+//
+//			return allUnterhaltungen;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
 	/**
 	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand
@@ -166,7 +171,7 @@ public class UnterhaltungMapper {
 
 			//Neu
 			Statement stmt= con.createStatement();
-			ResultSet rs= stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, nachrichten.datum "
+			ResultSet rs= stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, datum "
 					+ "FROM unterhaltungen INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
 					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId());
 
