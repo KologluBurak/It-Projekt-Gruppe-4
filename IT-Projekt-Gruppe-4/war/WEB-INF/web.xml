@@ -16,6 +16,16 @@
     <url-pattern>/it_projekt_gruppe_4/login</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>messagingAdminService</servlet-name>
+    <servlet-class>de.hdm.itProjektGruppe4.server.MessagingAdministrationImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>messagingAdminService</servlet-name>
+    <url-pattern>/it_projekt_gruppe_4/messagingAdmin</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- messagingAdmin Default page to serve -->
   <welcome-file-list>

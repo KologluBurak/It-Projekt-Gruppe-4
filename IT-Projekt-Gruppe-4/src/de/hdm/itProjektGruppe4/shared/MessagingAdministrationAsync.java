@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
