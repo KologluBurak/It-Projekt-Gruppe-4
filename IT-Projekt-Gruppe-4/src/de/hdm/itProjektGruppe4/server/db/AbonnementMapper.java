@@ -1,13 +1,23 @@
 package de.hdm.itProjektGruppe4.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.PreparedStatement;
 
-import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
-import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
-import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
+import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
+ * Mapper-Klasse, die <code>Abonnement</code>-Objekte auf eine relationale
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
+ * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
+ * geloescht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Thies
  * @author Kologlu
@@ -17,11 +27,42 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 
 public class AbonnementMapper {
 
+	/**
+	 * Die Klasse AbonnementMapper wird nur einmal instantiiert. Man spricht
+	 * hierbei von einem sogenannten <b>Singleton</b>.
+	 * 
+	 * <p>
+	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
+	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * speichert die einzige Instanz dieser Klasse.
+	 * </p>
+	 * 
+	 * @see HashtagAbomapper()
+	 */
+	
 	private static AbonnementMapper abonnementMapper = null;
 
+	/**
+	 * Geschuetzter Konstruktor - verhindert die Möglichkeit, mit
+	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
+	 */
 	protected AbonnementMapper() {
-
 	}
+	
+	/**
+	 * Diese statische Methode kann aufgrufen werden durch
+	 * <code>AbonnementMapper.abonnementMapper()</code>. Sie stellt die
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
+	 * einzige Instanz von <code>AbonnementMapper</code> existiert.
+	 * <p>
+	 * 
+	 * <b>Fazit:</b> AbonnementMapper sollte nicht mittels <code>new</code>
+	 * instantiiert werden, sondern stets durch Aufruf dieser statischen
+	 * Methode.
+	 * 
+	 * @return DAS <code>AbonnementMapper</code>-Objekt.
+	 * @see AbonnementMapper
+	 */
 
 	public static AbonnementMapper abonnementMapper() {
 		if (abonnementMapper == null) {
@@ -31,13 +72,14 @@ public class AbonnementMapper {
 
 	}
 
-	/**
+	/** 
 	 * Diese Methode ermöglicht es einen Abonnement in der Datenbank anzulegen.
 	 * 
 	 * @param abonnement
-	 * @return abonnement
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-	public Abonnement insertAbonnement(Abonnement abonnement)
+	public Abonnement insertAbonnement(Abonnement abonnement) 
 			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
@@ -49,13 +91,15 @@ public class AbonnementMapper {
 			// "FROM abonnement ");
 
 			// if (rs.next()) {
-
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			Date date = new Date();
 			String sql = "INSERT INTO `abonnements`(`abonnementID`, `datum`) VALUES (NULL, ?)";
+
+			System.out.println(sql);
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setString(1, abonnement.getErstellungsZeitpunkt()
-					.toString());
+			preStmt.setString(1, dateFormat.format(date));//getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 			preStmt.close();
 
@@ -63,42 +107,13 @@ public class AbonnementMapper {
 			// stmt.close();
 			// rs.close();
 			// con.close();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e1.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 
 		return abonnement;
 	}
-
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Abonnementsdatensatzes
-	 * in der Datenbank
-	 * 
-	 * @param abonnement
-	 * @return abonnement
-	 */
-	public Abonnement updateAbonnement(Abonnement abonnement)
-			throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE abonnement " + "SET aboArt=\""
-					+ "WHERE abonnementID=" + abonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e1.toString());
-		}
-
-		return abonnement;
-	}
-
 
 	/**
 	 * Diese Methode ermöglicht es eine Ausgabe über die Abonnements in der
@@ -106,29 +121,25 @@ public class AbonnementMapper {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
-	public Abonnement findAbonnementByKey(int id)
-			throws IllegalArgumentException {
-
+	
+	public Abonnement findAbonnementById(int id) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
-
 		try {
 			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnement "
-					+ "WHERE abonnementID=" + id + " ORDER by abonnementID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnement " + "WHERE abonnementID=" + id);
 
 			if (rs.next()) {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
-
+				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				
 				return abonnement;
 			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e1.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 
 		}
 		return null;
@@ -139,36 +150,31 @@ public class AbonnementMapper {
 	 * Liste auszugeben.
 	 * 
 	 * @return
+	 * @throws IllegalArgumentException
 	 */
-
-	public ArrayList<Abonnement> findAllAbonnements()
-			throws IllegalArgumentException {
+	
+	public ArrayList<Abonnement> findAllAbonnements() throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
-
 		ArrayList<Abonnement> aboListe = new ArrayList<Abonnement>();
-
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM abonnements ORDER BY abonnementID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnements ORDER BY abonnementID");
 
 			while (rs.next()) {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
-				abonnement.setErstellungsZeitpunkt(rs
-						.getString("datum"));
+				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				aboListe.add(abonnement);
 			}
 			stmt.close();
 			rs.close();
-			con.close();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e1.toString());
+			// con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" 
+					+ e.toString());
 		}
 		return aboListe;
 	}
-
 }
