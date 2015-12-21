@@ -59,29 +59,29 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 					rechts.add(nf);
 					MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT.create(MessagingAdministration.class);
 					
-					myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							DialogBox d = new DialogBox();
-							d.setText("Fehler: " + caught);
-							d.show();	
-						}
-
-						@Override
-						public void onSuccess(ArrayList<Nutzer> result) {
-							DialogBox d = new DialogBox();
-							String nutzer = "Anzahl: "+result.size()+" ";
-							
-							for(Nutzer n : result){
-								nutzer = nutzer + n.getNickname() + " ";
-							}	
-							
-							d.setText(nutzer);
-							d.show();
-							
-						}
-					});
+//					myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
+//
+//						@Override
+//						public void onFailure(Throwable caught) {
+//							DialogBox d = new DialogBox();
+//							d.setText("Fehler: " + caught);
+//							d.show();	
+//						}
+//
+//						@Override
+//						public void onSuccess(ArrayList<Nutzer> result) {
+//							DialogBox d = new DialogBox();
+//							String nutzer = "Anzahl: "+result.size()+" ";
+//							
+//							for(Nutzer n : result){
+//								nutzer = nutzer + n.getNickname() + " ";
+//							}	
+//							
+//							d.setText(nutzer);
+//							d.show();
+//							
+//						}
+//					});
 			}};
 			
 			//Hier werden verschiedene Commands angezeigt
