@@ -27,17 +27,17 @@ public interface ReportGeneratorAsync {
 	void erstelleInfosVonAllenAbonnementsReport(Abonnement aboNutzer, Abonnement aboHashtag,
 			AsyncCallback<String> callback);
 
-	void erstelleInfosÜberZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, 
-			Date endzeitpunkt, AsyncCallback<InfosÜberZeitraumspezifischeNachrichtenReport> callback);
+	void erstelleInfosUeberZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, 
+			Date endzeitpunkt, AsyncCallback<InfosUeberZeitraumspezifischeNachrichtenReport> callback);
 
-	void erstelleInfosÜberNutzerspezifischeNachrichtenReport(Nachricht nachricht, Nutzer nutzer,
-			AsyncCallback<InfosÜberNutzerspezifischeNachrichtenReport> callback);
+	void erstelleInfosUeberNutzerspezifischeNachrichtenReport(Nachricht nachricht, Nutzer nutzer,
+			AsyncCallback<InfosUeberNutzerspezifischeNachrichtenReport> callback);
 	
-	void erstelleInfosÜberNutzerspezifischeAbonnementsReport(Abonnement abonnement, Nutzer nutzer,
-			AsyncCallback<InfosÜberNutzerspezifischeAbonnementsReport> callback);
+	void erstelleInfosUeberNutzerspezifischeAbonnementsReport(Abonnement abonnement, Nutzer nutzer,
+			AsyncCallback<InfosUeberNutzerspezifischeAbonnementsReport> callback);
 
-	void erstelleInfosÜberHashtagspezifischeAbonnementsReport(Abonnement abonnement, Hashtag hashtag,
-			AsyncCallback<InfosÜberHashtagspezifischeAbonnementsReport> callback);
+	void erstelleInfosUeberHashtagspezifischeAbonnementsReport(Abonnement abonnement, Hashtag hashtag,
+			AsyncCallback<InfosUeberHashtagspezifischeAbonnementsReport> callback);
 
 	void init(AsyncCallback<Void> callback);
 

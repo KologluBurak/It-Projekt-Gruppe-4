@@ -130,24 +130,29 @@ public class AbonnementMapper {
 	public ArrayList<Abonnement> findAllAbonnements() {
 		Connection con = DBConnection.connection();
 
+		System.out.println("con erstellt");
 		ArrayList<Abonnement> aboListe = new ArrayList<Abonnement>();
 
 		try {
+			System.out.println("try anfang");
 			Statement stmt = con.createStatement();
+			
+			System.out.println("stmt erstellt");
 			ResultSet rs = stmt
-					.executeQuery("SELECT abonnementID, erstellungsZeitpunkt FROM abonnements ORDER BY abonnementID");
+					.executeQuery("SELECT * FROM abonnements ORDER BY abonnementID");
 
+			System.out.println("SQL vergeben");
 			while (rs.next()) {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
 				abonnement.setErstellungsZeitpunkt(rs
-						.getDate("erstellungsZeitpunkt"));
+						.getDate("datum"));
 
 				aboListe.add(abonnement);
 			}
-			stmt.close();
-			rs.close();
-			con.close();
+//			stmt.close();
+//			rs.close();
+//			con.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}

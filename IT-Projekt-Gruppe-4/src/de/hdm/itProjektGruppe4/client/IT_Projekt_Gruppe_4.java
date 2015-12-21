@@ -19,7 +19,7 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 	  private LoginInfo loginInfo = null;
 	  private VerticalPanel loginPanel = new VerticalPanel();
 	  private Label loginLabel = new Label(
-	      "Please sign in to your Google Account to access the StockWatcher application.");
+	      "Please sign in to your Google Account to access the itprojekt application.");
 	  private Anchor signInLink = new Anchor("Sign In");
 	
 	   public void onModuleLoad() {

@@ -45,24 +45,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 	       
 	    	
 	    	
-	    	myAsync.findNutzerAbonnementByNutzer(null, new AsyncCallback<ArrayList<Nutzerabonnement>> () {
-
-				@Override
-				public void onFailure(Throwable caught) {
-				
-				
-					
-				}
-
-				@Override
-				public void onSuccess(ArrayList<Nutzerabonnement> result) {
-				
-					
-					
-				}
-			
-			
-			});
+	    	
 	    	
 	    	
 	    	// Hinzufügen einer Spalte Nachname

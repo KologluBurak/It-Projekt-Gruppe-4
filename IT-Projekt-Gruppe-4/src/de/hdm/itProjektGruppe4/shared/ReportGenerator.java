@@ -61,16 +61,16 @@ public interface ReportGenerator extends RemoteService {
 	public abstract String erstelleInfosVonAllenAbonnementsReport(Abonnement aboNutzer, Abonnement aboHashtag)
 	throws IllegalArgumentException;
 	
-	public abstract InfosÜberZeitraumspezifischeNachrichtenReport erstelleInfosÜberZeitraumspezifischeNachrichtenReport (Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt) 
+	public abstract InfosUeberZeitraumspezifischeNachrichtenReport erstelleInfosUeberZeitraumspezifischeNachrichtenReport (Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt) 
 	throws IllegalArgumentException;
 	
-	public abstract InfosÜberNutzerspezifischeNachrichtenReport erstelleInfosÜberNutzerspezifischeNachrichtenReport (Nachricht nachricht, Nutzer nutzer) 
+	public abstract InfosUeberNutzerspezifischeNachrichtenReport erstelleInfosUeberNutzerspezifischeNachrichtenReport (Nachricht nachricht, Nutzer nutzer) 
 	throws IllegalArgumentException;
 	
-	public abstract InfosÜberNutzerspezifischeAbonnementsReport erstelleInfosÜberNutzerspezifischeAbonnementsReport (Abonnement abonnement, Nutzer nutzer) 
+	public abstract InfosUeberNutzerspezifischeAbonnementsReport erstelleInfosUeberNutzerspezifischeAbonnementsReport (Abonnement abonnement, Nutzer nutzer) 
 	throws IllegalArgumentException;
 	
-	public abstract InfosÜberHashtagspezifischeAbonnementsReport erstelleInfosÜberHashtagspezifischeAbonnementsReport (Abonnement abonnement, Hashtag hashtag) 
+	public abstract InfosUeberHashtagspezifischeAbonnementsReport erstelleInfosUeberHashtagspezifischeAbonnementsReport (Abonnement abonnement, Hashtag hashtag) 
 	throws IllegalArgumentException;
 		
 }
