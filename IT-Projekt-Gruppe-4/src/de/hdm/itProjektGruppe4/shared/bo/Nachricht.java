@@ -21,20 +21,44 @@ public class Nachricht extends BusinessObject {
 	 */
 	private String text;
 
-	private int nutzerID, unterhaltungID;
+	/**
+	 * Fremdschlüsselbeziehung zur Klasse Nutzer
+	 */
+	private int nutzerID;
 	
+	/**
+	 * Fremdschlüsselbeziehung zur Klasse Unterhaltung
+	 */
+	private int unterhaltungID;
+	
+	/**
+	 * Ausgabe der NutzerID
+	 * @return nutzerID
+	 */
 	public int getNutzerID() {
 		return nutzerID;
 	}
 
+	/**
+	 * Setzen der NutzerID
+	 * @param nutzerID
+	 */
 	public void setNutzerID(int nutzerID) {
 		this.nutzerID = nutzerID;
 	}
 
+	/**
+	 * Ausgabe der UnterhaltungsID
+	 * @return unterhaltungID
+	 */
 	public int getUnterhaltungID() {
 		return unterhaltungID;
 	}
 
+	/**
+	 * Setzen der UnterhaltungsID
+	 * @param unterhaltungID
+	 */
 	public void setUnterhaltungID(int unterhaltungID) {
 		this.unterhaltungID = unterhaltungID;
 	}
@@ -77,7 +101,6 @@ public class Nachricht extends BusinessObject {
 
 	/**
 	 * Ausgabe der Empfaenger als Liste vom Typ ArrayList<>
-	 * 
 	 * @return empfaenger
 	 */
 	public ArrayList<Nutzer> getEmpfaenger() {
@@ -91,7 +114,6 @@ public class Nachricht extends BusinessObject {
 	/**
 	 * Setzen der Empfaenger in Listen, falls an mehrere Nutzer gesendet wird,
 	 * vom Typ Nutzer
-	 * 
 	 * @param empfaenger
 	 */
 	public void setEmpfaenger(Nutzer empfaenger) {

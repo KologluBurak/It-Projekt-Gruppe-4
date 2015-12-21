@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,9 +19,10 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
+ * 
+ * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Thies
  * @author Yücel
  */
 public class NachrichtMapper {
@@ -40,7 +40,7 @@ public class NachrichtMapper {
 	private static NachrichtMapper nachrichtMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NachrichtMapper() {
@@ -75,204 +75,144 @@ public class NachrichtMapper {
 	 * @param nachricht
 	 * @return
 	 */
-	public Nachricht insert(Nachricht nachricht) throws IllegalArgumentException {
+	public Nachricht insert(Nachricht nachricht)
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
-		
-		
-		
+
 		try {
-			// Insert-Statement erzeugen
-			//Statement stmt = con.createStatement();
-
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			//ResultSet rs = stmt.executeQuery("SELECT MAX(nachrichtID) AS maxid FROM nachrichten");
-
-			// Wenn Datensatz gefunden wurde, wird auf diesen zugegriffen
-			//if (rs.next()) {
-
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			Date date = new Date();
 			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
-				
+			
+			System.out.println(sql);
+
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
+			preStmt.setString(2, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
 			preStmt.setInt(3, nachricht.getNutzerID());
 			preStmt.setInt(4, nachricht.getUnterhaltungID());
 			preStmt.executeUpdate();
-			preStmt.close();
-			//}
-			//stmt.close();
-			//rs.close();
-			//con.close();
+	
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return nachricht;
 	}
 
 	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des
-	 * Unterhaltungsdatensatzes in der Datenbank.
-	 * 
-	 * @param unterhaltung
-	 * @return
-	 */
-	public Nachricht update(Nachricht nachricht) throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-		try {
-			PreparedStatement preStmt;
-			preStmt = con.prepareStatement("UPDATE nachrichten SET text=?, "
-					+"datum=? WHERE nachrichtID=" + nachricht.getId());
-			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, nachricht.getErstellungsZeitpunkt().toString());
-			preStmt.executeUpdate();
-			preStmt.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
-		}
-		return nachricht;
-	}
-	
-	/**
-	 * Diese Methode ermöglicht das Löschen einer Nachricht und dessen Referenzen
-	 * zu anderen Klassen.
+	 * Diese Methode ermöglicht das Löschen einer Nachricht und dessen
+	 * Referenzen zu anderen Klassen.
 	 * 
 	 * @param hashtagBezeichnung
 	 */
-	public void delete(Nachricht nachricht)throws IllegalArgumentException {
+	public void delete(Nachricht nachricht) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nachrichten " + "WHERE nachrichtID="
-					+ nachricht.getId());
+			stmt.executeUpdate("DELETE FROM nachrichten "
+					+ "WHERE nachrichten.nachrichtID=" + nachricht.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
 		}
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nachrichten aus der Datenbank in einer
+	 * Diese Methode ermöglicht es alle Nachrichten eines Nutzers in einer
 	 * Liste auszugeben.
 	 * 
-	 * @return
+	 * @return allNachrichten
 	 */
-	public ArrayList<Nachricht> findAllNachrichten() throws IllegalArgumentException {
+	public ArrayList<Nachricht> findAllNachrichten(Nutzer nutzer)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten ORDER BY nachrichtID");
+			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
+					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID =" +nutzer.getId());
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
+				
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
 
 				allNachrichten.add(nachricht);
 			}
 			stmt.close();
 			rs.close();
 			//con.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return allNachrichten;
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand
-	 * ihrer ID zu finden und anzuzeigen.
-	 * 
-	 * @param unterhaltung
-	 * @return
-	 */
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Nachricht nachricht) throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT unterhaltungID, unterhaltungen.datum nachrichten.text "
-							+ "nachrichten.datum FROM nachrichten INNER JOIN unterhaltungen "
-							+ "ON nachrichtID=" + nachricht.getId()
-							+ " ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
-							+ "ORDER BY unterhaltung.datum");
-
-			while (rs.next()) {
-				nachricht.setId(rs.getInt("nachrichtID"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("nachrichten.datum"));
-
-				result.add(nachricht);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
-		}
-		return result;
-	}
-
-	/**
-	 * Diese Methode ermöglicht es einen Nutzer anhand seiner ID das
-	 * Auszugeben.
+	 * Diese Methode ermöglicht es einen Nutzer anhand seiner ID das Auszugeben.
 	 * 
 	 * @param id
 	 * @return nachricht
+	 * @throws IllegalArgumentException
 	 */
-	public Nachricht findNachrichtById(int id) throws IllegalArgumentException {
+	public Nachricht findNachrichtById(int id)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, text, datum FROM nachrichten "
-					+ "WHERE nachrichtID=" + id);
+			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, text, datum FROM nachrichten "+ "WHERE nachrichtID=" + id);
 
 			if (rs.next()) {
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
+				
 				return nachricht;
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();
-			return null;
-
 		}
 		return null;
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nachricht eines Nutzers auszugeben.
+	 * Diese Methode ermöglicht es alle Nachrichten eines Nutzers auszugeben.
 	 * 
 	 * @param nutzer
 	 * @param von
 	 * @param bis
 	 * @param sortierung
-	 * @return
+	 * @return nachrichtenJeNutzer
 	 */
-
-	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer) throws IllegalArgumentException {
+	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
+			//Neu
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten WHERE nutzerID =" + nutzer.getId());
+			ResultSet rs = stmt.executeQuery("SELECT nutzer.nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
+					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID=" +nutzer.getId());
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
-				nachricht.setId(rs.getInt("nutzerID"));
+				//Frage nutzer.nickname??? wie kann man das aus der DB übernehmen??
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("datum"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
 
 				nachrichtenJeNutzer.add(nachricht);
 			}
@@ -284,25 +224,25 @@ public class NachrichtMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Nachrichten je Zeitraum auszugeben.
+	 * Diese Methode ermöglicht es alle Nachrichten eines bestimmten Zeitraums zu übergeben auszugeben.
 	 * 
 	 * @param von
 	 * @param bis
-	 * @return
+	 * @return nachrichtenJeZeitraum
 	 */
-	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis) throws IllegalArgumentException {
+	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> nachrichtenJeZeitraum = new ArrayList<Nachricht>();
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten WHERE datum BETWEEN " + von + " AND " + bis + "");
+			ResultSet rs = stmt.executeQuery("SELECT text, datum FROM nachrichten WHERE datum BETWEEN " + von + " AND " + bis + "");
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
-				nachricht.setId(rs.getInt("nachrichtID"));
 				nachricht.setText(rs.getString("text"));
-				nachricht.setErstellungsZeitpunkt(rs.getDate("erstellungsZeitpunkt"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				nachrichtenJeZeitraum.add(nachricht);
 			}
@@ -311,11 +251,5 @@ public class NachrichtMapper {
 			return null;
 		}
 		return nachrichtenJeZeitraum;
-	}
-
-	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(
-			Unterhaltung unterhaltung) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

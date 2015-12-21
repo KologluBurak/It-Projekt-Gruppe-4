@@ -2,7 +2,7 @@ package de.hdm.itProjektGruppe4.client.gui;
 
 
 
-	import java.util.ArrayList;
+		import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 
@@ -23,114 +23,146 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
 
 
-	public class NutzeraboTabelle {
+		public class NutzeraboTabelle {
 
-		VerticalPanel hauptP = new VerticalPanel();
-		String nachname = new String();
-		String vorname = new String();
-		String eMail = new String();
-		String nickname = new String ();
-		String entfernen = new String();
-		Button nAbohin = new Button("Nutzer Hinzufuegen");
+				VerticalPanel hauptP = new VerticalPanel();
+				String nachname = new String();
+				String vorname = new String();
+				String eMail = new String();
+				String nickname = new String ();
+				String entfernen = new String();
+				Button nAbohin = new Button("Nutzer Hinzufuegen");
 		
-		MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
+				MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		
 		
-			public Widget zeigeTabelle() {
+						public Widget zeigeTabelle() {
 		
 			
-		    CellTable<NutzeraboTabelle> tabelle = new CellTable<NutzeraboTabelle>();
+					CellTable<NutzeraboTabelle> tabelle = new CellTable<NutzeraboTabelle>();
 			
-	    	tabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+				tabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 	       
+	    
+	    	
+//				myAsync.findNutzerAbonnementByNutzer(null, new AsyncCallback<ArrayList<Nutzerabonnement>> () {
+//
+//								@Override
+//								public void onFailure(Throwable caught) {
+//				
+//				
+//					
+//								}
+//
+//								@Override
+//								public void onSuccess(ArrayList<Nutzerabonnement> result) {
+//				
+//					
+//					
+//								}
+//			
+//			
+//						});
 	    	
 	    	
+
 	    	
-	    	
-	    	
-	    	// Hinzufügen einer Spalte Nachname
-	    	
-	        TextColumn<NutzeraboTabelle> nnameColumn = new TextColumn<NutzeraboTabelle>() {
+				TextColumn<NutzeraboTabelle> nnameColumn = new TextColumn<NutzeraboTabelle>() {
 	         
 	     
-	          public String getValue(NutzeraboTabelle object) {
-	            return object.nachname;
-	          }
-	        };
-	        tabelle.addColumn(nnameColumn, "Nachname");
+					public String getValue(NutzeraboTabelle object) {
+						return object.nachname;
+					}
+				};
+				tabelle.addColumn(nnameColumn, "Nachname");
 	        
-	        // Hinzufügen einer Spalte Vorname
+
+				// Hinzufï¿½gen einer Spalte Vorname
+
+	        // Hinzufï¿½gen einer Spalte Vorname
+
 	    	
-	        TextColumn<NutzeraboTabelle> vnameColumn = new TextColumn<NutzeraboTabelle>() {
+				TextColumn<NutzeraboTabelle> vnameColumn = new TextColumn<NutzeraboTabelle>() {
 	         
 	     
-	          public String getValue(NutzeraboTabelle object) {
-	            return object.vorname;
-	          }
-	        };
-	        tabelle.addColumn(vnameColumn, "Vorname");
+					public String getValue(NutzeraboTabelle object) {
+						return object.vorname;
+					}
+				};
+				tabelle.addColumn(vnameColumn, "Vorname");
 	        
-	     // Hinzufügen einer Spalte Email
+
+			// Hinzufï¿½gen einer Spalte Email
+
+	     // Hinzufï¿½gen einer Spalte Email
+
 	        
-	        TextColumn<NutzeraboTabelle> eMailColumn = new TextColumn<NutzeraboTabelle>() {
+				TextColumn<NutzeraboTabelle> eMailColumn = new TextColumn<NutzeraboTabelle>() {
 	            
 	   
-	          public String getValue(NutzeraboTabelle object) {
-	            return object.eMail;
-	          }
-	        };
-	        tabelle.addColumn(eMailColumn, "EMail");
+					public String getValue(NutzeraboTabelle object) {
+						return object.eMail;
+					}
+				};
+				tabelle.addColumn(eMailColumn, "EMail");
 	        
-	     // Hinzufügen einer Spalte Nickname
+
+			// Hinzufï¿½gen einer Spalte Nickname
+
+	     // Hinzufï¿½gen einer Spalte Nickname
+
 	        
-	        TextColumn<NutzeraboTabelle> nicknameColumn = new TextColumn<NutzeraboTabelle>() {
+				TextColumn<NutzeraboTabelle> nicknameColumn = new TextColumn<NutzeraboTabelle>() {
 	            
 	       
-	          public String getValue(NutzeraboTabelle object) {
-	            return object.nickname;
-	          }
-	        };
-	        tabelle.addColumn(nicknameColumn, "Nickname");
+					public String getValue(NutzeraboTabelle object) {
+						return object.nickname;
+					}
+				};
+				tabelle.addColumn(nicknameColumn, "Nickname");
 	        
-	        // Hinzufügen einer Spalte emtfernen
+
+				// Hinzufï¿½gen einer Spalte emtfernen
+
+	        // Hinzufï¿½gen einer Spalte emtfernen
+
 	        
-	        TextColumn<NutzeraboTabelle> entfernenColumn = new TextColumn<NutzeraboTabelle>() {
+				TextColumn<NutzeraboTabelle> entfernenColumn = new TextColumn<NutzeraboTabelle>() {
 	            
 	       
-	          public String getValue(NutzeraboTabelle object) {
-	            return object.entfernen;
-	          }
-	        };
-	        tabelle.addColumn(entfernenColumn, "Entfernen");
+					public String getValue(NutzeraboTabelle object) {
+						return object.entfernen;
+					}
+				};
+				tabelle.addColumn(entfernenColumn, "Entfernen");
 	        
 	        
-	        // Add a selection model to handle user selection.
+				// Add a selection model to handle user selection.
 	        
-	        final SingleSelectionModel<NutzeraboTabelle> selectionModel = new SingleSelectionModel<NutzeraboTabelle>();
-	        tabelle.setSelectionModel(selectionModel);
+				final SingleSelectionModel<NutzeraboTabelle> selectionModel = new SingleSelectionModel<NutzeraboTabelle>();
+				tabelle.setSelectionModel(selectionModel);
 	        
-	        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+				selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 	          
-	        	public void onSelectionChange(SelectionChangeEvent event) {
-	            NutzeraboTabelle selected = selectionModel.getSelectedObject();
-	            if (selected != null) {
-	              Window.alert("You selected: " + selected.nickname);
-	            }
-	          }
+						public void onSelectionChange(SelectionChangeEvent event) {
+					NutzeraboTabelle selected = selectionModel.getSelectedObject();
+					if (selected != null) {
+						Window.alert("You selected: " + selected.nickname);
+					}
+				}
 	        });
 	    
 			
-			{
+						{
 				
-			  hauptP.add(tabelle);
-			  hauptP.add(nAbohin);
-			    return hauptP;
+							hauptP.add(tabelle);
+							hauptP.add(nAbohin);
+								return hauptP;
 			    
-			}}}
+						}}}
 			    
 			    
 		
 
 
 	
-

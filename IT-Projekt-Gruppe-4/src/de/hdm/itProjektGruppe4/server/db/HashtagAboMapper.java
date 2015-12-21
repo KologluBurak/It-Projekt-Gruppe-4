@@ -2,6 +2,7 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
@@ -11,9 +12,10 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
- * @author Oikonomou
+ * 
  * @author Thies
  * @author Yücel
+ * @author Oikonomou
  *
  */
 
@@ -22,10 +24,12 @@ public class HashtagAboMapper {
 	/**
 	 * Die Klasse HashtagAboMapper wird nur einmal instantiiert. Man spricht
 	 * hierbei von einem sogenannten <b>Singleton</b>.
+	 * 
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
 	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
+	 * </p>
 	 * 
 	 * @see HashtagAbomapper()
 	 */
@@ -69,63 +73,42 @@ public class HashtagAboMapper {
 	 * anzulegen.
 	 * 
 	 * @param hashtagabonnement
-	 * @return
+	 * @return hashtagabonnement
 	 */
-
 	public Hashtagabonnement insert(Hashtagabonnement hashtagabonnement)
 			throws IllegalArgumentException {
+		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			Statement stmt = con.createStatement();
+			// Statement stmt = con.createStatement();
+			// ResultSet rs =
+			// stmt.executeQuery("SELECT MAX(hashtagaboID) AS maxid "+
+			// "FROM hashtagabonnement ");
 
-			ResultSet rs = stmt
-					.executeQuery("SELECT MAX(hashtagaboID) AS maxid "
-							+ "FROM hashtagabonnement ");
+			// if (rs.next()) {
 
-			if (rs.next()) {
+			String sql = "INSERT INTO `hashtagabonnements`(`hashtagAboID`, `datum`, `hashtagID`, `abonnementID`, `nutzerID`) "
+					+ "VALUES (NULL, ?, ?, ?, ?)";
 
-				hashtagabonnement.setId(rs.getInt("maxid") + 1);
-				hashtagabonnement.setErstellungsZeitpunkt(rs
-						.getTimestamp("erstellungsdatum"));
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, hashtagabonnement.getErstellungsZeitpunkt()
+					.toString());
+			preStmt.setInt(2, hashtagabonnement.getHastagID());
+			preStmt.setInt(3, hashtagabonnement.getAbonnementID());
+			preStmt.setInt(4, hashtagabonnement.getNutzerID());
+			preStmt.executeUpdate();
+			preStmt.close();
 
-				stmt = con.createStatement();
-
-				stmt.executeUpdate("INSERT INTO Hashtagabonnement (hashtagabonnementID, erstellungsdatum) "
-						+ "VALUES ("
-						+ hashtagabonnement.getId()
-						+ ","
-						+ hashtagabonnement.getId() + ")");
-			}
+			// }
+			// stmt.close();
+			// rs.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
-		}
-
-		return hashtagabonnement;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in
-	 * der Datenbank.
-	 * 
-	 * @param hashtagabonnement
-	 * @return
-	 */
-
-	public Hashtagabonnement update(Hashtagabonnement hashtagabonnement)
-			throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE Hashtagabonnement " + "SET hashtagID=\""
-					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
 		}
 
 		return hashtagabonnement;
@@ -161,14 +144,15 @@ public class HashtagAboMapper {
 	 * @param hashtagabonnement
 	 * @return
 	 */
-	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(int id) {
+	public ArrayList<Hashtagabonnement> findAllHashtagabonnements()
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement");
+					//+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
 
 			while (rs.next()) {
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
@@ -182,6 +166,8 @@ public class HashtagAboMapper {
 			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return alleHashtagabonnements;
 
@@ -195,7 +181,8 @@ public class HashtagAboMapper {
 	 * @return
 	 */
 
-	public Hashtagabonnement findHashtagAboByID(int id) {
+	public Hashtagabonnement findHashtagAboByID(int id)
+			throws IllegalArgumentException {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
@@ -220,7 +207,8 @@ public class HashtagAboMapper {
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
-			return null;
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 
 		}
 		return null;
@@ -234,7 +222,8 @@ public class HashtagAboMapper {
 	 * @return
 	 */
 
-	public ArrayList<Hashtagabonnement> findHashtagAbonnementByNutzer(int id) {
+	public ArrayList<Hashtagabonnement> findHashtagAbonnementByNutzer(int id)
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Hashtagabonnement> hashtagAboListe = new ArrayList<Hashtagabonnement>();
 
@@ -256,8 +245,9 @@ public class HashtagAboMapper {
 
 		catch (SQLException e1) {
 			e1.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e1.toString());
 
-			return null;
 		}
 
 		return hashtagAboListe;

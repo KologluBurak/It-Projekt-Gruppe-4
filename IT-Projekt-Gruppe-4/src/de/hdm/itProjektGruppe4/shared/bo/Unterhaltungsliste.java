@@ -1,11 +1,25 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
+/**
+* Eine Klasse Unterhaltungsliste, die aus der Klasse BusinessObject erbt.
+* @author Yücel
+* @author Kologlu
+*
+*/
+
+
 public class Unterhaltungsliste extends BusinessObject {
 
 	/**
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
+	 * benötigt.
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
 	 * Fremdschlüsselbeziehung zur Klasse Unterhaltung
 	 */
-	private int unterhaltundID;
+	private int unterhaltungID;
 	
 	/**
 	 * Fremdschlüsselbeziehung zur Klasse Nutzer
@@ -22,15 +36,15 @@ public class Unterhaltungsliste extends BusinessObject {
 	 * @return unterhaltungID
 	 */
 	public int getUnterhaltundID() {
-		return unterhaltundID;
+		return unterhaltungID;
 	}
 
 	/**
 	 * Setzen der UnterhaltungID
 	 * @param unterhaltundID
 	 */
-	public void setUnterhaltundID(int unterhaltundID) {
-		this.unterhaltundID = unterhaltundID;
+	public void setUnterhaltungID(int unterhaltungID) {
+		this.unterhaltungID = unterhaltungID;
 	}
 
 	/**

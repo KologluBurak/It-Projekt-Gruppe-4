@@ -28,7 +28,7 @@ public abstract class ReportWriter {
 	 * 
 	 * @param r der zu übersetzende Report
 	 */
-	public abstract String process1(InfosVonAllenAbonnementsReport r);
+	public abstract String process1(AlleAbonnementsReport r);
 
 	 /**
 	  * Übersetzen eines <code>InfosVonAllenNachrichtenReport</code> in das
@@ -36,6 +36,6 @@ public abstract class ReportWriter {
 	  * 
 	  * @param r der zu übersetzende Report
 	  */
-	public abstract String process2(InfosVonAllenNachrichtenReport r);
+	public abstract String process2(AlleNachrichtenReport r);
 		
 }

@@ -15,9 +15,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
+ * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Thies
  * @author Yücel
  */
 public class UnterhaltungMapper {
@@ -27,9 +27,9 @@ public class UnterhaltungMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
-	 * speichert die einzige Instanz dieser Klasse.
+	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie f�r
+	 * s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert
+	 * die einzige Instanz dieser Klasse.
 	 * 
 	 * @see UnterhaltungMapper()
 	 */
@@ -73,139 +73,118 @@ public class UnterhaltungMapper {
 	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Unterhaltung insert(Unterhaltung unterhaltung) throws IllegalArgumentException {
+	public Unterhaltung insert(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			// Insert-Statement erzeugen
-			//Statement stmt = con.createStatement();
-			
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			//ResultSet rs = stmt.executeQuery("SELECT MAX(unterhaltungID) AS maxid " + "FROM unterhaltungen");
+			//Überlegen ob auch andere Attribute dazugenommen werden kann?!
+			String sql = "INSERT INTO `unterhaltungen`(`unterhaltungID`) VALUES (NULL, ?)";
 
-			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			//if (rs.next()) {
-
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(
-						"INSERT INTO unterhaltungen(unterhaltungID, datum) VALUES(null, ?)");
-				preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
-			//}
-			//stmt.close();
-			//rs.close();
-			//con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
-		}
-		return unterhaltung;
-	}
-
-	/**
-	 * Wiederholtes Schreiben eines Objekts in die Datenbank.
-	 * 
-	 * @param unterhaltung
-	 * das Objekt, das in die DB geschrieben werden soll
-	 * @return das als Parameter �bergebene Objekt
-	 */
-	public Unterhaltung update(Unterhaltung unterhaltung) throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-		try {
 			PreparedStatement preStmt;
-			preStmt = con.prepareStatement(
-					"UPDATE unterhaltungen SET datum=? WHERE unterhaltungID=" + unterhaltung.getId());
-			preStmt.setString(1, unterhaltung.getErstellungsZeitpunkt().toString());
+			preStmt = con.prepareStatement(sql);
+
 			preStmt.executeUpdate();
 			preStmt.close();
-			//con.close();
+
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 		return unterhaltung;
 	}
 
 	/**
-	 * L�schen der Daten eines <code>Unterhaltung</code>-Objekts aus der
+	 * Löschen der Daten eines <code>Unterhaltung</code>-Objekts aus der
 	 * Datenbank.
 	 * 
-	 * @param id
-	 * das aus der DB zu l�schende "Objekt"
+	 * @param id das aus der DB zu l�schende "Objekt"
 	 */
-	public void delete(Unterhaltung unterhaltung) throws IllegalArgumentException {
+	public void delete(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
+		
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID=" + unterhaltung.getId());
+			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID="+ unterhaltung.getId());
 			stmt.close();
-			//con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Unterhaltungen aus der Datenbank in
+	 * Diese Methode ermöglicht es alle Unterhaltungen mit allen beinhalteten Nachrichten aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
-	 * @return
+	 * @return allUnterhaltungen
 	 */
 	public ArrayList<Unterhaltung> findAllUnterhaltungen() {
 		Connection con = DBConnection.connection();
 		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM unterhaltungen ORDER BY unterhaltungID");
+			ResultSet rs = stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, datum FROM unterhaltungen INNER JOIN nachrichten "
+						+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID ");
 
 			while (rs.next()) {
 				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltungID"));
-				unterhaltung.setErstellungsZeitpunkt(rs.getDate("datum"));
+				unterhaltung.setId(rs.getInt("unterhaltungen.unterhaltungID"));
 
 				allUnterhaltungen.add(unterhaltung);
 			}
 			stmt.close();
 			rs.close();
-			//con.close();
-			
+			// con.close();
+
 			return allUnterhaltungen;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-
+	
 	/**
-	 * Diese Methode ermöglicht es eine Unterhaltung anhand ihrer ID zu finden
-	 * und anzuzeigen.
+	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand
+	 * ihrer ID zu finden und anzuzeigen.
 	 * 
-	 * @param id
-	 * @return
+	 * @param unterhaltung
+	 * @return result
+	 * @throws IllegalArgumentException
 	 */
-	public Unterhaltung findUnterhaltungById(int id) {
+	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
+			throws IllegalArgumentException {
+
 		Connection con = DBConnection.connection();
+		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT unterhaltungID, datum FROM unterhaltungen "
-					+ "WHERE unterhaltungID= " + id);
 
-			if (rs.next()) {
-				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(rs.getInt("unterhaltungID"));
-				unterhaltung.setErstellungsZeitpunkt(rs.getDate("datum"));
+			//Neu
+			Statement stmt= con.createStatement();
+			ResultSet rs= stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, nachrichten.datum "
+					+ "FROM unterhaltungen INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
+					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId());
 
-				return unterhaltung;
+			Nachricht nachricht = new Nachricht();
+			while (rs.next()) {
+				nachricht.setUnterhaltungID(rs.getInt("unterhaltungen.unterhaltungID"));
+				nachricht.setText(rs.getString("text"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
+
+				result.add(nachricht);
 			}
 			stmt.close();
 			rs.close();
-			//con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
-		return null;
+		return result;
 	}
 }

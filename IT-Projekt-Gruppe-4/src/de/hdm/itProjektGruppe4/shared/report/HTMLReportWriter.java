@@ -2,6 +2,8 @@ package de.hdm.itProjektGruppe4.shared.report;
 
 import java.util.ArrayList;
 
+
+
 /**
  * Ein <code>ReportWriter</code>, der Reports mittels HTML formatiert. Das im
  * Zielformat vorliegende Ergebnis wird in der Variable <code>reportText</code>
@@ -95,8 +97,7 @@ public class HTMLReportWriter extends ReportWriter {
    * 
    * @param r der zu prozessierende Report
    */
-
-public String process1(InfosVonAllenAbonnementsReport r) {
+public void process(AlleAbonnementsReport r) {
     // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
     this.resetReportText();
 
@@ -146,7 +147,7 @@ public String process1(InfosVonAllenAbonnementsReport r) {
 
     result.append("</table>");
 
-    return this.reportText = result.toString();
+    this.reportText = result.toString();
   }
 
   /**
@@ -155,8 +156,8 @@ public String process1(InfosVonAllenAbonnementsReport r) {
    * 
    * @param r der zu prozessierende Report
    */
-  @Override
-  public String process2(InfosVonAllenNachrichtenReport r) {
+
+  public void process(AlleNachrichtenReport r) {
 	    // Zunächst löschen wir das Ergebnis vorhergehender Prozessierungen.
 	    this.resetReportText();
 
@@ -171,45 +172,49 @@ public String process1(InfosVonAllenAbonnementsReport r) {
 	     * ausgelesen und in HTML-Form übersetzt.
 	     */
 	    result.append("<H1>" + r.getTitle() + "</H1>");
-	    result.append("<table style=\"width:400px;border:1px solid silver\"><tr>");
-	    result.append("<td valign=\"top\"><b>" + paragraph2HTML(r.getHeaderData())
-	        + "</b></td>");
-	    result.append("<td valign=\"top\">" + paragraph2HTML(r.getImprint())
-	        + "</td>");
+	    result.append("<table><tr>");
+
+	    if (r.getHeaderData() != null) {
+	      result.append("<td>" + paragraph2HTML(r.getHeaderData()) + "</td>");
+	    }
+
+	    result.append("<td>" + paragraph2HTML(r.getImprint()) + "</td>");
 	    result.append("</tr><tr><td></td><td>" + r.getCreated().toString()
 	        + "</td></tr></table>");
 
-	    ArrayList<Row> rows = r.getRows();
-	    
-	    result.append("<table style=\"width:400px\">");
+	    /*
+	     * Da AllAccountsOfAllCustomersReport ein CompositeReport ist, enthält r
+	     * eine Menge von Teil-Reports des Typs AllAccountsOfCustomerReport. Für
+	     * jeden dieser Teil-Reports rufen wir processAllAccountsOfCustomerReport
+	     * auf. Das Ergebnis des jew. Aufrufs fügen wir dem Buffer hinzu.
+	     */
+	    for (int i = 0; i < r.getNumSubReports(); i++) {
+	      /*
+	       * AllAccountsOfCustomerReport wird als Typ der SubReports vorausgesetzt.
+	       * Sollte dies in einer erweiterten Form des Projekts nicht mehr gelten,
+	       * so müsste hier eine detailliertere Implementierung erfolgen.
+	       */
+	    	AlleNachrichtenReport subReport = (AlleNachrichtenReport) r
+	          .getSubReportAt(i);
 
-	    for (int i = 0; i < rows.size(); i++) {
-	      Row row = rows.get(i);
-	      result.append("<tr>");
-	      for (int k = 0; k < row.getNumColumns(); k++) {
-	        if (i == 0) {
-	          result.append("<td style=\"background:silver;font-weight:bold\">" + row.getColumnAt(k)
-	              + "</td>");
-	        }
-	        else {
-	          if (i > 1) {
-	            result.append("<td style=\"border-top:1px solid silver\">"
-	                + row.getColumnAt(k) + "</td>");
-	          }
-	          else {
-	            result.append("<td valign=\"top\">" + row.getColumnAt(k) + "</td>");
-	          }
-	        }
-	      }
-	      result.append("</tr>");
+	      this.process(subReport);
+
+	      result.append(this.reportText + "\n");
+
+	      /*
+	       * Nach jeder Übersetzung eines Teilreports und anschließendem Auslesen
+	       * sollte die Ergebnisvariable zurückgesetzt werden.
+	       */
+	      this.resetReportText();
 	    }
 
-	    result.append("</table>");
-
+	    /*
+	     * Zum Schluss wird unser Arbeits-Buffer in einen String umgewandelt und der
+	     * reportText-Variable zugewiesen. Dadurch wird es möglich, anschließend das
+	     * Ergebnis mittels getReportText() auszulesen.
+	     */
 	    this.reportText = result.toString();
-	    return reportText;
 	  }
-  
   /**
    * Auslesen des Ergebnisses der zuletzt aufgerufenen Prozessierungsmethode.
    * 
@@ -218,5 +223,16 @@ public String process1(InfosVonAllenAbonnementsReport r) {
   public String getReportText() {
     return this.getHeader() + this.reportText + this.getTrailer();
   }
-  
+
+@Override
+public String process1(AlleAbonnementsReport r) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public String process2(AlleNachrichtenReport r) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }

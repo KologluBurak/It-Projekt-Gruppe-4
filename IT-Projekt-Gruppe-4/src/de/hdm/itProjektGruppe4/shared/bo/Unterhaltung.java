@@ -25,22 +25,22 @@ public class Unterhaltung extends BusinessObject{
 	 * Gibt an, wann das letzte Mal in die jeweilige Unterhaltung
 	 * geschrieben wurde
 	 */
-	private Date zuletztBearbeitet;
+	private String zuletztBearbeitet;
 
 	/**
 	 * Ausgabe der zuletzt bearbeiteten Zeit
 	 * @return zuletztBearbeitet
 	 */
-	public Date getZuletztBearbeitet() {
+	public String getZuletztBearbeitet() {
 		return zuletztBearbeitet;
 	}
 
 	/**
 	 * Setzen der zuletzt bearbeiteten Zeit
-	 * @param zuletztBearbeitet
+	 * @param datum
 	 */
-	public void setZuletztBearbeitet(Date zuletztBearbeitet) {
-		this.zuletztBearbeitet = zuletztBearbeitet;
+	public void setZuletztBearbeitet(String datum) {
+		this.zuletztBearbeitet = datum;
 	}
 
 	/**
