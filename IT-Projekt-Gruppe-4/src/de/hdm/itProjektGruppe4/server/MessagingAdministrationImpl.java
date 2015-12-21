@@ -693,7 +693,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.unterhaltungslisteMapper.findByUnterhaltung(unterhaltung);
 	}
 
-	
+
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden Unterhaltungsliste-Objekte
