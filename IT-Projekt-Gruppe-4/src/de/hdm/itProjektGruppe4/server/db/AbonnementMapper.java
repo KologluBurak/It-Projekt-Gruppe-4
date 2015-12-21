@@ -116,7 +116,7 @@ public class AbonnementMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnement "
+			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnements "
 					+ "WHERE abonnementID=" + id + " ORDER by abonnementID");
 
 			if (rs.next()) {
