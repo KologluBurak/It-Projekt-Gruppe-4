@@ -10,7 +10,8 @@ public class DBConnection {
 	//Variablen für den Verbindungsaufbau
 	private static Connection con = null;
 	private static String googleUrl = null;
-    private static String localUrl = "jdbc:mysql://localhost:3306/messaging_administration?user=root";
+	// nur Billy
+    private static String localUrl = "jdbc:mysql://www.db4free.net:3306/messaging_admin"; // "jdbc:mysql://localhost:3306/messaging_administration?user=root";
 
     public static Connection connection() {
     	System.out.println("Connection aufgerufen!");
@@ -31,7 +32,8 @@ public class DBConnection {
                 	con = null;
                     e.printStackTrace();
                 }
-                con = DriverManager.getConnection(url);
+            	//nur Billy
+                con = DriverManager.getConnection(url, "vo002", "050392");
                 
             } catch (Exception e) {
                 System.err.println("Datenbank konnte nicht geladen werden");

@@ -185,13 +185,13 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		/*
 		 * Die Verbindung zum Abonnement wird aufgelöst.
 		 */
-		ArrayList<Nutzerabonnement> nutzerabo = 
-				this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
+		Nutzerabonnement nutzerabo = 
+				this.nutzerAboMapper.findNutzerAbonnementByID(nutzer.getId());
 
-		if (nutzerabo != null) {
-			for (Nutzerabonnement nabo : nutzerabo) {
-				this.delete(nabo);
-			}
+//		if (nutzerabo != null) {
+//			for (Nutzerabonnement nabo : nutzerabo) {
+				this.delete(nutzerabo);
+//			}
 
 			/* Die Nachrichten die eine Verbindung zum Nutzer haben werden
 			* gelöscht.
@@ -202,8 +202,6 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 				}
 			}
 			this.nutzerMapper.delete(nutzer);
-
-		}
 
 	}
 
@@ -446,7 +444,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Auslesen aller Abonnements anhand deren Id.
 	 */
 	public Abonnement getAbonnementById(int id) throws IllegalArgumentException {
-		return this.abonnementMapper.findAbonnementByKey(id);
+		return this.abonnementMapper.findAbonnementById(id);
 	}
 
 	/*
@@ -569,7 +567,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(
 			Nutzer nutzer) throws IllegalArgumentException {
-		return this.nutzerAboMapper.findNutzerAbonnementByNutzer(nutzer);
+		return this.nutzerAboMapper.findNutzerAbonnementByAbonnementID(nutzer.getId());
 	}
 
 	/*
@@ -592,7 +590,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung)
 			throws IllegalArgumentException {
 		Hashtagabonnement b = new Hashtagabonnement();
-		b.setHastagID(bezeichnung.getId());
+		b.setHashtagID(bezeichnung.getId());
 		return this.hashtagAboMapper.insert(b);
 	}
 
@@ -618,7 +616,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Hashtagabonnement getHashtagAboById(int id)
 			throws IllegalArgumentException {
-		return this.hashtagAboMapper.findHashtagAboByID(id);
+		return this.hashtagAboMapper.findHashtagAbonnementByID(id);
 	}
 
 	/**
