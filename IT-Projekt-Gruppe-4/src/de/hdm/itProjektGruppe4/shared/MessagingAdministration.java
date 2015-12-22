@@ -184,7 +184,15 @@ public interface MessagingAdministration extends RemoteService {
 
 	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(Nutzer nutzer)
 			throws IllegalArgumentException;
-
+	
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByFollowerId(int id)
+			throws IllegalArgumentException;
+	
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByDerBeobachteteId(int id)
+			throws IllegalArgumentException;
+	
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByAbonnementId(int id)
+			throws IllegalArgumentException;
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
@@ -211,7 +219,13 @@ public interface MessagingAdministration extends RemoteService {
 	public Hashtagabonnement getHashtagAboById(int id)
 			throws IllegalArgumentException;
 
-	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(Nutzer nutzer)
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer)
+			throws IllegalArgumentException;
+
+	public Hashtagabonnement getHashtagAbonnementByHashtagId (int id)
+			throws IllegalArgumentException;
+			
+	public Hashtagabonnement getHashtagAbonnementByAbonnementId (int id)
 			throws IllegalArgumentException;
 
 	/*

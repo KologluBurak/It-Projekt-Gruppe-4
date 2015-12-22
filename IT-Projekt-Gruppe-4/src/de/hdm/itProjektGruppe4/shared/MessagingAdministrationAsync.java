@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
@@ -187,6 +188,15 @@ public interface MessagingAdministrationAsync {
 	void getNutzerAbonnementByNutzer(Nutzer nutzer,
 			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
 
+	void getNutzerabonnementByFollowerId(int id,
+			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+	
+	void getNutzerabonnementByDerBeobachteteId(int id,
+			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+	
+	void getNutzerabonnementByAbonnementId(int id,
+			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+	
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
@@ -208,11 +218,17 @@ public interface MessagingAdministrationAsync {
 
 	void getHashtagAboById(int id, AsyncCallback<Hashtagabonnement> callback);
 
-	void getHashtagabonnementByNutzer(Nutzer nutzer,
+	void getHashtagabonnementByNutzerId(int nutzer,
 			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
 	void getAllHashtagabonnements(
 			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
+	
+	void getHashtagAbonnementByHashtagId (int id,
+			AsyncCallback<Hashtagabonnement> callback);
+				
+	void getHashtagAbonnementByAbonnementId (int id,
+			AsyncCallback<Hashtagabonnement> callback);
 
 	/*
 	 * ***************************************************************************

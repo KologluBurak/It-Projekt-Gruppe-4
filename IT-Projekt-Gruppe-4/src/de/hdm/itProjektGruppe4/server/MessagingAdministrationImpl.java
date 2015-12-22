@@ -95,6 +95,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  *
  */
 
+
 public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		MessagingAdministration {
 
@@ -570,6 +571,29 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.nutzerAboMapper.findNutzerAbonnementByAbonnementID(nutzer.getId());
 	}
 
+	/**
+	 * Auslesen eines Nutzerabonnements anhand der Follower-ID
+	 */
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByFollowerId(int id)
+			throws IllegalArgumentException {
+		return this.nutzerAboMapper.findNutzerAbonnementByFollowerID(id);
+	}
+	
+	/**
+	 * Auslesen eines Nutzerabonnements anhand der derBeobachteteID
+	 */
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByDerBeobachteteId(int id)
+			throws IllegalArgumentException {
+		return this.nutzerAboMapper.findNutzerAbonnementByDerBeobachteteID(id);
+	}
+	
+	/**
+	 * Auslesen eines Nutzerabonnements anhand der abonnementID
+	 */
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByAbonnementId(int id)
+			throws IllegalArgumentException {
+		return this.nutzerAboMapper.findNutzerAbonnementByAbonnementID(id);
+	}
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
@@ -622,12 +646,26 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Hashtagabonnements anhand des Nutzers.
 	 */
-	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(Nutzer nutzer)
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer)
 			throws IllegalArgumentException{
-//		return this.hashtagAboMapper.findHashtagAbonnementByNutzer(nutzer);
-		return null;
+		return this.hashtagAboMapper.findHashtagAbonnementByNutzerID(nutzer);
 	}
 	
+	/**
+	 * Auslesen eines Hashtagsabonnement anhand der Hashtag-ID
+	 */
+	public Hashtagabonnement getHashtagAbonnementByHashtagId (int id)
+			throws IllegalArgumentException {
+		return this.hashtagAboMapper.findHashtagAbonnementByHashtagID(id);
+	}
+
+	/**
+	 * Auslesen eines Hashtagsabonnement anhand der Abonnement-ID
+	 */
+	public Hashtagabonnement getHashtagAbonnementByAbonnementId (int id)
+			throws IllegalArgumentException {
+		return this.hashtagAboMapper.findHashtagAbonnementByAbonnementID(id);
+	}
 
 
 	/*
