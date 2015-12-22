@@ -257,7 +257,7 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		// ArrayList<Unterhaltung> alleNachrichten =
 		// UnterhaltungMapper.unterhaltungMapper().getUnterhaltungsZeitraum(anfangszeitpunkt,
 		// endzeitpunkt);
-		ArrayList<Nachricht> alleNachrichten = NachrichtMapper.nachrichtMapper().findAllNachrichten();
+		ArrayList<Nachricht> alleNachrichten = NachrichtMapper.nachrichtMapper().alleNachrichtenJeNutzer(nutzer);
 
 		// for (Unterhaltung u : alleNachrichten) {
 		for (Nachricht nachricht : alleNachrichten) {
@@ -324,4 +324,6 @@ public class ReportGeneratorImpl extends RemoteServiceServlet implements ReportG
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

@@ -83,24 +83,16 @@ public class NutzerMapper {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			// Insert-Statement erzeugen
-			// Statement stmt = con.createStatement();
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			// ResultSet
-			// rs=stmt.executeQuery("SELECT MAX(nutzerID) AS maxid "+"FROM nutzer");
-
-			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			// if(rs.next()){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			Date d = new Date();
-			try {
-				d = sdf.parse("21/12/2015");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			nutzer.setErstellungsZeitpunkt(sdf.format(d));
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date date = new Date();
+//			try {
+//				//d = sdf.parse("21/12/2015 00:00:00");
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			nutzer.setErstellungsZeitpunkt(dateFormat.format(date).toString());
 
 			String sql = "INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) "
 					+ "VALUES (NULL, ?, ?, ?, ?, ?)";
@@ -111,19 +103,12 @@ public class NutzerMapper {
 			preStmt.setString(2, nutzer.getNachname());
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
-			preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
+			preStmt.setString(5, dateFormat.format(date));
 			preStmt.executeUpdate();
 			preStmt.close();
 
-		
-	
-
-			// }
-			// stmt.close();
-			// rs.close();
 			// con.close();
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
@@ -243,10 +228,6 @@ public class NutzerMapper {
 
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
-
-				// nutzer.setVorname(rs.getString("vorname"));
-				// nutzer.setNachname(rs.getString("nachname"));
-
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
 				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
@@ -255,12 +236,45 @@ public class NutzerMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}
 
+	/**
+	 * Diese Methode ermöglicht einen Nutzer anhand seiner Email zu finden
+	 * und anzuzeigen.
+	 * 
+	 * @return uebergebener Paramater
+	 */
+	public Nutzer findNutzerByEmail(String email)
+			throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt
+					.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
+
+			if (rs.next()) {
+				Nutzer nutzer = new Nutzer();
+				nutzer.setId(rs.getInt("nutzerID"));
+
+				nutzer.setVorname(rs.getString("vorname"));
+				nutzer.setNachname(rs.getString("nachname"));
+				nutzer.setEmail(rs.getString("email"));
+				nutzer.setNickname(rs.getString("nickname"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
+
+				return nutzer;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}
+		return null;
+	}
+	
 	/**
 	 * Diese Methode ermöglicht einen Nutzer anhand des Prim�rschl�ssels zu
 	 * finden und anzuzeigen.
@@ -289,8 +303,7 @@ public class NutzerMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}

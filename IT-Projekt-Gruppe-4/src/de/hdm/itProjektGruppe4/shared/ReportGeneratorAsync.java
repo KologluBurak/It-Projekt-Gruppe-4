@@ -36,15 +36,20 @@ public interface ReportGeneratorAsync {
 	void erstelleZeitraumspezifischeNachrichtenReport(Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt,
 			AsyncCallback<ZeitraumspezifischeNachrichtenReport> callback);
 
+
 	void erstelleNutzerspezifischeNachrichtenReport(Nachricht nachricht, Nutzer nutzer,
 			AsyncCallback<NutzerspezifischeNachrichtenReport> callback);
 
+
+
 	void erstelleNutzerspezifischeAbonnementsReport(Abonnement abonnement, Nutzer nutzer,
 			AsyncCallback<NutzerspezifischeAbonnementsReport> callback);
+
 	
 	void erstelleHashtagspezifischeAbonnementsReport(Abonnement abonnement, Hashtag hashtag,
 			AsyncCallback<HashtagspezifischeAbonnementsReport> callback);
 	
+
 	void init(AsyncCallback<Void> callback);
 
 }

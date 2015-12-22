@@ -20,6 +20,7 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.LoginInfo;
 import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 
 public class IT_Projekt_Gruppe_4 implements EntryPoint {
@@ -28,8 +29,8 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 	  private VerticalPanel loginPanel = new VerticalPanel();
 	  private Label loginLabel = new Label(
 	      "Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
+
 	  private Anchor signInLink = new Anchor("Sign In");
-	  MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 	   public void onModuleLoad() {
 
 		    // Check login status using login service.
@@ -46,10 +47,29 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 				
 		    	loginInfo = result;
 		        if(loginInfo.isLoggedIn()) {
-		        	// TODO Logik zum �berpr�fen von User: ist User mit Email in DB? Wenn ja -> zeige loadView -> nein dann lege User in Db
+		        	MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
+		        	
+			        	myAsync.createNutzer("Murat", "Mustermann", loginInfo.getEmailAddress(), loginInfo.getNickname(), new AsyncCallback<Nutzer>() {
 
-		        	loadView();
-		          
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								DialogBox d = new DialogBox();
+								d.setText("fehler: " + caught);
+								d.show();
+							}
+
+							@Override
+							public void onSuccess(Nutzer result) {
+								// TODO Auto-generated method stub
+//								DialogBox d = new DialogBox();
+//								d.setText("Gespeichert");
+//								d.show();
+								loadView();
+							}
+						});
+					
+
 		        } else {
 		          loadLogin();
 		        }

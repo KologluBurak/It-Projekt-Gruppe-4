@@ -1,8 +1,14 @@
 package de.hdm.itProjektGruppe4.server.db;
 
-import java.sql.*;
 import java.util.ArrayList;
-
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.sql.PreparedStatement;
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
@@ -74,9 +80,9 @@ public class HashtagAboMapper {
 	 * 
 	 * @param hashtagabonnement
 	 * @return hashtagabonnement
+	 * @throws IllegalArgumentException
 	 */
-	public Hashtagabonnement insert(Hashtagabonnement hashtagabonnement)
-			throws IllegalArgumentException {
+	public Hashtagabonnement insert(Hashtagabonnement hashtagabonnement) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
@@ -87,19 +93,20 @@ public class HashtagAboMapper {
 			// "FROM hashtagabonnement ");
 
 			// if (rs.next()) {
-
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			Date date = new Date();
 			String sql = "INSERT INTO `hashtagabonnements`(`hashtagAboID`, `datum`, `hashtagID`, `abonnementID`, `nutzerID`) "
 					+ "VALUES (NULL, ?, ?, ?, ?)";
 
+			System.out.println(sql);
+
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setString(1, hashtagabonnement.getErstellungsZeitpunkt()
-					.toString());
-			preStmt.setInt(2, hashtagabonnement.getHastagID());
+			preStmt.setString(1, dateFormat.format(date));// hashtagabonnement.getErstellungsZeitpunkt().toString());
+			preStmt.setInt(2, hashtagabonnement.getHashtagID());
 			preStmt.setInt(3, hashtagabonnement.getAbonnementID());
 			preStmt.setInt(4, hashtagabonnement.getNutzerID());
 			preStmt.executeUpdate();
-			preStmt.close();
 
 			// }
 			// stmt.close();
@@ -107,35 +114,8 @@ public class HashtagAboMapper {
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
-
-		return hashtagabonnement;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Akutalisierung des Hashtagabodatensatzes in
-	 * der Datenbank.
-	 * 
-	 * @param hashtagabonnement
-	 * @return hashtagabonnement
-	 */
-
-	public Hashtagabonnement update(Hashtagabonnement hashtagabonnement)
-			throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE Hashtagabonnement " + "SET hashtagID=\""
-					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
-
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
 		return hashtagabonnement;
 	}
 
@@ -144,55 +124,105 @@ public class HashtagAboMapper {
 	 * Referenzen zu anderen Klassen
 	 * 
 	 * @param hashtagabonnement
+	 * @throws IllegalArgumentException
 	 */
-
-	public void delete(Hashtagabonnement hashtagabonnement)
-			throws IllegalArgumentException {
+	public void delete(Hashtagabonnement hashtagabonnement) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
-
 		try {
 			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("DELETE FROM Hashtagabonnement "
-					+ "WHERE hashtagaboID=" + hashtagabonnement.getId());
+			stmt.executeUpdate("DELETE FROM Hashtagabonnements " + "WHERE hashtagaboID=" + hashtagabonnement.getId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}
+	}
+
+	/**
+	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
+	 * Referenzen zu anderen Klassen
+	 * 
+	 * @param hashtagabonnement
+	 * @throws IllegalArgumentException
+	 */
+	public void deleteHashtag(Hashtag hashtag) throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Hashtagabonnements " + "WHERE hashtagID=" + hashtag.getId());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}
+	}
+
+	/**
+	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
+	 * Referenzen zu anderen Klassen
+	 * 
+	 * @param hashtagabonnement
+	 * @throws IllegalArgumentException
+	 */
+	public void deleteAbonnement(Abonnement abonnement) throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Hashtagabonnements " + "WHERE abonnementID=" + abonnement.getId());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}
+	}
+
+	/**
+	 * Diese Methode ermöglicht das Löschen eines Hashtagabonnements und dessen
+	 * Referenzen zu anderen Klassen
+	 * 
+	 * @param hashtagabonnement
+	 * @throws IllegalArgumentException
+	 */
+	public void deleteNutzer(Nutzer nutzer) throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Hashtagabonnements " + "WHERE nutzerID=" + nutzer.getId());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
 
 	/**
 	 * Diese Methode ermöglicht es alle Hashtags zu finden
 	 * 
-	 * @param hashtagabonnement
-	 * @return
+	 * @return alleHashtagabonnements
+	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Hashtagabonnement> findAllHashtagabonnements()
-			throws IllegalArgumentException {
-		// DB-Verbindung herstellen
+	public ArrayList<Hashtagabonnement> findAllHashtagabonnements() throws IllegalArgumentException {
+
 		Connection con = DBConnection.connection();
 		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement");
-					//+ "WHERE hashtagaboID" + id + " ORDER by hashtagaboID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnements ORDER BY hashtagaboID");
 
 			while (rs.next()) {
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
 				hashtagAbonnement.setId(rs.getInt("hashtagaboID"));
+				hashtagAbonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				alleHashtagabonnements.add(hashtagAbonnement);
 
 			}
 			stmt.close();
 			rs.close();
-			con.close();
+			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return alleHashtagabonnements;
 
@@ -204,10 +234,10 @@ public class HashtagAboMapper {
 	 * 
 	 * @param id
 	 * @return
+	 * @throws IllegalArgumentException
 	 */
 
-	public Hashtagabonnement findHashtagAboByID(int id)
-			throws IllegalArgumentException {
+	public Hashtagabonnement findHashtagAbonnementByID(int id) throws IllegalArgumentException {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
@@ -220,8 +250,7 @@ public class HashtagAboMapper {
 			 * Zunächst wird geschaut welches der momentan höchste
 			 * Primärschlüssel ist
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagAboID=" + id + " ORDER by hashtagAboID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnements " + "WHERE hashtagAboID=" + id);
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
@@ -230,10 +259,87 @@ public class HashtagAboMapper {
 
 				return hashtagAbonnement;
 			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e1.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+
+		}
+		return null;
+	}
+
+	/**
+	 * Diese Methode ermöglicht es eine Ausgabe über einen Hashtagabonnements in
+	 * der Datenbank, anhand deren ID.
+	 * 
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Hashtagabonnement findHashtagAbonnementByHashtagID(int id) throws IllegalArgumentException {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+
+		try {
+			// Insert-Statement erzeugen
+			Statement stmt = con.createStatement();
+
+			/*
+			 * Zunächst wird geschaut welches der momentan höchste
+			 * Primärschlüssel ist
+			 */
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnements " + "WHERE hashtagID=" + id);
+
+			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
+			if (rs.next()) {
+				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
+				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
+				hashtagAbonnement.setHashtagID(rs.getInt("hashtagID"));
+
+				return hashtagAbonnement;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+
+		}
+		return null;
+	}
+
+	/**
+	 * Diese Methode ermöglicht es eine Ausgabe über einen Hashtagabonnements in
+	 * der Datenbank, anhand deren ID.
+	 * 
+	 * @param id
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+
+	public Hashtagabonnement findHashtagAbonnementByAbonnementID(int id) throws IllegalArgumentException {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+
+		try {
+			// Insert-Statement erzeugen
+			Statement stmt = con.createStatement();
+
+			/*
+			 * Zunächst wird geschaut welches der momentan höchste
+			 * Primärschlüssel ist
+			 */
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnements " + "WHERE abonnementID=" + id);
+
+			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
+			if (rs.next()) {
+				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
+				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
+				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
+				return hashtagAbonnement;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 
 		}
 		return null;
@@ -244,11 +350,10 @@ public class HashtagAboMapper {
 	 * Nutzers, in einer Liste.
 	 * 
 	 * @param id
-	 * @return
+	 * @return hashtagAboListe
 	 */
 
-	public ArrayList<Hashtagabonnement> findHashtagAbonnementByNutzer(int id)
-			throws IllegalArgumentException {
+	public ArrayList<Hashtagabonnement> findHashtagAbonnementByNutzerID(int id) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Hashtagabonnement> hashtagAboListe = new ArrayList<Hashtagabonnement>();
 
@@ -256,27 +361,24 @@ public class HashtagAboMapper {
 
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnement "
-					+ "WHERE hashtagAboID=" + id + " ORDER BY hashtagAboID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Hashtagabonnements " + "WHERE NutzerID=" + id);
 
 			while (rs.next()) {
 				Hashtagabonnement hashtagabonnement = new Hashtagabonnement();
 				hashtagabonnement.setId(rs.getInt("hashtagAboID"));
+				hashtagabonnement.setNutzerID(rs.getInt("nutzerID"));
 
 				hashtagAboListe.add(hashtagabonnement);
 			}
 
 		}
 
-		catch (SQLException e1) {
-			e1.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e1.toString());
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 
 		}
 
 		return hashtagAboListe;
-
 	}
-
 }

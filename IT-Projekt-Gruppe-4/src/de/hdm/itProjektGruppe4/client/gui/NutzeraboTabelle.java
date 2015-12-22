@@ -66,9 +66,6 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 	    	
 	    	
 
-				// Hinzuf�gen einer Spalte Nachname
-
-	    	// Hinzuf�gen einer Spalte Nachname
 	    	
 				TextColumn<NutzeraboTabelle> nnameColumn = new TextColumn<NutzeraboTabelle>() {
 	         

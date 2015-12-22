@@ -57,6 +57,7 @@ public interface MessagingAdministration extends RemoteService {
 
 	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException;
 
+	public Boolean userExist(String email) throws IllegalArgumentException;
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
@@ -70,7 +71,7 @@ public interface MessagingAdministration extends RemoteService {
 	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer)
 			throws IllegalArgumentException;
 
-	public ArrayList<Nachricht> getAlleNachrichtJeZeitraum(String von,
+	public ArrayList<Nachricht> getAlleNachrichtenJeZeitraum(String von,
 			String bis);
 
 	public void delete(Nachricht nachricht) throws IllegalArgumentException;
@@ -78,7 +79,7 @@ public interface MessagingAdministration extends RemoteService {
 	public ArrayList<Nachricht> getAllNachrichten()
 			throws IllegalArgumentException;
 
-	public Nachricht getNachrichtByID(int id) throws IllegalArgumentException;
+	public Nachricht getNachrichtById(int id) throws IllegalArgumentException;
 
 	public ArrayList<Nachricht> getNachrichtenByUnterhaltung(
 			Unterhaltung unterhaltung) throws IllegalArgumentException;
@@ -100,14 +101,12 @@ public interface MessagingAdministration extends RemoteService {
 	public Unterhaltung createUnterhaltung(Date datum)
 			throws IllegalArgumentException;
 
-	public ArrayList<Unterhaltung> getAllUnterhaltungen()
-			throws IllegalArgumentException;
+	//public ArrayList<Unterhaltung> getAllUnterhaltungen() throws IllegalArgumentException;
 
 	public void delete(Unterhaltung unterhaltung)
 			throws IllegalArgumentException;
 
-	public Unterhaltung update(Unterhaltung unterhaltung)
-			throws IllegalArgumentException;
+
 
 	/*
 	 * ***************************************************************************
@@ -123,7 +122,7 @@ public interface MessagingAdministration extends RemoteService {
 	 * ****************************************************
 	 */
 
-	public Abonnement createAbonnement(int id, Date erstellungsZeitpunkt)
+	public Abonnement createAbonnement(int id, String erstellungsZeitpunkt)
 			throws IllegalArgumentException;
 
 	public Abonnement getAbonnementById(int id) throws IllegalArgumentException;
@@ -131,8 +130,7 @@ public interface MessagingAdministration extends RemoteService {
 	public ArrayList<Abonnement> getAllAbonnements()
 			throws IllegalArgumentException;
 
-	public Abonnement updateAbonnement(Abonnement abonnement)
-			throws IllegalArgumentException;
+
 
 	/*
 	 * ***************************************************************************
@@ -157,7 +155,6 @@ public interface MessagingAdministration extends RemoteService {
 
 	public void delete(Hashtag hashtag) throws IllegalArgumentException;
 
-	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException;
 
 	/*
 	 * ***************************************************************************
@@ -179,7 +176,7 @@ public interface MessagingAdministration extends RemoteService {
 	public ArrayList<Nutzerabonnement> getAllNutzerabonnements()
 			throws IllegalArgumentException;
 
-	public Nutzerabonnement getNutzerabonnemntById(int id)
+	public Nutzerabonnement getNutzerabonnementById(int id)
 			throws IllegalArgumentException;
 
 	public void delete(Nutzerabonnement nutzerabonnement)
@@ -208,13 +205,13 @@ public interface MessagingAdministration extends RemoteService {
 	public void delete(Hashtagabonnement hashtagAbo)
 			throws IllegalArgumentException;
 
-	public ArrayList<Hashtagabonnement> getAllHashtagabonnements(int id)
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements()
 			throws IllegalArgumentException;
 
 	public Hashtagabonnement getHashtagAboById(int id)
 			throws IllegalArgumentException;
 
-	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(int id)
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzer(Nutzer nutzer)
 			throws IllegalArgumentException;
 
 	/*
@@ -251,10 +248,10 @@ public interface MessagingAdministration extends RemoteService {
 	public Unterhaltungsliste createUnterhaltungsliste(Unterhaltung u,
 			String sender, String empf) throws IllegalArgumentException;
 
-	public Unterhaltungsliste getByAbsender(Nutzer nutzer)
+	public Unterhaltungsliste getByAbsender(String absenderNickname)
 			throws IllegalArgumentException;
 
-	public Unterhaltungsliste getByEmpfaenger(Nutzer nutzer)
+	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname)
 			throws IllegalArgumentException;
 
 	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung)

@@ -96,7 +96,12 @@ public class UnterhaltungslisteMapper {
 		return unterhaltungsliste;
 	}
 
-	
+	/**
+	 * Die Methode ermöglicht das Löschen der Unterhaltungslisten aus der Datenbank
+	 * und dessen Referenzen zu anderen Klassen
+	 * 
+	 * @param unterhaltungsliste
+	 */
 	public void delete(Unterhaltungsliste unterhaltungsliste){
 		Connection con = DBConnection.connection();
 		try {
@@ -110,6 +115,14 @@ public class UnterhaltungslisteMapper {
 		}
 	}
 	
+	/**
+	 * Die Methode ermöglicht das Finden eines Absenders aus der Datenbank
+	 * über den Parameter
+	 * 
+	 * @param absenderNickname
+	 * @return uliste
+	 * @throws IllegalArgumentException
+	 */
 	public Unterhaltungsliste findByAbsender(String absenderNickname)
 			throws IllegalArgumentException {
 
@@ -118,8 +131,6 @@ public class UnterhaltungslisteMapper {
 		try {
 
 			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname;
-
-
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -143,7 +154,14 @@ public class UnterhaltungslisteMapper {
 		return null;
 	}
 
-	
+	/**
+	 * Die Methode ermöglicht das Finden eines Empfängers aus der Datenbank
+	 * über den Parameter
+	 * 
+	 * @param empfaengerNickname
+	 * @return uliste
+	 * @throws IllegalArgumentException
+	 */
 	public Unterhaltungsliste findByEmpfaenger(String empfaengerNickname)
 			throws IllegalArgumentException {
 
@@ -176,6 +194,13 @@ public class UnterhaltungslisteMapper {
 		return null;
 	}
 
+	/**
+	 * Die Methode ermöglicht das Finden einer Unterhaltung über den Parameter
+	 * 
+	 * @param unterhaltung
+	 * @return unterhaltungsliste
+	 * @throws IllegalArgumentException
+	 */
 	public Unterhaltungsliste findByUnterhaltung(Unterhaltung unterhaltung)
 			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
@@ -190,8 +215,7 @@ public class UnterhaltungslisteMapper {
 			if (rs.next()) {
 				Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 				unterhaltungsliste.setId(rs.getInt("nutzerID"));
-				unterhaltungsliste.setUnterhaltungID(rs
-						.getInt("unterhaltungID"));
+				unterhaltungsliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				unterhaltungsliste.setAbsenderID(rs.getInt("absenderID"));
 				unterhaltungsliste.setEmpfaengerID(rs.getInt("empfaengerID"));
 
@@ -203,7 +227,6 @@ public class UnterhaltungslisteMapper {
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
 		}
-
 		return null;
 	}
 }

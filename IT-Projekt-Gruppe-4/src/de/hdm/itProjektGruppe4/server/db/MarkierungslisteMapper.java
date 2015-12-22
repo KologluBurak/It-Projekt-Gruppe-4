@@ -2,9 +2,12 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import de.hdm.itProjektGruppe4.shared.bo.Markierungsliste;
+import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 /**
  * Mapper-Klasse, die <code>Markierungsliste</code>-Objekte auf eine relationale
@@ -85,12 +88,99 @@ public class MarkierungslisteMapper {
 			preStmt.executeUpdate();
 			preStmt.close();
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return markierungsliste;
 	}
+	
+	/**
+	 * 
+	 * @param markierungsliste
+	 */
+	public void delete(Markierungsliste markierungsliste){
+		Connection con = DBConnection.connection();
+		try {
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM markierungslisten " + "WHERE markierungslisteID="
+					+ markierungsliste.getId());
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}
+	}
+
+	/**
+	 * 
+	 * @param nachricht
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Markierungsliste findByNachricht(String nachricht)
+			throws IllegalArgumentException {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		try {
+
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + nachricht;
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				Markierungsliste mliste = new Markierungsliste();
+				mliste.setId(rs.getInt("nutzerID"));
+				mliste.setNachrichtID(rs.getInt("nachrichtID"));
+				mliste.setHashtagID(rs.getInt("hashtagID"));
+
+				return mliste;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}
+
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param hashtag
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public Markierungsliste findByHashtag(String hashtag)
+			throws IllegalArgumentException {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		try {
+
+			String sql = "SELECT *  FROM `markierungslisten` WHERE `hashtagID` = " + hashtag;
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				Markierungsliste mliste = new Markierungsliste();
+				mliste.setId(rs.getInt("nutzerID"));
+				mliste.setNachrichtID(rs.getInt("nachrichtID"));
+				mliste.setHashtagID(rs.getInt("hashtagID"));
+
+				return mliste;
+			}
+			
+			//rs.close()
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}
+
+		return null;
+	}
 }

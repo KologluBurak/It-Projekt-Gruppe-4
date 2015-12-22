@@ -1,7 +1,14 @@
 package de.hdm.itProjektGruppe4.server.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.PreparedStatement;
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
@@ -9,7 +16,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * Mapper-Klasse, die <code>Hashtag</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gel�scht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * geloescht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * 
@@ -35,7 +42,7 @@ public class HashtagMapper {
 	private static HashtagMapper hashtagMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die Moeglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 
@@ -68,7 +75,8 @@ public class HashtagMapper {
 	 * Diese Methode ermöglicht es einen Hashtag in der Datenbank anzulegen.
 	 * 
 	 * @param hashtag
-	 * @return hashtag
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
 	public Hashtag insert(Hashtag hashtag) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
@@ -79,54 +87,28 @@ public class HashtagMapper {
 			// ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
 			// + "FROM nachricht ");
 
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			Date date = new Date();
+			String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
 
-				String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
-
-
-
-				PreparedStatement preStmt;
-				preStmt = con.prepareStatement(sql);
-				preStmt.setString(1, hashtag.getBezeichnung());
-				preStmt.setString(2, hashtag.getErstellungsZeitpunkt().toString());
-				preStmt.executeUpdate();
-				preStmt.close();
+			System.out.println(sql);
+			
+			PreparedStatement preStmt;
+			preStmt = con.prepareStatement(sql);
+			preStmt.setString(1, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
+			preStmt.setString(2, hashtag.getBezeichnung());
+			preStmt.executeUpdate();
 
 			// }
 			// stmt.close();
 			// rs.close();
 			// con.close();
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+					+ e.toString());
 		}
-		return hashtag;
-	}
-
-	/**
-	 * Diese Methode ermöglicht eine Aktualisierung des Hashtagdatensatzes in
-	 * der Datenbank.
-	 * 
-	 * @param hashtag
-	 * @return hashtag
-	 */
-	public Hashtag update(Hashtag hashtag) throws IllegalArgumentException {
-		Connection con = DBConnection.connection();
-
-		try {
-			Statement stmt = con.createStatement();
-
-			stmt.executeUpdate("UPDATE hashtag " + "SET bezeichnung=\""
-					+ hashtag.getBezeichnung() + "\" " + "WHERE hashtagID="
-					+ hashtag.getId());
-
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
-		}
-
 		return hashtag;
 	}
 
@@ -135,6 +117,7 @@ public class HashtagMapper {
 	 * zu anderen Klassen.
 	 * 
 	 * @param hashtag
+	 * @throws IllegalArgumentException
 	 */
 	public void delete(Hashtag hashtag) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
@@ -145,43 +128,48 @@ public class HashtagMapper {
 			stmt.executeUpdate("DELETE FROM hashtag " + "WHERE hashtagID="
 					+ hashtag.getId());
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+					+ e.toString());
 		}
 	}
 
 	/**
-	 * Diese Methode ermöglicht es alle Hashtag aus der datenbank in einer Liste
+	 * Diese Methode ermöglicht es alle Hashtags aus der datenbank in einer Liste
 	 * auszugeben.
 	 * 
-	 * @return result
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Hashtag> findAllHashtags() {
+	public ArrayList<Hashtag> findAllHashtags()
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
-
-		ArrayList<Hashtag> result = new ArrayList<Hashtag>();
+		ArrayList<Hashtag> allHashtags = new ArrayList<Hashtag>();
 
 		try {
 			Statement stmt = con.createStatement();
 
 			ResultSet rs = stmt
-					.executeQuery("SELECT (hashtagID, bezeichnung) FROM hashtag"
-							+ " ORDER BY hashtagID");
+					.executeQuery("SELECT (hashtagID, bezeichnung) FROM hashtag");
 
 			while (rs.next()) {
 				Hashtag hashtag = new Hashtag();
 				hashtag.setId(rs.getInt("hashtagID"));
 				hashtag.setBezeichnung(rs.getString("bezeichnung"));
 
-				result.add(hashtag);
+				allHashtags.add(hashtag);
 			}
-		} catch (SQLException e2) {
-			e2.printStackTrace();
+			stmt.close();
+			rs.close();
+			// con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
 		}
-
-		return result;
+		return allHashtags;
 	}
 
 	/**
@@ -189,7 +177,8 @@ public class HashtagMapper {
 	 * Datenbank.
 	 * 
 	 * @param id
-	 * @return hashtag
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
 	public Hashtag findHashtagByID(int id) throws IllegalArgumentException {
 		// DB-Verbindung herstellen
@@ -198,10 +187,10 @@ public class HashtagMapper {
 		try {
 			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			ResultSet rs = stmt.executeQuery("SELECT id, name FROM hashtag "
-					+ "WHERE id=" + id + " ORDER by name");
+			// Zunaechst wird geschaut welches der momentan hoechste
+			// Primaerschluessel ist
+			ResultSet rs = stmt.executeQuery("SELECT hashtagID, bezeichnung FROM hashtag "
+					+ "WHERE hashtagID=" + id);
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
@@ -210,13 +199,12 @@ public class HashtagMapper {
 				hashtag.setBezeichnung(rs.getString("Bezeichnung"));
 				return hashtag;
 			}
-		} catch (SQLException e2) {
-			e2.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+					+ e.toString());
 
 		}
 		return null;
 	}
-
 }
