@@ -31,6 +31,7 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 	      "Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
 
 	  private Anchor signInLink = new Anchor("Sign In");
+	  
 	   public void onModuleLoad() {
 
 		    // Check login status using login service.
@@ -48,28 +49,54 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 		    	loginInfo = result;
 		        if(loginInfo.isLoggedIn()) {
 		        	MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
+		        	// TODO Logik zum �berpr�fen von User: ist User mit Email in DB? Wenn ja -> zeige loadView -> nein dann lege User in Db
+
+//		 		   Unterhaltung unterhaltung = new Unterhaltung();
+//				   unterhaltung.setId(1);
+//
+//				   myAsync.createNachricht("Hallo Welt", "burak61", unterhaltung, new AsyncCallback<Nachricht>() {
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//						DialogBox d = new DialogBox();
+//						d.setText("fehler: " + caught);
+//						d.show();
+//					}
+//
+//					@Override
+//					public void onSuccess(Nachricht result) {
+//						// TODO Auto-generated method stub
+//						DialogBox d = new DialogBox();
+//						d.setText("Geschafft: " + result.getText());
+//						d.show();
+//					}
+//				});
 		        	
-			        	myAsync.createNutzer("Murat", "Mustermann", loginInfo.getEmailAddress(), loginInfo.getNickname(), new AsyncCallback<Nutzer>() {
+//		        	myAsync.createNutzer("Maria", "Mustermann", "maria.Musterman@email.de", "mary", new AsyncCallback<Nutzer>() {
+//
+//						@Override
+//						public void onFailure(Throwable caught) {
+//							// TODO Auto-generated method stub
+//							DialogBox d = new DialogBox();
+//							d.setText("fehler: " + caught);
+//							d.show();
+//						}
+//
+//						@Override
+//						public void onSuccess(Nutzer result) {
+//							// TODO Auto-generated method stub
+//							DialogBox d = new DialogBox();
+//							d.setText("Gespeichert");
+//							d.show();
+//						}
+//					});
+//		        
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-								DialogBox d = new DialogBox();
-								d.setText("fehler: " + caught);
-								d.show();
-							}
 
-							@Override
-							public void onSuccess(Nutzer result) {
-								// TODO Auto-generated method stub
-//								DialogBox d = new DialogBox();
-//								d.setText("Gespeichert");
-//								d.show();
-								loadView();
-							}
-						});
-					
 
+		        	loadView();
+		          
 		        } else {
 		          loadLogin();
 		        }
