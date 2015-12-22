@@ -79,11 +79,12 @@ public class NutzerMapper {
 	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Nutzer insert(Nutzer nutzer) throws IllegalArgumentException {
+	public Nutzer insert(Nutzer nutzer)
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
 //			try {
 //				//d = sdf.parse("21/12/2015 00:00:00");
@@ -104,6 +105,7 @@ public class NutzerMapper {
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
 			preStmt.setString(5, dateFormat.format(date));
+			System.out.println(preStmt);
 			preStmt.executeUpdate();
 			preStmt.close();
 

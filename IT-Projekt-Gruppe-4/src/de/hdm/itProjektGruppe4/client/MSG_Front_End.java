@@ -63,9 +63,11 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 					rechts.clear();
 					rechts.add(new HTML("<h2> Hier koennen Sie die Nachricht verfassen</h2>"));
 					NachrichtenForm nf = new NachrichtenForm();
+
 					rechts.add(nf);
-//					MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT.create(MessagingAdministration.class);
-//					
+					//MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT.create(MessagingAdministration.class);
+					
+
 //					myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 //
 //						@Override

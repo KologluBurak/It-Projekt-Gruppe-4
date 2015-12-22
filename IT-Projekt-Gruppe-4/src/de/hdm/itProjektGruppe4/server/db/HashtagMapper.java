@@ -95,8 +95,8 @@ public class HashtagMapper {
 			
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setString(1, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
-			preStmt.setString(2, hashtag.getBezeichnung());
+			preStmt.setString(1, hashtag.getBezeichnung());
+			preStmt.setString(2, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 
 			// }
