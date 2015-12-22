@@ -88,10 +88,9 @@ public class MarkierungslisteMapper {
 			preStmt.executeUpdate();
 			preStmt.close();
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return markierungsliste;
 	}
@@ -107,9 +106,9 @@ public class MarkierungslisteMapper {
 			stmt.executeUpdate("DELETE FROM markierungslisten " + "WHERE markierungslisteID="
 					+ markierungsliste.getId());
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 	}
 
@@ -140,10 +139,9 @@ public class MarkierungslisteMapper {
 				return mliste;
 			}
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 
 		return null;
@@ -175,11 +173,12 @@ public class MarkierungslisteMapper {
 
 				return mliste;
 			}
+			
+			//rs.close()
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 
 		return null;
