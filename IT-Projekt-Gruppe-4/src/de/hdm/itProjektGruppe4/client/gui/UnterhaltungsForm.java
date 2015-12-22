@@ -1,5 +1,7 @@
 package de.hdm.itProjektGruppe4.client.gui;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
@@ -20,7 +22,6 @@ public class UnterhaltungsForm {
 	Label nachricht = new Label("Nachricht");
 	Label chats = new Label("Chats");
 	TextArea nachTa = new TextArea();
-	Button neueN = new Button("Neue Nachricht");
 	Button sendenN = new Button("Senden");
 	FlexTable uft = new FlexTable();
 	FlexTable cft = new FlexTable();
@@ -35,7 +36,6 @@ public class UnterhaltungsForm {
 		Grid eigenesRaster = new Grid(8, 8);
 		
 		eigenesRaster.setWidget(1, 2, unterhaltung);
-		eigenesRaster.setWidget(2, 0, neueN);
 		eigenesRaster.setWidget(6, 2, sendenN);
 		
 		eigenesRaster.setWidget(4, 2, nachricht);
@@ -79,9 +79,14 @@ public class UnterhaltungsForm {
 		cft.setText(0, 0, "Billy");
 	    cft.setText(1, 0, "Duc");
 	    cft.setText(2, 0, "Xunus");
-	    cft.setText(3, 0, "Selim");
+	    cft.setText(3, 0, "Selimo");
 	    cft.setText(4, 0, "Daniel");
 	    cft.setText(5, 0, "DanielT");
+	    
+	  //Clickhandler
+	    
+	    
+	    
 	    
 		
 		// adden von Raster und VerticalPanel rechts
@@ -89,6 +94,10 @@ public class UnterhaltungsForm {
 		hauptP.add(eigenesRaster);
 		//hauptP.add(rechts);
 		return hauptP;
-
+		
+		
+		
 	}
+	
+	
 }

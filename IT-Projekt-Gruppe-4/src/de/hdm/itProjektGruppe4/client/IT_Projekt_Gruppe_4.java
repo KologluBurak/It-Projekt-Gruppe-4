@@ -37,7 +37,7 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 		    LoginServiceAsync loginService = GWT.create(LoginService.class);
 		    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
 		      public void onFailure(Throwable error) {
-		    	  
+		    	   
 		    	//  DialogBox d = new DialogBox();
 		    	//  d.setText("Fehler: " + error.getMessage());
 		    	//  d.show();
@@ -62,9 +62,9 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 							@Override
 							public void onSuccess(Nutzer result) {
 								// TODO Auto-generated method stub
-//								DialogBox d = new DialogBox();
-//								d.setText("Gespeichert");
-//								d.show();
+								DialogBox d = new DialogBox();
+								d.setText("Gespeichert");
+								d.show();
 								loadView();
 							}
 						});
