@@ -11,7 +11,8 @@ public class DBConnection {
 	private static Connection con = null;
 	private static String googleUrl = null;
 	// nur Billy
-    private static String localUrl = "jdbc:mysql://www.db4free.net:3306/messaging_admin"; // "jdbc:mysql://localhost:3306/messaging_administration?user=root";
+    private static String localUrl =    "jdbc:mysql://localhost:3306/messaging_administration?user=root"; //"jdbc:mysql://www.db4free.net:3306/messaging_admin"; 
+ 
 
     public static Connection connection() {
     	System.out.println("Connection aufgerufen!");
