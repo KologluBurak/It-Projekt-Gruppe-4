@@ -57,6 +57,7 @@ public interface MessagingAdministration extends RemoteService {
 
 	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException;
 
+	public Boolean userExist(String email) throws IllegalArgumentException;
 	/*
 	 * ***************************************************************************
 	 * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte

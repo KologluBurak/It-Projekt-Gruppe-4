@@ -79,28 +79,21 @@ public class NutzerMapper {
 	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Nutzer insert(Nutzer nutzer) throws IllegalArgumentException {
+	public Nutzer insert(Nutzer nutzer)
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			// Insert-Statement erzeugen
-			// Statement stmt = con.createStatement();
-			// Zun�chst wird geschaut welches der momentan h�chste
-			// Prim�rschl�ssel ist
-			// ResultSet
-			// rs=stmt.executeQuery("SELECT MAX(nutzerID) AS maxid "+"FROM nutzer");
-
-			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			// if(rs.next()){
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-			Date d = new Date();
-			try {
-				d = sdf.parse("21/12/2015");
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			nutzer.setErstellungsZeitpunkt(sdf.format(d));
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date date = new Date();
+//			try {
+//				//d = sdf.parse("21/12/2015 00:00:00");
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			nutzer.setErstellungsZeitpunkt(dateFormat.format(date).toString());
 
 			String sql = "INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) "
 					+ "VALUES (NULL, ?, ?, ?, ?, ?)";
@@ -111,19 +104,13 @@ public class NutzerMapper {
 			preStmt.setString(2, nutzer.getNachname());
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
-			preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
+			preStmt.setString(5, dateFormat.format(date));
+			System.out.println(preStmt);
 			preStmt.executeUpdate();
 			preStmt.close();
 
-		
-	
-
-			// }
-			// stmt.close();
-			// rs.close();
 			// con.close();
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
@@ -251,8 +238,7 @@ public class NutzerMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}
@@ -270,8 +256,7 @@ public class NutzerMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM nutzer WHERE email='"
-							+ email + "'");
+					.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
 
 			if (rs.next()) {
 				Nutzer nutzer = new Nutzer();
@@ -287,8 +272,7 @@ public class NutzerMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}
@@ -321,8 +305,7 @@ public class NutzerMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}

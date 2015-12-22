@@ -129,7 +129,9 @@ public class AbonnementMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
+
 			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnement " + "WHERE abonnementID=" + id);
+
 
 			if (rs.next()) {
 				Abonnement abonnement = new Abonnement();

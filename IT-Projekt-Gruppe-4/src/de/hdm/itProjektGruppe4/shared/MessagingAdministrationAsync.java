@@ -60,6 +60,8 @@ public interface MessagingAdministrationAsync {
 	void update(Nutzer nutzer, AsyncCallback<Nutzer> callback);
 
 	void getNutzerByNickname(String nickname, AsyncCallback<Nutzer> callback);
+	
+	void userExist(String email, AsyncCallback<Boolean> callback);
 
 	/*
 	 * ***************************************************************************

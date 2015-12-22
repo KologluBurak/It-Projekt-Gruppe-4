@@ -22,6 +22,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 
 
+
+
+
+
+
+
+
 	import de.hdm.itProjektGruppe4.client.gui.HashtagTabelle;
 import de.hdm.itProjektGruppe4.client.gui.NachrichtenForm;
 import de.hdm.itProjektGruppe4.client.gui.NutzeraboTabelle;
@@ -31,7 +38,7 @@ import de.hdm.itProjektGruppe4.client.gui.ReportAuswahl;
 //import de.hdm.itProjektGruppe4.shared.ReportGenerator.*;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
-import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.*;
 
 	public class MSG_Front_End {
 
@@ -56,9 +63,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 					rechts.clear();
 					rechts.add(new HTML("<h2> Hier koennen Sie die Nachricht verfassen</h2>"));
 					NachrichtenForm nf = new NachrichtenForm();
+
 					rechts.add(nf);
 					//MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT.create(MessagingAdministration.class);
 					
+
 //					myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 //
 //						@Override
@@ -82,6 +91,32 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 //							
 //						}
 //					});
+					MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT.create(MessagingAdministration.class);
+
+				myAsync.getNutzerabonnementById(1, new AsyncCallback <Nutzerabonnement>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						DialogBox d = new DialogBox ();
+						d.setText("Fehler: " + caught);
+						d.show();
+					}
+
+					@Override
+					public void onSuccess(Nutzerabonnement result) {
+						// TODO Auto-generated method stub
+						DialogBox d = new DialogBox ();
+						d.setText("Es funktioniert: " + result.getDerBeobachteteID());
+						d.show();
+						
+					}
+
+				
+
+				
+			
+					});
 			}};
 			
 			//Hier werden verschiedene Commands angezeigt

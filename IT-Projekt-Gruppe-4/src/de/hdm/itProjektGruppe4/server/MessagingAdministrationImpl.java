@@ -152,12 +152,17 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Nutzer createNutzer(String vorname, String nachname, String email,
 			String nickname) throws IllegalArgumentException {
-		Nutzer n = new Nutzer();
-		n.setVorname(vorname);
-		n.setNachname(nachname);
-		n.setEmail(email);
-		n.setNickname(nickname);
-		return this.nutzerMapper.insert(n);
+		
+		if (!userExist(email)){
+			System.out.println("User Existiert: "+userExist(email));
+			Nutzer n = new Nutzer();
+			n.setVorname(vorname);
+			n.setNachname(nachname);
+			n.setEmail(email);
+			n.setNickname(nickname);
+			return this.nutzerMapper.insert(n);
+		}
+		return null;
 
 	}
 	
@@ -350,12 +355,27 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		u.setZuletztBearbeitet(dateFormat.format(datum));
 		u.setErstellungsZeitpunkt(dateFormat.format(datum));
 		return this.unterhaltungMapper.insert(u);
-//		
+
 //		u.setErstellungsZeitpunkt(datum);
 //		return unterhaltungMapper.insert(datum);
 
 	}
-	
+
+	public Boolean userExist(String email) throws IllegalArgumentException{
+		
+		Boolean exist = false;
+		Nutzer nutzer = this.nutzerMapper.findNutzerByEmail(email);
+		
+		//System.out.println(nutzer.getEmail() + " "+ nutzer.getId());
+		
+		if(nutzer != null){
+			exist = true;
+			System.out.println("true");
+		}
+
+		
+		return exist;
+	}
 	
 	
 	/**
@@ -508,7 +528,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Nutzerabonnement createNutzerabonnement(Nutzer derBeobachtete,
 			Nutzer follower) throws IllegalArgumentException {
-		Nutzerabonnement nutzabo = new Nutzerabonnement();
+		
+		 Nutzerabonnement nutzabo = new Nutzerabonnement();
 		 nutzabo.setDerBeobachteteID(derBeobachtete.getId());
 		 nutzabo.setFollowerID(follower.getId());
 		return nutzerAboMapper.insert(nutzabo);

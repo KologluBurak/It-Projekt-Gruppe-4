@@ -81,11 +81,10 @@ public class NachrichtMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
+			nachricht.setErstellungsZeitpunkt(dateFormat.format(date).toString());
 			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
-			
-			System.out.println(sql);
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
@@ -98,8 +97,7 @@ public class NachrichtMapper {
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return nachricht;
 	}
@@ -117,10 +115,9 @@ public class NachrichtMapper {
 			stmt.executeUpdate("DELETE FROM nachrichten "
 					+ "WHERE nachrichten.nachrichtID=" + nachricht.getId());
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e2.toString());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 	}
 
@@ -185,8 +182,9 @@ public class NachrichtMapper {
 				
 				return nachricht;
 			}
-		} catch (SQLException e2) {
-			e2.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}
@@ -223,7 +221,7 @@ public class NachrichtMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return nachrichtenJeNutzer;
 	}
@@ -253,7 +251,7 @@ public class NachrichtMapper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return nachrichtenJeZeitraum;
 	}
