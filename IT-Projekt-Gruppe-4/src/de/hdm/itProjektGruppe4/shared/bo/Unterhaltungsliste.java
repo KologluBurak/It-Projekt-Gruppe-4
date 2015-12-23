@@ -35,7 +35,7 @@ public class Unterhaltungsliste extends BusinessObject {
 	 * Ausgabe der UnterhaltungID
 	 * @return unterhaltungID
 	 */
-	public int getUnterhaltundID() {
+	public int getUnterhaltungID() {
 		return unterhaltungID;
 	}
 

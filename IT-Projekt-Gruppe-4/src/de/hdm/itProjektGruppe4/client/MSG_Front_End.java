@@ -47,8 +47,7 @@ public class MSG_Front_End {
 		Command nachrichtenErstellen = new Command() {
 			public void execute() {
 				rechts.clear();
-				rechts.add(new HTML(
-						"<h2> Hier koennen Sie die Nachricht verfassen</h2>"));
+				rechts.add(new HTML("<h2> Hier koennen Sie die Nachricht verfassen</h2>"));
 				NachrichtenForm nf = new NachrichtenForm();
 
 				rechts.add(nf);
@@ -82,28 +81,25 @@ public class MSG_Front_End {
 				MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT
 						.create(MessagingAdministration.class);
 
-				myAsync.getHashtagAbonnementByAbonnementId(1, new AsyncCallback <Hashtagabonnement>() {
+				myAsync.getHashtagAbonnementById(9, new AsyncCallback<Hashtagabonnement>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						DialogBox d = new DialogBox ();
+						DialogBox d = new DialogBox();
 						d.setText("Fehler: " + caught);
 						d.show();
-						
 					}
 
 					@Override
 					public void onSuccess(Hashtagabonnement result) {
 						// TODO Auto-generated method stub
-						DialogBox d = new DialogBox ();
-						d.setText("Es hat funktinoiert: " + result.getHashtagID());
+						DialogBox d = new DialogBox();
+						d.setText("Erfolgreiche Ausgabe:  " + result.getNutzerID());
 						d.show();
 					}
-				
-				
+				});
 
-						});
 			}
 		};
 
@@ -112,8 +108,7 @@ public class MSG_Front_End {
 		Command hashtagAnzeigen = new Command() {
 			public void execute() {
 				rechts.clear();
-				rechts.add(new HTML(
-						"<h2>Hier sehen Sie ihre Hashtagabonnements</h2>"));
+				rechts.add(new HTML("<h2>Hier sehen Sie ihre Hashtagabonnements</h2>"));
 				HashtagTabelle hashT = new HashtagTabelle();
 				rechts.add(hashT.zeigeTabelle());
 
@@ -123,8 +118,7 @@ public class MSG_Front_End {
 		Command nutzeraboAnzeigen = new Command() {
 			public void execute() {
 				rechts.clear();
-				rechts.add(new HTML(
-						"<h2>Hier sehen Sie ihre Nutzerabonnements</h2>"));
+				rechts.add(new HTML("<h2>Hier sehen Sie ihre Nutzerabonnements</h2>"));
 				NutzeraboTabelle naboT = new NutzeraboTabelle();
 				rechts.add(naboT.zeigeTabelle());
 
@@ -134,8 +128,7 @@ public class MSG_Front_End {
 		Command unterhaltungAnzeigen = new Command() {
 			public void execute() {
 				rechts.clear();
-				rechts.add(new HTML(
-						"<h2>Hier sehen Sie ihre Unterhaltungen</h2>"));
+				rechts.add(new HTML("<h2>Hier sehen Sie ihre Unterhaltungen</h2>"));
 				UnterhaltungsForm uForm = new UnterhaltungsForm();
 				rechts.add(uForm.zeigeTabelle());
 
@@ -145,8 +138,7 @@ public class MSG_Front_End {
 		Command reportAuswahlAnzeigen = new Command() {
 			public void execute() {
 				rechts.clear();
-				rechts.add(new HTML(
-						"<h2>Hier können Sie ihre Reports auswählen</h2>"));
+				rechts.add(new HTML("<h2>Hier können Sie ihre Reports auswählen</h2>"));
 				ReportAuswahl rpForm = new ReportAuswahl();
 				rechts.add(rpForm);
 			}

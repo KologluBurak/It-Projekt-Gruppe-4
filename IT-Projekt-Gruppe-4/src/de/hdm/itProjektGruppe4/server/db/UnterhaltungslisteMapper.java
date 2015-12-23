@@ -82,7 +82,7 @@ public class UnterhaltungslisteMapper {
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setInt(1, unterhaltungsliste.getUnterhaltundID());
+			preStmt.setInt(1, unterhaltungsliste.getUnterhaltungID());
 			preStmt.setInt(2, unterhaltungsliste.getAbsenderID());
 			preStmt.setInt(3, unterhaltungsliste.getEmpfaengerID());
 			preStmt.executeUpdate();

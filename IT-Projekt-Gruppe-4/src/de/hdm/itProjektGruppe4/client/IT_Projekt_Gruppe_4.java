@@ -1,6 +1,5 @@
 package de.hdm.itProjektGruppe4.client;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,74 +24,74 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 
 public class IT_Projekt_Gruppe_4 implements EntryPoint {
 
-	  private LoginInfo loginInfo = null;
-	  private VerticalPanel loginPanel = new VerticalPanel();
-	  private Label loginLabel = new Label(
-	      "Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
+	private LoginInfo loginInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Label loginLabel = new Label(
+			"Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
 
-	  private Anchor signInLink = new Anchor("Sign In");
-	   public void onModuleLoad() {
+	private Anchor signInLink = new Anchor("Sign In");
 
-		    // Check login status using login service.
-		    LoginServiceAsync loginService = GWT.create(LoginService.class);
-		    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
-		      public void onFailure(Throwable error) {
-		    	   
-		    	//  DialogBox d = new DialogBox();
-		    	//  d.setText("Fehler: " + error.getMessage());
-		    	//  d.show();
-		      }
+	public void onModuleLoad() {
 
-		      public void onSuccess(LoginInfo result) {
-				
-		    	loginInfo = result;
-		        if(loginInfo.isLoggedIn()) {
-		        	MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
-		        	
-			        	myAsync.createNutzer("Murat", "Mustermann", loginInfo.getEmailAddress(), loginInfo.getNickname(), new AsyncCallback<Nutzer>() {
+		// Check login status using login service.
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+			public void onFailure(Throwable error) {
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-								DialogBox d = new DialogBox();
-								d.setText("fehler: " + caught);
-								d.show();
-							}
+				// DialogBox d = new DialogBox();
+				// d.setText("Fehler: " + error.getMessage());
+				// d.show();
+			}
 
-							@Override
-							public void onSuccess(Nutzer result) {
-								// TODO Auto-generated method stub
-								DialogBox d = new DialogBox();
-								d.setText("Gespeichert");
-								d.show();
-								loadView();
-							}
-						});
-					
+			public void onSuccess(LoginInfo result) {
 
-		        } else {
-		          loadLogin();
-		        }
-		      }
-		    });
-		   
-	   }
-	   
-	   private void loadLogin() {
-		    // Assemble login panel.
-		    signInLink.setHref(loginInfo.getLoginUrl());
-		    loginPanel.add(loginLabel);
-		    loginPanel.add(signInLink);
-		    RootPanel.get("starter").add(loginPanel);
-		  }
-	   
-	   public void loadView(){
+				loginInfo = result;
+				if (loginInfo.isLoggedIn()) {
+					MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
+					//
+					// myAsync.createNutzer("Murat", "Mustermann",
+					// loginInfo.getEmailAddress(), loginInfo.getNickname(), new
+					// AsyncCallback<Nutzer>() {
+					//
+					// @Override
+					// public void onFailure(Throwable caught) {
+					// // TODO Auto-generated method stub
+					// DialogBox d = new DialogBox();
+					// d.setText("fehler: " + caught);
+					// d.show();
+					// }
+					//
+					// @Override
+					// public void onSuccess(Nutzer result) {
+					// // TODO Auto-generated method stub
+					// DialogBox d = new DialogBox();
+					// d.setText("Gespeichert");
+					// d.show();
+					loadView();
+					// }
+					// });
 
+				} else {
+					loadLogin();
+				}
+			}
+		});
 
-		   MSG_Front_End neu = new MSG_Front_End();
-			neu.anzeigenMenu();
-			
-	   }
-	   
+	}
+
+	private void loadLogin() {
+		// Assemble login panel.
+		signInLink.setHref(loginInfo.getLoginUrl());
+		loginPanel.add(loginLabel);
+		loginPanel.add(signInLink);
+		RootPanel.get("starter").add(loginPanel);
+	}
+
+	public void loadView() {
+
+		MSG_Front_End neu = new MSG_Front_End();
+		neu.anzeigenMenu();
+
+	}
+
 }
-		
