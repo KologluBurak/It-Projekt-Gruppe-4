@@ -48,7 +48,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * Verbindung. Die Erstellung und Pflege der Async Interfaces wird durch das
  * Google Plugin semiautomatisch unterstützt. Weitere Informationen unter
  * {@link MessagingAdministrationAsync}.</li>
- * <li> {@link RemoteServiceServlet}: Jede Server-seitig instantiierbare und
+ * <li>{@link RemoteServiceServlet}: Jede Server-seitig instantiierbare und
  * Client-seitig über GWT RPC nutzbare Klasse muss die Klasse
  * <code>RemoteServiceServlet</code> implementieren. Sie legt die funktionale
  * Basis für die Anbindung von <code>MessagingAdministrationImpl</code> an die
@@ -95,9 +95,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  *
  */
 
-
-public class MessagingAdministrationImpl extends RemoteServiceServlet implements
-		MessagingAdministration {
+public class MessagingAdministrationImpl extends RemoteServiceServlet implements MessagingAdministration {
 
 	private NutzerMapper nutzerMapper = null;
 	private AbonnementMapper abonnementMapper = null;
@@ -108,6 +106,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	private UnterhaltungMapper unterhaltungMapper = null;
 	private UnterhaltungslisteMapper unterhaltungslisteMapper = null;
 	private MarkierungslisteMapper markierungslisteMapper = null;
+
 	/**
 	 * No-Argument Konstruktor
 	 */
@@ -116,8 +115,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Initialisierung
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Initialisierung
 	 * ***************************************
 	 * ************************************
 	 */
@@ -134,15 +133,15 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Initialisierung
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Initialisierung
 	 * *****************************************
 	 * **********************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
 	 * ***************************
 	 * ************************************************
 	 */
@@ -151,11 +150,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Anlegen eines neuen Nutzers. Der neuer Nutzer wird in die Datenbank
 	 * gespeichert.
 	 */
-	public Nutzer createNutzer(String vorname, String nachname, String email,
-			String nickname) throws IllegalArgumentException {
-		
-		if (!userExist(email)){
-			System.out.println("User Existiert: "+userExist(email));
+	public Nutzer createNutzer(String vorname, String nachname, String email, String nickname)
+			throws IllegalArgumentException {
+
+		if (!userExist(email)) {
+			System.out.println("User Existiert: " + userExist(email));
 			Nutzer n = new Nutzer();
 			n.setVorname(vorname);
 			n.setNachname(nachname);
@@ -166,12 +165,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return null;
 
 	}
-	
+
 	/**
-	 * Ändern von Attributen eines Nutzers. 
+	 * Ändern von Attributen eines Nutzers.
 	 */
-	
-	public Nutzer update(Nutzer nutzer)throws IllegalArgumentException{
+
+	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException {
 		return nutzerMapper.update(nutzer);
 	}
 
@@ -181,28 +180,26 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public void delete(Nutzer nutzer) throws IllegalArgumentException {
 
-		ArrayList<Nachricht> nachrichten = this
-				.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
+		ArrayList<Nachricht> nachrichten = this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 		/*
 		 * Die Verbindung zum Abonnement wird aufgelöst.
 		 */
-		Nutzerabonnement nutzerabo = 
-				this.nutzerAboMapper.findNutzerAbonnementByID(nutzer.getId());
+		Nutzerabonnement nutzerabo = this.nutzerAboMapper.findNutzerAbonnementByID(nutzer.getId());
 
-//		if (nutzerabo != null) {
-//			for (Nutzerabonnement nabo : nutzerabo) {
-				this.delete(nutzerabo);
-//			}
+		// if (nutzerabo != null) {
+		// for (Nutzerabonnement nabo : nutzerabo) {
+		this.delete(nutzerabo);
+		// }
 
-			/* Die Nachrichten die eine Verbindung zum Nutzer haben werden
-			* gelöscht.
-			*/
-			if (nachrichten != null) {
-				for (Nachricht n : nachrichten) {
-					this.delete(n);
-				}
+		/*
+		 * Die Nachrichten die eine Verbindung zum Nutzer haben werden gelöscht.
+		 */
+		if (nachrichten != null) {
+			for (Nachricht n : nachrichten) {
+				this.delete(n);
 			}
-			this.nutzerMapper.delete(nutzer);
+		}
+		this.nutzerMapper.delete(nutzer);
 
 	}
 
@@ -216,31 +213,27 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Nutzers anhand seines Nickname.
 	 */
-	public Nutzer getNutzerByNickname(String nickname)
-			throws IllegalArgumentException {
+	public Nutzer getNutzerByNickname(String nickname) throws IllegalArgumentException {
 		return this.nutzerMapper.findNutzerByNickname(nickname);
 	}
-	
 
-	
 	/**
 	 * Auslesen eines Nutzers anhand seiner ID.
 	 */
-	public Nutzer getNutzerById (int id)
-			throws IllegalArgumentException{
+	public Nutzer getNutzerById(int id) throws IllegalArgumentException {
 		return this.nutzerMapper.findNutzerById(id);
 	}
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Nutzer-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Nutzer-Objekte
 	 * *****************************
 	 * **********************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
 	 * ************************
 	 * ***************************************************
 	 */
@@ -251,29 +244,31 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Nachricht createNachricht(String text, String nickname, Unterhaltung unterhaltung)
 			throws IllegalArgumentException {
-		
+
 		Nachricht na = new Nachricht();
 		// NutzerID durch emailadresse heraussuchen
 		Nutzer absender = new Nutzer();
-		
+
 		// erster Fremdschlüssel
 		absender = this.nutzerMapper.findNutzerByNickname(nickname);
-		
-		//Nutzer empfaenger = new Nutzer();
-		
-		//Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
-		
+
+		// Nutzer empfaenger = new Nutzer();
+
+		// Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
+
 		// zweiter Fremdschlüssel
-		//unterhaltungsliste = this.unterhaltungslisteMapper.findByAbsender(absender);
-		
+		// unterhaltungsliste =
+		// this.unterhaltungslisteMapper.findByAbsender(absender);
+
 		// 3. Fremschlüssel
-		// empfaenger = this.nutzerMapper.findNutzerByNickname(empfaengerNickname);
-		
+		// empfaenger =
+		// this.nutzerMapper.findNutzerByNickname(empfaengerNickname);
+
 		System.out.println(absender.getId() + " " + unterhaltung.getId());
-		
+
 		na.setNutzerID(absender.getId());
 		na.setUnterhaltungID(unterhaltung.getId());
-		
+
 		na.setText(text);
 		return this.nachrichtMapper.insert(na);
 	}
@@ -285,60 +280,50 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen aller Nachrichten aus der Datenbank.
 	 */
-	public ArrayList<Nachricht> getAllNachrichten()
-			throws IllegalArgumentException {
-		return null; //this.nachrichtMapper.findAllNachrichten();
+	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException {
+		return null; // this.nachrichtMapper.findAllNachrichten();
 	}
-	
+
 	/**
 	 * Auslesen aller Nachrichten einer Unterhaltung aus der Datenbank.
 	 */
 	public ArrayList<Nachricht> getNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
-			throws IllegalArgumentException{
+			throws IllegalArgumentException {
 		return this.unterhaltungMapper.findNachrichtenByUnterhaltung(unterhaltung);
 	}
-	
+
 	/**
 	 * Auslesen Nachrichten anhand der Id.
 	 */
-	
+
 	public Nachricht getNachrichtById(int id) throws IllegalArgumentException {
 		return this.nachrichtMapper.findNachrichtById(id);
 	}
-	
-
 
 	/**
 	 * Auslesen von Nachrichten eines Nutzers.
 	 */
-	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer)
-			throws IllegalArgumentException {
+	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer) throws IllegalArgumentException {
 		return this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 	}
 
 	/**
 	 * Auslesen von Nachrichten innerhalb eines Zeitraums
 	 */
-	public ArrayList<Nachricht>getAlleNachrichtenJeZeitraum(String von, String bis)
-			throws IllegalArgumentException{
+	public ArrayList<Nachricht> getAlleNachrichtenJeZeitraum(String von, String bis) throws IllegalArgumentException {
 		return this.nachrichtMapper.alleNachrichtenJeZeitraum(von, bis);
 	}
-	
-
-	
-	
-	
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Nachricht-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Nachricht-Objekte
 	 * **************************
 	 * *************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
 	 * *********************
 	 * ******************************************************
 	 */
@@ -347,38 +332,35 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Anlegen einer Unterhaltung. Die Unterhaltung wird in der Datenbank
 	 * gespeichert.
 	 */
-	public Unterhaltung createUnterhaltung(Date datum)
-			throws IllegalArgumentException {
+	public Unterhaltung createUnterhaltung(Date datum) throws IllegalArgumentException {
 		Unterhaltung u = new Unterhaltung();
-//		
+		//
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		
+
 		u.setZuletztBearbeitet(dateFormat.format(datum));
 		u.setErstellungsZeitpunkt(dateFormat.format(datum));
 		return this.unterhaltungMapper.insert(u);
 
-//		u.setErstellungsZeitpunkt(datum);
-//		return unterhaltungMapper.insert(datum);
+		// u.setErstellungsZeitpunkt(datum);
+		// return unterhaltungMapper.insert(datum);
 
 	}
 
-	public Boolean userExist(String email) throws IllegalArgumentException{
-		
+	public Boolean userExist(String email) throws IllegalArgumentException {
+
 		Boolean exist = false;
 		Nutzer nutzer = this.nutzerMapper.findNutzerByEmail(email);
-		
-		//System.out.println(nutzer.getEmail() + " "+ nutzer.getId());
-		
-		if(nutzer != null){
+
+		// System.out.println(nutzer.getEmail() + " "+ nutzer.getId());
+
+		if (nutzer != null) {
 			exist = true;
 			System.out.println("true");
 		}
 
-		
 		return exist;
 	}
-	
-	
+
 	/**
 	 * Löschen einer Unterhaltung. Hierbei werden die Nutzer, die in der
 	 * Unterhaltung teilgenommen haben nicht gelöscht.
@@ -399,24 +381,22 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/**
 	 * Auslesen von allen Unterhaltungen aus der Datenbank.
-	 
-	public ArrayList<Nachticht> getAllUnterhaltungen(Unterhaltung unterhaltung)
-			throws IllegalArgumentException {
-		return this.unterhaltungMapper.findNachrichtenByUnterhaltung(unterhaltung);
-	}*/
-
-	
+	 * 
+	 * public ArrayList<Nachticht> getAllUnterhaltungen(Unterhaltung
+	 * unterhaltung) throws IllegalArgumentException { return
+	 * this.unterhaltungMapper.findNachrichtenByUnterhaltung(unterhaltung); }
+	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
@@ -424,102 +404,86 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Anlegen eines Abonnements. Das Abonnement wird in der Datenbank
 	 * gespeichert.
 	 */
-	public Abonnement createAbonnement(int id, String erstellungsZeitpunkt)
-			throws IllegalArgumentException{
-		Abonnement abo= new Abonnement();
+	public Abonnement createAbonnement(int id, String erstellungsZeitpunkt) throws IllegalArgumentException {
+		Abonnement abo = new Abonnement();
 		abo.setId(id);
 		abo.setErstellungsZeitpunkt(erstellungsZeitpunkt);
 		return this.abonnementMapper.insertAbonnement(abo);
 	}
-	
 
 	/**
 	 * Auslesen aller Abonnements.
 	 */
-	public ArrayList<Abonnement> getAllAbonnements()
-			throws IllegalArgumentException {
+	public ArrayList<Abonnement> getAllAbonnements() throws IllegalArgumentException {
 		return this.abonnementMapper.findAllAbonnements();
 	}
 
-	/**
-	 * Auslesen aller Abonnements anhand deren Id.
-	 */
-	public Abonnement getAbonnementById(int id) throws IllegalArgumentException {
-		return this.abonnementMapper.findAbonnementById(id);
-	}
-
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Abonnement-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Abonnement-Objekte
 	 * *************************
 	 * **************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
 	 * **************************
 	 * *************************************************
 	 */
-	
+
 	/**
 	 * Anlegen eines Hashtags
 	 */
-	public Hashtag createHashtag(String bezeichnung)
-			throws IllegalArgumentException {
+	public Hashtag createHashtag(String bezeichnung) throws IllegalArgumentException {
 		Hashtag hash = new Hashtag();
 		hash.setBezeichnung(bezeichnung);
 		return hashtagMapper.insert(hash);
 	}
-	
 
 	/**
 	 * LÖschen eines Hashtags
 	 */
-	public void delete(Hashtag hashtag) 
-			throws IllegalArgumentException {
+	public void delete(Hashtag hashtag) throws IllegalArgumentException {
 		/*
 		 * Die Verbindung zum Hashtagabonnement wird aufgelöst.
 		 */
-//		//Muss noch verbessert werden
-//		ArrayList<Hashtagabonnement> hashtagabo = this.getHashtagAbonnementByNutzer(hashtag);
-//						
-//		
-//		if (hashtagabo != null) {
-//			for (Hashtagabonnement hashabo : hashtagabo) {
-//				this.delete(hashabo);
-//			}
+		// //Muss noch verbessert werden
+		// ArrayList<Hashtagabonnement> hashtagabo =
+		// this.getHashtagAbonnementByNutzer(hashtag);
+		//
+		//
+		// if (hashtagabo != null) {
+		// for (Hashtagabonnement hashabo : hashtagabo) {
+		// this.delete(hashabo);
+		// }
 		hashtagMapper.delete(hashtag);
-		}	
-	
-	
+	}
+
 	/**
 	 * Auslesen aller Hashtags.
 	 */
-	public ArrayList<Hashtag>getAllHashtags()
-			throws IllegalArgumentException{
+	public ArrayList<Hashtag> getAllHashtags() throws IllegalArgumentException {
 		return this.hashtagMapper.findAllHashtags();
 	}
-	
+
 	/**
 	 * Auslesen eines Hashtag anhand seiner ID.
 	 */
-	public Hashtag getHashtagById(int id)
-			throws IllegalArgumentException{
+	public Hashtag getHashtagById(int id) throws IllegalArgumentException {
 		return this.hashtagMapper.findHashtagByID(id);
 	}
 
-
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Hashtag-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Hashtag-Objekte
 	 * ****************************
 	 * ***********************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
 	 * ************************
 	 * ***************************************************
 	 */
@@ -527,83 +491,75 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/*
 	 * Anlegen eines Nutzerabonnements
 	 */
-	public Nutzerabonnement createNutzerabonnement(Nutzer derBeobachtete,
-			Nutzer follower) throws IllegalArgumentException {
-		
-		 Nutzerabonnement nutzabo = new Nutzerabonnement();
-		 nutzabo.setDerBeobachteteID(derBeobachtete.getId());
-		 nutzabo.setFollowerID(follower.getId());
+	public Nutzerabonnement createNutzerabonnement(Nutzer derBeobachtete, Nutzer follower)
+			throws IllegalArgumentException {
+
+		Nutzerabonnement nutzabo = new Nutzerabonnement();
+		nutzabo.setDerBeobachteteID(derBeobachtete.getId());
+		nutzabo.setFollowerID(follower.getId());
 		return nutzerAboMapper.insert(nutzabo);
 	}
 
 	/*
 	 * Löschen eines Nutzerabonnement
 	 */
-	public void delete(Nutzerabonnement nutzerAbo)
-			throws IllegalArgumentException {
+	public void delete(Nutzerabonnement nutzerAbo) throws IllegalArgumentException {
 		nutzerAboMapper.delete(nutzerAbo);
 		;
 
 	}
-	
+
 	/**
 	 * Auslesen von allen Nutzerabonnements.
 	 */
-	public ArrayList<Nutzerabonnement> getAllNutzerabonnements()
-			throws IllegalArgumentException {
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnements() throws IllegalArgumentException {
 		return this.nutzerAboMapper.findAllNutzerabonnements();
 	}
-	
+
 	/**
 	 * Auslesen eines Nutzerabonnements anhand seiner ID.
 	 */
-	public Nutzerabonnement getNutzerabonnementById(int id)
-			throws IllegalArgumentException {
+	public Nutzerabonnement getNutzerabonnementById(int id) throws IllegalArgumentException {
 		return this.getNutzerabonnementById(id);
 	}
-	
-	
+
 	/**
 	 * Auslesen von Nutzer die die Rolle des des Beobachteten haben .
 	 */
-	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(
-			Nutzer nutzer) throws IllegalArgumentException {
+	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(Nutzer nutzer) throws IllegalArgumentException {
 		return this.nutzerAboMapper.findNutzerAbonnementByAbonnementID(nutzer.getId());
 	}
 
 	/**
 	 * Auslesen eines Nutzerabonnements anhand der Follower-ID
 	 */
-	public ArrayList<Nutzerabonnement> getNutzerabonnementByFollowerId(int id)
-			throws IllegalArgumentException {
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByFollowerId(int id) throws IllegalArgumentException {
 		return this.nutzerAboMapper.findNutzerAbonnementByFollowerID(id);
 	}
-	
+
 	/**
 	 * Auslesen eines Nutzerabonnements anhand der derBeobachteteID
 	 */
-	public ArrayList<Nutzerabonnement> getNutzerabonnementByDerBeobachteteId(int id)
-			throws IllegalArgumentException {
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByDerBeobachteteId(int id) throws IllegalArgumentException {
 		return this.nutzerAboMapper.findNutzerAbonnementByDerBeobachteteID(id);
 	}
-	
+
 	/**
 	 * Auslesen eines Nutzerabonnements anhand der abonnementID
 	 */
-	public ArrayList<Nutzerabonnement> getNutzerabonnementByAbonnementId(int id)
-			throws IllegalArgumentException {
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByAbonnementId(int id) throws IllegalArgumentException {
 		return this.nutzerAboMapper.findNutzerAbonnementByAbonnementID(id);
 	}
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
 	 * **************************
 	 * *************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
@@ -611,8 +567,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Anlegen eines Hashtagabonnements.
 	 */
-	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung)
-			throws IllegalArgumentException {
+	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung) throws IllegalArgumentException {
 		Hashtagabonnement b = new Hashtagabonnement();
 		b.setHashtagID(bezeichnung.getId());
 		return this.hashtagAboMapper.insert(b);
@@ -621,140 +576,127 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Löschen eines Hashtagsabonnement.
 	 */
-	public void delete(Hashtagabonnement hashtagAbo)
-			throws IllegalArgumentException {
+	public void delete(Hashtagabonnement hashtagAbo) throws IllegalArgumentException {
 		this.hashtagAboMapper.delete(hashtagAbo);
 
 	}
-	
+
 	/**
 	 * Auslesen aller Hashtagabonnements.
 	 */
-	public ArrayList<Hashtagabonnement> getAllHashtagabonnements()
-			throws IllegalArgumentException {
-		return this.hashtagAboMapper.findAllHashtagabonnements();	
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements() throws IllegalArgumentException {
+		return this.hashtagAboMapper.findAllHashtagabonnements();
 	}
 
 	/**
 	 * Auslesen eines Hashtagabonnements anhand einer Id.
 	 */
-	public Hashtagabonnement getHashtagAboById(int id)
-			throws IllegalArgumentException {
+	public Hashtagabonnement getHashtagAbonnementById(int id) throws IllegalArgumentException {
 		return this.hashtagAboMapper.findHashtagAbonnementByID(id);
 	}
 
 	/**
 	 * Auslesen eines Hashtagabonnements anhand des Nutzers.
 	 */
-	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer)
-			throws IllegalArgumentException{
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer) throws IllegalArgumentException {
 		return this.hashtagAboMapper.findHashtagAbonnementByNutzerID(nutzer);
 	}
-	
+
 	/**
 	 * Auslesen eines Hashtagsabonnement anhand der Hashtag-ID
 	 */
-	public Hashtagabonnement getHashtagAbonnementByHashtagId (int id)
-			throws IllegalArgumentException {
+	public Hashtagabonnement getHashtagAbonnementByHashtagId(int id) throws IllegalArgumentException {
 		return this.hashtagAboMapper.findHashtagAbonnementByHashtagID(id);
 	}
 
 	/**
 	 * Auslesen eines Hashtagsabonnement anhand der Abonnement-ID
 	 */
-	public Hashtagabonnement getHashtagAbonnementByAbonnementId (int id)
-			throws IllegalArgumentException {
+	public Hashtagabonnement getHashtagAbonnementByAbonnementId(int id) throws IllegalArgumentException {
 		return this.hashtagAboMapper.findHashtagAbonnementByAbonnementID(id);
 	}
 
-
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	 * *************************
 	 * **************************************************
 	 */
-	
+
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Markierungsliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Markierungsliste-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
-	
+
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Markierungsliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Markierungsliste-Objekte
 	 * *************************
 	 * **************************************************
 	 */
-	
+
 	/**
 	 * Anlegen einer Markierungsliste.
 	 */
-	public Markierungsliste createMarkierungsliste(String text,String hashtag)
-			throws IllegalArgumentException{
-		Markierungsliste markierungsliste= new Markierungsliste();
-		Nachricht nachricht= new Nachricht();
-		Hashtag hash= new Hashtag();
-		//muss noch gemacht werden
+	public Markierungsliste createMarkierungsliste(String text, String hashtag) throws IllegalArgumentException {
+		Markierungsliste markierungsliste = new Markierungsliste();
+		Nachricht nachricht = new Nachricht();
+		Hashtag hash = new Hashtag();
+		// muss noch gemacht werden
 		return null;
-		
+
 	}
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Unterhaltungsliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Unterhaltungsliste-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
-	
+
 	/**
 	 * Anlegen einer Unterhaltungsliste.
 	 */
 	public Unterhaltungsliste createUnterhaltungsliste(Unterhaltung u, String sender, String empf)
-			throws IllegalArgumentException{
-		Unterhaltungsliste UListe= new Unterhaltungsliste();
+			throws IllegalArgumentException {
+		Unterhaltungsliste UListe = new Unterhaltungsliste();
 		Unterhaltung unterhaltung = new Unterhaltung();
 		Nutzer absender = new Nutzer();
 		Nutzer empfaenger = new Nutzer();
-		//muss noch gemacht werden
+		// muss noch gemacht werden
 		return null;
 
-		
 	}
 
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand des Absender.
 	 */
-	public Unterhaltungsliste getByAbsender(String absenderNickname) 
-			throws IllegalArgumentException {
-		//nickanme die Id ermitteln und das muss man dan in die findByAbsender weiter geben.
+	public Unterhaltungsliste getByAbsender(String absenderNickname) throws IllegalArgumentException {
+		// nickanme die Id ermitteln und das muss man dan in die findByAbsender
+		// weiter geben.
 		return this.unterhaltungslisteMapper.findByAbsender(absenderNickname);
 	}
-	
-	
+
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand des Empfängers.
 	 */
-	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname) 
-			throws IllegalArgumentException {
-		//nickanme die Id ermitteln und das muss man dan in die findByAbsender weiter geben.
+	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname) throws IllegalArgumentException {
+		// nickanme die Id ermitteln und das muss man dan in die findByAbsender
+		// weiter geben.
 		return this.unterhaltungslisteMapper.findByEmpfaenger(empfaengerNickname);
 	}
-	
+
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand einer Unterhaltung.
 	 */
-	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung)
-			throws IllegalArgumentException{
+	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws IllegalArgumentException {
 		return this.unterhaltungslisteMapper.findByUnterhaltung(unterhaltung);
 	}
 
-
-
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden Unterhaltungsliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden Unterhaltungsliste-Objekte
 	 * *************************
 	 * **************************************************
 	 */

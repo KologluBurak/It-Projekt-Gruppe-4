@@ -77,21 +77,11 @@ public class NutzerAboMapper {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement) throws IllegalArgumentException {
+	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement) 
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			// Insert-Statement erzeugen
-			// Statement stmt = con.createStatement();
-
-			// Zunï¿½chst wird geschaut welches der momentan hï¿½chste
-			// Primï¿½rschlï¿½ssel ist
-			// ResultSet rs =
-			// stmt.executeQuery("SELECT MAX(nutzerAboID) AS maxid FROM
-			// nutzerabonnements");
-
-			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			// if (rs.next()) {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
 			Date date = new Date();
 			String sql = "INSERT INTO `nutzerabonnements`(`nutzerAboID`, `datum`, `abonnementID`, `derBeobachteteID`, `followerID`) "
@@ -99,15 +89,13 @@ public class NutzerAboMapper {
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setString(1, dateFormat.format(date));// preStmt.setString(1,										// nutzerabonnement.getErstellungsZeitpunkt().toString());
+			preStmt.setString(1, dateFormat.format(date));
 			preStmt.setInt(2, nutzerabonnement.getAbonnementID());
 			preStmt.setInt(3, nutzerabonnement.getDerBeobachteteID());
 			preStmt.setInt(4, nutzerabonnement.getFollowerID());
 			preStmt.executeUpdate();
 			preStmt.close();
-			// }
-			// stmt.close();
-			// rs.close();
+
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -117,12 +105,12 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermoeglicht das Loeschen eines Nutzerabonnements und dessen
-	 * Referenzen zu anderen Klassen
+	 * Diese Methode ermoeglicht das Loeschen eines Nutzerabonnements
 	 * 
 	 * @param nutzerabonnement
 	 */
-	public void delete(Nutzerabonnement nutzerabonnement) throws IllegalArgumentException {
+	public void delete(Nutzerabonnement nutzerabonnement) 
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
@@ -142,13 +130,16 @@ public class NutzerAboMapper {
 	 * 
 	 * @param abonnement
 	 */
-	public void deleteAbonnementID(Abonnement abonnement) throws IllegalArgumentException {
+	public void deleteAbonnementID(Abonnement abonnement) 
+			throws IllegalArgumentException {
+		
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM nutzerabonnements WHERE abonnementID=" + abonnement.getId());
 			stmt.close();
+			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -195,6 +186,7 @@ public class NutzerAboMapper {
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 	}
+	
 	/**
 	 * Diese Methode ermoeglicht es alle Nutzerabonnements aus der Datenbank in
 	 * einer Liste auszugeben.
@@ -202,7 +194,8 @@ public class NutzerAboMapper {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Nutzerabonnement> findAllNutzerabonnements() throws IllegalArgumentException {
+	public ArrayList<Nutzerabonnement> findAllNutzerabonnements() 
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
 		try {
@@ -212,7 +205,10 @@ public class NutzerAboMapper {
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+//				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				allNutzerabonnements.add(nutzerabonnement);
 			}
@@ -233,22 +229,27 @@ public class NutzerAboMapper {
 	 * finden und anzuzeigen.
 	 * 
 	 * @param id
-	 * @return
+	 * @return nutzerabo
 	 * @throws IllegalArgumentException
 	 */
-	public Nutzerabonnement findNutzerAbonnementByID(int id) throws IllegalArgumentException {
+	public Nutzerabonnement findNutzerAbonnementByID(int id) 
+			throws IllegalArgumentException {
+		
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT nutzerAboID, datum FROM nutzerabonnements " + "WHERE nutzerAboID= " + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "
+							+ "WHERE nutzerAboID= " + id);
 
 			if (rs.next()) {
-				Nutzerabonnement nutzerabo = new Nutzerabonnement();
-				nutzerabo.setId(rs.getInt("nutzerAboID"));
-				nutzerabo.setErstellungsZeitpunkt(rs.getString("datum"));
+				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+//				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
-				return nutzerabo;
+				return nutzerabonnement;
 			}
 			stmt.close();
 			rs.close();
@@ -270,25 +271,27 @@ public class NutzerAboMapper {
 
 	public ArrayList<Nutzerabonnement> findNutzerAbonnementByAbonnementID(int id) 
 			throws IllegalArgumentException {
+		
 		Connection con = DBConnection.connection();
 		ArrayList<Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement>();
-
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements " + "WHERE abonnementID=" + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements, abonnements "
+					+ "WHERE abonnementID=" + id);
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
 				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+//				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				nutzerAboListe.add(nutzerabonnement);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!" 
-			+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
 		return nutzerAboListe;
 	}
@@ -308,14 +311,16 @@ public class NutzerAboMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements, abonnements "
 					+ "WHERE derBeobachteteID=" + id);
 
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
 				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+//				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				nutzerAboListe.add(nutzerabonnement);
 			}
@@ -347,15 +352,16 @@ public class NutzerAboMapper {
 			while (rs.next()) {
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
 				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
-				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+//				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				nutzerAboListe.add(nutzerabonnement);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return nutzerAboListe;
 	}

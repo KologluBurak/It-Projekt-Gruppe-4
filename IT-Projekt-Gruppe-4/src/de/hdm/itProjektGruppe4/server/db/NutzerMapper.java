@@ -41,7 +41,7 @@ public class NutzerMapper {
 	private static NutzerMapper nutzerMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NutzerMapper() {
@@ -51,7 +51,7 @@ public class NutzerMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NutzerMapper.nutzerMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
 	 * einzige Instanz von <code>NutzerMapper</code> existiert.
 	 * <p>
 	 * 
@@ -70,13 +70,13 @@ public class NutzerMapper {
 	}
 
 	/**
-	 * Einf�gen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
-	 * auch der Prim�rschl�ssel des �bergebenen Objekts gepr�ft und ggf.
+	 * Einfügen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
+	 * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
 	 * berichtigt.
 	 * 
 	 * @param a
 	 *            das zu speichernde Objekt
-	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
 	public Nutzer insert(Nutzer nutzer)
@@ -105,7 +105,6 @@ public class NutzerMapper {
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
 			preStmt.setString(5, dateFormat.format(date));
-			System.out.println(preStmt);
 			preStmt.executeUpdate();
 			preStmt.close();
 
@@ -119,20 +118,18 @@ public class NutzerMapper {
 	}
 
 	/**
-	 * Wiederholtes Schreiben eines Objekts in die Datenbank.
+	 * Wiederholtes Schreiben eines bereits verfügbaren Objekts in die Datenbank.
 	 * 
-	 * @param unterhaltung
-	 *            das Objekt, das in die DB geschrieben werden soll
-	 * @return das als Parameter �bergebene Objekt
+	 * @param nutzer
+	 * @return nutzer
 	 */
 	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			PreparedStatement preStmt;
-			preStmt = con
-					.prepareStatement("UPDATE nutzer SET vorname=?, "
-							+ "nachname=?, email=?, nickname=?, datum=? WHERE nutzerID="
-							+ nutzer.getId());
+			preStmt = con.prepareStatement("UPDATE nutzer SET vorname=?, "
+							+ "nachname=?, email=?, nickname=?, datum=? WHERE nutzerID="+ nutzer.getId());
+			
 			preStmt.setString(1, nutzer.getVorname());
 			preStmt.setString(2, nutzer.getNachname());
 			preStmt.setString(3, nutzer.getEmail());
@@ -150,24 +147,23 @@ public class NutzerMapper {
 	}
 
 	/**
-	 * L�schen der Daten eines <code>Unterhaltung</code>-Objekts aus der
+	 * Läschen der Daten eines <code>Unterhaltung</code>-Objekts aus der
 	 * Datenbank.
 	 * 
 	 * @param a
-	 *            das aus der DB zu l�schende "Objekt"
+	 *            das aus der DB zu löschende "Objekt"
 	 */
 	public void delete(Nutzer nutzer) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzerID="
-					+ nutzer.getId());
+			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzerID="+ nutzer.getId());
 			stmt.close();
+			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 	}
 
@@ -255,8 +251,7 @@ public class NutzerMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
 
 			if (rs.next()) {
 				Nutzer nutzer = new Nutzer();
@@ -288,7 +283,7 @@ public class NutzerMapper {
 		try {
 			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID= "+nutzerID+" ORDER BY nutzerID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID="+nutzerID+" ORDER BY nutzerID");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
@@ -299,7 +294,7 @@ public class NutzerMapper {
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				//nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzer;
 			}

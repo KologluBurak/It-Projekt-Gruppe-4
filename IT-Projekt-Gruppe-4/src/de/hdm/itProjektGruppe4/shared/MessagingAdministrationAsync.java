@@ -30,29 +30,28 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 public interface MessagingAdministrationAsync {
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Initialisierung
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Initialisierung
 	 * ***************************************
 	 * ************************************
 	 */
 	void init(AsyncCallback<Void> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Initialisierung
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Initialisierung
 	 * *****************************************
 	 * **********************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
 	 * ***************************
 	 * ************************************************
 	 */
 
-	void createNutzer(String vorname, String nachname, String email,
-			String nickname, AsyncCallback<Nutzer> callback);
+	void createNutzer(String vorname, String nachname, String email, String nickname, AsyncCallback<Nutzer> callback);
 
 	void delete(Nutzer nutzer, AsyncCallback<Void> callback);
 
@@ -61,51 +60,47 @@ public interface MessagingAdministrationAsync {
 	void update(Nutzer nutzer, AsyncCallback<Nutzer> callback);
 
 	void getNutzerByNickname(String nickname, AsyncCallback<Nutzer> callback);
-	
+
 	void userExist(String email, AsyncCallback<Boolean> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Nutzer-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Nutzer-Objekte
 	 * *****************************
 	 * **********************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
 	 * ************************
 	 * ***************************************************
 	 */
 
 	void getNachrichtById(int id, AsyncCallback<Nachricht> callback);
 
-	void createNachricht(String text, String nickname,
-			Unterhaltung unterhaltung, AsyncCallback<Nachricht> callback);
+	void createNachricht(String text, String nickname, Unterhaltung unterhaltung, AsyncCallback<Nachricht> callback);
 
-	void getAlleNachrichtenJeNutzer(Nutzer nutzer,
-			AsyncCallback<ArrayList<Nachricht>> callback);
+	void getAlleNachrichtenJeNutzer(Nutzer nutzer, AsyncCallback<ArrayList<Nachricht>> callback);
 
 	void getAllNachrichten(AsyncCallback<ArrayList<Nachricht>> callback);
 
-	void getNachrichtenByUnterhaltung(Unterhaltung unterhaltung,
-			AsyncCallback<ArrayList<Nachricht>> callback);
+	void getNachrichtenByUnterhaltung(Unterhaltung unterhaltung, AsyncCallback<ArrayList<Nachricht>> callback);
 
-	void getAlleNachrichtenJeZeitraum(String von, String bis,
-			AsyncCallback<ArrayList<Nachricht>> callback);
+	void getAlleNachrichtenJeZeitraum(String von, String bis, AsyncCallback<ArrayList<Nachricht>> callback);
 
 	void delete(Nachricht nachricht, AsyncCallback<Void> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Nachricht-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Nachricht-Objekte
 	 * **************************
 	 * *************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
 	 * *********************
 	 * ******************************************************
 	 */
@@ -114,43 +109,39 @@ public interface MessagingAdministrationAsync {
 
 	void delete(Unterhaltung u, AsyncCallback<Void> callback);
 
-	//void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>> callback);
-
-
+	// void getAllUnterhaltungen(AsyncCallback<ArrayList<Unterhaltung>>
+	// callback);
 
 	;
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
 
-	void getAbonnementById(int id, AsyncCallback<Abonnement> callback);
-
-	void createAbonnement(int id, String erstellungsZeitpunkt,
-			AsyncCallback<Abonnement> callback);
+	void createAbonnement(int id, String erstellungsZeitpunkt, AsyncCallback<Abonnement> callback);
 
 	void getAllAbonnements(AsyncCallback<ArrayList<Abonnement>> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Abonnement-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Abonnement-Objekte
 	 * *************************
 	 * **************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
 	 * **************************
 	 * *************************************************
 	 */
@@ -163,83 +154,72 @@ public interface MessagingAdministrationAsync {
 	void getHashtagById(int id, AsyncCallback<Hashtag> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Hashtag-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Hashtag-Objekte
 	 * ****************************
 	 * ***********************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
 	 * ************************
 	 * ***************************************************
 	 */
-	void createNutzerabonnement(Nutzer derBeobachteteId, Nutzer follower,
-			AsyncCallback<Nutzerabonnement> callback);
+	void createNutzerabonnement(Nutzer derBeobachteteId, Nutzer follower, AsyncCallback<Nutzerabonnement> callback);
 
 	void delete(Nutzerabonnement nutzerAbo, AsyncCallback<Void> callback);
 
-	void getAllNutzerabonnements(
-			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+	void getAllNutzerabonnements(AsyncCallback<ArrayList<Nutzerabonnement>> callback);
 
 	void getNutzerabonnementById(int id, AsyncCallback<Nutzerabonnement> callback);
 
-	void getNutzerAbonnementByNutzer(Nutzer nutzer,
-			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+	void getNutzerAbonnementByNutzer(Nutzer nutzer, AsyncCallback<ArrayList<Nutzerabonnement>> callback);
 
-	void getNutzerabonnementByFollowerId(int id,
-			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
-	
-	void getNutzerabonnementByDerBeobachteteId(int id,
-			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
-	
-	void getNutzerabonnementByAbonnementId(int id,
-			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
-	
+	void getNutzerabonnementByFollowerId(int id, AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+
+	void getNutzerabonnementByDerBeobachteteId(int id, AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+
+	void getNutzerabonnementByAbonnementId(int id, AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
 	 * **************************
 	 * *************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
 
-	void createHashtagAbonnement(Hashtag bezeichnung,
-			AsyncCallback<Hashtagabonnement> callback);
+	void createHashtagAbonnement(Hashtag bezeichnung, AsyncCallback<Hashtagabonnement> callback);
 
 	void delete(Hashtagabonnement hashtagAbo, AsyncCallback<Void> callback);
 
-	void getHashtagAboById(int id, AsyncCallback<Hashtagabonnement> callback);
+	void getHashtagAbonnementById(int id, AsyncCallback<Hashtagabonnement> callback);
 
-	void getHashtagabonnementByNutzerId(int nutzer,
-			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
+	void getHashtagabonnementByNutzerId(int nutzer, AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
-	void getAllHashtagabonnements(
-			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
-	
-	void getHashtagAbonnementByHashtagId (int id,
-			AsyncCallback<Hashtagabonnement> callback);
-				
-	void getHashtagAbonnementByAbonnementId (int id,
-			AsyncCallback<Hashtagabonnement> callback);
+	void getAllHashtagabonnements(AsyncCallback<ArrayList<Hashtagabonnement>> callback);
+
+	void getHashtagAbonnementByHashtagId(int id, AsyncCallback<Hashtagabonnement> callback);
+
+	void getHashtagAbonnementByAbonnementId(int id, AsyncCallback<Hashtagabonnement> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	 * *************************
 	 * **************************************************
 	 */
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Markierungsliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Markierungsliste-Objekte
 	 * *****************
 	 * **********************************************************
 	 */
@@ -247,36 +227,33 @@ public interface MessagingAdministrationAsync {
 	void getAllNutzer(AsyncCallback<ArrayList<Nutzer>> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Markierungsliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Markierungsliste-Objekte
 	 * *******************
 	 * ********************************************************
 	 */
 
-	void createMarkierungsliste(String text, String hashtag,
-			AsyncCallback<Markierungsliste> callback);
+	void createMarkierungsliste(String text, String hashtag, AsyncCallback<Markierungsliste> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Beginn: Methoden für Unterhaltungssliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Beginn: Methoden für Unterhaltungssliste-Objekte
 	 * **************
 	 * *************************************************************
 	 */
 
-	void getByEmpfaenger(String empfaengerNickname,
-			AsyncCallback<Unterhaltungsliste> callback);
+	void getByEmpfaenger(String empfaengerNickname, AsyncCallback<Unterhaltungsliste> callback);
 
 	void createUnterhaltungsliste(Unterhaltung u, String sender, String empf,
 			AsyncCallback<Unterhaltungsliste> callback);
 
-	void getByUnterhaltung(Unterhaltung unterhaltung,
-			AsyncCallback<Unterhaltungsliste> callback);
+	void getByUnterhaltung(Unterhaltung unterhaltung, AsyncCallback<Unterhaltungsliste> callback);
 
 	void getByAbsender(String absenderNickanme, AsyncCallback<Unterhaltungsliste> callback);
 
 	/*
-	 * ***************************************************************************
-	 * ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte
+	 * *************************************************************************
+	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte
 	 * ****************
 	 * ***********************************************************
 	 */

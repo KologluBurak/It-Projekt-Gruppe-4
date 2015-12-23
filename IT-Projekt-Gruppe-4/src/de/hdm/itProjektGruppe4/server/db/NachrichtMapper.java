@@ -84,15 +84,17 @@ public class NachrichtMapper {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
 			nachricht.setErstellungsZeitpunkt(dateFormat.format(date).toString());
+			
 			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, nachricht.getText());
-			preStmt.setString(2, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
+			preStmt.setString(2, dateFormat.format(date));
 			preStmt.setInt(3, nachricht.getNutzerID());
 			preStmt.setInt(4, nachricht.getUnterhaltungID());
 			preStmt.executeUpdate();
+			preStmt.close();
 	
 			// con.close();
 		} catch (SQLException e) {
@@ -103,10 +105,9 @@ public class NachrichtMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht das Löschen einer Nachricht und dessen
-	 * Referenzen zu anderen Klassen.
+	 * Diese Methode ermöglicht das Löschen einer Nachricht
 	 * 
-	 * @param hashtagBezeichnung
+	 * @param nachricht
 	 */
 	public void delete(Nachricht nachricht) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
