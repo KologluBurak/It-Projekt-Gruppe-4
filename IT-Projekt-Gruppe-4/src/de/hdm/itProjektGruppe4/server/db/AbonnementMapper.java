@@ -85,14 +85,10 @@ public class AbonnementMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
-			Date date = new Date();
-			
-			String sql = "INSERT INTO `abonnements`(`abonnementID`, `datum`) VALUES (NULL, ?)";
+			String sql = "INSERT INTO `abonnements`(`abonnementID`) VALUES (NULL)";
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setString(1, dateFormat.format(date));
 			preStmt.executeUpdate();
 			preStmt.close();
 			
@@ -161,7 +157,7 @@ public class AbonnementMapper {
 	 * Diese Methode ermöglicht es alle Abonnements aus der Datenbank in einer
 	 * Liste auszugeben.
 	 * 
-	 * @return
+	 * @return aboListe
 	 * @throws IllegalArgumentException
 	 */
 	
@@ -176,7 +172,6 @@ public class AbonnementMapper {
 			while (rs.next()) {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
-				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				aboListe.add(abonnement);
 			}

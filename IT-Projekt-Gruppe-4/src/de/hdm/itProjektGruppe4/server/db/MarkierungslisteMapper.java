@@ -115,7 +115,7 @@ public class MarkierungslisteMapper {
 	/**
 	 * 
 	 * @param nachricht
-	 * @return
+	 * @return mliste
 	 * @throws IllegalArgumentException
 	 */
 	public Markierungsliste findByNachricht(String nachricht)
@@ -125,7 +125,7 @@ public class MarkierungslisteMapper {
 		Connection con = DBConnection.connection();
 		try {
 
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + nachricht;
+			String sql = "SELECT *  FROM `markierungslisten` WHERE `nachrichtID` = " + nachricht;
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -150,7 +150,7 @@ public class MarkierungslisteMapper {
 	/**
 	 * 
 	 * @param hashtag
-	 * @return
+	 * @return mliste
 	 * @throws IllegalArgumentException
 	 */
 	public Markierungsliste findByHashtag(String hashtag)

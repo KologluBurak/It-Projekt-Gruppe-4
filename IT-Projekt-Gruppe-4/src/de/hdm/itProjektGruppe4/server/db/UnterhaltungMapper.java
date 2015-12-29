@@ -78,12 +78,10 @@ public class UnterhaltungMapper {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
-			//Überlegen ob auch andere Attribute dazugenommen werden kann?!
-			String sql = "INSERT INTO `unterhaltungen`(`unterhaltungID`) VALUES (NULL, ?)";
+			String sql = "INSERT INTO `unterhaltungen`(`unterhaltungID`) VALUES (NULL)";
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-
 			preStmt.executeUpdate();
 			preStmt.close();
 
@@ -100,7 +98,8 @@ public class UnterhaltungMapper {
 	 * Löschen der Daten eines <code>Unterhaltung</code>-Objekts aus der
 	 * Datenbank.
 	 * 
-	 * @param id das aus der DB zu l�schende "Objekt"
+	 * @param unterhaltung
+	 * @throws IllegalArgumentException
 	 */
 	public void delete(Unterhaltung unterhaltung)
 			throws IllegalArgumentException {
@@ -110,6 +109,7 @@ public class UnterhaltungMapper {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID="+ unterhaltung.getId());
 			stmt.close();
+			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

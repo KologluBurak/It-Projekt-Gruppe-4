@@ -85,7 +85,8 @@ public class NachrichtMapper {
 			Date date = new Date();
 			nachricht.setErstellungsZeitpunkt(dateFormat.format(date).toString());
 			
-			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
+			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) "
+					+ "VALUES (NULL, ?, ?, ?, ?)";
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
@@ -114,7 +115,7 @@ public class NachrichtMapper {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM nachrichten "
-					+ "WHERE nachrichten.nachrichtID=" + nachricht.getId());
+					+ "WHERE nachrichtID=" + nachricht.getId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -202,7 +203,6 @@ public class NachrichtMapper {
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
-			//Neu
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID=" +nutzer.getId());

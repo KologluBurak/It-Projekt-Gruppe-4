@@ -106,7 +106,7 @@ public class UnterhaltungslisteMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nachrichten " + "WHERE nachrichtID="
+			stmt.executeUpdate("DELETE FROM unterhaltungslisten " + "WHERE unterhaltungslisteID="
 					+ unterhaltungsliste.getId());
 
 		} catch (SQLException e2) {
@@ -137,7 +137,7 @@ public class UnterhaltungslisteMapper {
 
 			if (rs.next()) {
 				Unterhaltungsliste uliste = new Unterhaltungsliste();
-				uliste.setId(rs.getInt("nutzerID"));
+				uliste.setId(rs.getInt("unterhaltungslisteID"));
 				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				uliste.setAbsenderID(rs.getInt("absenderID"));
 				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
@@ -177,7 +177,7 @@ public class UnterhaltungslisteMapper {
 
 			if (rs.next()) {
 				Unterhaltungsliste uliste = new Unterhaltungsliste();
-				uliste.setId(rs.getInt("nutzerID"));
+				uliste.setId(rs.getInt("unterhaltungslisteID"));
 				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				uliste.setAbsenderID(rs.getInt("absenderID"));
 				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
@@ -214,7 +214,7 @@ public class UnterhaltungslisteMapper {
 
 			if (rs.next()) {
 				Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
-				unterhaltungsliste.setId(rs.getInt("nutzerID"));
+				unterhaltungsliste.setId(rs.getInt("unterhaltungsliste"));
 				unterhaltungsliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				unterhaltungsliste.setAbsenderID(rs.getInt("absenderID"));
 				unterhaltungsliste.setEmpfaengerID(rs.getInt("empfaengerID"));
