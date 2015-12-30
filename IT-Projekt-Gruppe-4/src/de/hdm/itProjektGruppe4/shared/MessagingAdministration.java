@@ -231,9 +231,9 @@ public interface MessagingAdministration extends RemoteService {
 	public Unterhaltungsliste createUnterhaltungsliste(Unterhaltung u, String sender, String empf)
 			throws IllegalArgumentException;
 
-	public Unterhaltungsliste getByAbsender(String absenderNickname) throws IllegalArgumentException;
+	public Unterhaltungsliste getByAbsender(Nutzer absenderNickname) throws IllegalArgumentException;
 
-	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname) throws IllegalArgumentException;
+	public Unterhaltungsliste getByEmpfaenger(Nutzer empfaengerNickname) throws IllegalArgumentException;
 
 	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws IllegalArgumentException;
 	/*
