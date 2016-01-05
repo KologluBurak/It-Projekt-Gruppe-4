@@ -122,44 +122,42 @@ public class NachrichtMapper {
 		}
 	}
 
-//	/**
-//	 * Diese Methode ermöglicht es alle Nachrichten eines Nutzers in einer
-//	 * Liste auszugeben.
-//	 * 
-//	 * @return allNachrichten
-//	 */
-//	public ArrayList<Nachricht> findAllNachrichten(Nutzer nutzer)
-//			throws IllegalArgumentException {
-//		Connection con = DBConnection.connection();
-//		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
-//		try {
-//			Statement stmt = con.createStatement();
-//			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
-//					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID =" +nutzer.getId());
-//
-//			while (rs.next()) {
-//				Nutzer absender = new Nutzer();
-//				absender.setNickname(rs.getString("nickname"));
-//				
-//				Nachricht nachricht = new Nachricht();
-//				nachricht.setId(rs.getInt("nachrichtID"));
-//				nachricht.setAbsender(absender);
-//				nachricht.setText(rs.getString("text"));
-//				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
-//
-//				allNachrichten.add(nachricht);
-//			}
-//			stmt.close();
-//			rs.close();
-//			//con.close();
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			throw new IllegalArgumentException("Datenbank fehler!"
-//					+ e.toString());
-//		}
-//		return allNachrichten;
-//	}
+	/**
+	 * Diese Methode ermöglicht es alle Nachrichten eines Nutzers in einer
+	 * Liste auszugeben.
+	 * 
+	 * @return allNachrichten
+	 */
+	public ArrayList<Nachricht> findAllNachrichten()
+			throws IllegalArgumentException {
+		Connection con = DBConnection.connection();
+		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
+					+ "ON nutzer.nutzerID = nachrichten.nutzerID");
+
+			while (rs.next()) {
+				Nutzer absender = new Nutzer();
+				absender.setNickname(rs.getString("nickname"));
+				
+				Nachricht nachricht = new Nachricht();
+				nachricht.setId(rs.getInt("nachrichtID"));
+				nachricht.setAbsender(absender);
+				nachricht.setText(rs.getString("text"));
+				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
+
+				allNachrichten.add(nachricht);
+			}
+			stmt.close();
+			rs.close();
+			//con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}
+		return allNachrichten;
+	}
 
 	/**
 	 * Diese Methode ermöglicht es einen Nutzer anhand seiner ID das Auszugeben.
