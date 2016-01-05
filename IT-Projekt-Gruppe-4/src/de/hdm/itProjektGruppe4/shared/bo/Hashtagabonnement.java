@@ -29,6 +29,27 @@ public class Hashtagabonnement extends Abonnement {
 	 * Fremdschluesselbeziehung zur Nutzer Klasse
 	 */
 	private int nutzerID = 0;
+	
+	/**
+	 * Bezeichnung des Hashtags der Klasse hashtags setzen
+	 */
+	private Hashtag hashtagBezeichnung = null;
+
+	/**
+	 * Ausgabe der Hashtagbezeichnung
+	 * @return hastagBezeichnung
+	 */
+	public Hashtag getHashtagBezeichnung() {
+		return hashtagBezeichnung;
+	}
+
+	/**
+	 * Setzen der Hashtagbezeichnung
+	 * @param hashtagBezeichnung
+	 */
+	public void setHashtagBezeichnung(Hashtag hashtagBezeichnung) {
+		this.hashtagBezeichnung = hashtagBezeichnung;
+	}
 
 	/**
 	 * Ausgabe der Hashtag ID

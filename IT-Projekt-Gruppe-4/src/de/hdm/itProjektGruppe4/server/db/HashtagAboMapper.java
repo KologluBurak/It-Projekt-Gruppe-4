@@ -222,14 +222,19 @@ public class HashtagAboMapper {
 			 * Zunächst wird geschaut welches der momentan höchste
 			 * Primärschlüssel ist
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT * FROM hashtagabonnements " + "WHERE hashtagID=" + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM hashtagabonnements INNER JOIN hashtags "
+					+ "ON hashtagabonnements.hashtagID = hashtags.hashtagID "
+					+ "WHERE hashtagabonnements.hashtagID = "+ id );
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
+				Hashtag bezeichnung = new Hashtag();
+				bezeichnung.setBezeichnung(rs.getString("bezeichnung"));
+	
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
 				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
 				hashtagAbonnement.setErstellungsZeitpunkt(rs.getString("datum"));
-				hashtagAbonnement.setHashtagID(rs.getInt("hashtagID"));
+				hashtagAbonnement.setHashtagBezeichnung(bezeichnung);
 				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
 				hashtagAbonnement.setNutzerID(rs.getInt("nutzerID"));
 
