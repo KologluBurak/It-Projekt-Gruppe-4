@@ -175,8 +175,7 @@ public class NutzerMapper {
 		ArrayList<Nutzer> alleNutzer = new ArrayList<Nutzer>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM nutzer ORDER BY nutzerID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer ORDER BY nutzerID");
 
 			while (rs.next()) {
 				Nutzer nutzer = new Nutzer();

@@ -1,7 +1,5 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
-import java.util.Date;
-
 /**
  * Eine Klasse Unterhaltung, die aus der Klasse BusinessObject erbt.
  * @author Yuecel, Nguyen, Kologlu

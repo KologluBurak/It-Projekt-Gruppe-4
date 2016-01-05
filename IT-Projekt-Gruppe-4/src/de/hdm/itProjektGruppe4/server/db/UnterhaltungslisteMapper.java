@@ -214,7 +214,7 @@ public class UnterhaltungslisteMapper {
 
 			if (rs.next()) {
 				Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
-				unterhaltungsliste.setId(rs.getInt("unterhaltungsliste"));
+				unterhaltungsliste.setId(rs.getInt("unterhaltungslisteID"));
 				unterhaltungsliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				unterhaltungsliste.setAbsenderID(rs.getInt("absenderID"));
 				unterhaltungsliste.setEmpfaengerID(rs.getInt("empfaengerID"));
