@@ -1,186 +1,46 @@
 package de.hdm.itProjektGruppe4.client.gui;
 
 
-
-		import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.text.StrBuilder;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
-import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
-import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
+
 
 
 
 		public class NutzeraboTabelle {
 
-				VerticalPanel hauptP = new VerticalPanel();
-				String nachname = new String();
-				String vorname = new String();
-				String eMail = new String();
-				String nickname = new String ();
-				String entfernen = new String();
-				Button nAbohin = new Button("Nutzer Hinzufuegen");
-				String eMailDaniel = new String();
+			VerticalPanel hauptP = new VerticalPanel();
 			
-				
-				MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
-		
-	
-		
-		
-		
-				
-						public Widget zeigeTabelle() {
-		
+			MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 			
-					CellTable<NutzeraboTabelle> tabelle = new CellTable<NutzeraboTabelle>();
 			
-				tabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+			public Widget zeigeTabelle() {
 				
-				List<NutzeraboTabelle> abo = new ArrayList<NutzeraboTabelle>();
+				final FlexTable flexTable = new FlexTable();
+								
 				
-				tabelle.setRowCount(abo.size(),true);
-				tabelle.setRowData(0, abo);
+				flexTable.setText(0, 1, "Nickname");
+				flexTable.setText(0, 2, "Nachname");
+				flexTable.setText(0, 3, "Vorname");
+				flexTable.setText(0, 4, "E-Mail Adresse");
+				flexTable.setText(0, 5, "Entfernen");
 				
+				flexTable.setCellPadding(4);
 				
-	       
-	    
-	    	
-//				myAsync.findNutzerAbonnementByNutzer(null, new AsyncCallback<ArrayList<Nutzerabonnement>> () {
-//
-//								@Override
-//								public void onFailure(Throwable caught) {
-//				
-//				
-//					
-//								}
-//
-//								@Override
-//								public void onSuccess(ArrayList<Nutzerabonnement> result) {
-//				
-//					
-//					
-//								}
-//			
-//			
-//						});
-	    	
-	    	
-
-	    	
-				TextColumn<NutzeraboTabelle> nnameColumn = new TextColumn<NutzeraboTabelle>() {
-	         
-	     
-					public String getValue(NutzeraboTabelle object) {
-						return object.nachname;
-					}
-				};
-				tabelle.addColumn(nnameColumn, "Nachname");
-	        
-
-				// Hinzuf�gen einer Spalte Vorname
-
-	        // Hinzuf�gen einer Spalte Vorname
-
-	    	
-				TextColumn<NutzeraboTabelle> vnameColumn = new TextColumn<NutzeraboTabelle>() {
-	         
-	     
-					public String getValue(NutzeraboTabelle object) {
-						return object.vorname;
-					}
-				};
-				tabelle.addColumn(vnameColumn, "Vorname");
-	        
-
-			// Hinzuf�gen einer Spalte Email
-
-	     // Hinzuf�gen einer Spalte Email
-
-	        
-				TextColumn<NutzeraboTabelle> eMailColumn = new TextColumn<NutzeraboTabelle>() {
-	            
-	   
-					public String getValue(NutzeraboTabelle object) {
-						return object.eMail;
-					}
-				};
-				tabelle.addColumn(eMailColumn, "EMail");
-	        
+				 flexTable.addStyleName("nutzerabo");
+				 flexTable.getCellFormatter().addStyleName(0, 1, "nutzeraboNumericColumn");
+				 flexTable.getCellFormatter().addStyleName(0, 2, "nutzeraboNumericColumn");
+				 flexTable.getCellFormatter().addStyleName(0, 3, "nutzeraboNumericColumn");
+				 flexTable.getCellFormatter().addStyleName(0, 4, "nutzeraboNumericColumn");
 				
+				hauptP.add(flexTable);
+				return hauptP;
+				
+			}
 			
-
-			// Hinzuf�gen einer Spalte Nickname
-
-	     // Hinzuf�gen einer Spalte Nickname
-
-	        
-				TextColumn<NutzeraboTabelle> nicknameColumn = new TextColumn<NutzeraboTabelle>() {
-	            
-	       
-					public String getValue(NutzeraboTabelle object) {
-						return object.nickname;
-					}
-				};
-				tabelle.addColumn(nicknameColumn, "Nickname");
-	        
-
-				// Hinzuf�gen einer Spalte emtfernen
-
-	        // Hinzuf�gen einer Spalte emtfernen
-
-	        
-				TextColumn<NutzeraboTabelle> entfernenColumn = new TextColumn<NutzeraboTabelle>() {
-	            
-	       
-					public String getValue(NutzeraboTabelle object) {
-						return object.entfernen;
-					}
-				};
-				tabelle.addColumn(entfernenColumn, "Entfernen");
-	        
-
-				// Add a selection model to handle user selection.
-	        
-				final SingleSelectionModel<NutzeraboTabelle> selectionModel = new SingleSelectionModel<NutzeraboTabelle>();
-				tabelle.setSelectionModel(selectionModel);
-	        
-				selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-	          
-						public void onSelectionChange(SelectionChangeEvent event) {
-					NutzeraboTabelle selected = selectionModel.getSelectedObject();
-					if (selected != null) {
-						Window.alert("You selected: " + selected.nickname);
-					}
-				}
-	        });
-	    
-			
-						{
-				
-							hauptP.add(tabelle);
-							hauptP.add(nAbohin);
-								return hauptP;
-			    
-						}}}
-			    
-			    
-		
-
-
-	
+		}

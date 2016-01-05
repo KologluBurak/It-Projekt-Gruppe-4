@@ -1,112 +1,111 @@
 package de.hdm.itProjektGruppe4.client.gui;
 
-
-
-
-	import java.util.ArrayList;
+import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+
+
+
+
+
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
-import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
+import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
+
 
 
 	public class HashtagTabelle {
 		
 		VerticalPanel hauptP = new VerticalPanel();
-		String hashtag = new String();
-		String text = new String ();
-		String entfernen = new String();
-		Button hAbohin = new Button("Hashtag Hinzufuegen");
+		TextBox hashtagTextBox = new TextBox();
+		Button hinzuButton = new Button("Hinzufuegen");
 		
 		MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		
-			public Widget zeigeTabelle() {
+		public Widget zeigeTabelle () {
+			
+			final FlexTable flexTable = new FlexTable();
+			
+			
+			flexTable.setText(0, 1, "Hashtag");
+			flexTable.setText(0, 2, "Text");
+			flexTable.setText(0, 3, "Entfernen");
+			
+			
+			myAsync.getAllHashtagabonnements(new AsyncCallback<ArrayList<Hashtagabonnement>>() {
 				
-				CellTable<HashtagTabelle> htabelle = new CellTable<HashtagTabelle>();
-				htabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-				
-				// Hinzufügen einer Spalte Hashtag
-		    	
-		        TextColumn<HashtagTabelle> hashColumn = new TextColumn<HashtagTabelle>() {
-		         
-		     
-		          public String getValue(HashtagTabelle object) {
-		            return object.hashtag;
-		          }
-		        };
-		        htabelle.addColumn(hashColumn, "Hashtagbezeichnung");
-		        
-		        // Hinzufügen einer Spalte Text
-		    	
-		        TextColumn<HashtagTabelle> TextColumn = new TextColumn<HashtagTabelle>() {
-		         
-		     
-		          public String getValue(HashtagTabelle object) {
-		            return object.text;
-		          }
-		        };
-		        htabelle.addColumn(TextColumn, "Anzuzeigener Text");
-		        
-		     // Hinzufügen einer Spalte entfernen
-		        
-		        TextColumn<HashtagTabelle> entfernenColumn = new TextColumn<HashtagTabelle>() {
-		            
-		   
-		          public String getValue(HashtagTabelle object) {
-		            return object.entfernen;
-		          }
-		        };
-		        htabelle.addColumn(entfernenColumn, "Entfernen");
-		        
-		        //Clickhandler
-		        
-		        hAbohin.addClickHandler(new ClickHandler() {
+				@Override
+				public void onSuccess(ArrayList<Hashtagabonnement> result) {
+					int zeileCounter = 1;
 					
-					@Override
-					public void onClick(ClickEvent event) {
-						hinzufuegenhashtag();
-					}
+					for (final Hashtagabonnement hta : result) {
 
-					private void hinzufuegenhashtag() {
-						myAsync.getAllHashtags(new AsyncCallback<ArrayList<Hashtag>>() {
-							
-							@Override
-							public void onSuccess(ArrayList<Hashtag> result) {
-								
-								
-							}
-							
-							@Override
-							public void onFailure(Throwable caught) {
-								
-								
-							}
-						});
+						Button bModifizieren = new Button("Aendern");
 						
-					}
-				});
-		        
-		        
-		     hauptP.add(htabelle);
-		     hauptP.add(hAbohin);
+						//TODO Hier müsst hr erst eine Tabell erstellen und alle Daten reintun was in hta steht.
+
+						Label aboID = new Label(String.valueOf(hta.getAbonnementID()));
+						Label zeit = new Label(String.valueOf(hta.getErstellungsZeitpunkt()));
+						Label hashtagID = new Label(String.valueOf(hta.getHashtagID()));
+						
+						flexTable.setWidget(zeileCounter, 0, aboID);
+						flexTable.setWidget(zeileCounter, 1, zeit);
+						flexTable.setWidget(zeileCounter, 2, hashtagID);
+						flexTable.setWidget(zeileCounter, 3, bModifizieren);
+						
+						bModifizieren.addClickHandler(new ClickHandler(){
+
+							@Override
+							public void onClick(ClickEvent event) {
+								// TODO hier kommt die Methode rein was mit der einen Zeile passieren soll
+								
+								// Beispiel zum sehen, dass es funktioniert abspielen bitt
+								Window.alert("Ändern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
+								
+							}
+							
+							
+						});
+					
+						zeileCounter += 1;
+				}
+				
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Ein fehler ist aufgetreten: " + caught);
+					
+				}});
+			
+			
+			
+			 flexTable.addStyleName("habo");
+			 flexTable.getCellFormatter().addStyleName(0, 1, "haboNumericColumn");
+		
+			
+			 
+			 
+			hauptP.add(flexTable);
+			
 			return hauptP;
 			
 		}
-				
-			}
-		
-			
-	       
-	    	
+
+	}
+
+
+
+
 
