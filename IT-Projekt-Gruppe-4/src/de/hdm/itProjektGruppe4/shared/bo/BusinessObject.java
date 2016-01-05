@@ -1,7 +1,6 @@
 package de.hdm.itProjektGruppe4.shared.bo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * <p>
@@ -82,7 +81,7 @@ public abstract class BusinessObject implements Serializable {
 	 * Erzeugen einer einfachen textuellen Darstellung der jeweiligen Instanz.
 	 * Dies kann selbstverständlich in Subklassen überschrieben werden.
 	 * 
-	 * @see #toString()
+	 * @see toString()
 	 */
 	@Override
 	public String toString() {

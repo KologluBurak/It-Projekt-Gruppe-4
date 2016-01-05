@@ -10,9 +10,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Unterhaltung</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verf�gung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
+ * gel�scht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Thies
@@ -27,8 +27,8 @@ public class UnterhaltungMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie f�r
-	 * s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert
+	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie für
+	 * sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie speichert
 	 * die einzige Instanz dieser Klasse.
 	 * 
 	 * @see UnterhaltungMapper()
@@ -36,7 +36,7 @@ public class UnterhaltungMapper {
 	private static UnterhaltungMapper unterhaltungMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected UnterhaltungMapper() {
@@ -45,7 +45,7 @@ public class UnterhaltungMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>UnterhaltungMapper.unterhaltungMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
 	 * einzige Instanz von <code>UnterhaltungMapper</code> existiert.
 	 * <p>
 	 * 
@@ -64,13 +64,12 @@ public class UnterhaltungMapper {
 	}
 
 	/**
-	 * Einf�gen eines <code>Unterhaltung</code>-Objekts in die Datenbank. Dabei
-	 * wird auch der Prim�rschl�ssel des �bergebenen Objekts gepr�ft und ggf.
+	 * Einfügen eines <code>Unterhaltung</code>-Objekts in die Datenbank. Dabei
+	 * wird auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
 	 * berichtigt.
 	 * 
 	 * @param unterhaltung
-	 *            das zu speichernde Objekt
-	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
 	public Unterhaltung insert(Unterhaltung unterhaltung)
