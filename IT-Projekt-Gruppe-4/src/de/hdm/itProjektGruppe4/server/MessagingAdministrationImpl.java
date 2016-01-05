@@ -15,71 +15,71 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * <p>
  * Implementierungsklasse des Interface <code>MessagingAdministration</code>.
  * Diese Klasse ist <em>die</em> Klasse, die neben {@link ReportGeneratorImpl}
- * sÃ¤mtliche Applikationslogik (oder engl. Business Logic) aggregiert. Sie ist
- * wie eine Spinne, die sÃ¤mtliche ZusammenhÃ¤nge in ihrem Netz (in unserem Fall
- * die Daten der Applikation) Ã¼berblickt und fÃ¼r einen geordneten Ablauf und
- * dauerhafte Konsistenz der Daten und AblÃ¤ufe sorgt.
+ * sämtliche Applikationslogik (oder engl. Business Logic) aggregiert. Sie ist
+ * wie eine Spinne, die sämtliche Zusammenhänge in ihrem Netz (in unserem Fall
+ * die Daten der Applikation) überblickt und für einen geordneten Ablauf und
+ * dauerhafte Konsistenz der Daten und Abläufe sorgt.
  * </p>
  * <p>
  * Die Applikationslogik findet sich in den Methoden dieser Klasse. Jede dieser
  * Methoden kann als <em>Transaction Script</em> bezeichnet werden. Dieser Name
- * lÃ¤sst schon vermuten, dass hier analog zu Datenbanktransaktion pro
- * Transaktion gleiche mehrere Teilaktionen durchgefÃ¼hrt werden, die das System
+ * lässt schon vermuten, dass hier analog zu Datenbanktransaktion pro
+ * Transaktion gleiche mehrere Teilaktionen durchgeführt werden, die das System
  * von einem konsistenten Zustand in einen anderen, auch wieder konsistenten
- * Zustand Ã¼berfÃ¼hren. Wenn dies zwischenzeitig scheitern sollte, dann ist das
- * jeweilige Transaction Script dafÃ¼r verwantwortlich, eine Fehlerbehandlung
- * durchzufÃ¼hren.
+ * Zustand überführen. Wenn dies zwischenzeitig scheitern sollte, dann ist das
+ * jeweilige Transaction Script dafür verwantwortlich, eine Fehlerbehandlung
+ * durchzuführen.
  * </p>
  * <p>
  * Diese Klasse steht mit einer Reihe weiterer Datentypen in Verbindung. Dies
  * sind:
  * <ol>
  * <li>{@link MessagingAdministration}: Dies ist das <em>lokale</em> - also
- * Server-seitige - Interface, das die im System zur VerfÃ¼gung gestellten
+ * Server-seitige - Interface, das die im System zur Verfügung gestellten
  * Funktionen deklariert.</li>
  * <li>{@link MessagingAdministrationAsync}:
  * <code>MessagingAminidstrationImpl</code> und
  * <code>MessagingAdministration</code> bilden nur die Server-seitige Sicht der
- * Applikationslogik ab. Diese basiert vollstÃ¤ndig auf synchronen
- * Funktionsaufrufen. Wir mÃ¼ssen jedoch in der Lage sein, Client-seitige
+ * Applikationslogik ab. Diese basiert vollständig auf synchronen
+ * Funktionsaufrufen. Wir müssen jedoch in der Lage sein, Client-seitige
  * asynchrone Aufrufe zu bedienen. Dies bedingt ein weiteres Interface, das in
  * der Regel genauso benannt wird, wie das synchrone Interface, jedoch mit dem
- * zusÃ¤tzlichen Suffix "Async". Es steht nur mittelbar mit dieser Klasse in
+ * zusätzlichen Suffix "Async". Es steht nur mittelbar mit dieser Klasse in
  * Verbindung. Die Erstellung und Pflege der Async Interfaces wird durch das
- * Google Plugin semiautomatisch unterstÃ¼tzt. Weitere Informationen unter
+ * Google Plugin semiautomatisch unterstützt. Weitere Informationen unter
  * {@link MessagingAdministrationAsync}.</li>
  * <li>{@link RemoteServiceServlet}: Jede Server-seitig instantiierbare und
- * Client-seitig Ã¼ber GWT RPC nutzbare Klasse muss die Klasse
+ * Client-seitig über GWT RPC nutzbare Klasse muss die Klasse
  * <code>RemoteServiceServlet</code> implementieren. Sie legt die funktionale
- * Basis fÃ¼r die Anbindung von <code>MessagingAdministrationImpl</code> an die
+ * Basis für die Anbindung von <code>MessagingAdministrationImpl</code> an die
  * Runtime des GWT RPC-Mechanismus.</li>
  * </ol>
  * </p>
  * <p>
  * <b>Wichtiger Hinweis:</b> Diese Klasse bedient sich sogenannter
- * Mapper-Klassen. Sie gehÃ¶ren der Datenbank-Schicht an und bilden die
+ * Mapper-Klassen. Sie gehören der Datenbank-Schicht an und bilden die
  * objektorientierte Sicht der Applikationslogik auf die relationale
  * organisierte Datenbank ab. Zuweilen kommen "kreative" Zeitgenossen auf die
  * Idee, in diesen Mappern auch Applikationslogik zu realisieren. Siehe dazu
  * auch die Hinweise in {@link #delete(Customer)} Einzig nachvollziehbares
- * Argument fÃ¼r einen solchen Ansatz ist die Steigerung der Performance
+ * Argument für einen solchen Ansatz ist die Steigerung der Performance
  * umfangreicher Datenbankoperationen. Doch auch dieses Argument zieht nur dann,
- * wenn wirklich groÃŸe Datenmengen zu handhaben sind. In einem solchen Fall
- * wÃ¼rde man jedoch eine entsprechend erweiterte Architektur realisieren, die
- * wiederum sÃ¤mtliche Applikationslogik in der Applikationsschicht isolieren
- * wÃ¼rde. Also, keine Applikationslogik in die Mapper-Klassen "stecken" sondern
+ * wenn wirklich große Datenmengen zu handhaben sind. In einem solchen Fall
+ * würde man jedoch eine entsprechend erweiterte Architektur realisieren, die
+ * wiederum sämtliche Applikationslogik in der Applikationsschicht isolieren
+ * würde. Also, keine Applikationslogik in die Mapper-Klassen "stecken" sondern
  * dies auf die Applikationsschicht konzentrieren!
  * </p>
  * <p>
- * Beachten Sie, dass sÃ¤mtliche Methoden, die mittels GWT RPC aufgerufen werden
- * kÃ¶nnen ein <code>throws IllegalArgumentException</code> in der
- * Methodendeklaration aufweisen. Diese Methoden dÃ¼rfen also Instanzen von
- * {@link IllegalArgumentException} auswerfen. Mit diesen Exceptions kÃ¶nnen z.B.
+ * Beachten Sie, dass sämtliche Methoden, die mittels GWT RPC aufgerufen werden
+ * können ein <code>throws IllegalArgumentException</code> in der
+ * Methodendeklaration aufweisen. Diese Methoden dürfen also Instanzen von
+ * {@link IllegalArgumentException} auswerfen. Mit diesen Exceptions können z.B.
  * Probleme auf der Server-Seite in einfacher Weise auf die Client-Seite
  * transportiert und dort systematisch in einem Catch-Block abgearbeitet werden.
  * </p>
  * <p>
- * Es gibt sicherlich noch viel mehr Ã¼ber diese Klasse zu schreiben. Weitere
+ * Es gibt sicherlich noch viel mehr über diese Klasse zu schreiben. Weitere
  * Infos erhalten Sie in der Lehrveranstaltung.
  * </p>
  * 
@@ -88,7 +88,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * @see RemoteServiceServlet
  * 
  * @author Thies
- * @author YÃ¼cel
+ * @author Yücel
  * @author Nguyen
  * @author Raue
  * 
@@ -141,7 +141,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Nutzer-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Nutzer-Objekte
 	 * ***************************
 	 * ************************************************
 	 */
@@ -167,7 +167,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * Ã„ndern von Attributen eines Nutzers.
+	 * Ändern von Attributen eines Nutzers.
 	 */
 
 	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException {
@@ -175,14 +175,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * LÃ¶schen eines Nutzers. Der Nutzer wird in der Datenbank gelÃ¶scht.
-	 * zugehÃ¶rende nachrichten werden auch gelÃ¶scht
+	 * Löschen eines Nutzers. Der Nutzer wird in der Datenbank gelöscht.
+	 * zugehörende nachrichten werden auch gelöscht
 	 */
 	public void delete(Nutzer nutzer) throws IllegalArgumentException {
 
 		ArrayList<Nachricht> nachrichten = this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 		/*
-		 * Die Verbindung zum Abonnement wird aufgelÃ¶st.
+		 * Die Verbindung zum Abonnement wird aufgelöst.
 		 */
 		Nutzerabonnement nutzerabo = this.nutzerAboMapper.findNutzerAbonnementByID(nutzer.getId());
 
@@ -192,7 +192,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// }
 
 		/*
-		 * Die Nachrichten die eine Verbindung zum Nutzer haben werden gelÃ¶scht.
+		 * Die Nachrichten die eine Verbindung zum Nutzer haben werden gelöscht.
 		 */
 		if (nachrichten != null) {
 			for (Nachricht n : nachrichten) {
@@ -226,14 +226,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r Nutzer-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für Nutzer-Objekte
 	 * *****************************
 	 * **********************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Nachricht-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
 	 * ************************
 	 * ***************************************************
 	 */
@@ -249,18 +249,18 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// NutzerID durch emailadresse heraussuchen
 		Nutzer absender = new Nutzer();
 
-		// erster FremdschlÃ¼ssel
+		// erster Fremdschlüssel
 		absender = this.nutzerMapper.findNutzerByNickname(nickname);
 
 		// Nutzer empfaenger = new Nutzer();
 
 		// Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 
-		// zweiter FremdschlÃ¼ssel
+		// zweiter Fremdschlüssel
 		// unterhaltungsliste =
 		// this.unterhaltungslisteMapper.findByAbsender(absender);
 
-		// 3. FremschlÃ¼ssel
+		// 3. Fremschlüssel
 		// empfaenger =
 		// this.nutzerMapper.findNutzerByNickname(empfaengerNickname);
 
@@ -316,14 +316,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r Nachricht-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für Nachricht-Objekte
 	 * **************************
 	 * *************************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Unterhaltung-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Unterhaltung-Objekte
 	 * *********************
 	 * ******************************************************
 	 */
@@ -362,12 +362,12 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * LÃ¶schen einer Unterhaltung. Hierbei werden die Nutzer, die in der
-	 * Unterhaltung teilgenommen haben nicht gelÃ¶scht.
+	 * Löschen einer Unterhaltung. Hierbei werden die Nutzer, die in der
+	 * Unterhaltung teilgenommen haben nicht gelöscht.
 	 */
 	public void delete(Unterhaltung unterhaltung) {
 		/*
-		 * ZugehÃ¶rige Nachrichten von der Unterhaltung werden gelÃ¶scht
+		 * Zugehörige Nachrichten von der Unterhaltung werden gelöscht
 		 */
 		ArrayList<Nachricht> nachrichten = this.getNachrichtenByUnterhaltung(unterhaltung);
 
@@ -389,14 +389,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r Unterhaltung-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für Unterhaltung-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Abonnement-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Abonnement-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
@@ -420,14 +420,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r Abonnement-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für Abonnement-Objekte
 	 * *************************
 	 * **************************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Hashtag-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Hashtag-Objekte
 	 * **************************
 	 * *************************************************
 	 */
@@ -442,11 +442,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * LÃ–schen eines Hashtags
+	 * LÖschen eines Hashtags
 	 */
 	public void delete(Hashtag hashtag) throws IllegalArgumentException {
 		/*
-		 * Die Verbindung zum Hashtagabonnement wird aufgelÃ¶st.
+		 * Die Verbindung zum Hashtagabonnement wird aufgelöst.
 		 */
 		// //Muss noch verbessert werden
 		// ArrayList<Hashtagabonnement> hashtagabo =
@@ -476,14 +476,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r Hashtag-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für Hashtag-Objekte
 	 * ****************************
 	 * ***********************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r NutzerAbo-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für NutzerAbo-Objekte
 	 * ************************
 	 * ***************************************************
 	 */
@@ -501,7 +501,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/*
-	 * LÃ¶schen eines Nutzerabonnement
+	 * Löschen eines Nutzerabonnement
 	 */
 	public void delete(Nutzerabonnement nutzerAbo) throws IllegalArgumentException {
 		nutzerAboMapper.delete(nutzerAbo);
@@ -552,14 +552,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r NutzerAbo-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
 	 * **************************
 	 * *************************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r HashtagAbo-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für HashtagAbo-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
@@ -574,7 +574,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * LÃ¶schen eines Hashtagsabonnement.
+	 * Löschen eines Hashtagsabonnement.
 	 */
 	public void delete(Hashtagabonnement hashtagAbo) throws IllegalArgumentException {
 		this.hashtagAboMapper.delete(hashtagAbo);
@@ -618,21 +618,21 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r HashtagAbo-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für HashtagAbo-Objekte
 	 * *************************
 	 * **************************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Markierungsliste-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Markierungsliste-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
 
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Ende: Methoden fÃ¼r Markierungsliste-Objekte
+	 * ** ABSCHNITT, Ende: Methoden für Markierungsliste-Objekte
 	 * *************************
 	 * **************************************************
 	 */
@@ -650,7 +650,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 	/*
 	 * *************************************************************************
-	 * ** ABSCHNITT, Beginn: Methoden fÃ¼r Unterhaltungsliste-Objekte
+	 * ** ABSCHNITT, Beginn: Methoden für Unterhaltungsliste-Objekte
 	 * ***********************
 	 * ****************************************************
 	 */
@@ -679,7 +679,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 
 	/**
-	 * Auslesen einer Unterhaltungsliste anhand des EmpfÃ¤ngers.
+	 * Auslesen einer Unterhaltungsliste anhand des Empfängers.
 	 */
 	public Unterhaltungsliste getByEmpfaenger(Nutzer empfaengerNickname) throws IllegalArgumentException {
 		// nickanme die Id ermitteln und das muss man dan in die findByAbsender

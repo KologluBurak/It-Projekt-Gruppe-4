@@ -146,9 +146,11 @@ public class HashtagAboMapper {
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
 				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
 				hashtagAbonnement.setErstellungsZeitpunkt(rs.getString("datum"));
-				hashtagAbonnement.setHashtagID(rs.getInt("hashtagID"));
+
 				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
 				hashtagAbonnement.setNutzerID(rs.getInt("nutzerID"));
+				hashtagAbonnement.setHashtagID(rs.getInt("hashtagID"));
+
 				
 				alleHashtagabonnements.add(hashtagAbonnement);
 			}

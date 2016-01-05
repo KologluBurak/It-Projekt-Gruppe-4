@@ -22,7 +22,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author YÃ¼cel
+ * @author Yücel
  */
 
 public class NutzerAboMapper {
@@ -199,7 +199,7 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermÃ¶glicht es eine Ausgabe ueber einen Nutzerabonnements
+	 * Diese Methode ermöglicht es eine Ausgabe ueber einen Nutzerabonnements
 	 * in der Datenbank, anhand deren ID.
 	 * 
 	 * @param id
