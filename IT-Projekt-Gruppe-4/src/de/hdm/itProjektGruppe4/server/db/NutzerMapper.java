@@ -41,7 +41,7 @@ public class NutzerMapper {
 	private static NutzerMapper nutzerMapper = null;
 
 	/**
-	 * Gesch�tzter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NutzerMapper() {
@@ -51,7 +51,7 @@ public class NutzerMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NutzerMapper.nutzerMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
 	 * einzige Instanz von <code>NutzerMapper</code> existiert.
 	 * <p>
 	 * 
@@ -70,13 +70,13 @@ public class NutzerMapper {
 	}
 
 	/**
-	 * Einf�gen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
-	 * auch der Prim�rschl�ssel des �bergebenen Objekts gepr�ft und ggf.
+	 * Einfügen eines <code>Nutzer</code>-Objekts in die Datenbank. Dabei wird
+	 * auch der Primärschlüssel des übergebenen Objekts geprüft und ggf.
 	 * berichtigt.
 	 * 
 	 * @param a
 	 *            das zu speichernde Objekt
-	 * @return das bereits �bergebene Objekt, jedoch mit ggf. korrigierter
+	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
 	public Nutzer insert(Nutzer nutzer)
@@ -86,13 +86,6 @@ public class NutzerMapper {
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
-//			try {
-//				//d = sdf.parse("21/12/2015 00:00:00");
-//			} catch (ParseException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
 			nutzer.setErstellungsZeitpunkt(dateFormat.format(date).toString());
 
 			String sql = "INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) "
@@ -105,7 +98,6 @@ public class NutzerMapper {
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
 			preStmt.setString(5, dateFormat.format(date));
-			System.out.println(preStmt);
 			preStmt.executeUpdate();
 			preStmt.close();
 
@@ -119,27 +111,30 @@ public class NutzerMapper {
 	}
 
 	/**
-	 * Wiederholtes Schreiben eines Objekts in die Datenbank.
+	 * Wiederholtes Schreiben eines bereits verfügbaren Objekts in die Datenbank.
 	 * 
-	 * @param unterhaltung
-	 *            das Objekt, das in die DB geschrieben werden soll
-	 * @return das als Parameter �bergebene Objekt
+	 * @param nutzer
+	 * @return nutzer
 	 */
 	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date date = new Date();
+			nutzer.setErstellungsZeitpunkt(dateFormat.format(date).toString());
+			
 			PreparedStatement preStmt;
-			preStmt = con
-					.prepareStatement("UPDATE nutzer SET vorname=?, "
-							+ "nachname=?, email=?, nickname=?, datum=? WHERE nutzerID="
-							+ nutzer.getId());
+			preStmt = con.prepareStatement("UPDATE nutzer SET vorname=?, "
+							+ "nachname=?, email=?, nickname=?, datum=? WHERE nutzerID="+ nutzer.getId());
+			
 			preStmt.setString(1, nutzer.getVorname());
 			preStmt.setString(2, nutzer.getNachname());
 			preStmt.setString(3, nutzer.getEmail());
 			preStmt.setString(4, nutzer.getNickname());
-			preStmt.setString(5, nutzer.getErstellungsZeitpunkt().toString());
+			preStmt.setString(5, dateFormat.format(date));
 			preStmt.executeUpdate();
 			preStmt.close();
+			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,24 +145,22 @@ public class NutzerMapper {
 	}
 
 	/**
-	 * L�schen der Daten eines <code>Unterhaltung</code>-Objekts aus der
+	 * Löschen der Daten eines <code>Unterhaltung</code>-Objekts aus der
 	 * Datenbank.
 	 * 
-	 * @param a
-	 *            das aus der DB zu l�schende "Objekt"
+	 * @param nutzer
 	 */
 	public void delete(Nutzer nutzer) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzerID="
-					+ nutzer.getId());
+			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzerID="+ nutzer.getId());
 			stmt.close();
+			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 	}
 
@@ -183,8 +176,7 @@ public class NutzerMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT nutzerID, vorname, nachname, email, nickname, datum "
-							+ "FROM nutzer ORDER BY nutzerID");
+					.executeQuery("SELECT * FROM nutzer ORDER BY nutzerID");
 
 			while (rs.next()) {
 				Nutzer nutzer = new Nutzer();
@@ -212,7 +204,9 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht einen Nutzer anhand seines Nachnamens zu finden
 	 * und anzuzeigen.
 	 * 
-	 * @return uebergebener Paramater
+	 * @param nickname
+	 * @return nutzer
+	 * @throws IllegalArgumentException
 	 */
 	public Nutzer findNutzerByNickname(String nickname)
 			throws IllegalArgumentException {
@@ -220,14 +214,12 @@ public class NutzerMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM nutzer WHERE nickname='"
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nickname='"
 							+ nickname + "'");
 
 			if (rs.next()) {
 				Nutzer nutzer = new Nutzer();
 				nutzer.setId(rs.getInt("nutzerID"));
-
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
@@ -247,7 +239,9 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht einen Nutzer anhand seiner Email zu finden
 	 * und anzuzeigen.
 	 * 
-	 * @return uebergebener Paramater
+	 * @param email
+	 * @return nutzer
+	 * @throws IllegalArgumentException
 	 */
 	public Nutzer findNutzerByEmail(String email)
 			throws IllegalArgumentException {
@@ -255,13 +249,11 @@ public class NutzerMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
 
 			if (rs.next()) {
 				Nutzer nutzer = new Nutzer();
 				nutzer.setId(rs.getInt("nutzerID"));
-
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
@@ -281,25 +273,24 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht einen Nutzer anhand des Prim�rschl�ssels zu
 	 * finden und anzuzeigen.
 	 * 
-	 * @return uebergebener Paramater
+	 * @param nutzerID
+	 * @return nutzer
+	 * @throws IllegalArgumentException
 	 */
 	public Nutzer findNutzerById(int nutzerID) throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID= "+nutzerID+" ORDER BY nutzerID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID='"+nutzerID+"'");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
 				nutzer.setId(rs.getInt("nutzerID"));
-
-
 				nutzer.setVorname(rs.getString("vorname"));
 				nutzer.setNachname(rs.getString("nachname"));
 				nutzer.setEmail(rs.getString("email"));
 				nutzer.setNickname(rs.getString("nickname"));
-				//nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzer;
 			}

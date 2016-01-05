@@ -82,7 +82,7 @@ public class UnterhaltungslisteMapper {
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setInt(1, unterhaltungsliste.getUnterhaltundID());
+			preStmt.setInt(1, unterhaltungsliste.getUnterhaltungID());
 			preStmt.setInt(2, unterhaltungsliste.getAbsenderID());
 			preStmt.setInt(3, unterhaltungsliste.getEmpfaengerID());
 			preStmt.executeUpdate();
@@ -106,7 +106,7 @@ public class UnterhaltungslisteMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM nachrichten " + "WHERE nachrichtID="
+			stmt.executeUpdate("DELETE FROM unterhaltungslisten " + "WHERE unterhaltungslisteID="
 					+ unterhaltungsliste.getId());
 
 		} catch (SQLException e2) {
@@ -123,21 +123,21 @@ public class UnterhaltungslisteMapper {
 	 * @return uliste
 	 * @throws IllegalArgumentException
 	 */
-	public Unterhaltungsliste findByAbsender(String absenderNickname)
+	public Unterhaltungsliste findByAbsender(Nutzer absenderNickname)
 			throws IllegalArgumentException {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname;
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname.getId();
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				Unterhaltungsliste uliste = new Unterhaltungsliste();
-				uliste.setId(rs.getInt("nutzerID"));
+				uliste.setId(rs.getInt("unterhaltungslisteID"));
 				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				uliste.setAbsenderID(rs.getInt("absenderID"));
 				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
@@ -162,14 +162,14 @@ public class UnterhaltungslisteMapper {
 	 * @return uliste
 	 * @throws IllegalArgumentException
 	 */
-	public Unterhaltungsliste findByEmpfaenger(String empfaengerNickname)
+	public Unterhaltungsliste findByEmpfaenger(Nutzer empfaengerNickname)
 			throws IllegalArgumentException {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaengerNickname;
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaengerNickname.getId();
 
 
 			Statement stmt = con.createStatement();
@@ -177,7 +177,7 @@ public class UnterhaltungslisteMapper {
 
 			if (rs.next()) {
 				Unterhaltungsliste uliste = new Unterhaltungsliste();
-				uliste.setId(rs.getInt("nutzerID"));
+				uliste.setId(rs.getInt("unterhaltungslisteID"));
 				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				uliste.setAbsenderID(rs.getInt("absenderID"));
 				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
@@ -214,7 +214,7 @@ public class UnterhaltungslisteMapper {
 
 			if (rs.next()) {
 				Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
-				unterhaltungsliste.setId(rs.getInt("nutzerID"));
+				unterhaltungsliste.setId(rs.getInt("unterhaltungsliste"));
 				unterhaltungsliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
 				unterhaltungsliste.setAbsenderID(rs.getInt("absenderID"));
 				unterhaltungsliste.setEmpfaengerID(rs.getInt("empfaengerID"));

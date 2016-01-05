@@ -85,27 +85,13 @@ public class AbonnementMapper {
 		Connection con = DBConnection.connection();
 
 		try {
-			// Statement stmt = con.createStatement();
-			// ResultSet rs =
-			// stmt.executeQuery("SELECT MAX(abonnementID) AS maxid " +
-			// "FROM abonnement ");
-
-			// if (rs.next()) {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
-			Date date = new Date();
-			String sql = "INSERT INTO `abonnements`(`abonnementID`, `datum`) VALUES (NULL, ?)";
-
-			System.out.println(sql);
+			String sql = "INSERT INTO `abonnements`(`abonnementID`) VALUES (NULL)";
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
-			preStmt.setString(1, dateFormat.format(date));//getErstellungsZeitpunkt().toString());
 			preStmt.executeUpdate();
 			preStmt.close();
-
-			// }
-			// stmt.close();
-			// rs.close();
+			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,45 +100,64 @@ public class AbonnementMapper {
 
 		return abonnement;
 	}
-
-
+	
 	/**
-	 * Diese Methode ermöglicht es eine Ausgabe über die Abonnements in der
-	 * Datenbank, anhand deren ID.
+	 * Diese Methode ermöglicht das Löschen eines Abonnements
 	 * 
-	 * @param id
-	 * @return
+	 * @param abonnement
 	 * @throws IllegalArgumentException
 	 */
-	
-	public Abonnement findAbonnementById(int id) throws IllegalArgumentException {
+	public void delete(Abonnement abonnement) 
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM abonnements " + "WHERE abonnementID=" + abonnement.getId());
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnement " + "WHERE abonnementID=" + id);
-
-
-			if (rs.next()) {
-				Abonnement abonnement = new Abonnement();
-				abonnement.setId(rs.getInt("abonnementID"));
-				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
-				
-				return abonnement;
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
-
 		}
-		return null;
 	}
+
+
+//	/**
+//	 * Diese Methode ermöglicht es eine Ausgabe über die Abonnements in der
+//	 * Datenbank, anhand deren ID.
+//	 * 
+//	 * @param id
+//	 * @return
+//	 * @throws IllegalArgumentException
+//	 */
+//	
+//	public Abonnement findAbonnementById(int id) throws IllegalArgumentException {
+//		Connection con = DBConnection.connection();
+//		try {
+//			Statement stmt = con.createStatement();
+//
+//			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnements " + "WHERE abonnementID='" + id + "'");
+//
+//
+//			if (rs.next()) {
+//				Abonnement abonnement = new Abonnement();
+//				abonnement.setId(rs.getInt("abonnementID"));
+//				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+//				
+//				return abonnement;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+//
+//		}
+//		return null;
+//	}
 
 	/**
 	 * Diese Methode ermöglicht es alle Abonnements aus der Datenbank in einer
 	 * Liste auszugeben.
 	 * 
-	 * @return
+	 * @return aboListe
 	 * @throws IllegalArgumentException
 	 */
 	
@@ -167,7 +172,6 @@ public class AbonnementMapper {
 			while (rs.next()) {
 				Abonnement abonnement = new Abonnement();
 				abonnement.setId(rs.getInt("abonnementID"));
-				abonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				aboListe.add(abonnement);
 			}

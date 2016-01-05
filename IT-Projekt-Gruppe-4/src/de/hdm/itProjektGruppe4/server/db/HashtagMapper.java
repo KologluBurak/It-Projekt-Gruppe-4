@@ -75,33 +75,25 @@ public class HashtagMapper {
 	 * Diese Methode ermöglicht es einen Hashtag in der Datenbank anzulegen.
 	 * 
 	 * @param hashtag
-	 * @return
+	 * @return hashtag
 	 * @throws IllegalArgumentException
 	 */
-	public Hashtag insert(Hashtag hashtag) throws IllegalArgumentException {
+	public Hashtag insert(Hashtag hashtag) 
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			// Statement stmt = con.createStatement();
-			// ResultSet rs = stmt.executeQuery("SELECT MAX(id) AS maxid "
-			// + "FROM nachricht ");
-
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
 			Date date = new Date();
 			String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
 
-			System.out.println(sql);
-			
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, hashtag.getBezeichnung());
-			preStmt.setString(2, dateFormat.format(date));//nachricht.getErstellungsZeitpunkt().toString());
+			preStmt.setString(2, dateFormat.format(date));
 			preStmt.executeUpdate();
 
-			// }
-			// stmt.close();
-			// rs.close();
 			// con.close();
 
 		} catch (SQLException e) {
@@ -113,20 +105,19 @@ public class HashtagMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht das Löschen eines Nutzer und dessen Referenzen
-	 * zu anderen Klassen.
+	 * Diese Methode ermöglicht das Löschen eines Hashtags
 	 * 
 	 * @param hashtag
 	 * @throws IllegalArgumentException
 	 */
-	public void delete(Hashtag hashtag) throws IllegalArgumentException {
+	public void delete(Hashtag hashtag) 
+			throws IllegalArgumentException {
 		Connection con = DBConnection.connection();
 
 		try {
 			Statement stmt = con.createStatement();
 
-			stmt.executeUpdate("DELETE FROM hashtag " + "WHERE hashtagID="
-					+ hashtag.getId());
+			stmt.executeUpdate("DELETE FROM hashtags " + "WHERE hashtagID="+ hashtag.getId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -139,7 +130,7 @@ public class HashtagMapper {
 	 * Diese Methode ermöglicht es alle Hashtags aus der datenbank in einer Liste
 	 * auszugeben.
 	 * 
-	 * @return
+	 * @return allHashtags
 	 * @throws IllegalArgumentException
 	 */
 	public ArrayList<Hashtag> findAllHashtags()
@@ -149,14 +140,13 @@ public class HashtagMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-
-			ResultSet rs = stmt
-					.executeQuery("SELECT (hashtagID, bezeichnung) FROM hashtag");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM hashtags");
 
 			while (rs.next()) {
 				Hashtag hashtag = new Hashtag();
 				hashtag.setId(rs.getInt("hashtagID"));
 				hashtag.setBezeichnung(rs.getString("bezeichnung"));
+				hashtag.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				allHashtags.add(hashtag);
 			}
@@ -177,33 +167,30 @@ public class HashtagMapper {
 	 * Datenbank.
 	 * 
 	 * @param id
-	 * @return
+	 * @return hashtag
 	 * @throws IllegalArgumentException
 	 */
-	public Hashtag findHashtagByID(int id) throws IllegalArgumentException {
+	public Hashtag findHashtagByID(int id) 
+			throws IllegalArgumentException {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 
 		try {
-			// Insert-Statement erzeugen
 			Statement stmt = con.createStatement();
-			// Zunaechst wird geschaut welches der momentan hoechste
-			// Primaerschluessel ist
-			ResultSet rs = stmt.executeQuery("SELECT hashtagID, bezeichnung FROM hashtag "
+			ResultSet rs = stmt.executeQuery("SELECT * FROM hashtags "
 					+ "WHERE hashtagID=" + id);
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
 				Hashtag hashtag = new Hashtag();
 				hashtag.setId(rs.getInt("hashtagID"));
-				hashtag.setBezeichnung(rs.getString("Bezeichnung"));
+				hashtag.setBezeichnung(rs.getString("bezeichnung"));
+				hashtag.setErstellungsZeitpunkt(rs.getString("datum"));
 				return hashtag;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
-
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return null;
 	}
