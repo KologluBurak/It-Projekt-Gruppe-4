@@ -3,9 +3,11 @@ package de.hdm.itProjektGruppe4.client.gui;
 
 
 		import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.text.StrBuilder;
 
 import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -19,6 +21,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
 
@@ -32,16 +35,29 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				String nickname = new String ();
 				String entfernen = new String();
 				Button nAbohin = new Button("Nutzer Hinzufuegen");
-		
+				String eMailDaniel = new String();
+			
+				
 				MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		
+	
 		
+		
+		
+				
 						public Widget zeigeTabelle() {
 		
 			
 					CellTable<NutzeraboTabelle> tabelle = new CellTable<NutzeraboTabelle>();
 			
 				tabelle.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+				
+				List<NutzeraboTabelle> abo = new ArrayList<NutzeraboTabelle>();
+				
+				tabelle.setRowCount(abo.size(),true);
+				tabelle.setRowData(0, abo);
+				
+				
 	       
 	    
 	    	
@@ -106,6 +122,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				};
 				tabelle.addColumn(eMailColumn, "EMail");
 	        
+				
+			
 
 			// Hinzuf�gen einer Spalte Nickname
 
@@ -136,7 +154,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				};
 				tabelle.addColumn(entfernenColumn, "Entfernen");
 	        
-	        
+
 				// Add a selection model to handle user selection.
 	        
 				final SingleSelectionModel<NutzeraboTabelle> selectionModel = new SingleSelectionModel<NutzeraboTabelle>();

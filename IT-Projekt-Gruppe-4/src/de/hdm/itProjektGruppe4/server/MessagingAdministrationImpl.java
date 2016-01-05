@@ -558,7 +558,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Nutzerabonnement getNutzerabonnementById(int id)
 			throws IllegalArgumentException {
-		return this.getNutzerabonnementById(id);
+		return this.nutzerAboMapper.findNutzerAbonnementByID(id);
 	}
 	
 	

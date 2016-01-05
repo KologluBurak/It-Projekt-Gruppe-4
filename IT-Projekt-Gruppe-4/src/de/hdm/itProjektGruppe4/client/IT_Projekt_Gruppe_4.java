@@ -49,25 +49,25 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 		        if(loginInfo.isLoggedIn()) {
 		        	MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		        	
-			        	myAsync.createNutzer("Murat", "Mustermann", loginInfo.getEmailAddress(), loginInfo.getNickname(), new AsyncCallback<Nutzer>() {
-
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-								DialogBox d = new DialogBox();
-								d.setText("fehler: " + caught);
-								d.show();
-							}
-
-							@Override
-							public void onSuccess(Nutzer result) {
-								// TODO Auto-generated method stub
-								DialogBox d = new DialogBox();
-								d.setText("Gespeichert");
-								d.show();
+//			        	myAsync.createNutzer("Murat", "Mustermann", loginInfo.getEmailAddress(), loginInfo.getNickname(), new AsyncCallback<Nutzer>() {
+//
+//							@Override
+//							public void onFailure(Throwable caught) {
+//								// TODO Auto-generated method stub
+//								DialogBox d = new DialogBox();
+//								d.setText("fehler: " + caught);
+//								d.show();
+//							}
+//
+//							@Override
+//							public void onSuccess(Nutzer result) {
+//								// TODO Auto-generated method stub
+//								DialogBox d = new DialogBox();
+//								d.setText("Gespeichert");
+//								d.show();
 								loadView();
-							}
-						});
+//							}
+//						});
 					
 
 		        } else {

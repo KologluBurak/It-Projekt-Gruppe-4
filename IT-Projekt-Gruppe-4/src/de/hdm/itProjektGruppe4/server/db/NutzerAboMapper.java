@@ -241,12 +241,13 @@ public class NutzerAboMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT nutzerAboID, datum FROM nutzerabonnements " + "WHERE nutzerAboID= " + id);
+					.executeQuery("SELECT * FROM nutzerabonnements " + "WHERE nutzerAboID= " + id);
 
 			if (rs.next()) {
 				Nutzerabonnement nutzerabo = new Nutzerabonnement();
 				nutzerabo.setId(rs.getInt("nutzerAboID"));
-				nutzerabo.setErstellungsZeitpunkt(rs.getString("datum"));
+				// Datum existiert ncht in Nutzerabo -> bei allem kontrollieren ob ein SQL noch darauf zugreift!
+				//nutzerabo.setErstellungsZeitpunkt(rs.getString("datum"));
 
 				return nutzerabo;
 			}
