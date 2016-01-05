@@ -2,6 +2,14 @@ package de.hdm.itProjektGruppe4.client;
 
 import java.util.ArrayList;
 
+
+
+
+
+
+
+
+
 //import com.google.appengine.repackaged.com.google.common.util.concurrent.AsyncCallable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
@@ -81,25 +89,54 @@ public class MSG_Front_End {
 				MessagingAdministrationAsync myAsync = (MessagingAdministrationAsync) GWT
 						.create(MessagingAdministration.class);
 
-				myAsync.getHashtagAbonnementById(9, new AsyncCallback<Hashtagabonnement>() {
+			
+//				myAsync.getHashtagAbonnementById(9, new AsyncCallback<Hashtagabonnement>() {
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//						DialogBox d = new DialogBox();
+//						d.setText("Fehler: " + caught);
+//						d.show();
+//					}
+//
+//					@Override
+//					public void onSuccess(Hashtagabonnement result) {
+//						// TODO Auto-generated method stub
+//						DialogBox d = new DialogBox();
+//						d.setText("Erfolgreiche Ausgabe:  " + result.getNutzerID());
+//						d.show();
+//					}
+//				});
+				Unterhaltung unterhaltung = new Unterhaltung();
+				unterhaltung.setId(1);
+				
+				myAsync.getNachrichtenByUnterhaltung(unterhaltung, new AsyncCallback<ArrayList<Nachricht>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						DialogBox d = new DialogBox();
+						DialogBox d = new DialogBox ();
 						d.setText("Fehler: " + caught);
 						d.show();
 					}
 
 					@Override
-					public void onSuccess(Hashtagabonnement result) {
-						// TODO Auto-generated method stub
-						DialogBox d = new DialogBox();
-						d.setText("Erfolgreiche Ausgabe:  " + result.getNutzerID());
+					public void onSuccess(ArrayList<Nachricht> result) {
+						DialogBox d = new DialogBox ();
+						String text ="Ergebnis: "+ result.size()+ " ";
+						for (Nachricht n : result){
+							text = text + n.getId() + " "; 
+							break;
+						}
+					
+						d.setText(text);
 						d.show();
 					}
+					
 				});
-
+				
+				
 			}
 		};
 

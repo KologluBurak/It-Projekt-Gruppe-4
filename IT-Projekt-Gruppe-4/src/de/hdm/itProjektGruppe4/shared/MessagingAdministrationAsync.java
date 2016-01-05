@@ -242,14 +242,16 @@ public interface MessagingAdministrationAsync {
 	 * *************************************************************
 	 */
 
-	void getByEmpfaenger(String empfaengerNickname, AsyncCallback<Unterhaltungsliste> callback);
+	void getByEmpfaenger(Nutzer empfaengerNickname,
+			AsyncCallback<Unterhaltungsliste> callback);
 
 	void createUnterhaltungsliste(Unterhaltung u, String sender, String empf,
 			AsyncCallback<Unterhaltungsliste> callback);
 
 	void getByUnterhaltung(Unterhaltung unterhaltung, AsyncCallback<Unterhaltungsliste> callback);
 
-	void getByAbsender(String absenderNickanme, AsyncCallback<Unterhaltungsliste> callback);
+	void getByAbsender(Nutzer absenderNickname,
+			AsyncCallback<Unterhaltungsliste> callback);
 
 	/*
 	 * *************************************************************************

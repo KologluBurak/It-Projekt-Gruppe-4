@@ -123,14 +123,14 @@ public class UnterhaltungslisteMapper {
 	 * @return uliste
 	 * @throws IllegalArgumentException
 	 */
-	public Unterhaltungsliste findByAbsender(String absenderNickname)
+	public Unterhaltungsliste findByAbsender(Nutzer absenderNickname)
 			throws IllegalArgumentException {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname;
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname.getId();
 
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -162,14 +162,14 @@ public class UnterhaltungslisteMapper {
 	 * @return uliste
 	 * @throws IllegalArgumentException
 	 */
-	public Unterhaltungsliste findByEmpfaenger(String empfaengerNickname)
+	public Unterhaltungsliste findByEmpfaenger(Nutzer empfaengerNickname)
 			throws IllegalArgumentException {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		try {
 
-			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaengerNickname;
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaengerNickname.getId();
 
 
 			Statement stmt = con.createStatement();

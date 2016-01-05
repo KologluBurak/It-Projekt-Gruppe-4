@@ -520,7 +520,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Auslesen eines Nutzerabonnements anhand seiner ID.
 	 */
 	public Nutzerabonnement getNutzerabonnementById(int id) throws IllegalArgumentException {
-		return this.getNutzerabonnementById(id);
+		return this.nutzerAboMapper.findNutzerAbonnementByID(id);
 	}
 
 	/**
@@ -672,7 +672,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand des Absender.
 	 */
-	public Unterhaltungsliste getByAbsender(String absenderNickname) throws IllegalArgumentException {
+	public Unterhaltungsliste getByAbsender(Nutzer absenderNickname) throws IllegalArgumentException {
 		// nickanme die Id ermitteln und das muss man dan in die findByAbsender
 		// weiter geben.
 		return this.unterhaltungslisteMapper.findByAbsender(absenderNickname);
@@ -681,7 +681,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand des Empfängers.
 	 */
-	public Unterhaltungsliste getByEmpfaenger(String empfaengerNickname) throws IllegalArgumentException {
+	public Unterhaltungsliste getByEmpfaenger(Nutzer empfaengerNickname) throws IllegalArgumentException {
 		// nickanme die Id ermitteln und das muss man dan in die findByAbsender
 		// weiter geben.
 		return this.unterhaltungslisteMapper.findByEmpfaenger(empfaengerNickname);

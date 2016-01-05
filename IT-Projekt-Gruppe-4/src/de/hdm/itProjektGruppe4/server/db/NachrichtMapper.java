@@ -204,7 +204,7 @@ public class NachrichtMapper {
 		try {
 			//Neu
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID=" +nutzer.getId());
 
 			while (rs.next()) {
@@ -241,7 +241,7 @@ public class NachrichtMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT text, datum FROM nachrichten WHERE datum BETWEEN " + von + " AND " + bis + "");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM `nachrichten` WHERE `datum` BETWEEN '"+von +"' AND '"+bis+"'");
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
