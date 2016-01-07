@@ -31,6 +31,27 @@ public class Nutzerabonnement extends BusinessObject {
 	private int abonnementID = 0;
 
 	/**
+	 * Bezeichnung des Nicknames eines Nutzers
+	 */
+	private Nutzer nutzerNickname = null;
+	
+	/**
+	 * Ausgabe des Nicknames
+	 * @return
+	 */
+	public Nutzer getNutzerNickname() {
+		return nutzerNickname;
+	}
+
+	/**
+	 * Setzen des Nicknames
+	 * @param nutzerNickname
+	 */
+	public void setNutzerNickname(Nutzer nutzerNickname) {
+		this.nutzerNickname = nutzerNickname;
+	}
+
+	/**
 	 * Ausgabe der Follower ID
 	 * 
 	 * @return followerID

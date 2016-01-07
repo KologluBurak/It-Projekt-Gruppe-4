@@ -53,7 +53,6 @@ public class Hashtagabonnement extends Abonnement {
 
 	/**
 	 * Ausgabe der Hashtag ID
-	 * 
 	 * @return hashtagID
 	 */
 	public int getHashtagID() {

@@ -134,7 +134,7 @@ public class NachrichtMapper {
 		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, nickname, text, nachrichten.datum FROM nutzer INNER JOIN nachrichten "
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID");
 
 			while (rs.next()) {
@@ -171,7 +171,7 @@ public class NachrichtMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT nachrichtID, text, datum FROM nachrichten "+ "WHERE nachrichtID=" + id);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten "+ "WHERE nachrichtID=" + id);
 
 			if (rs.next()) {
 				Nachricht nachricht = new Nachricht();

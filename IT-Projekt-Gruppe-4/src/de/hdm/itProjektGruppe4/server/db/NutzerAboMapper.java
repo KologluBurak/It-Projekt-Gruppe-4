@@ -22,7 +22,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * @author Thies
  * @author Kologlu
  * @author Oikonomou
- * @author Yücel
+ * @author YÃ¼cel
  */
 
 public class NutzerAboMapper {
@@ -137,11 +137,16 @@ public class NutzerAboMapper {
 		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements ORDER BY nutzerAboID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+					+ "ON nutzerabonnements.nutzerID = nutzer.nutzerID");
 
 			while (rs.next()) {
+				Nutzer nutzer = new Nutzer();
+				nutzer.setNickname(rs.getString("nickname"));
+				
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setNutzerNickname(nutzer);
 				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
 				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
 				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
@@ -152,13 +157,11 @@ public class NutzerAboMapper {
 			stmt.close();
 			rs.close();
 			// con.close();
-
-			return allNutzerabonnements;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}
-
+		return allNutzerabonnements;
 	}
 
 	/**
@@ -199,7 +202,7 @@ public class NutzerAboMapper {
 	}
 
 	/**
-	 * Diese Methode ermöglicht es eine Ausgabe ueber einen Nutzerabonnements
+	 * Diese Methode ermï¿½glicht es eine Ausgabe ueber einen Nutzerabonnements
 	 * in der Datenbank, anhand deren ID.
 	 * 
 	 * @param id
@@ -273,7 +276,7 @@ public class NutzerAboMapper {
 	 * Diese Methode ermoeglicht es eine Ausgabe ueber einen Nutzerabonnement
 	 * in der Datenbank, anhand deren FollowerID.
 	 * @param id
-	 * @return
+	 * @return nutzerAboListe
 	 * @throws IllegalArgumentException
 	 */
 	public ArrayList<Nutzerabonnement> findNutzerAbonnementByFollowerID(int id) 

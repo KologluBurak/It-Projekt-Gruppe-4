@@ -116,42 +116,6 @@ public class UnterhaltungMapper {
 					+ e.toString());
 		}
 	}
-
-//	/**
-//	 * Diese Methode ermöglicht es alle Unterhaltungen mit allen beinhalteten Nachrichten aus der Datenbank in
-//	 * einer Liste auszugeben.
-//	 * 
-//	 * @return allUnterhaltungen
-//	 */
-//	public ArrayList<Unterhaltung> findAllUnterhaltungen() {
-//		Connection con = DBConnection.connection();
-//		ArrayList<Unterhaltung> allUnterhaltungen = new ArrayList<Unterhaltung>();
-//		try {
-//			Statement stmt = con.createStatement();
-//			ResultSet rs = stmt.executeQuery("SELECT unterhaltungen.unterhaltungID, text, nachrichten.datum "
-//					+ "FROM unterhaltungen INNER JOIN nachrichten "
-//						+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID ");
-//
-//			while (rs.next()) {
-//				Unterhaltung unterhaltung = new Unterhaltung();
-//				unterhaltung.setId(rs.getInt("unterhaltungID"));
-//				
-//				Nachricht nachricht = new Nachricht();
-//				nachricht.setText(rs.getString("text"));
-//				nachricht.setErstellungsZeitpunkt(rs.getString("nachrichten.datum"));
-//
-//				allUnterhaltungen.add(unterhaltung);
-//			}
-//			stmt.close();
-//			rs.close();
-//			// con.close();
-//
-//			return allUnterhaltungen;
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
 	
 	/**
 	 * Diese Methode ermöglicht es alle Nachrichten einer Unterhaltung anhand
@@ -167,17 +131,14 @@ public class UnterhaltungMapper {
 		Connection con = DBConnection.connection();
 		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
 		try {
-
-			//Neu
 			Statement stmt= con.createStatement();
-			ResultSet rs= stmt.executeQuery("SELECT * "
-					+ "FROM unterhaltungen INNER JOIN nachrichten ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
+			ResultSet rs= stmt.executeQuery("SELECT * FROM unterhaltungen INNER JOIN nachrichten "
+					+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
 					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId());
 
-			Nachricht nachricht = new Nachricht();
 			while (rs.next()) {
+				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
-				System.out.println(nachricht.getId());
 				nachricht.setUnterhaltungID(rs.getInt("unterhaltungen.unterhaltungID"));
 				nachricht.setText(rs.getString("text"));
 				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
@@ -188,8 +149,7 @@ public class UnterhaltungMapper {
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new IllegalArgumentException("Datenbank fehler!"
-					+ e.toString());
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}
 		return result;
 	}
