@@ -26,6 +26,15 @@ public class Unterhaltung extends BusinessObject{
 	private String zuletztBearbeitet;
 
 	/**
+	 * Der Nutzer der eine Nachricht gesendet hat
+	 */
+	private Nutzer sender;
+	
+	/**
+	 * Der Nutzer der eine Nachricht empfangen hat
+	 */
+	private Nutzer empfänger;
+	/**
 	 * Ausgabe der zuletzt bearbeiteten Zeit
 	 * @return zuletztBearbeitet
 	 */
@@ -56,12 +65,22 @@ public class Unterhaltung extends BusinessObject{
 	public void setRefNachricht(String refNachricht) {
 		this.refNachricht = refNachricht;
 	}
-	
-	public void setSender(Nutzer n){
-		
+
+	public Nutzer getSender() {
+		return sender;
+	}
+
+	public void setSender(Nutzer sender) {
+		this.sender = sender;
+	}
+
+	public Nutzer getEmpfänger() {
+		return empfänger;
+	}
+
+	public void setEmpfänger(Nutzer empfänger) {
+		this.empfänger = empfänger;
 	}
 	
-	public void setReceiver(Nutzer n){
-		
-	}
+	
 }
