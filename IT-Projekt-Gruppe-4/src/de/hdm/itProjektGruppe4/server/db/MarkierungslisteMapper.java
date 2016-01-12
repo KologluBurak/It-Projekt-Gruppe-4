@@ -70,27 +70,29 @@ public class MarkierungslisteMapper {
 	 * 
 	 * @param markierungsliste
 	 * @return markierungsliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Markierungsliste insert(Markierungsliste markierungsliste)
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
-
+		PreparedStatement preStmt = null;
 		try {
 			String sql = "INSERT INTO `markierungslisten`(`markierunglisteID`, `nachrichtID`, `hashtagID`) "
 					+ "VALUES (NULL, ?, ?)";
 
-			PreparedStatement preStmt;
+			//PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setInt(1, markierungsliste.getNachrichtID());
 			preStmt.setInt(2, markierungsliste.getHashtagID());
 			preStmt.executeUpdate();
-			preStmt.close();
+			//preStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, preStmt, con);
 		}
 		return markierungsliste;
 	}
@@ -98,17 +100,21 @@ public class MarkierungslisteMapper {
 	/**
 	 * 
 	 * @param markierungsliste
+	 * @throws Exception 
 	 */
-	public void delete(Markierungsliste markierungsliste){
+	public void delete(Markierungsliste markierungsliste) throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM markierungslisten " + "WHERE markierungslisteID="
 					+ markierungsliste.getId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
 		}
 	}
 
@@ -119,16 +125,18 @@ public class MarkierungslisteMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public Markierungsliste findByNachricht(String nachricht)
-			throws IllegalArgumentException {
+			throws Exception {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 
 			String sql = "SELECT *  FROM `markierungslisten` WHERE `nachrichtID` = " + nachricht;
 
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				Markierungsliste mliste = new Markierungsliste();
@@ -142,6 +150,8 @@ public class MarkierungslisteMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 
 		return null;
@@ -151,19 +161,21 @@ public class MarkierungslisteMapper {
 	 * 
 	 * @param hashtag
 	 * @return mliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Markierungsliste findByHashtag(String hashtag)
-			throws IllegalArgumentException {
+			throws Exception {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 		try {
 
 			String sql = "SELECT *  FROM `markierungslisten` WHERE `hashtagID` = " + hashtag;
 
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				Markierungsliste mliste = new Markierungsliste();
@@ -179,6 +191,8 @@ public class MarkierungslisteMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 
 		return null;

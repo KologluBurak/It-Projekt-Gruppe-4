@@ -44,19 +44,19 @@ public interface MessagingAdministration extends RemoteService {
 	 * ************************************************
 	 */
 	public Nutzer createNutzer(String vorname, String nachname, String email, String nickname)
-			throws IllegalArgumentException;
+			throws Exception;
 
-	public void delete(Nutzer nutzer) throws IllegalArgumentException;
+	public void delete(Nutzer nutzer) throws Exception;
 
-	public Nutzer getNutzerById(int id) throws IllegalArgumentException;
+	public Nutzer getNutzerById(int id) throws Exception;
 
-	public Nutzer getNutzerByNickname(String nickname) throws IllegalArgumentException;
+	public Nutzer getNutzerByNickname(String nickname) throws Exception;
 
-	public ArrayList<Nutzer> getAllNutzer() throws IllegalArgumentException;
+	public ArrayList<Nutzer> getAllNutzer() throws Exception;
 
-	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException;
+	public Nutzer update(Nutzer nutzer) throws Exception;
 
-	public Boolean userExist(String email) throws IllegalArgumentException;
+	public Boolean userExist(String email) throws Exception;
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Beginn: Methoden für Nachricht-Objekte
@@ -65,19 +65,19 @@ public interface MessagingAdministration extends RemoteService {
 	 */
 
 	public Nachricht createNachricht(String text, String nickname, Unterhaltung unterhaltung)
-			throws IllegalArgumentException;
+			throws Exception;
 
-	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer) throws IllegalArgumentException;
+	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer) throws Exception;
 
-	public ArrayList<Nachricht> getAlleNachrichtenJeZeitraum(String von, String bis);
+	public ArrayList<Nachricht> getAlleNachrichtenJeZeitraum(String von, String bis) throws Exception;
 
-	public void delete(Nachricht nachricht) throws IllegalArgumentException;
+	public void delete(Nachricht nachricht) throws Exception;
 
-	public ArrayList<Nachricht> getAllNachrichten() throws IllegalArgumentException;
+	public ArrayList<Nachricht> getAllNachrichten() throws Exception;
 
-	public Nachricht getNachrichtById(int id) throws IllegalArgumentException;
+	public Nachricht getNachrichtById(int id) throws Exception;
 
-	public ArrayList<Nachricht> getNachrichtenByUnterhaltung(Unterhaltung unterhaltung) throws IllegalArgumentException;
+	public ArrayList<Nachricht> getNachrichtenByUnterhaltung(Unterhaltung unterhaltung) throws Exception;
 
 	/*
 	 * *************************************************************************
@@ -93,12 +93,12 @@ public interface MessagingAdministration extends RemoteService {
 	 * ******************************************************
 	 */
 
-	public Unterhaltung createUnterhaltung(Date datum) throws IllegalArgumentException;
+	public Unterhaltung createUnterhaltung(Date datum) throws Exception;
 
 	// public ArrayList<Unterhaltung> getAllUnterhaltungen() throws
-	// IllegalArgumentException;
+	// Exception;
 
-	public void delete(Unterhaltung unterhaltung) throws IllegalArgumentException;
+	public void delete(Unterhaltung unterhaltung) throws Exception;
 
 	/*
 	 * *************************************************************************
@@ -114,9 +114,9 @@ public interface MessagingAdministration extends RemoteService {
 	 * ****************************************************
 	 */
 
-	public Abonnement createAbonnement(int id, String erstellungsZeitpunkt) throws IllegalArgumentException;
+	public Abonnement createAbonnement(int id, String erstellungsZeitpunkt) throws Exception;
 
-	public ArrayList<Abonnement> getAllAbonnements() throws IllegalArgumentException;
+	public ArrayList<Abonnement> getAllAbonnements() throws Exception;
 
 	/*
 	 * *************************************************************************
@@ -132,13 +132,13 @@ public interface MessagingAdministration extends RemoteService {
 	 * *************************************************
 	 */
 
-	public ArrayList<Hashtag> getAllHashtags() throws IllegalArgumentException;
+	public ArrayList<Hashtag> getAllHashtags() throws Exception;
 
-	public Hashtag createHashtag(String bezeichnung) throws IllegalArgumentException;
+	public Hashtag createHashtag(String bezeichnung) throws Exception;
 
-	public Hashtag getHashtagById(int id) throws IllegalArgumentException;
+	public Hashtag getHashtagById(int id) throws Exception;
 
-	public void delete(Hashtag hashtag) throws IllegalArgumentException;
+	public void delete(Hashtag hashtag) throws Exception;
 
 	/*
 	 * *************************************************************************
@@ -155,21 +155,21 @@ public interface MessagingAdministration extends RemoteService {
 	 */
 
 	public Nutzerabonnement createNutzerabonnement(Nutzer derBeobachtete, Nutzer follower)
-			throws IllegalArgumentException;
+			throws Exception;
 
-	public ArrayList<Nutzerabonnement> getAllNutzerabonnements() throws IllegalArgumentException;
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnements() throws Exception;
 
-	public Nutzerabonnement getNutzerabonnementById(int id) throws IllegalArgumentException;
+	public Nutzerabonnement getNutzerabonnementById(int id) throws Exception;
 
-	public void delete(Nutzerabonnement nutzerabonnement) throws IllegalArgumentException;
+	public void delete(Nutzerabonnement nutzerabonnement) throws Exception;
 
-	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(Nutzer nutzer) throws IllegalArgumentException;
+	public ArrayList<Nutzerabonnement> getNutzerAbonnementByNutzer(Nutzer nutzer) throws Exception;
 
-	public ArrayList<Nutzerabonnement> getNutzerabonnementByFollowerId(int id) throws IllegalArgumentException;
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByFollowerId(int id) throws Exception;
 
-	public ArrayList<Nutzerabonnement> getNutzerabonnementByDerBeobachteteId(int id) throws IllegalArgumentException;
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByDerBeobachteteId(int id) throws Exception;
 
-	public ArrayList<Nutzerabonnement> getNutzerabonnementByAbonnementId(int id) throws IllegalArgumentException;
+	public ArrayList<Nutzerabonnement> getNutzerabonnementByAbonnementId(int id) throws Exception;
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für NutzerAbo-Objekte
@@ -184,19 +184,19 @@ public interface MessagingAdministration extends RemoteService {
 	 * ****************************************************
 	 */
 
-	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung) throws IllegalArgumentException;
+	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung) throws Exception;
 
-	public void delete(Hashtagabonnement hashtagAbo) throws IllegalArgumentException;
+	public void delete(Hashtagabonnement hashtagAbo) throws Exception;
 
-	public ArrayList<Hashtagabonnement> getAllHashtagabonnements() throws IllegalArgumentException;
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements() throws Exception;
 
-	public Hashtagabonnement getHashtagAbonnementById(int id) throws IllegalArgumentException;
+	public Hashtagabonnement getHashtagAbonnementById(int id) throws Exception;
 
-	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer) throws IllegalArgumentException;
+	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer) throws Exception;
 
-	public Hashtagabonnement getHashtagAbonnementByHashtagId(int id) throws IllegalArgumentException;
+	public Hashtagabonnement getHashtagAbonnementByHashtagId(int id) throws Exception;
 
-	public Hashtagabonnement getHashtagAbonnementByAbonnementId(int id) throws IllegalArgumentException;
+	public Hashtagabonnement getHashtagAbonnementByAbonnementId(int id) throws Exception;
 
 	/*
 	 * *************************************************************************
@@ -212,7 +212,7 @@ public interface MessagingAdministration extends RemoteService {
 	 * **********************************************************
 	 */
 
-	public Markierungsliste createMarkierungsliste(String text, String hashtag) throws IllegalArgumentException;
+	public Markierungsliste createMarkierungsliste(String text, String hashtag) throws Exception;
 
 	/*
 	 * *************************************************************************
@@ -229,13 +229,13 @@ public interface MessagingAdministration extends RemoteService {
 	 */
 
 	public Unterhaltungsliste createUnterhaltungsliste(Unterhaltung u, String sender, String empf)
-			throws IllegalArgumentException;
+			throws Exception;
 
-	public Unterhaltungsliste getByAbsender(Nutzer absenderNickname) throws IllegalArgumentException;
+	public Unterhaltungsliste getByAbsender(Nutzer absenderNickname) throws Exception;
 
-	public Unterhaltungsliste getByEmpfaenger(Nutzer empfaengerNickname) throws IllegalArgumentException;
+	public Unterhaltungsliste getByEmpfaenger(Nutzer empfaengerNickname) throws Exception;
 
-	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws IllegalArgumentException;
+	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws Exception;
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte

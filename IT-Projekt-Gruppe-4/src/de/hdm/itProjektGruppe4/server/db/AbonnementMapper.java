@@ -77,17 +77,17 @@ public class AbonnementMapper {
 	 * 
 	 * @param abonnement
 	 * @return
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Abonnement insertAbonnement(Abonnement abonnement) 
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		PreparedStatement preStmt = null;
 
 		try {
 			String sql = "INSERT INTO `abonnements`(`abonnementID`) VALUES (NULL)";
 
-			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.executeUpdate();
 			preStmt.close();
@@ -96,6 +96,8 @@ public class AbonnementMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			DBConnection.closeAll(null, preStmt, con);
 		}
 
 		return abonnement;
@@ -105,18 +107,21 @@ public class AbonnementMapper {
 	 * Diese Methode ermöglicht das Löschen eines Abonnements
 	 * 
 	 * @param abonnement
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public void delete(Abonnement abonnement) 
-			throws IllegalArgumentException {
+			throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM abonnements " + "WHERE abonnementID=" + abonnement.getId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
 		}
 	}
 
@@ -158,16 +163,18 @@ public class AbonnementMapper {
 	 * Liste auszugeben.
 	 * 
 	 * @return aboListe
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	
-	public ArrayList<Abonnement> findAllAbonnements() throws IllegalArgumentException {
+	public ArrayList<Abonnement> findAllAbonnements() throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		ArrayList<Abonnement> aboListe = new ArrayList<Abonnement>();
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM abonnements ORDER BY abonnementID");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM abonnements ORDER BY abonnementID");
 
 			while (rs.next()) {
 				Abonnement abonnement = new Abonnement();
@@ -176,13 +183,15 @@ public class AbonnementMapper {
 				aboListe.add(abonnement);
 			}
 
-			stmt.close();
-			rs.close();
+			//stmt.close();
+			//rs.close();
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" 
 					+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 		return aboListe;
 	}

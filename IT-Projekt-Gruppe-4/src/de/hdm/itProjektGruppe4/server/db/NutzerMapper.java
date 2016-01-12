@@ -80,9 +80,10 @@ public class NutzerMapper {
 	 *         <code>id</code>.
 	 */
 	public Nutzer insert(Nutzer nutzer)
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		PreparedStatement preStmt=null;
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
@@ -91,7 +92,7 @@ public class NutzerMapper {
 			String sql = "INSERT INTO `nutzer`(`nutzerID`, `vorname`, `nachname`, `email`, `nickname`, `datum`) "
 					+ "VALUES (NULL, ?, ?, ?, ?, ?)";
 
-			PreparedStatement preStmt;
+//			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, nutzer.getVorname());
 			preStmt.setString(2, nutzer.getNachname());
@@ -99,13 +100,15 @@ public class NutzerMapper {
 			preStmt.setString(4, nutzer.getNickname());
 			preStmt.setString(5, dateFormat.format(date));
 			preStmt.executeUpdate();
-			preStmt.close();
+			//preStmt.close();
 
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, preStmt, con);
 		}
 		return nutzer;
 	}
@@ -116,14 +119,15 @@ public class NutzerMapper {
 	 * @param nutzer
 	 * @return nutzer
 	 */
-	public Nutzer update(Nutzer nutzer) throws IllegalArgumentException {
+	public Nutzer update(Nutzer nutzer) throws Exception {
 		Connection con = DBConnection.connection();
+		PreparedStatement preStmt=null;
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
 			nutzer.setErstellungsZeitpunkt(dateFormat.format(date).toString());
 			
-			PreparedStatement preStmt;
+//			PreparedStatement preStmt;
 			preStmt = con.prepareStatement("UPDATE nutzer SET vorname=?, "
 							+ "nachname=?, email=?, nickname=?, datum=? WHERE nutzerID="+ nutzer.getId());
 			
@@ -133,13 +137,15 @@ public class NutzerMapper {
 			preStmt.setString(4, nutzer.getNickname());
 			preStmt.setString(5, dateFormat.format(date));
 			preStmt.executeUpdate();
-			preStmt.close();
+//			preStmt.close();
 			
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, preStmt, con);
 		}
 		return nutzer;
 	}
@@ -150,10 +156,11 @@ public class NutzerMapper {
 	 * 
 	 * @param nutzer
 	 */
-	public void delete(Nutzer nutzer) throws IllegalArgumentException {
+	public void delete(Nutzer nutzer) throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM nutzer WHERE nutzerID="+ nutzer.getId());
 			stmt.close();
 			
@@ -161,6 +168,8 @@ public class NutzerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
 		}
 	}
 
@@ -170,12 +179,14 @@ public class NutzerMapper {
 	 * 
 	 * @return alleNutzer
 	 */
-	public ArrayList<Nutzer> findAllNutzer() throws IllegalArgumentException {
+	public ArrayList<Nutzer> findAllNutzer() throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs=null;
 		ArrayList<Nutzer> alleNutzer = new ArrayList<Nutzer>();
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer ORDER BY nutzerID");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzer ORDER BY nutzerID");
 
 			while (rs.next()) {
 				Nutzer nutzer = new Nutzer();
@@ -188,13 +199,15 @@ public class NutzerMapper {
 
 				alleNutzer.add(nutzer);
 			}
-			stmt.close();
-			rs.close();
+//			stmt.close();
+//			rs.close();
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 		return alleNutzer;
 	}
@@ -205,15 +218,16 @@ public class NutzerMapper {
 	 * 
 	 * @param nickname
 	 * @return nutzer
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Nutzer findNutzerByNickname(String nickname)
-			throws IllegalArgumentException {
+			throws Exception {
 		Connection con = DBConnection.connection();
-
+		Statement stmt= null;
+		ResultSet rs=null;
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nickname='"
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nickname='"
 							+ nickname + "'");
 
 			if (rs.next()) {
@@ -230,6 +244,8 @@ public class NutzerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 		return null;
 	}
@@ -240,15 +256,17 @@ public class NutzerMapper {
 	 * 
 	 * @param email
 	 * @return nutzer
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Nutzer findNutzerByEmail(String email)
-			throws IllegalArgumentException {
+			throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
 
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzer WHERE email='"+ email + "'");
 
 			if (rs.next()) {
 				Nutzer nutzer = new Nutzer();
@@ -264,6 +282,8 @@ public class NutzerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 		return null;
 	}
@@ -276,11 +296,14 @@ public class NutzerMapper {
 	 * @return nutzer
 	 * @throws IllegalArgumentException
 	 */
-	public Nutzer findNutzerById(int nutzerID) throws IllegalArgumentException {
+	public Nutzer findNutzerById(int nutzerID) throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
+		
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID='"+nutzerID+"'");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzer WHERE nutzerID='"+nutzerID+"'");
 			
 			if(rs.next()){
 				Nutzer nutzer=new Nutzer();
@@ -296,6 +319,8 @@ public class NutzerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 		return null;
 	}

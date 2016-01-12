@@ -73,25 +73,28 @@ public class UnterhaltungslisteMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public Unterhaltungsliste insert(Unterhaltungsliste unterhaltungsliste)
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		PreparedStatement preStmt=null;
 		try {
 			String sql = "INSERT INTO `unterhaltungslisten`(`unterhaltungslisteID`, `unterhaltungID`, `absenderID`, `empfaengerID`)"
 					+ "VALUES (NULL, ?, ?, ?)";
 
-			PreparedStatement preStmt;
+//			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setInt(1, unterhaltungsliste.getUnterhaltungID());
 			preStmt.setInt(2, unterhaltungsliste.getAbsenderID());
 			preStmt.setInt(3, unterhaltungsliste.getEmpfaengerID());
 			preStmt.executeUpdate();
-			preStmt.close();
+//			preStmt.close();
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
+		}finally {
+			DBConnection.closeAll(null, preStmt, con);
 		}
 		return unterhaltungsliste;
 	}
@@ -101,17 +104,21 @@ public class UnterhaltungslisteMapper {
 	 * und dessen Referenzen zu anderen Klassen
 	 * 
 	 * @param unterhaltungsliste
+	 * @throws Exception 
 	 */
-	public void delete(Unterhaltungsliste unterhaltungsliste){
+	public void delete(Unterhaltungsliste unterhaltungsliste) throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM unterhaltungslisten " + "WHERE unterhaltungslisteID="
 					+ unterhaltungsliste.getId());
 
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
 		}
 	}
 	
@@ -121,18 +128,19 @@ public class UnterhaltungslisteMapper {
 	 * 
 	 * @param absenderNickname
 	 * @return uliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Unterhaltungsliste findByAbsender(Nutzer absenderNickname)
-			throws IllegalArgumentException {
+			throws Exception {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		try {
 
 			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absenderNickname.getId();
 
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
@@ -149,6 +157,8 @@ public class UnterhaltungslisteMapper {
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
 		}
 
 		return null;
@@ -160,20 +170,22 @@ public class UnterhaltungslisteMapper {
 	 * 
 	 * @param empfaengerNickname
 	 * @return uliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Unterhaltungsliste findByEmpfaenger(Nutzer empfaengerNickname)
-			throws IllegalArgumentException {
+			throws Exception {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
 		try {
 
 			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaengerNickname.getId();
 
 
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				Unterhaltungsliste uliste = new Unterhaltungsliste();
@@ -189,6 +201,8 @@ public class UnterhaltungslisteMapper {
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 
 		return null;
@@ -202,15 +216,17 @@ public class UnterhaltungslisteMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public Unterhaltungsliste findByUnterhaltung(Unterhaltung unterhaltung)
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs=null;
 		try {
 			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `unterhaltungID` = "
 					+ unterhaltung.getId();
 
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
 
 			if (rs.next()) {
 				Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
@@ -226,6 +242,8 @@ public class UnterhaltungslisteMapper {
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e2.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
 		}
 		return null;
 	}

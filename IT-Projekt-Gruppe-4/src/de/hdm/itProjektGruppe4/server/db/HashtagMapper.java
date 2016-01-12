@@ -79,16 +79,16 @@ public class HashtagMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public Hashtag insert(Hashtag hashtag) 
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		PreparedStatement preStmt = null;
 
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
 			Date date = new Date();
 			String sql= "INSERT INTO `hashtags`(`hashtagID`, `bezeichnung`, `datum`) VALUES (NULL, ?, ?)";
 
-			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, hashtag.getBezeichnung());
 			preStmt.setString(2, dateFormat.format(date));
@@ -100,7 +100,9 @@ public class HashtagMapper {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
-		}
+		}finally {
+			DBConnection.closeAll(null, preStmt, con);
+	}
 		return hashtag;
 	}
 
@@ -111,11 +113,12 @@ public class HashtagMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public void delete(Hashtag hashtag) 
-			throws IllegalArgumentException {
+			throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
 
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 
 			stmt.executeUpdate("DELETE FROM hashtags " + "WHERE hashtagID="+ hashtag.getId());
 
@@ -123,7 +126,9 @@ public class HashtagMapper {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
-		}
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
+	}
 	}
 
 	/**
@@ -134,13 +139,15 @@ public class HashtagMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public ArrayList<Hashtag> findAllHashtags()
-			throws IllegalArgumentException {
+			throws Exception {
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 		ArrayList<Hashtag> allHashtags = new ArrayList<Hashtag>();
 
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM hashtags");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM hashtags");
 
 			while (rs.next()) {
 				Hashtag hashtag = new Hashtag();
@@ -150,15 +157,17 @@ public class HashtagMapper {
 
 				allHashtags.add(hashtag);
 			}
-			stmt.close();
-			rs.close();
+			//stmt.close();
+			//rs.close();
 			// con.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
-		}
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+	}
 		return allHashtags;
 	}
 
@@ -171,13 +180,15 @@ public class HashtagMapper {
 	 * @throws IllegalArgumentException
 	 */
 	public Hashtag findHashtagByID(int id) 
-			throws IllegalArgumentException {
+			throws Exception {
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
 
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM hashtags "
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM hashtags "
 					+ "WHERE hashtagID=" + id);
 
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
@@ -191,7 +202,9 @@ public class HashtagMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
-		}
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+	}
 		return null;
 	}
 }
