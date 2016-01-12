@@ -76,10 +76,10 @@ public class NachrichtMapper {
 	 * @return
 	 */
 	public Nachricht insert(Nachricht nachricht)
-			throws IllegalArgumentException {
+			throws Exception{
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
-
+		PreparedStatement preStmt = null;
 		try {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
@@ -87,7 +87,6 @@ public class NachrichtMapper {
 			
 			String sql= "INSERT INTO `nachrichten` (`nachrichtID`, `text`, `datum`, `unterhaltungID`, `nutzerID`) VALUES (NULL, ?, ?, ?, ?);";
 
-			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, nachricht.getText());
 			preStmt.setString(2, dateFormat.format(date));
@@ -100,6 +99,8 @@ public class NachrichtMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, preStmt, con );
 		}
 		return nachricht;
 	}
@@ -109,16 +110,19 @@ public class NachrichtMapper {
 	 * 
 	 * @param nachricht
 	 */
-	public void delete(Nachricht nachricht) throws IllegalArgumentException {
+	public void delete(Nachricht nachricht) throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM nachrichten "
 					+ "WHERE nachrichten.nachrichtID=" + nachricht.getId());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con );
 		}
 	}
 
@@ -129,12 +133,14 @@ public class NachrichtMapper {
 	 * @return allNachrichten
 	 */
 	public ArrayList<Nachricht> findAllNachrichten()
-			throws IllegalArgumentException {
+			throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
 		ArrayList<Nachricht> allNachrichten = new ArrayList<Nachricht>();
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID");
 
 			while (rs.next()) {
@@ -155,6 +161,8 @@ public class NachrichtMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con );
 		}
 		return allNachrichten;
 	}
@@ -164,14 +172,16 @@ public class NachrichtMapper {
 	 * 
 	 * @param id
 	 * @return nachricht
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Nachricht findNachrichtById(int id)
-			throws IllegalArgumentException {
+			throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nachrichten "+ "WHERE nachrichtID=" + id);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nachrichten "+ "WHERE nachrichtID=" + id);
 
 			if (rs.next()) {
 				Nachricht nachricht = new Nachricht();
@@ -184,6 +194,8 @@ public class NachrichtMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con );
 		}
 		return null;
 	}
@@ -195,14 +207,16 @@ public class NachrichtMapper {
 	 * @return nachrichtenJeNutzer
 	 */
 	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer)
-			throws IllegalArgumentException {
+			throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
 			//Neu
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID=" +nutzer.getId());
 
 			while (rs.next()) {
@@ -221,6 +235,8 @@ public class NachrichtMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con );
 		}
 		return nachrichtenJeNutzer;
 	}
@@ -233,13 +249,15 @@ public class NachrichtMapper {
 	 * @return nachrichtenJeZeitraum
 	 */
 	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis)
-			throws IllegalArgumentException {
+			throws Exception{
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
 		ArrayList<Nachricht> nachrichtenJeZeitraum = new ArrayList<Nachricht>();
 
 		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM `nachrichten` WHERE `datum` BETWEEN '"+von +"' AND '"+bis+"'");
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM `nachrichten` WHERE `datum` BETWEEN '"+von +"' AND '"+bis+"'");
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
@@ -251,6 +269,8 @@ public class NachrichtMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con );
 		}
 		return nachrichtenJeZeitraum;
 	}

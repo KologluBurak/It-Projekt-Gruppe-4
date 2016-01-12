@@ -73,9 +73,10 @@ public class UnterhaltungMapper {
 	 *         <code>id</code>.
 	 */
 	public Unterhaltung insert(Unterhaltung unterhaltung)
-			throws IllegalArgumentException {
+			throws Exception{
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		try {
 			String sql = "INSERT INTO `unterhaltungen`(`unterhaltungID`) VALUES (NULL)";
 
@@ -89,6 +90,8 @@ public class UnterhaltungMapper {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con );
 		}
 		return unterhaltung;
 	}
@@ -98,14 +101,15 @@ public class UnterhaltungMapper {
 	 * Datenbank.
 	 * 
 	 * @param unterhaltung
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public void delete(Unterhaltung unterhaltung)
-			throws IllegalArgumentException {
+			throws Exception{
 		
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		try {
-			Statement stmt = con.createStatement();
+			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID="+ unterhaltung.getId());
 			stmt.close();
 			
@@ -114,6 +118,8 @@ public class UnterhaltungMapper {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"
 					+ e.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con );
 		}
 	}
 	
@@ -123,16 +129,18 @@ public class UnterhaltungMapper {
 	 * 
 	 * @param unterhaltung
 	 * @return result
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public ArrayList<Nachricht> findNachrichtenByUnterhaltung(Unterhaltung unterhaltung)
-			throws IllegalArgumentException {
+			throws Exception{
 
 		Connection con = DBConnection.connection();
+		Statement stmt= null;
 		ArrayList<Nachricht> result = new ArrayList<Nachricht>();
+		ResultSet rs= null;
 		try {
-			Statement stmt= con.createStatement();
-			ResultSet rs= stmt.executeQuery("SELECT * FROM unterhaltungen INNER JOIN nachrichten "
+			stmt= con.createStatement();
+			rs= stmt.executeQuery("SELECT * FROM unterhaltungen INNER JOIN nachrichten "
 					+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
 					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId());
 
@@ -150,6 +158,8 @@ public class UnterhaltungMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con );
 		}
 		return result;
 	}
