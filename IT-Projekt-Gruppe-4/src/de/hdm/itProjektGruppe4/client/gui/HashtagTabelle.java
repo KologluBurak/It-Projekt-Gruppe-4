@@ -38,9 +38,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			final FlexTable flexTable = new FlexTable();
 			
 			
-			flexTable.setText(0, 1, "Hashtag");
-			flexTable.setText(0, 2, "Text");
+			flexTable.setText(0, 1, "AboID");
+			flexTable.setText(0, 2, "HashtagID");
 			flexTable.setText(0, 3, "Entfernen");
+			
 			
 			
 			myAsync.getAllHashtagabonnements(new AsyncCallback<ArrayList<Hashtagabonnement>>() {
@@ -51,13 +52,13 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 					
 					for (final Hashtagabonnement hta : result) {
 
-						Button bModifizieren = new Button("Aendern");
+						Button bModifizieren = new Button("Entfernen");
 						
 						//TODO Hier müsst hr erst eine Tabell erstellen und alle Daten reintun was in hta steht.
 
 						Label aboID = new Label(String.valueOf(hta.getAbonnementID()));
 						Label zeit = new Label(String.valueOf(hta.getErstellungsZeitpunkt()));
-						Label hashtagID = new Label(String.valueOf(hta.getHashtagID()));
+						Label hashtagID = new Label(String.valueOf(hta.getHashtagBezeichnung()));
 						
 						flexTable.setWidget(zeileCounter, 0, aboID);
 						flexTable.setWidget(zeileCounter, 1, zeit);

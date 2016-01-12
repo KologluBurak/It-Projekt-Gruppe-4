@@ -1,13 +1,23 @@
 package de.hdm.itProjektGruppe4.client.gui;
 
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
+import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
 
 
@@ -24,11 +34,48 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 				final FlexTable flexTable = new FlexTable();
 								
 				
-				flexTable.setText(0, 1, "Nickname");
-				flexTable.setText(0, 2, "Nachname");
-				flexTable.setText(0, 3, "Vorname");
-				flexTable.setText(0, 4, "E-Mail Adresse");
-				flexTable.setText(0, 5, "Entfernen");
+				
+				flexTable.setText(0, 0, "Your Nickname");
+				flexTable.setText(0, 1, "Follower");
+				flexTable.setText(0, 2, "Entfernen");
+				
+				
+				myAsync.getAllNutzerabonnements(new AsyncCallback<ArrayList<Nutzerabonnement>>() {
+					
+					@Override
+					public void onSuccess(ArrayList<Nutzerabonnement> result) {
+						int zeileCounter = 1;
+						
+						for (final Nutzerabonnement na : result) {
+
+							Button bModifizieren = new Button("Entfernen");
+						
+							Label beoID = new Label(String.valueOf(na.getDerBeobachteteID()));
+							Label followID = new Label(String.valueOf(na.getFollowerID()));
+							
+							
+							
+							flexTable.setWidget(zeileCounter, 0, beoID);
+							flexTable.setWidget(zeileCounter, 1, followID);
+							flexTable.setWidget(zeileCounter, 2, bModifizieren);
+							
+							bModifizieren.addClickHandler(new ClickHandler() {
+								
+								@Override
+								public void onClick(ClickEvent event) {
+								
+									
+								}
+							});
+					}
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Ein fehler ist aufgetreten: " + caught);
+						
+					}
+				});
 				
 				flexTable.setCellPadding(4);
 				

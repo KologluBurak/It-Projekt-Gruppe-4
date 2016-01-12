@@ -137,8 +137,8 @@ public class NutzerAboMapper {
 		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
-					+ "ON nutzerabonnements.nutzerID = nutzer.nutzerID");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "); // INNER JOIN nutzer "
+					//+ "ON nutzerabonnements.nutzerID = " + nutzer.nutzerID);
 
 			while (rs.next()) {
 				Nutzer nutzer = new Nutzer();
