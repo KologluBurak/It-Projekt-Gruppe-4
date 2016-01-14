@@ -243,7 +243,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * gespeichert.
 	 * @throws Exception 
 	 */
-	public Nachricht createNachricht(String text, String nickname, Unterhaltung unterhaltung)
+	public Nachricht createNachricht(String text, String nickname, String empf, Unterhaltung unterhaltung)
 			throws Exception {
 
 		Nachricht na = new Nachricht();
@@ -253,17 +253,16 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// erster Fremdschlï¿½ssel
 		absender = this.nutzerMapper.findNutzerByNickname(nickname);
 
-		// Nutzer empfaenger = new Nutzer();
+	    Nutzer empfaenger = new Nutzer();
 
-		// Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
+		Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 
-		// zweiter Fremdschlï¿½ssel
-		// unterhaltungsliste =
+		// zweiter Fremdschlüssel
+		unterhaltungsliste = this.unterhaltungslisteMapper.findByAbsender(absender);
 		// this.unterhaltungslisteMapper.findByAbsender(absender);
 
-		// 3. Fremschlï¿½ssel
-		// empfaenger =
-		// this.nutzerMapper.findNutzerByNickname(empfaengerNickname);
+		// 3. Fremschlüssel
+		empfaenger =  this.nutzerMapper.findNutzerByNickname(empf);
 
 		System.out.println(absender.getId() + " " + unterhaltung.getId());
 
@@ -335,16 +334,25 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Unterhaltung createUnterhaltung(Date datum) throws Exception {
 		Unterhaltung u = new Unterhaltung();
-		//
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
 		u.setZuletztBearbeitet(dateFormat.format(datum));
 		u.setErstellungsZeitpunkt(dateFormat.format(datum));
-		return this.unterhaltungMapper.insert(u);
+		return this.unterhaltungMapper.insert();
 
 		// u.setErstellungsZeitpunkt(datum);
 		// return unterhaltungMapper.insert(datum);
 
+	}
+	
+	public Unterhaltung getMaxID() throws Exception{
+//		this.unterhaltungMapper.insert();
+		System.out.println("anfang ovn getMaxID in Impl");
+		Date d = null; 
+		//createUnterhaltung(d);
+		System.out.println(this.unterhaltungMapper.getMaxID());
+		return this.unterhaltungMapper.getMaxID();
 	}
 
 	public Boolean userExist(String email) throws Exception {
@@ -514,8 +522,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen von allen Nutzerabonnements.
 	 */
-	public ArrayList<Nutzerabonnement> getAllNutzerabonnements() throws Exception {
-		return this.nutzerAboMapper.findAllNutzerabonnements();
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnements(String userID) throws Exception {
+		return this.nutzerAboMapper.findAllNutzerabonnements(userID);
 	}
 
 	/**
@@ -586,8 +594,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen aller Hashtagabonnements.
 	 */
-	public ArrayList<Hashtagabonnement> getAllHashtagabonnements() throws Exception {
-		return this.hashtagAboMapper.findAllHashtagabonnements();
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements(String userID) throws Exception {
+		return this.hashtagAboMapper.findAllHashtagabonnements(userID);
 	}
 
 	/**
@@ -662,12 +670,22 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 */
 	public Unterhaltungsliste createUnterhaltungsliste(Unterhaltung u, String sender, String empf)
 			throws Exception {
+		
 		Unterhaltungsliste UListe = new Unterhaltungsliste();
-		Unterhaltung unterhaltung = new Unterhaltung();
 		Nutzer absender = new Nutzer();
+		System.out.println("createUnterhaltungsliste "+u.getId());
+		absender.setId(this.nutzerMapper.findNutzerByEmail(sender).getId());
+		System.out.println("Absender "+absender.getId() + " " + sender);
+		
 		Nutzer empfaenger = new Nutzer();
-		// muss noch gemacht werden
-		return null;
+		empfaenger.setId(this.nutzerMapper.findNutzerByEmail(empf).getId());
+		System.out.println("Empfänger "+empfaenger.getId() + " " + empf);
+		
+		UListe.setUnterhaltungID(u.getId()); 
+		UListe.setAbsenderID(absender.getId());
+		UListe.setEmpfaengerID(empfaenger.getId());
+		
+		return this.unterhaltungslisteMapper.insert(UListe);
 
 	}
 

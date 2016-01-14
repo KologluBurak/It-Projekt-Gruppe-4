@@ -72,19 +72,21 @@ public class UnterhaltungMapper {
 	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
 	 */
-	public Unterhaltung insert(Unterhaltung unterhaltung)
+	public Unterhaltung insert()
 			throws Exception{
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		Statement stmt= null;
+		Unterhaltung u = new Unterhaltung();
+		System.out.println("Anfang von insert in UnterhaltungMapper");
 		try {
 			String sql = "INSERT INTO `unterhaltungen`(`unterhaltungID`) VALUES (NULL)";
 
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
+			System.out.println("Try UnterhaltungMapper Insert " + preStmt);
 			preStmt.executeUpdate();
 			preStmt.close();
-
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,7 +95,39 @@ public class UnterhaltungMapper {
 		}finally {
 			DBConnection.closeAll(null, stmt, con );
 		}
-		return unterhaltung;
+		return null;
+	}
+
+	public Unterhaltung getMaxID() throws Exception{
+		Connection con = DBConnection.connection();
+		Statement stmt = null; 
+		Unterhaltung u = new Unterhaltung();
+		System.out.println("Beginn getMaxID");
+		try{
+			String sql = "SELECT MAX(`unterhaltungID`) AS unterhaltungID FROM `unterhaltungen`";
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			System.out.println("getMax ID in UnterhalungMapper: "+rs); 
+			if(rs.next()){
+				
+				u.setId(rs.getInt("unterhaltungID"));
+				System.out.println("getMax ID in If in UnterhalungMapper: "+rs); 
+				//return u;
+			}
+			System.out.println("getMax ID nach IF in UnterhalungMapper: "+rs); 
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("getMaxID " + e.toString());
+
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
+			
+		}finally{
+			DBConnection.closeAll(null, stmt, con );
+		}
+		
+		return u;
 	}
 
 	/**

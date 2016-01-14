@@ -48,7 +48,7 @@ public class MSG_Front_End {
 
 	// Anzeigen von dem Menue
 
-	public void anzeigenMenu() {
+	public void anzeigenMenu(String email) {
 
 		// Hier werden verschiedene Commands angelegt
 
@@ -108,33 +108,33 @@ public class MSG_Front_End {
 //						d.show();
 //					}
 //				});
-				Unterhaltung unterhaltung = new Unterhaltung();
-				unterhaltung.setId(1);
-				
-				myAsync.getNachrichtenByUnterhaltung(unterhaltung, new AsyncCallback<ArrayList<Nachricht>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						DialogBox d = new DialogBox ();
-						d.setText("Fehler: " + caught);
-						d.show();
-					}
-
-					@Override
-					public void onSuccess(ArrayList<Nachricht> result) {
-						DialogBox d = new DialogBox ();
-						String text ="Ergebnis: "+ result.size()+ " ";
-						for (Nachricht n : result){
-							text = text + n.getId() + " "; 
-							break;
-						}
-					
-						d.setText(text);
-						d.show();
-					}
-					
-				});
+//				Unterhaltung unterhaltung = new Unterhaltung();
+//				unterhaltung.setId(1);
+//				
+//				myAsync.getNachrichtenByUnterhaltung(unterhaltung, new AsyncCallback<ArrayList<Nachricht>>() {
+//
+//					@Override
+//					public void onFailure(Throwable caught) {
+//						// TODO Auto-generated method stub
+//						DialogBox d = new DialogBox ();
+//						d.setText("Fehler 2: " + caught);
+//						d.show();
+//					}
+//
+//					@Override
+//					public void onSuccess(ArrayList<Nachricht> result) {
+//						DialogBox d = new DialogBox ();
+//						String text ="Ergebnis: "+ result.size()+ " ";
+//						for (Nachricht n : result){
+//							text = text + n.getId() + " "; 
+//							break;
+//						}
+//					
+//						d.setText(text);
+//						d.show();
+//					}
+//					
+//				});
 				
 				
 			}
@@ -205,7 +205,8 @@ public class MSG_Front_End {
 		menu.addItem("Nutzeraboonement", aboM);
 		menu.addItem("Report", repM);
 
-		vertipanel.add(new HTML("MSG Gruppe 4"));
+		Label user = new Label ("Wilkommen zurueck "+email);
+		vertipanel.add(user);
 
 		horipanel1.add(rechts);
 		vertipanel.add(menu);

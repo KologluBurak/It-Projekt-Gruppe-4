@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.Cookies;
 
 import de.hdm.itProjektGruppe4.shared.LoginService;
 import de.hdm.itProjektGruppe4.shared.LoginServiceAsync;
@@ -30,7 +31,7 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 			"Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
 
 	private Anchor signInLink = new Anchor("Sign In");
-
+	
 	public void onModuleLoad() {
 
 		// Check login status using login service.
@@ -67,7 +68,10 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 					// DialogBox d = new DialogBox();
 					// d.setText("Gespeichert");
 					// d.show();
-					loadView();
+					
+					Cookies.setCookie("userMail", loginInfo.getEmailAddress());
+					setUserID();
+					loadView(loginInfo.getEmailAddress());
 					// }
 					// });
 
@@ -87,11 +91,32 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 		RootPanel.get("starter").add(loginPanel);
 	}
 
-	public void loadView() {
+	public void loadView(String email) {
 
 		MSG_Front_End neu = new MSG_Front_End();
-		neu.anzeigenMenu();
+		neu.anzeigenMenu(email);
 
+	}
+	
+	public void setUserID (){
+		
+		MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
+		
+		myAsync.getNutzerByNickname(Cookies.getCookie("userMail"), new AsyncCallback<Nutzer>() {
+			
+			@Override
+			public void onFailure(Throwable caught) {
+
+			}
+
+			@Override
+			public void onSuccess(Nutzer result) {
+				
+				Cookies.setCookie("userID",String.valueOf(result.getId())); 
+			}
+		});
+		
+		
 	}
 
 }

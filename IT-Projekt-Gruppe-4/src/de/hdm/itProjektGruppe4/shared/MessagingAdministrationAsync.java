@@ -79,7 +79,8 @@ public interface MessagingAdministrationAsync {
 
 	void getNachrichtById(int id, AsyncCallback<Nachricht> callback);
 
-	void createNachricht(String text, String nickname, Unterhaltung unterhaltung, AsyncCallback<Nachricht> callback);
+	void createNachricht(String text, String nickname, String empf,
+			Unterhaltung unterhaltung, AsyncCallback<Nachricht> callback);
 
 	void getAlleNachrichtenJeNutzer(Nutzer nutzer, AsyncCallback<ArrayList<Nachricht>> callback);
 
@@ -170,7 +171,8 @@ public interface MessagingAdministrationAsync {
 
 	void delete(Nutzerabonnement nutzerAbo, AsyncCallback<Void> callback);
 
-	void getAllNutzerabonnements(AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+	void getAllNutzerabonnements(String userID,
+			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
 
 	void getNutzerabonnementById(int id, AsyncCallback<Nutzerabonnement> callback);
 
@@ -204,7 +206,8 @@ public interface MessagingAdministrationAsync {
 
 	void getHashtagabonnementByNutzerId(int nutzer, AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
-	void getAllHashtagabonnements(AsyncCallback<ArrayList<Hashtagabonnement>> callback);
+	void getAllHashtagabonnements(String userID,
+			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
 	void getHashtagAbonnementByHashtagId(int id, AsyncCallback<Hashtagabonnement> callback);
 
@@ -252,6 +255,8 @@ public interface MessagingAdministrationAsync {
 
 	void getByAbsender(Nutzer absenderNickname,
 			AsyncCallback<Unterhaltungsliste> callback);
+
+	void getMaxID(AsyncCallback<Unterhaltung> callback);
 
 	/*
 	 * *************************************************************************

@@ -1,10 +1,12 @@
 package de.hdm.itProjektGruppe4.client.gui;
 
-    import java.util.ArrayList;
+    import java.sql.Date;
+import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.Cookies;
 
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
@@ -22,6 +25,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
+import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 	public class NachrichtenForm extends VerticalPanel{
 
@@ -30,20 +35,23 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 		HorizontalPanel nachrichtenButtonpan = new HorizontalPanel();
 		TextBox nachrichtFenster = new TextBox();
 		Button sendeButton = new Button ("senden");
-		Button empfaengerHinzuf = new Button ("Empfaenger Hinzufuegen");
 		Button empfaengerEntfernen = new Button ("Empfänger Entfernen");
 		TextBox hashtagFenster = new TextBox();
 		Button hashtagHinzu = new Button("Hashtag Hinzufuegen");
 		TextArea nachta = new TextArea();
 		FlexTable flexTable = new FlexTable();
+		Label uCheck = new Label ();
+		Label an = new Label("Senden an");
+		
 
+		Nutzer empf = new Nutzer();
 		MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		
 		
 		// Konstruktor
 		public NachrichtenForm(){
 			
-			Grid eigenesRaster = new Grid (8, 8);
+			Grid eigenesRaster = new Grid (9, 9);
 			this.add(eigenesRaster);
 			
 			Label nachrichtB = new Label("Nachricht");
@@ -54,10 +62,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			//Clickhandler
 			
 			hashtagHinzu.addClickHandler(new ClickHandler() {
-				
+			
 				@Override
 				public void onClick(ClickEvent event) {
-					
+					Window.alert("done");
 					erstelleHashtag();
 					
 				}});
@@ -66,16 +74,17 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 				
 				@Override
 				public void onClick(ClickEvent event) {
-//					erstelleNachricht();
-					
+//					Unterhaltung unterhaltung = new Unterhaltung();
+					setUnterhaltung();
+//					unterhaltung.setId(getMaxID().getId());
+//					Window.alert(unterhaltung.getId() + " " + Cookies.getCookie("userMail") +" " + uCheck.getText());
+//					setUListe(unterhaltung, Cookies.getCookie("userMail"), uCheck.getText());
+//					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), uCheck.getText(), unterhaltung);					
+					getMaxID(); //nachta.getText(), uCheck.getText());
 				}
 
-				
 			});
-			
-			
-			
-			
+
 //			myAsync.getAllAbonnements(new AsyncCallback<ArrayList<Abonnement>>() {
 //				
 //				@Override
@@ -101,24 +110,27 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			
 			eigenesRaster.setWidget(0, 0, nachrichtB);
 			eigenesRaster.setWidget(1, 0, nachta);
-			eigenesRaster.setWidget(3, 0, hashTB);
-			eigenesRaster.setWidget(4, 0, hashtagFenster);
+			eigenesRaster.setWidget(4, 0, hashTB);
+			eigenesRaster.setWidget(5, 0, hashtagFenster);
 			eigenesRaster.setWidget(2, 0, sendeButton);
-			eigenesRaster.setWidget(5, 0, hashtagHinzu);
-			eigenesRaster.setWidget(0, 5, flexTable);
+			eigenesRaster.setWidget(6, 0, hashtagHinzu);
+			eigenesRaster.setWidget(8, 0, flexTable);
+			eigenesRaster.setWidget(1, 1, uCheck);
+			eigenesRaster.setWidget(0, 1, an);
 			nachrichtFenster.setWidth("500px");
 			
 			
-			flexTable.setText(0, 0, "Vorname");
-			flexTable.setText(0, 1, "Nickname");
-			flexTable.setText(0, 2, "Hinzufuegen");
+			flexTable.setText(0, 0, "ID");
+			flexTable.setText(0, 1, "Vorname");
+			flexTable.setText(0, 2, "Nickname");
+			flexTable.setText(0, 3, "Hinzufuegen");
 			
 			myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 
 				@Override
 				public void onFailure(Throwable caught) {
 					// TODO Auto-generated method stub
-					
+					Window.alert("Fehlermeldung NachrichtenForm: "+caught); 
 				}
 
 				@Override
@@ -129,25 +141,44 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 						
 						Button bModifizieren = new Button("hinzufuegen");
 						
-						
+						Label id = new Label(String.valueOf(nutzer.getId()));
 						Label vornameID = new Label (String.valueOf(nutzer.getVorname()));
 						Label nicknameID = new Label (String.valueOf(nutzer.getNickname()));
 						
+						flexTable.setWidget(zeileCounter, 0, id);
+						flexTable.setWidget(zeileCounter, 1, vornameID);
+						flexTable.setWidget(zeileCounter, 2, nicknameID);
+						flexTable.setWidget(zeileCounter, 3, bModifizieren);
 						
-						flexTable.setWidget(zeileCounter, 0, vornameID);
-						flexTable.setWidget(zeileCounter, 1, nicknameID);
-						flexTable.setWidget(zeileCounter, 2, bModifizieren);
+//						empf = new Nutzer();
+//						empf.setId(nutzer.getId());
+//						empf.setEmail(nutzer.getEmail());
+//						empf.setNachname(nutzer.getNachname());
+//						empf.setVorname(nutzer.getVorname());
+//						empf.setNickname(nutzer.getNickname());
 						
-						empfaengerHinzuf.addClickHandler(new ClickHandler() {
+						bModifizieren.addClickHandler(new ClickHandler() {
 							
 							@Override
 							public void onClick(ClickEvent event) {
+								//Window.alert("klick");
 //								empfaengerHinzu();
 								
+//								
+//								if(bModifizieren.getText() == "hinzufuegen"){
+//									bModifizieren.setText("hinzugefuegt");
+//								}else{
+//									bModifizieren.setText("hinzufuegen");
+//								}
+								
+								setEmpf(nutzer.getEmail());
 							}
 
 							
+
 						});
+		
+						zeileCounter++;
 					}
 					
 				}
@@ -164,7 +195,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			@Override
 			public void onFailure(Throwable caught) {
 				DialogBox d = new DialogBox();
-				d.setText("Fehler:" + caught);
+				d.setText("Fehler 1:" + caught);
 				d.show();
 				
 			}
@@ -177,34 +208,95 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 		});
 		
 	}
-	
-//	private void erstelleNachricht() {
-//		
-//		myAsync.createNachricht(text, nickname, unterhaltung, callback); {
-//
-//			@Override
-//			public void onFailure(Throwable caught) {
-//				DialogBox d = new DialogBox();
-//				d.setText("Fehler:" + caught);
-//				d.show();
-//				
-//			}
-//
-//			@Override
-//			public void onSuccess(Nachricht result) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
-		
-//	}
-//		private void empfaengerHinzu() {
-//			myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
-//			});
-//			
-//		}
-	
+		private void empfaengerHinzu() {
+			Window.alert("Klick!");
+			
+		}
+	public void setEmpf(String user){
+		uCheck.setText(user);
 	}
+	
+	private void erstelleNachricht(String text, String nickname, String empf, Unterhaltung unterhaltung) {
+		
+		myAsync.createNachricht(text, nickname, empf, unterhaltung, new AsyncCallback<Nachricht>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Fehler bei CreateNachticht in NachrichtenForm: " + caught);
+						
+					}
+
+					@Override
+					public void onSuccess(Nachricht result) {
+						
+					}
+		});
+	}
+
+	private Unterhaltung getMaxID(){
+		
+		final Unterhaltung u = new Unterhaltung();
+		myAsync.getMaxID(new AsyncCallback<Unterhaltung>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler in getMaxID in NachrichtenForm " + caught);
+			}
+
+			@Override
+			public void onSuccess(Unterhaltung result) {
+				
+				String empf = uCheck.getText();
+				String text = nachta.getText();
+				
+				setUListe(result, Cookies.getCookie("userMail"), empf);
+				erstelleNachricht(text, Cookies.getCookie("userMail"), empf, result);
+				
+				Window.alert("Ihre Nachricht wurde gesendet!");
+				//u.setId(result.getId());
+				//Window.alert("getMaxId " + result.getId() + " " + u.getId());
+			}
+		});
+		
+		//Window.alert("am ende von getMaxId " + u.getId());
+		return u;
+	}
+	
+	private void setUnterhaltung(){
+		Date datum = new Date(0);
+		myAsync.createUnterhaltung(datum , new AsyncCallback<Unterhaltung>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(Unterhaltung result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	private void setUListe(Unterhaltung u, String absender, String empf){
+		myAsync.createUnterhaltungsliste(u, absender, empf, new AsyncCallback<Unterhaltungsliste>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler in setUListe in NachrichtenForm " + caught);
+			}
+
+			@Override
+			public void onSuccess(Unterhaltungsliste result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+}
 
 	
 

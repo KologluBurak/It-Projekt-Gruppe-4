@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -13,6 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 
 
 
@@ -44,7 +46,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			
 			
 			
-			myAsync.getAllHashtagabonnements(new AsyncCallback<ArrayList<Hashtagabonnement>>() {
+			myAsync.getAllHashtagabonnements(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Hashtagabonnement>>() {
 				
 				@Override
 				public void onSuccess(ArrayList<Hashtagabonnement> result) {
@@ -58,12 +60,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 
 						Label aboID = new Label(String.valueOf(hta.getAbonnementID()));
 						Label zeit = new Label(String.valueOf(hta.getErstellungsZeitpunkt()));
-						Label hashtagID = new Label(String.valueOf(hta.getHashtagBezeichnung()));
+						Label hashtagID = new Label(hta.getHashtagBezeichnung().getBezeichnung());
 						
 						flexTable.setWidget(zeileCounter, 0, aboID);
-						flexTable.setWidget(zeileCounter, 1, zeit);
-						flexTable.setWidget(zeileCounter, 2, hashtagID);
-						flexTable.setWidget(zeileCounter, 3, bModifizieren);
+						//flexTable.setWidget(zeileCounter, 1, zeit);
+						flexTable.setWidget(zeileCounter, 1, hashtagID);
+						flexTable.setWidget(zeileCounter, 2, bModifizieren);
 						
 						bModifizieren.addClickHandler(new ClickHandler(){
 

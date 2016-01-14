@@ -79,12 +79,12 @@ public class UnterhaltungsForm {
 		cft.setText(0, 0, "Billy");
 	    cft.setText(1, 0, "Duc");
 	    cft.setText(2, 0, "Xunus");
-	    cft.setText(3, 0, "Selimo");
+	    cft.setText(3, 0, "Ingo");
 	    cft.setText(4, 0, "Daniel");
 	    cft.setText(5, 0, "DanielT");
 	    
 	  //Clickhandler
-	    
+	     
 	    
 	    
 	    

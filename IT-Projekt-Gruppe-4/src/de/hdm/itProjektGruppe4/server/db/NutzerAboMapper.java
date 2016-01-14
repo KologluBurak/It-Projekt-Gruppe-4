@@ -138,7 +138,7 @@ public class NutzerAboMapper {
 	 * @return allNutzerabonnements
 	 * @throws IllegalArgumentException
 	 */
-	public ArrayList<Nutzerabonnement> findAllNutzerabonnements() 
+	public ArrayList<Nutzerabonnement> findAllNutzerabonnements(String userID) 
 			throws Exception{
 		Connection con = DBConnection.connection();
 //		Statement stmt= null;
@@ -146,8 +146,9 @@ public class NutzerAboMapper {
 		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "); // INNER JOIN nutzer "
-					//+ "ON nutzerabonnements.nutzerID = " + nutzer.nutzerID);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+					+ "ON nutzerabonnements.followerID =  nutzer.nutzerID "
+					+ "WHERE nutzerabonnements.derBeobachteteID =" + userID);
 //			stmt = con.createStatement();
 //			rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
 //					+ "ON nutzerabonnements.nutzerID = nutzer.nutzerID");
@@ -155,7 +156,7 @@ public class NutzerAboMapper {
 			while (rs.next()) {
 				Nutzer nutzer = new Nutzer();
 				nutzer.setNickname(rs.getString("nickname"));
-				
+
 				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
 				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
 				nutzerabonnement.setNutzerNickname(nutzer);

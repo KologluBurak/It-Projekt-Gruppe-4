@@ -140,7 +140,7 @@ public class HashtagAboMapper {
 	 * @return alleHashtagabonnements
 	 * @throws Exception
 	 */
-	public ArrayList<Hashtagabonnement> findAllHashtagabonnements() 
+	public ArrayList<Hashtagabonnement> findAllHashtagabonnements(String userID) 
 			throws Exception {
 		Connection con = DBConnection.connection();
 		Statement stmt= null;
@@ -148,13 +148,15 @@ public class HashtagAboMapper {
 		ArrayList<Hashtagabonnement> alleHashtagabonnements = new ArrayList<Hashtagabonnement>();
 		try {
 			 stmt = con.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM hashtagabonnements ORDER BY hashtagAboID");
+			rs = stmt.executeQuery("SELECT * FROM hashtagabonnements INNER JOIN hashtags ON hashtagabonnements.hashtagID = hashtags.hashtagID WHERE hashtagabonnements.nutzerID = " + userID);
 
 			while (rs.next()) {
+				Hashtag bez = new Hashtag();
+				bez.setBezeichnung(rs.getString("bezeichnung"));
 				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
 				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
 				hashtagAbonnement.setErstellungsZeitpunkt(rs.getString("datum"));
-
+				hashtagAbonnement.setHashtagBezeichnung(bez);
 				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
 				hashtagAbonnement.setNutzerID(rs.getInt("nutzerID"));
 				hashtagAbonnement.setHashtagID(rs.getInt("hashtagID"));

@@ -64,7 +64,7 @@ public interface MessagingAdministration extends RemoteService {
 	 * ***************************************************
 	 */
 
-	public Nachricht createNachricht(String text, String nickname, Unterhaltung unterhaltung)
+	public Nachricht createNachricht(String text, String nickname, String empf, Unterhaltung unterhaltung)
 			throws Exception;
 
 	public ArrayList<Nachricht> getAlleNachrichtenJeNutzer(Nutzer nutzer) throws Exception;
@@ -94,6 +94,7 @@ public interface MessagingAdministration extends RemoteService {
 	 */
 
 	public Unterhaltung createUnterhaltung(Date datum) throws Exception;
+	public Unterhaltung getMaxID() throws Exception;
 
 	// public ArrayList<Unterhaltung> getAllUnterhaltungen() throws
 	// Exception;
@@ -157,7 +158,7 @@ public interface MessagingAdministration extends RemoteService {
 	public Nutzerabonnement createNutzerabonnement(Nutzer derBeobachtete, Nutzer follower)
 			throws Exception;
 
-	public ArrayList<Nutzerabonnement> getAllNutzerabonnements() throws Exception;
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnements(String userID) throws Exception;
 
 	public Nutzerabonnement getNutzerabonnementById(int id) throws Exception;
 
@@ -188,7 +189,7 @@ public interface MessagingAdministration extends RemoteService {
 
 	public void delete(Hashtagabonnement hashtagAbo) throws Exception;
 
-	public ArrayList<Hashtagabonnement> getAllHashtagabonnements() throws Exception;
+	public ArrayList<Hashtagabonnement> getAllHashtagabonnements(String userID) throws Exception;
 
 	public Hashtagabonnement getHashtagAbonnementById(int id) throws Exception;
 

@@ -33,7 +33,7 @@ public class Unterhaltung extends BusinessObject{
 	/**
 	 * Der Nutzer der eine Nachricht empfangen hat
 	 */
-	private Nutzer empfänger;
+//	private Nutzer empfänger;
 	/**
 	 * Ausgabe der zuletzt bearbeiteten Zeit
 	 * @return zuletztBearbeitet
@@ -74,13 +74,13 @@ public class Unterhaltung extends BusinessObject{
 		this.sender = sender;
 	}
 
-	public Nutzer getEmpfänger() {
-		return empfänger;
-	}
-
-	public void setEmpfänger(Nutzer empfänger) {
-		this.empfänger = empfänger;
-	}
+//	public Nutzer getEmpfnger() {
+//		return empfänger;
+//	}
+//
+//	public void setEmpfänger(Nutzer empfänger) {
+//		this.empfänger = empfänger;
+//	}
 	
 	
 }

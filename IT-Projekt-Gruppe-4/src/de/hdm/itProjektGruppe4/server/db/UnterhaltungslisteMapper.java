@@ -86,6 +86,7 @@ public class UnterhaltungslisteMapper {
 			preStmt.setInt(1, unterhaltungsliste.getUnterhaltungID());
 			preStmt.setInt(2, unterhaltungsliste.getAbsenderID());
 			preStmt.setInt(3, unterhaltungsliste.getEmpfaengerID());
+			System.out.println("SQL "+preStmt);
 			preStmt.executeUpdate();
 //			preStmt.close();
 

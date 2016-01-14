@@ -81,6 +81,7 @@ public class NachrichtMapper {
 		Connection con = DBConnection.connection();
 		PreparedStatement preStmt = null;
 		try {
+			System.out.println(nachricht.getText() + " " + nachricht.getNutzerID() + " "+ nachricht.getUnterhaltungID());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			Date date = new Date();
 			nachricht.setErstellungsZeitpunkt(dateFormat.format(date).toString());
@@ -90,14 +91,15 @@ public class NachrichtMapper {
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, nachricht.getText());
 			preStmt.setString(2, dateFormat.format(date));
-			preStmt.setInt(3, nachricht.getNutzerID());
-			preStmt.setInt(4, nachricht.getUnterhaltungID());
+			preStmt.setInt(3, nachricht.getUnterhaltungID());
+			preStmt.setInt(4, nachricht.getNutzerID());
 			preStmt.executeUpdate();
-			preStmt.close();
+			//preStmt.close();
 	
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Catch NachrichtMapper " +e.getMessage());
 			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
 		}finally {
 			DBConnection.closeAll(null, preStmt, con );
