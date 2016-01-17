@@ -75,12 +75,16 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				@Override
 				public void onClick(ClickEvent event) {
 //					Unterhaltung unterhaltung = new Unterhaltung();
-					setUnterhaltung();
+					
+					pruefeUnterhaltung(Cookies.getCookie("userID"), uCheck.getText());
+					//nachta.setText("");
+					//setUnterhaltung();
+
 //					unterhaltung.setId(getMaxID().getId());
 //					Window.alert(unterhaltung.getId() + " " + Cookies.getCookie("userMail") +" " + uCheck.getText());
 //					setUListe(unterhaltung, Cookies.getCookie("userMail"), uCheck.getText());
 //					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), uCheck.getText(), unterhaltung);					
-					getMaxID(); //nachta.getText(), uCheck.getText());
+					//getMaxID(); //nachta.getText(), uCheck.getText());
 				}
 
 			});
@@ -233,9 +237,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 
-	private Unterhaltung getMaxID(){
-		
-		final Unterhaltung u = new Unterhaltung();
+	private void getMaxID(){
+
 		myAsync.getMaxID(new AsyncCallback<Unterhaltung>() {
 
 			@Override
@@ -250,16 +253,13 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				String text = nachta.getText();
 				
 				setUListe(result, Cookies.getCookie("userMail"), empf);
+				setUListe(result, empf, Cookies.getCookie("userMail"));
 				erstelleNachricht(text, Cookies.getCookie("userMail"), empf, result);
 				
 				Window.alert("Ihre Nachricht wurde gesendet!");
-				//u.setId(result.getId());
-				//Window.alert("getMaxId " + result.getId() + " " + u.getId());
+
 			}
 		});
-		
-		//Window.alert("am ende von getMaxId " + u.getId());
-		return u;
 	}
 	
 	private void setUnterhaltung(){
@@ -268,7 +268,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				Window.alert("Fehler in setUnterhaltung in NachrichtenForm " + caught);
 				
 			}
 
@@ -295,8 +295,37 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			}
 		});
 	}
+
 	
+	private void pruefeUnterhaltung(String absender, String empfaenger){
+		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler in pruefeUnterhaltung in NachrichtenForm " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(Unterhaltungsliste result) {
+				
+				Window.alert("ID "+result.getUnterhaltungID());
+				if(result.getUnterhaltungID() > 0){
+					
+					Unterhaltung u = new Unterhaltung();
+					u.setId(result.getUnterhaltungID());
+					Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
+					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), uCheck.getText(), u);
+					nachta.setText("");
+				} else {
+					Window.alert("Neue Unterhaltung wurde erstellt.ID "+result.getUnterhaltungID());
+					setUnterhaltung();
+					getMaxID();
+					nachta.setText("");
+					
+				}
+				
+			}
+		});
+	}
 }
-
-	
-

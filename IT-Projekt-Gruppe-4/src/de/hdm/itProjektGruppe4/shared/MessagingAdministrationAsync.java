@@ -258,6 +258,12 @@ public interface MessagingAdministrationAsync {
 
 	void getMaxID(AsyncCallback<Unterhaltung> callback);
 
+	void getUnterhaltung(String absender, String empfaenger,
+			AsyncCallback<Unterhaltungsliste> callback);
+
+	void getAlleEmpfaengerByAbsender(Nutzer absender,
+			AsyncCallback<ArrayList<Nutzer>> callback);
+
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte

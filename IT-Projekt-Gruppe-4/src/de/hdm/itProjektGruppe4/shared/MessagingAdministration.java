@@ -233,10 +233,14 @@ public interface MessagingAdministration extends RemoteService {
 			throws Exception;
 
 	public Unterhaltungsliste getByAbsender(Nutzer absenderNickname) throws Exception;
-
+	
+	public ArrayList<Nutzer> getAlleEmpfaengerByAbsender(Nutzer absender) throws Exception;
+	
 	public Unterhaltungsliste getByEmpfaenger(Nutzer empfaengerNickname) throws Exception;
 
 	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws Exception;
+	
+	public Unterhaltungsliste getUnterhaltung(String absender, String empfaenger) throws Exception;
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte
