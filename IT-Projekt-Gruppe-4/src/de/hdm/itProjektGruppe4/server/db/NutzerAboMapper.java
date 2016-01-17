@@ -336,4 +336,47 @@ public class NutzerAboMapper {
 		}
 		return nutzerAboListe;
 	}
+	
+	/**
+	 * Diese Methode ermoeglicht es eine Ausgabe ueber einen Nutzerabonnement
+	 * in der Datenbank, anhand der Id des Beobachteten.
+	 * @param nutzer
+	 * @return 
+	 * @throws Exception
+	 */
+	public ArrayList<Nutzerabonnement> alleNutzerFollowerJeNutzer(Nutzer nutzer)
+		throws Exception{
+		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
+		ArrayList<Nutzerabonnement> nutzerAboListe = new ArrayList<Nutzerabonnement>();
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer " 
+					+ "ON nutzerabonnements.followerID = nutzer.nutzerID "
+					+ "WHERE nutzerabonnements.derBeobachteteID = " +nutzer.getId());
+			
+			while(rs.next()){
+				Nutzer nickname = new Nutzer();
+				nickname.setNickname(rs.getString("nickname"));
+				
+				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setNutzerNickname(nickname);
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+				
+				nutzerAboListe.add(nutzerabonnement);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+		}
+		return nutzerAboListe;
+	}
+		
 }

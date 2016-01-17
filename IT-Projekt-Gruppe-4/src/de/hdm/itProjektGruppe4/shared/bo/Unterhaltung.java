@@ -2,26 +2,26 @@ package de.hdm.itProjektGruppe4.shared.bo;
 
 /**
  * Eine Klasse Unterhaltung, die aus der Klasse BusinessObject erbt.
+ * 
  * @author Yuecel, Nguyen, Kologlu
  *
  */
 
-public class Unterhaltung extends BusinessObject{
-	
+public class Unterhaltung extends BusinessObject {
+
 	/**
-	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse
-	 * ben�tigt.
+	 * Eindeutige SerialVersion Id. Wird zum Serialisieren der Klasse ben�tigt.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Referenz Nachricht die hinzugefuegt werden soll
 	 */
 	private String refNachricht;
 
 	/**
-	 * Gibt an, wann das letzte Mal in die jeweilige Unterhaltung
-	 * geschrieben wurde
+	 * Gibt an, wann das letzte Mal in die jeweilige Unterhaltung geschrieben
+	 * wurde
 	 */
 	private String zuletztBearbeitet;
 
@@ -29,13 +29,14 @@ public class Unterhaltung extends BusinessObject{
 	 * Der Nutzer der eine Nachricht gesendet hat
 	 */
 	private Nutzer sender;
-	
+
 	/**
 	 * Der Nutzer der eine Nachricht empfangen hat
 	 */
-//	private Nutzer empfänger;
+	// private Nutzer empfänger;
 	/**
 	 * Ausgabe der zuletzt bearbeiteten Zeit
+	 * 
 	 * @return zuletztBearbeitet
 	 */
 	public String getZuletztBearbeitet() {
@@ -44,6 +45,7 @@ public class Unterhaltung extends BusinessObject{
 
 	/**
 	 * Setzen der zuletzt bearbeiteten Zeit
+	 * 
 	 * @param datum
 	 */
 	public void setZuletztBearbeitet(String datum) {
@@ -52,6 +54,7 @@ public class Unterhaltung extends BusinessObject{
 
 	/**
 	 * Ausgabe der referenzierten Nachricht
+	 * 
 	 * @return refNachricht
 	 */
 	public String getRefNachricht() {
@@ -60,6 +63,7 @@ public class Unterhaltung extends BusinessObject{
 
 	/**
 	 * Setzen der referenzierten Nachricht
+	 * 
 	 * @param refNachricht
 	 */
 	public void setRefNachricht(String refNachricht) {
@@ -74,13 +78,12 @@ public class Unterhaltung extends BusinessObject{
 		this.sender = sender;
 	}
 
-//	public Nutzer getEmpfnger() {
-//		return empfänger;
-//	}
-//
-//	public void setEmpfänger(Nutzer empfänger) {
-//		this.empfänger = empfänger;
-//	}
-	
-	
+	// public Nutzer getEmpfnger() {
+	// return empfänger;
+	// }
+	//
+	// public void setEmpfänger(Nutzer empfänger) {
+	// this.empfänger = empfänger;
+	// }
+
 }

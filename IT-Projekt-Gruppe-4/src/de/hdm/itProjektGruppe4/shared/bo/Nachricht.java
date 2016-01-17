@@ -32,6 +32,11 @@ public class Nachricht extends BusinessObject {
 	private int unterhaltungID;
 	
 	/**
+	 * Absender einer Nachricht
+	 */
+	private Nutzer absender;
+	
+	/**
 	 * Ausgabe der NutzerID
 	 * @return nutzerID
 	 */
@@ -62,11 +67,6 @@ public class Nachricht extends BusinessObject {
 	public void setUnterhaltungID(int unterhaltungID) {
 		this.unterhaltungID = unterhaltungID;
 	}
-
-	/**
-	 * Absender einer Nachricht
-	 */
-	private Nutzer absender;
 
 	/**
 	 * Empfaenger einer Nachricht

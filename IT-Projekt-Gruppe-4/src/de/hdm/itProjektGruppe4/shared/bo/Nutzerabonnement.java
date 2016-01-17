@@ -31,7 +31,7 @@ public class Nutzerabonnement extends BusinessObject {
 	private int abonnementID = 0;
 
 	/**
-	 * Bezeichnung des Nicknames eines Nutzers
+	 * Nickname eines Nutzers
 	 */
 	private Nutzer nutzerNickname = null;
 	

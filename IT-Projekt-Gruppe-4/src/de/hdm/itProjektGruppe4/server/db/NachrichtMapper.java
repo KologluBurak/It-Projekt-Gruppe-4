@@ -216,7 +216,6 @@ public class NachrichtMapper {
 		ArrayList<Nachricht> nachrichtenJeNutzer = new ArrayList<Nachricht>();
 
 		try {
-			//Neu
 			stmt = con.createStatement();
 			rs = stmt.executeQuery("SELECT * FROM nutzer INNER JOIN nachrichten "
 					+ "ON nutzer.nutzerID = nachrichten.nutzerID WHERE nutzer.nutzerID=" +nutzer.getId());
