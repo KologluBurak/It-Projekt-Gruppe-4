@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
@@ -210,6 +212,70 @@ public class UnterhaltungslisteMapper {
 	}
 
 	/**
+	 * Die Methode ermöglicht das Finden eines Empfängers aus der Datenbank
+	 * über den Parameter
+	 * 
+	 * @param empfaengerNickname
+	 * @return uliste
+	 * @throws Exception
+	 */
+	public Unterhaltungsliste pruefeUnterhaltung(String absender,int empfaenger)
+			throws Exception {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
+		Statement stmt1= null;
+		ResultSet rs1= null;
+		try {
+
+			//String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `empfaengerID` = " + empfaenger + " AND absenderID = " + absender;
+
+			String sql = "SELECT COUNT(unterhaltungslisten.unterhaltungID) as unterhaltungID FROM `unterhaltungslisten` WHERE `empfaengerID` = "+ empfaenger +" AND absenderID = " + absender;
+			System.out.println("SQL von pruefeUnterhaltung "+sql);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				Unterhaltungsliste uliste = new Unterhaltungsliste();
+				//uliste.setId(rs.getInt("unterhaltungslisteID"));
+				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
+//				uliste.setAbsenderID(rs.getInt("absenderID"));
+//				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
+
+				System.out.println("pruefeUnterhaltung " + uliste.getUnterhaltungID());
+				
+				if (uliste.getUnterhaltungID() > 0){
+					String sql1 = "SELECT unterhaltungID FROM `unterhaltungslisten` WHERE `empfaengerID` = "+ empfaenger +" AND absenderID = " + absender;
+					
+					stmt1 = con.createStatement();
+					rs1 = stmt.executeQuery(sql1);
+					
+					if(rs1.next()){
+						uliste.setUnterhaltungID(rs1.getInt("unterhaltungID"));
+						return uliste;
+					}
+				
+				}
+//				if (uliste != null){
+				return uliste;
+//				}
+
+			}
+
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+		}
+
+		return null;
+	}
+	
+	/**
 	 * Die Methode ermöglicht das Finden einer Unterhaltung über den Parameter
 	 * 
 	 * @param unterhaltung
@@ -248,4 +314,48 @@ public class UnterhaltungslisteMapper {
 		}
 		return null;
 	}
+	
+	/**
+	 * Die Methode ermöglicht das Finden eines Absenders aus der Datenbank
+	 * über den Parameter
+	 * 
+	 * @param absenderNickname
+	 * @return uliste
+	 * @throws Exception
+	 */
+	public ArrayList<Unterhaltungsliste> findAlleEmpfaengerByAbsender(Nutzer absender)
+			throws Exception {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ArrayList<Unterhaltungsliste> alleUnterhaltungen = new ArrayList<Unterhaltungsliste>();
+		try {
+
+			String sql = "SELECT *  FROM `unterhaltungslisten` WHERE `absenderID` = " + absender.getId();
+
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				Unterhaltungsliste uliste = new Unterhaltungsliste();
+				uliste.setId(rs.getInt("unterhaltungslisteID"));
+				uliste.setUnterhaltungID(rs.getInt("unterhaltungID"));
+				uliste.setAbsenderID(rs.getInt("absenderID"));
+				uliste.setEmpfaengerID(rs.getInt("empfaengerID"));
+
+				alleUnterhaltungen.add(uliste);
+			}
+			
+
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e2.toString());
+		}finally {
+			DBConnection.closeAll(null, stmt, con);
+		}
+		return alleUnterhaltungen;
+	}
+	
 }

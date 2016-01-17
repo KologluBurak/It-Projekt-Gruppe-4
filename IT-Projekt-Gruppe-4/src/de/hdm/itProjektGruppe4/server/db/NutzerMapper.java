@@ -239,6 +239,7 @@ public class NutzerMapper {
 				nutzer.setNickname(rs.getString("nickname"));
 				nutzer.setErstellungsZeitpunkt(rs.getString("datum"));
 
+				//System.out.println(nutzer.getId());
 				return nutzer;
 			}
 		} catch (SQLException e) {

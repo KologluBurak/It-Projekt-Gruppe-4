@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 
 
+
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
@@ -40,9 +41,9 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			final FlexTable flexTable = new FlexTable();
 			
 			
-			flexTable.setText(0, 1, "AboID");
-			flexTable.setText(0, 2, "HashtagID");
-			flexTable.setText(0, 3, "Entfernen");
+			flexTable.setText(0, 0, "AboID");
+			flexTable.setText(0, 1, "HashtagID");
+			flexTable.setText(0, 2, "Entfernen");
 			
 			
 			
@@ -71,12 +72,17 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 
 							@Override
 							public void onClick(ClickEvent event) {
-								// TODO hier kommt die Methode rein was mit der einen Zeile passieren soll
+								loeschenHashtag(hta);
+								
+								
+								
 								
 								// Beispiel zum sehen, dass es funktioniert abspielen bitt
 								Window.alert("Ändern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
 								
 							}
+
+							
 							
 							
 						});
@@ -106,6 +112,24 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			
 		}
 
+		private void loeschenHashtag(Hashtagabonnement habo) {
+			myAsync.delete(habo, new AsyncCallback<Void>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler beim loeschen Hashtagabonnement");
+					
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+		}
+		
 	}
 
 

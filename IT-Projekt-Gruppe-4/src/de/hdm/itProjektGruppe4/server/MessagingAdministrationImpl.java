@@ -253,7 +253,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// erster Fremdschlï¿½ssel
 		absender = this.nutzerMapper.findNutzerByNickname(nickname);
 
-	    Nutzer empfaenger = new Nutzer();
+	    //Nutzer empfaenger = new Nutzer();
 
 		Unterhaltungsliste unterhaltungsliste = new Unterhaltungsliste();
 
@@ -262,7 +262,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// this.unterhaltungslisteMapper.findByAbsender(absender);
 
 		// 3. Fremschlüssel
-		empfaenger =  this.nutzerMapper.findNutzerByNickname(empf);
+		Nutzer empfaenger =  this.nutzerMapper.findNutzerByNickname(empf);
 
 		System.out.println(absender.getId() + " " + unterhaltung.getId());
 
@@ -706,6 +706,22 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// weiter geben.
 		return this.unterhaltungslisteMapper.findByEmpfaenger(empfaengerNickname);
 	}
+	
+	public ArrayList<Nutzer> getAlleEmpfaengerByAbsender(Nutzer absender) throws Exception{
+		
+		ArrayList<Nutzer> alleEmpf = new ArrayList<Nutzer>();
+		
+		for (Unterhaltungsliste ul : unterhaltungslisteMapper.findAlleEmpfaengerByAbsender(absender)){
+			Nutzer n = new Nutzer();
+			n.setNickname(this.nutzerMapper.findNutzerById(ul.getEmpfaengerID()).getNickname());
+			n.setId(ul.getEmpfaengerID()); 
+			n.setEmail(this.nutzerMapper.findNutzerById(ul.getEmpfaengerID()).getEmail());
+			System.out.println(n.getNickname() + " ID " + n.getId());
+			alleEmpf.add(n);
+		}
+		System.out.println(alleEmpf);
+		return alleEmpf;
+	}
 
 	/**
 	 * Auslesen einer Unterhaltungsliste anhand einer Unterhaltung.
@@ -713,6 +729,18 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws Exception {
 		return this.unterhaltungslisteMapper.findByUnterhaltung(unterhaltung);
 	}
+
+	@Override
+	public Unterhaltungsliste getUnterhaltung(String absender, String empfaenger)
+			throws Exception {
+	
+		Nutzer empf = new Nutzer();
+		empf = this.nutzerMapper.findNutzerByNickname(empfaenger);
+		System.out.println("UnterhaltungID "+this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId()).getUnterhaltungID());
+		return this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId());
+	}
+	
+	
 
 	/*
 	 * *************************************************************************

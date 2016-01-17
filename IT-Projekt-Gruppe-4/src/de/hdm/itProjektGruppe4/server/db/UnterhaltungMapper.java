@@ -176,7 +176,7 @@ public class UnterhaltungMapper {
 			stmt= con.createStatement();
 			rs= stmt.executeQuery("SELECT * FROM unterhaltungen INNER JOIN nachrichten "
 					+ "ON nachrichten.unterhaltungID=unterhaltungen.unterhaltungID "
-					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId());
+					+ "WHERE unterhaltungen.unterhaltungID= "+ unterhaltung.getId() +" ORDER BY nachrichten.datum");
 
 			while (rs.next()) {
 				Nachricht nachricht = new Nachricht();
@@ -184,6 +184,7 @@ public class UnterhaltungMapper {
 				nachricht.setUnterhaltungID(rs.getInt("unterhaltungen.unterhaltungID"));
 				nachricht.setText(rs.getString("text"));
 				nachricht.setErstellungsZeitpunkt(rs.getString("datum"));
+				nachricht.setNutzerID(rs.getInt("nutzerID"));
 
 				result.add(nachricht);
 			}
