@@ -275,4 +275,37 @@ public class NachrichtMapper {
 		}
 		return nachrichtenJeZeitraum;
 	}
+	
+	public Nachricht getMaxID() throws Exception{
+		Connection con = DBConnection.connection();
+		Statement stmt = null; 
+		Nachricht n = new Nachricht();
+		System.out.println("Beginn getMaxID");
+		try{
+			String sql = "SELECT MAX(`nachrichtID`) AS nachrichtID FROM `nachrichten`";
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if(rs.next()){
+				
+				n.setId(rs.getInt("nachrichtID"));
+				System.out.println("getMax ID in If in nachrichtMapper: "+rs); 
+				//return u;
+			}
+			System.out.println("getMax ID nach IF in nachrichtMapper: "+rs); 
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("getMaxID " + e.toString());
+
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
+			
+		}finally{
+			DBConnection.closeAll(null, stmt, con );
+		}
+		
+		return n;
+	}
+	
+	
 }

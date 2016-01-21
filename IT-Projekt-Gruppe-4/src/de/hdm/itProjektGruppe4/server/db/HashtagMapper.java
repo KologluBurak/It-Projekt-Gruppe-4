@@ -207,4 +207,63 @@ public class HashtagMapper {
 	}
 		return null;
 	}
+	
+	public Hashtag findHashtagByText(String text) 
+			throws Exception {
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM hashtags "
+					+ "WHERE bezeichnung= '" + text + "'");
+
+			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
+			if (rs.next()) {
+				Hashtag hashtag = new Hashtag();
+				hashtag.setId(rs.getInt("hashtagID"));
+				hashtag.setBezeichnung(rs.getString("bezeichnung"));
+				hashtag.setErstellungsZeitpunkt(rs.getString("datum"));
+				return hashtag;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!"+ e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+	}
+		return null;
+	}
+	
+	public Hashtag getMaxID() throws Exception{
+		Connection con = DBConnection.connection();
+		Statement stmt = null; 
+		Hashtag h = new Hashtag();
+		System.out.println("Beginn getMaxID");
+		try{
+			String sql = "SELECT MAX(`hashtagID`) AS hashtagID FROM `hashtags`";
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if(rs.next()){
+				
+				h.setId(rs.getInt("hashtagID"));
+				System.out.println("getMax ID in If in hashtagMapper: "+rs); 
+				//return u;
+			}
+			System.out.println("getMax ID nach IF in hashtagMapper: "+rs); 
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("getMaxID " + e.toString());
+
+			throw new IllegalArgumentException("Datenbank fehler!"
+					+ e.toString());
+		}finally{
+			DBConnection.closeAll(null, stmt, con );
+		}
+		
+		return h;
+	}
 }

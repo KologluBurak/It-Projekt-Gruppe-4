@@ -270,7 +270,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		na.setUnterhaltungID(unterhaltung.getId());
 
 		na.setText(text);
-		return this.nachrichtMapper.insert(na);
+		 this.nachrichtMapper.insert(na);
+		 return nachrichtMapper.getMaxID();
 	}
 
 	public void delete(Nachricht nachricht) throws Exception {
@@ -650,12 +651,21 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Anlegen einer Markierungsliste.
 	 */
-	public Markierungsliste createMarkierungsliste(String text, String hashtag) throws Exception {
+	public Markierungsliste createMarkierungsliste(Nachricht text, Hashtag hashtag) throws Exception {
 		Markierungsliste markierungsliste = new Markierungsliste();
-		Nachricht nachricht = new Nachricht();
-		Hashtag hash = new Hashtag();
-		// muss noch gemacht werden
-		return null;
+		
+		markierungsliste.setNachrichtID(text.getId());
+//		String existiertID = this.hashtagMapper.findHashtagByText(hashtag.getBezeichnung()).getBezeichnung();
+//		
+//		if(existiertID == ""){
+//			this.hashtagMapper.insert(hashtag);
+//			System.out.println("hashtag hinzugefügt");
+//		}
+		
+		int hID = this.hashtagMapper.findHashtagByText(hashtag.getBezeichnung()).getId();
+		System.out.println("hashtag ID " + hID);
+		markierungsliste.setHashtagID(hID);
+		return this.markierungslisteMapper.insert(markierungsliste);
 
 	}
 	/*

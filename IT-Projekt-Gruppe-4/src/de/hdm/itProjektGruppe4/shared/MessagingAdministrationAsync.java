@@ -236,7 +236,8 @@ public interface MessagingAdministrationAsync {
 	 * ********************************************************
 	 */
 
-	void createMarkierungsliste(String text, String hashtag, AsyncCallback<Markierungsliste> callback);
+	void createMarkierungsliste(Nachricht text, Hashtag hashtag,
+			AsyncCallback<Markierungsliste> callback);
 
 	/*
 	 * *************************************************************************

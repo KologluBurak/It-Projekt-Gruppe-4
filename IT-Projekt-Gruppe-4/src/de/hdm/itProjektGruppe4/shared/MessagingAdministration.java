@@ -213,7 +213,7 @@ public interface MessagingAdministration extends RemoteService {
 	 * **********************************************************
 	 */
 
-	public Markierungsliste createMarkierungsliste(String text, String hashtag) throws Exception;
+	public Markierungsliste createMarkierungsliste(Nachricht text, Hashtag hashtag) throws Exception;
 
 	/*
 	 * *************************************************************************

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -22,15 +23,24 @@ import com.google.gwt.user.client.ui.Widget;
 
 
 
+
+
+
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
+import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 
 
 
 	public class HashtagTabelle {
 		
-		VerticalPanel hauptP = new VerticalPanel();
+		
+		HorizontalPanel hauptP = new HorizontalPanel();
+		HorizontalPanel links = new HorizontalPanel();
+		HorizontalPanel rechts = new HorizontalPanel();
+		
+		FlexTable FlexTable = new FlexTable();
 		TextBox hashtagTextBox = new TextBox();
 		Button hinzuButton = new Button("Hinzufuegen");
 		
@@ -90,6 +100,57 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 						zeileCounter += 1;
 				}
 				
+					FlexTable.setText(0, 0, "ID");
+					FlexTable.setText(0, 1, "Bezeichnung");
+					FlexTable.setText(0, 2, "Folgen");
+					
+					
+					myAsync.getAllHashtags(new AsyncCallback<ArrayList<Hashtag>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("Fehler bei Anzeigen Hashtags" + caught);
+							
+						}
+
+						@Override
+						public void onSuccess(ArrayList<Hashtag> result) {
+							int zeileCounterH = 1;
+							
+							for (final Hashtag ht : result){
+								
+								Button hfolgen = new Button("Folgen");
+								
+								Label hID = new Label(String.valueOf(ht.getId()));
+								Label bez = new Label (String.valueOf(ht.getBezeichnung()));
+								
+								
+								FlexTable.setWidget(zeileCounterH, 0, hID);
+								FlexTable.setWidget(zeileCounterH, 1, bez);
+								FlexTable.setWidget(zeileCounterH, 2, hfolgen);
+								
+								hfolgen.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										hashFolgen();
+										
+									}
+
+									
+									
+								});
+								zeileCounterH ++;
+							}
+							
+						}
+					});
+					
+					
+					
+					
+					
+					
 				}
 
 				@Override
@@ -105,13 +166,21 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 		
 			
 			 
-			 
-			hauptP.add(flexTable);
+			links.add(flexTable);
+			rechts.add(FlexTable);
+			
+			hauptP.add(links);
+			hauptP.add(rechts);
 			
 			return hauptP;
+		
+			
 			
 		}
-
+		private void hashFolgen() {
+			// TODO Auto-generated method stub
+			
+		}
 		private void loeschenHashtag(Hashtagabonnement habo) {
 			myAsync.delete(habo, new AsyncCallback<Void>() {
 

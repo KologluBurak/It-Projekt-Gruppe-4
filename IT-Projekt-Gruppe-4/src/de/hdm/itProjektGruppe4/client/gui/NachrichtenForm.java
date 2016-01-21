@@ -23,6 +23,7 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
+import de.hdm.itProjektGruppe4.shared.bo.Markierungsliste;
 import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
@@ -75,8 +76,19 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				@Override
 				public void onClick(ClickEvent event) {
 //					Unterhaltung unterhaltung = new Unterhaltung();
+					int anf = 0;
+					String userCheck = "";
+					//Window.alert(uCheck.getText().length()+"");
+					for(int i = 1; i <= uCheck.getText().length(); i++){
+						if(uCheck.getText().charAt(i) == ','){
+							userCheck = uCheck.getText().substring(anf, i).toString();
+							anf = i + 2;
+							pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
+							//Window.alert(userCheck + " anf " + anf); 
+						}
+					}
+					//nach Nachricht versenden wird Textfeld geleert.
 					
-					pruefeUnterhaltung(Cookies.getCookie("userID"), uCheck.getText());
 					//nachta.setText("");
 					//setUnterhaltung();
 
@@ -117,7 +129,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			eigenesRaster.setWidget(4, 0, hashTB);
 			eigenesRaster.setWidget(5, 0, hashtagFenster);
 			eigenesRaster.setWidget(2, 0, sendeButton);
-			eigenesRaster.setWidget(6, 0, hashtagHinzu);
+//			eigenesRaster.setWidget(6, 0, hashtagHinzu);
 			eigenesRaster.setWidget(8, 0, flexTable);
 			eigenesRaster.setWidget(1, 1, uCheck);
 			eigenesRaster.setWidget(0, 1, an);
@@ -140,49 +152,73 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				@Override
 				public void onSuccess(ArrayList<Nutzer> result) {
 					int zeileCounter = 1;
-					
+					ArrayList<String> kontakte = new ArrayList<String>();
 					for (final Nutzer nutzer : result) {
-						
-						Button bModifizieren = new Button("hinzufuegen");
-						
-						Label id = new Label(String.valueOf(nutzer.getId()));
-						Label vornameID = new Label (String.valueOf(nutzer.getVorname()));
-						Label nicknameID = new Label (String.valueOf(nutzer.getNickname()));
-						
-						flexTable.setWidget(zeileCounter, 0, id);
-						flexTable.setWidget(zeileCounter, 1, vornameID);
-						flexTable.setWidget(zeileCounter, 2, nicknameID);
-						flexTable.setWidget(zeileCounter, 3, bModifizieren);
-						
-//						empf = new Nutzer();
-//						empf.setId(nutzer.getId());
-//						empf.setEmail(nutzer.getEmail());
-//						empf.setNachname(nutzer.getNachname());
-//						empf.setVorname(nutzer.getVorname());
-//						empf.setNickname(nutzer.getNickname());
-						
-						bModifizieren.addClickHandler(new ClickHandler() {
+						if(nutzer.getNickname() != Cookies.getCookie("userMail")){
+							Button bModifizieren = new Button("hinzufuegen");
 							
-							@Override
-							public void onClick(ClickEvent event) {
-								//Window.alert("klick");
-//								empfaengerHinzu();
-								
-//								
-//								if(bModifizieren.getText() == "hinzufuegen"){
-//									bModifizieren.setText("hinzugefuegt");
-//								}else{
-//									bModifizieren.setText("hinzufuegen");
-//								}
-								
-								setEmpf(nutzer.getEmail());
-							}
-
+							Label id = new Label(String.valueOf(nutzer.getId()));
+							Label vornameID = new Label (String.valueOf(nutzer.getVorname()));
+							Label nicknameID = new Label (String.valueOf(nutzer.getNickname()));
 							
-
-						});
-		
-						zeileCounter++;
+							flexTable.setWidget(zeileCounter, 0, id);
+							flexTable.setWidget(zeileCounter, 1, vornameID);
+							flexTable.setWidget(zeileCounter, 2, nicknameID);
+							flexTable.setWidget(zeileCounter, 3, bModifizieren);
+							
+	//						empf = new Nutzer();
+	//						empf.setId(nutzer.getId());
+	//						empf.setEmail(nutzer.getEmail());
+	//						empf.setNachname(nutzer.getNachname());
+	//						empf.setVorname(nutzer.getVorname());
+	//						empf.setNickname(nutzer.getNickname());
+							
+							bModifizieren.addClickHandler(new ClickHandler() {
+								
+								private String userCheck;
+	
+								@Override
+								public void onClick(ClickEvent event) {
+									//Window.alert("klick");
+	//								empfaengerHinzu();
+									
+	//								
+	//								if(bModifizieren.getText() == "hinzufuegen"){
+	//									bModifizieren.setText("hinzugefuegt");
+	//								}else{
+	//									bModifizieren.setText("hinzufuegen");
+	//								}
+									
+									setEmpf(nutzer.getEmail());
+									//kontakte.add(nutzer.getEmail());
+	//								int anf = 0;
+	//								String userCheck = "";
+	//								int laenge = uCheck.getText().length();
+	//								for(int i = 1; i <= uCheck.getText().length(); i++){
+	//									if(uCheck.getText().charAt(i) == ','){
+	//										userCheck = uCheck.getText().substring(anf, i);
+	//										
+	//										anf = i + 2;
+	//										Window.alert(userCheck + " anf " + anf); 
+	//									}
+	//									else if(laenge - anf > 0){
+	//										userCheck = uCheck.getText().substring(anf, laenge);
+	//										
+	//										anf = i + 2;
+	//										Window.alert(userCheck + " anf letzte " + anf);
+	//										break;
+	//									}
+										
+	//								}
+								}
+	
+								
+	
+							});
+			
+							zeileCounter++;
+						
+						}
 					}
 					
 				}
@@ -217,10 +253,14 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			
 		}
 	public void setEmpf(String user){
-		uCheck.setText(user);
+		if (uCheck.getText() == ""){
+			uCheck.setText(user + ", ");
+		}else{
+			uCheck.setText(uCheck.getText() + user + ", ");
+		}
 	}
 	
-	private void erstelleNachricht(String text, String nickname, String empf, Unterhaltung unterhaltung) {
+	private void erstelleNachricht(final String text, String nickname, final String empf, Unterhaltung unterhaltung) {
 		
 		myAsync.createNachricht(text, nickname, empf, unterhaltung, new AsyncCallback<Nachricht>() {
 
@@ -233,11 +273,39 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 					@Override
 					public void onSuccess(Nachricht result) {
 						
+						Nachricht nachricht = new Nachricht();
+						nachricht.setId(result.getId());
+						if(hashtagFenster.getText() != ""){
+							Hashtag hashtag = new Hashtag();
+							erstelleHashtag();
+							hashtag.setBezeichnung(hashtagFenster.getText());
+							setMarkierungsliste(nachricht, hashtag);
+						}
+
+						Window.alert("Nachricht versendet an " + empf + " Text " + text);
 					}
 		});
 	}
+	
+	private void setMarkierungsliste(Nachricht nachricht, Hashtag hashtag){
+		//Window.alert("Nachrichten und Hashtagid "+ nachricht.getId() + " " + hashtag.getBezeichnung());
+		myAsync.createMarkierungsliste(nachricht, hashtag, new AsyncCallback<Markierungsliste>() {
 
-	private void getMaxID(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler in der setMarkierungsliste in NachrichtenForm " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(Markierungsliste result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
+	private void getMaxID(final String empfaenger){
 
 		myAsync.getMaxID(new AsyncCallback<Unterhaltung>() {
 
@@ -249,13 +317,16 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			@Override
 			public void onSuccess(Unterhaltung result) {
 				
-				String empf = uCheck.getText();
+				String empf = empfaenger;
 				String text = nachta.getText();
 				
 				setUListe(result, Cookies.getCookie("userMail"), empf);
 				setUListe(result, empf, Cookies.getCookie("userMail"));
-				erstelleNachricht(text, Cookies.getCookie("userMail"), empf, result);
 				
+				ArrayList<Hashtag> hashtag = new ArrayList<Hashtag>();
+
+				erstelleNachricht(text, Cookies.getCookie("userMail"), empf, result);
+
 				Window.alert("Ihre Nachricht wurde gesendet!");
 
 			}
@@ -297,31 +368,32 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 	}
 
 	
-	private void pruefeUnterhaltung(String absender, String empfaenger){
+	private void pruefeUnterhaltung(String absender, final String empfaenger){
 		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
 				Window.alert("Fehler in pruefeUnterhaltung in NachrichtenForm " + caught);
-				
+
 			}
 
 			@Override
 			public void onSuccess(Unterhaltungsliste result) {
-				
+				String empf = empfaenger;
 				Window.alert("ID "+result.getUnterhaltungID());
 				if(result.getUnterhaltungID() > 0){
 					
 					Unterhaltung u = new Unterhaltung();
 					u.setId(result.getUnterhaltungID());
-					Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
-					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), uCheck.getText(), u);
-					nachta.setText("");
+					//Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
+
+					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), empf, u);
+					//nachta.setText("");
 				} else {
-					Window.alert("Neue Unterhaltung wurde erstellt.ID "+result.getUnterhaltungID());
+					//Window.alert("Neue Unterhaltung wurde erstellt.ID "+result.getUnterhaltungID());
 					setUnterhaltung();
-					getMaxID();
-					nachta.setText("");
+					getMaxID(empf);
+					//nachta.setText("");
 					
 				}
 				
