@@ -1,15 +1,11 @@
 package de.hdm.itProjektGruppe4.shared;
 
-import java.util.Date;
-
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.hdm.itProjektGruppe4.server.MessagingAdministrationImpl;
-import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
-import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
-import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
-import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.*;
 import de.hdm.itProjektGruppe4.shared.report.*;
 
 
@@ -45,7 +41,7 @@ import de.hdm.itProjektGruppe4.shared.report.*;
  */
 
 
-
+@RemoteServiceRelativePath("reportgenerator")
 public interface ReportGenerator extends RemoteService {
 
 	/**
@@ -59,27 +55,22 @@ public interface ReportGenerator extends RemoteService {
 	
 	public void init() throws IllegalArgumentException;
 	
-	public abstract AlleNachrichtenReport erstelleAlleNachrichtenReport(Nutzer nutzer, Nachricht nachricht, Date von, Date bis)
-	throws IllegalArgumentException;
+	public abstract AlleNachrichtenReport erstelleAlleNachrichtenReport()
+	throws IllegalArgumentException, Exception;
 	
-
-	public abstract AlleAbonnementsReport erstelleAlleAbonnementsReport(Abonnement abonnement, Nutzer nutzer, Hashtag hashtag)
-	throws IllegalArgumentException;
+	public abstract AlleAbonnementsReport erstelleAlleAbonnementsReport()
+	throws IllegalArgumentException, Exception;
 	
-
-	public abstract ZeitraumspezifischeNachrichtenReport erstelleZeitraumspezifischeNachrichtenReport (Nachricht nachricht, Date anfangszeitpunkt, Date endzeitpunkt) 
-	throws IllegalArgumentException;
+	public abstract ZeitraumspezifischeNachrichtenReport erstelleZeitraumspezifischeNachrichtenReport (Nachricht nachricht, String von, String bis) 
+	throws IllegalArgumentException, Exception;
 	
-
 	public abstract NutzerspezifischeNachrichtenReport erstelleNutzerspezifischeNachrichtenReport (Nachricht nachricht, Nutzer nutzer) 
-	throws IllegalArgumentException;
+	throws IllegalArgumentException, Exception;
 	
-
-	public abstract NutzerspezifischeAbonnementsReport erstelleNutzerspezifischeAbonnementsReport (Abonnement abonnement, Nutzer nutzer) 
-	throws IllegalArgumentException;
+	public abstract NutzerspezifischeAbonnementsReport erstelleNutzerspezifischeAbonnementsReport (Nutzerabonnement nutzerabonnement) 
+	throws IllegalArgumentException, Exception;
 	
-	public abstract HashtagspezifischeAbonnementsReport erstelleHashtagspezifischeAbonnementsReport (Abonnement abonnement, Hashtag hashtag) 
-	throws IllegalArgumentException;
+	public abstract HashtagspezifischeAbonnementsReport erstelleHashtagspezifischeAbonnementsReport (Hashtagabonnement hashtagabonnement) 
+	throws IllegalArgumentException, Exception;
 		
 }
-
