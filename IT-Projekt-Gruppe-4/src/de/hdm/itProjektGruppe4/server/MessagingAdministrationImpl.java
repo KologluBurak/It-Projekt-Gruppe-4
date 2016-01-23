@@ -481,8 +481,8 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Hashtag anhand seiner ID.
 	 */
-	public Hashtag getHashtagById(int id) throws Exception {
-		return this.hashtagMapper.findHashtagByID(id);
+	public Hashtag getHashtagByHashtag(String bez) throws Exception {
+		return this.hashtagMapper.findHashtagByText(bez);
 	}
 
 	/*
@@ -578,14 +578,14 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Anlegen eines Hashtagabonnements.
 	 */
-	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung) throws Exception {
-		Hashtagabonnement b = new Hashtagabonnement();
-		b.setHashtagID(bezeichnung.getId());
-		return this.hashtagAboMapper.insert(b);
+	public Hashtagabonnement createHashtagAbonnement(Hashtagabonnement bezeichnung) throws Exception {
+		//Hashtagabonnement b = new Hashtagabonnement();
+		//b.setHashtagID(bezeichnung.getId());
+		return this.hashtagAboMapper.insert(bezeichnung);
 	}
 
 	/**
-	 * Lï¿½schen eines Hashtagsabonnement.
+	 * Löschen eines Hashtagsabonnement.
 	 */
 	public void delete(Hashtagabonnement hashtagAbo) throws Exception {
 		this.hashtagAboMapper.delete(hashtagAbo);
@@ -616,8 +616,10 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Hashtagsabonnement anhand der Hashtag-ID
 	 */
-	public Hashtagabonnement getHashtagAbonnementByHashtagId(int id) throws Exception {
-		return this.hashtagAboMapper.findHashtagAbonnementByHashtagID(id);
+	public Hashtagabonnement getHashtagAbonnementByHashtagId(String text) throws Exception {
+		int hid = 0;
+		hid = this.hashtagMapper.findHashtagByText(text).getId();
+		return this.hashtagAboMapper.findHashtagAbonnementByHashtagID(hid);
 	}
 
 	/**

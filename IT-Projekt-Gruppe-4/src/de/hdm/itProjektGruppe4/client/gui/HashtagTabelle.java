@@ -26,6 +26,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 
 
+
+
+
+
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
@@ -49,68 +53,56 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 		public Widget zeigeTabelle () {
 			
 			final FlexTable flexTable = new FlexTable();
-			
-			
-			flexTable.setText(0, 0, "AboID");
+
+			flexTable.setText(0, 0, "ID");
 			flexTable.setText(0, 1, "HashtagID");
 			flexTable.setText(0, 2, "Entfernen");
-			
-			
-			
+
 			myAsync.getAllHashtagabonnements(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Hashtagabonnement>>() {
-				
+
 				@Override
 				public void onSuccess(ArrayList<Hashtagabonnement> result) {
 					int zeileCounter = 1;
-					
+
 					for (final Hashtagabonnement hta : result) {
 
 						Button bModifizieren = new Button("Entfernen");
-						
+
 						//TODO Hier müsst hr erst eine Tabell erstellen und alle Daten reintun was in hta steht.
 
-						Label aboID = new Label(String.valueOf(hta.getAbonnementID()));
+						Label aboID = new Label(String.valueOf(hta.getHashtagID()));
 						Label zeit = new Label(String.valueOf(hta.getErstellungsZeitpunkt()));
 						Label hashtagID = new Label(hta.getHashtagBezeichnung().getBezeichnung());
-						
+
 						flexTable.setWidget(zeileCounter, 0, aboID);
 						//flexTable.setWidget(zeileCounter, 1, zeit);
 						flexTable.setWidget(zeileCounter, 1, hashtagID);
 						flexTable.setWidget(zeileCounter, 2, bModifizieren);
-						
+
 						bModifizieren.addClickHandler(new ClickHandler(){
 
 							@Override
 							public void onClick(ClickEvent event) {
 								loeschenHashtag(hta);
-								
-								
-								
-								
+
 								// Beispiel zum sehen, dass es funktioniert abspielen bitt
 								Window.alert("Ändern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
-								
 							}
 
-							
-							
-							
 						});
-					
+
 						zeileCounter += 1;
 				}
-				
+
 					FlexTable.setText(0, 0, "ID");
 					FlexTable.setText(0, 1, "Bezeichnung");
 					FlexTable.setText(0, 2, "Folgen");
-					
-					
+
 					myAsync.getAllHashtags(new AsyncCallback<ArrayList<Hashtag>>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
 							Window.alert("Fehler bei Anzeigen Hashtags" + caught);
-							
 						}
 
 						@Override
@@ -130,11 +122,16 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 								FlexTable.setWidget(zeileCounterH, 2, hfolgen);
 								
 								hfolgen.addClickHandler(new ClickHandler() {
-									
+
 									@Override
 									public void onClick(ClickEvent event) {
-										hashFolgen();
-										
+										Hashtagabonnement hta = new Hashtagabonnement();
+										hta.setHashtagID(ht.getId());
+										hta.setAbonnementID(0); 
+										int nid = Integer.parseInt(Cookies.getCookie("userID"));
+										hta.setNutzerID(nid);
+										hashFolgen(hta);
+
 									}
 
 									
@@ -177,8 +174,21 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			
 			
 		}
-		private void hashFolgen() {
-			// TODO Auto-generated method stub
+		private void hashFolgen(Hashtagabonnement bezeichnung) {
+			myAsync.createHashtagAbonnement(bezeichnung, new AsyncCallback<Hashtagabonnement>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler bei hashFolgen " + caught);
+					
+				}
+
+				@Override
+				public void onSuccess(Hashtagabonnement result) {
+					
+					
+				}
+			});
 			
 		}
 		private void loeschenHashtag(Hashtagabonnement habo) {

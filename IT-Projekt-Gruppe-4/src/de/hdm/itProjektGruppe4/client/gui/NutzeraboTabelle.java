@@ -129,7 +129,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 								
 								@Override
 								public void onClick(ClickEvent event) {
-									folgen (nutzer);
+									Nutzer beobachtete = new Nutzer();
+									int id = Integer.parseInt(Cookies.getCookie("userID"));
+									beobachtete.setId(id);
+									folgen(beobachtete, nutzer);
 								 
 								}				
 															
@@ -152,10 +155,23 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				return hauptP;
 				
 	}
-			private void folgen(Nutzer nutzer) {
+
+		private void folgen(Nutzer derBeobachteteId, Nutzer follower) {
+			myAsync.createNutzerabonnement(derBeobachteteId, follower, new AsyncCallback<Nutzerabonnement>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler bei " + caught);
+
+				}
+
+				@Override
+				public void onSuccess(Nutzerabonnement result) {
+
+				}
+			});
 			
-				
-			}
+		}
 			
 //			private void loeschenAbo(Nutzer nutzer) {
 //				myAsync.delete(nutzer, new AsyncCallback<Void>() {

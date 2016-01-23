@@ -92,7 +92,7 @@ public class NutzerAboMapper {
 			PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, dateFormat.format(date));
-			preStmt.setInt(2, nutzerabonnement.getAbonnementID());
+			preStmt.setInt(2, 1); // nutzerabonnement.getAbonnementID());
 			preStmt.setInt(3, nutzerabonnement.getDerBeobachteteID());
 			preStmt.setInt(4, nutzerabonnement.getFollowerID());
 			preStmt.executeUpdate();

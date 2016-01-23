@@ -23,9 +23,11 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
+import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Markierungsliste;
 import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
@@ -79,13 +81,28 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 					int anf = 0;
 					String userCheck = "";
 					//Window.alert(uCheck.getText().length()+"");
-					for(int i = 1; i <= uCheck.getText().length(); i++){
-						if(uCheck.getText().charAt(i) == ','){
-							userCheck = uCheck.getText().substring(anf, i).toString();
-							anf = i + 2;
-							pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
-							//Window.alert(userCheck + " anf " + anf); 
+					if(uCheck.getText() != ""){
+						for(int i = 1; i <= uCheck.getText().length(); i++){
+							if(uCheck.getText().charAt(i) == ','){
+								userCheck = uCheck.getText().substring(anf, i).toString();
+								anf = i + 2;
+								pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
+								//Window.alert(userCheck + " anf " + anf); 
+							}
 						}
+					}else if(uCheck.getText() == "" && hashtagFenster.getText() != ""){
+						for(int i = 1; i <= hashtagFenster.getText().length(); i++){
+							if(hashtagFenster.getText().charAt(i) == ','){
+								userCheck = hashtagFenster.getText().substring(anf, i).toString();
+								anf = i + 2;
+								pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
+								//Window.alert(userCheck + " anf " + anf); 
+							}
+						}
+					}
+					else {
+						//Window.alert("Else in Click");
+						pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
 					}
 					//nach Nachricht versenden wird Textfeld geleert.
 					
@@ -282,7 +299,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 							setMarkierungsliste(nachricht, hashtag);
 						}
 
-						Window.alert("Nachricht versendet an " + empf + " Text " + text);
+						//Window.alert("Nachricht versendet an " + empf + " Text " + text);
 					}
 		});
 	}
@@ -327,7 +344,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 				erstelleNachricht(text, Cookies.getCookie("userMail"), empf, result);
 
-				Window.alert("Ihre Nachricht wurde gesendet!");
+				//Window.alert("Ihre Nachricht wurde gesendet!");
 
 			}
 		});
@@ -369,34 +386,197 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 	
 	private void pruefeUnterhaltung(String absender, final String empfaenger){
+//		Window.alert("Beim pruefeUnterhaltung");;
+		if(empfaenger !="" && uCheck.getText() != ""){
+			Window.alert("If " + " " + absender + " " + empfaenger);
+			myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler in pruefeUnterhaltung in NachrichtenForm " + caught);
+	
+				}
+	
+				@Override
+				public void onSuccess(Unterhaltungsliste result) {
+					String empf = empfaenger;
+					//Window.alert("ID "+result.getUnterhaltungID());
+					if(result.getUnterhaltungID() > 0 && hashtagFenster.getText() == ""){
+						//Wenn Unterhaltung bereits besteht
+						Unterhaltung u = new Unterhaltung();
+						u.setId(result.getUnterhaltungID());
+						//Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
+	
+						erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), empf, u);
+						//nachta.setText("");
+					} else if( hashtagFenster.getText() == "") {
+						//Window.alert("Neue Unterhaltung wurde erstellt.ID "+result.getUnterhaltungID());
+						//Wenn Unterhaltung nicht existiert
+						setUnterhaltung();
+						getMaxID(empf);
+						//nachta.setText("");ht
+						
+					}
+					
+				}
+			});
+		}else if( hashtagFenster.getText() != "" && uCheck.getText() == ""){
+			//Window.alert("weiter gehts mit getHashtagAbso");
+			
+			getHashtagAbos(empfaenger); //hashtagFenster.getText().toString());
+		}else if( hashtagFenster.getText() == "" && uCheck.getText() == ""){
+			//Window.alert("weiter gehts mit getAbos");
+			getAbos();
+			
+		}
+	}
+	
+	private void getHashtagAbos(String text){
+		Window.alert(text);
+		myAsync.getHashtagAbonnementByHashtagId(text, new AsyncCallback<Hashtagabonnement>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei getHashtagAbos " + caught);
+			}
+
+			@Override
+			public void onSuccess(Hashtagabonnement result) {
+				Nutzer empf = new Nutzer();
+				empf.setId(result.getNutzerID());
+				Nutzer absender = new Nutzer();
+				absender.setNickname(Cookies.getCookie("userMail"));
+				//Window.alert("gethasshtagAbos");
+				getNutzerHashtagName(absender, empf);
+			}
+		});
+	}
+	
+	private void getNutzerHashtagName(final Nutzer absender, final Nutzer empf){
+		myAsync.getNutzerById(empf.getId(), new AsyncCallback<Nutzer>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei getNutzerName " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(Nutzer result) {
+				//Window.alert(result.getNickname());
+				unterhaltungHashtagExistenz(Cookies.getCookie("userID"), result.getNickname());
+				
+			}
+		});
+	}
+	private void unterhaltungHashtagExistenz(String absender, final String empfaenger){
 		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Fehler in pruefeUnterhaltung in NachrichtenForm " + caught);
-
+				Window.alert("Fehler bei unterhaltungExistenz " +caught);
+				
 			}
 
 			@Override
 			public void onSuccess(Unterhaltungsliste result) {
 				String empf = empfaenger;
 				Window.alert("ID "+result.getUnterhaltungID());
-				if(result.getUnterhaltungID() > 0){
-					
+				if(result.getUnterhaltungID() > 0 && hashtagFenster.getText() != ""){
+					//Wenn Unterhaltung bereits besteht
 					Unterhaltung u = new Unterhaltung();
 					u.setId(result.getUnterhaltungID());
-					//Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
+//					Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
+					
+//					Window.alert("Nachricht an " + empf + " Nachricht " + nachta.getText());
 
 					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), empf, u);
 					//nachta.setText("");
 				} else {
 					//Window.alert("Neue Unterhaltung wurde erstellt.ID "+result.getUnterhaltungID());
+					//Wenn Unterhaltung nicht existiert
+					setUnterhaltung();
+					getMaxID(empf);
+					//nachta.setText("");ht
+				}
+				
+			}
+		});
+	}
+
+	private void getAbos(){
+		myAsync.getAllNutzerabonnements(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Nutzerabonnement>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei getAbos " + caught);	
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Nutzerabonnement> result) {
+				
+				for(Nutzerabonnement na : result){
+					
+					Nutzer nutzer = new Nutzer();
+					nutzer.setId(na.getFollowerID());
+					Nutzer absender = new Nutzer();
+					absender.setNickname(Cookies.getCookie("userMail"));
+					getNutzerAboName(absender, nutzer);
+				}
+				
+			}
+		});
+	}
+	
+	private void getNutzerAboName(final Nutzer absender, final Nutzer empf){
+		myAsync.getNutzerById(empf.getId(), new AsyncCallback<Nutzer>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei getNutzerName " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(Nutzer result) {
+				//Window.alert(result.getNickname());
+				unterhaltungAboExistenz(Cookies.getCookie("userID"), result.getNickname());
+				
+			}
+		});
+	}
+	
+	private void unterhaltungAboExistenz(String absender, final String empfaenger){
+		//Window.alert("unterhaltungAboExistenz Parameter " + absender + " " + empfaenger);
+		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei unterhaltungExistenz " +caught);
+				
+			}
+
+			@Override
+			public void onSuccess(Unterhaltungsliste result) {
+				String empf = empfaenger;
+				Window.alert("ID "+result.getUnterhaltungID());
+				if(result.getUnterhaltungID() > 0 && hashtagFenster.getText() == ""){
+					//Wenn Unterhaltung bereits besteht
+					Unterhaltung u = new Unterhaltung();
+					u.setId(result.getUnterhaltungID());
+					//Window.alert("Unterhaltung besteht bereits.ID "+result.getUnterhaltungID());
+					
+//					Window.alert("Nachricht an " + empf + " Nachricht " + nachta.getText());
+
+					erstelleNachricht(nachta.getText(), Cookies.getCookie("userMail"), empf, u);
+					//nachta.setText("");
+				} else {
+//					Window.alert("Neue Unterhaltung wurde erstellt.ID "+result.getUnterhaltungID());
+					//Wenn Unterhaltung nicht existiert
 					setUnterhaltung();
 					getMaxID(empf);
 					//nachta.setText("");
-					
 				}
-				
 			}
 		});
 	}

@@ -93,13 +93,14 @@ public class HashtagAboMapper {
 			Date date = new Date();
 			String sql = "INSERT INTO `hashtagabonnements`(`hashtagAboID`, `datum`, `hashtagID`, `abonnementID`, `nutzerID`) "
 					+ "VALUES (NULL, ?, ?, ?, ?)";
-			
+
 			//PreparedStatement preStmt;
 			preStmt = con.prepareStatement(sql);
 			preStmt.setString(1, dateFormat.format(date));
 			preStmt.setInt(2, hashtagabonnement.getHashtagID());
-			preStmt.setInt(3, hashtagabonnement.getAbonnementID());
+			preStmt.setInt(3, 1); //hashtagabonnement.getAbonnementID());
 			preStmt.setInt(4, hashtagabonnement.getNutzerID());
+			System.out.println(sql + " " + dateFormat.format(date) + " " + hashtagabonnement.getHashtagID() + " " + hashtagabonnement.getNutzerID());
 			preStmt.executeUpdate();
 
 			// con.close();
@@ -134,6 +135,7 @@ public class HashtagAboMapper {
 		}
 	}
 
+	
 	/**
 	 * Diese Methode ermöglicht es alle Hashtags zu finden
 	 * 

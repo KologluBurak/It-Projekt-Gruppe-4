@@ -152,7 +152,7 @@ public interface MessagingAdministrationAsync {
 
 	void getAllHashtags(AsyncCallback<ArrayList<Hashtag>> callback);
 
-	void getHashtagById(int id, AsyncCallback<Hashtag> callback);
+	void getHashtagByHashtag(String bez, AsyncCallback<Hashtag> callback);
 
 	/*
 	 * *************************************************************************
@@ -198,7 +198,7 @@ public interface MessagingAdministrationAsync {
 	 * ****************************************************
 	 */
 
-	void createHashtagAbonnement(Hashtag bezeichnung, AsyncCallback<Hashtagabonnement> callback);
+	void createHashtagAbonnement(Hashtagabonnement bezeichnung, AsyncCallback<Hashtagabonnement> callback);
 
 	void delete(Hashtagabonnement hashtagAbo, AsyncCallback<Void> callback);
 
@@ -209,7 +209,7 @@ public interface MessagingAdministrationAsync {
 	void getAllHashtagabonnements(String userID,
 			AsyncCallback<ArrayList<Hashtagabonnement>> callback);
 
-	void getHashtagAbonnementByHashtagId(int id, AsyncCallback<Hashtagabonnement> callback);
+	void getHashtagAbonnementByHashtagId(String text, AsyncCallback<Hashtagabonnement> callback);
 
 	void getHashtagAbonnementByAbonnementId(int id, AsyncCallback<Hashtagabonnement> callback);
 

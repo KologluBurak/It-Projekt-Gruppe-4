@@ -137,7 +137,7 @@ public interface MessagingAdministration extends RemoteService {
 
 	public Hashtag createHashtag(String bezeichnung) throws Exception;
 
-	public Hashtag getHashtagById(int id) throws Exception;
+	public Hashtag getHashtagByHashtag(String bez) throws Exception;
 
 	public void delete(Hashtag hashtag) throws Exception;
 
@@ -185,7 +185,7 @@ public interface MessagingAdministration extends RemoteService {
 	 * ****************************************************
 	 */
 
-	public Hashtagabonnement createHashtagAbonnement(Hashtag bezeichnung) throws Exception;
+	Hashtagabonnement createHashtagAbonnement(Hashtagabonnement bezeichnung) throws Exception;
 
 	public void delete(Hashtagabonnement hashtagAbo) throws Exception;
 
@@ -195,7 +195,7 @@ public interface MessagingAdministration extends RemoteService {
 
 	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer) throws Exception;
 
-	public Hashtagabonnement getHashtagAbonnementByHashtagId(int id) throws Exception;
+	public Hashtagabonnement getHashtagAbonnementByHashtagId(String text) throws Exception;
 
 	public Hashtagabonnement getHashtagAbonnementByAbonnementId(int id) throws Exception;
 

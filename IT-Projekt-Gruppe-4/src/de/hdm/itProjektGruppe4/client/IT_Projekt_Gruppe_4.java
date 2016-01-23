@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 
 import de.hdm.itProjektGruppe4.shared.LoginService;
 import de.hdm.itProjektGruppe4.shared.LoginServiceAsync;
@@ -40,7 +41,7 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 			public void onFailure(Throwable error) {
 
 				// DialogBox d = new DialogBox();
-				// d.setText("Fehler: " + error.getMessage());
+				Window.alert("Fehler: " + error.getMessage());
 				// d.show();
 			}
 
@@ -49,28 +50,26 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 				loginInfo = result;
 				if (loginInfo.isLoggedIn()) {
 					MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
-					//
-					// myAsync.createNutzer("Murat", "Mustermann",
-					// loginInfo.getEmailAddress(), loginInfo.getNickname(), new
-					// AsyncCallback<Nutzer>() {
-					//
-					// @Override
-					// public void onFailure(Throwable caught) {
-					// // TODO Auto-generated method stub
-					// DialogBox d = new DialogBox();
-					// d.setText("fehler: " + caught);
-					// d.show();
-					// }
-					//
-					// @Override
-					// public void onSuccess(Nutzer result) {
-					// // TODO Auto-generated method stub
-					// DialogBox d = new DialogBox();
-					// d.setText("Gespeichert");
-					// d.show();
+					//Window.alert(loginInfo.getNickname() +" " + loginInfo.getEmailAddress());
 					
 					Cookies.setCookie("userMail", loginInfo.getEmailAddress());
 					setUserID();
+					//nutzerExistiert(loginInfo.getNickname(), loginInfo.getEmailAddress());
+					
+					myAsync.createNutzer("", "", loginInfo.getEmailAddress(), loginInfo.getNickname(), new AsyncCallback<Nutzer>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							Window.alert("Es ist ein Fehler beim Anlegen eines User entstanden." + caught); 
+							
+						}
+
+						@Override
+						public void onSuccess(Nutzer result) {
+							
+							
+						}
+					});
 					loadView(loginInfo.getEmailAddress());
 					// }
 					// });
