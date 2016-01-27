@@ -112,17 +112,24 @@ public class UnterhaltungslisteMapper {
 	public void delete(Unterhaltungsliste unterhaltungsliste) throws Exception{
 		Connection con = DBConnection.connection();
 		Statement stmt= null;
+
 		try {
 			stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM unterhaltungslisten " + "WHERE unterhaltungslisteID="
+			stmt.executeUpdate("DELETE FROM unterhaltungslisten WHERE unterhaltungID = "
 					+ unterhaltungsliste.getId());
-
+			System.out.println("DELETE FROM unterhaltungslisten WHERE unterhaltungID = "
+					+ unterhaltungsliste.getUnterhaltungID());
+			
+			stmt.close(); 
 		} catch (SQLException e2) {
+			System.out.println(e2);
 			e2.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!"+ e2.toString());
 		}finally {
+			System.out.println("finally");
 			DBConnection.closeAll(null, stmt, con);
 		}
+		
 	}
 	
 	/**

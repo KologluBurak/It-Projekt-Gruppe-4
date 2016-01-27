@@ -244,6 +244,8 @@ public class HashtagAboMapper {
 					+ "ON hashtagabonnements.hashtagID = hashtags.hashtagID "
 					+ "WHERE hashtagabonnements.hashtagID = "+ id );
 
+			System.out.println(rs.getStatement());
+			System.out.println(id);
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
 				Hashtag bezeichnung = new Hashtag();
@@ -267,6 +269,62 @@ public class HashtagAboMapper {
 		return null;
 	}
 
+	/**
+	 * Diese Methode ermöglicht es eine Ausgabe über einen Hashtagabonnements in
+	 * der Datenbank, anhand deren ID.
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Hashtagabonnement> findAlleHashtagAbonnementByHashtagID(int id) throws Exception {
+
+		// DB-Verbindung herstellen
+		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
+		ArrayList<Hashtagabonnement> hsa = new ArrayList<Hashtagabonnement>();
+		try {
+			// Insert-Statement erzeugen
+			stmt = con.createStatement();
+
+			/*
+			 * Zunächst wird geschaut welches der momentan höchste
+			 * Primärschlüssel ist
+			 */
+			rs = stmt.executeQuery("SELECT * FROM hashtagabonnements INNER JOIN hashtags "
+					+ "ON hashtagabonnements.hashtagID = hashtags.hashtagID "
+					+ "WHERE hashtagabonnements.hashtagID = "+ id );
+
+			System.out.println(rs.getStatement());
+			System.out.println(id);
+			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
+			while (rs.next()) {
+				Hashtag bezeichnung = new Hashtag();
+				bezeichnung.setBezeichnung(rs.getString("bezeichnung"));
+	
+				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
+				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
+				hashtagAbonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				hashtagAbonnement.setHashtagBezeichnung(bezeichnung);
+				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
+				hashtagAbonnement.setNutzerID(rs.getInt("nutzerID"));
+
+				hsa.add(hashtagAbonnement);
+				
+			}
+			
+			return hsa;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+		}
+		//return hsa;
+	}
+	
 	/**
 	 * Diese Methode ermöglicht es eine Ausgabe über einen Hashtagabonnements in
 	 * der Datenbank, anhand deren ID.

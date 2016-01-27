@@ -159,6 +159,8 @@ public interface MessagingAdministration extends RemoteService {
 			throws Exception;
 
 	public ArrayList<Nutzerabonnement> getAllNutzerabonnements(String userID) throws Exception;
+	
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnementsByBeobachteteID(String userID) throws Exception;
 
 	public Nutzerabonnement getNutzerabonnementById(int id) throws Exception;
 
@@ -241,11 +243,19 @@ public interface MessagingAdministration extends RemoteService {
 	public Unterhaltungsliste getByUnterhaltung(Unterhaltung unterhaltung) throws Exception;
 	
 	public Unterhaltungsliste getUnterhaltung(String absender, String empfaenger) throws Exception;
+	
+	public void deleteUnterhaltungsliste (String absender, String empfaenger) throws Exception;
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte
 	 * ****************
 	 * ***********************************************************
 	 */
+	
+	public Nutzerabonnement findAboByNutzerID(int id, int id2) throws Exception;
+	
+	public ArrayList<Nachricht> getNachrichtByNickname(String nickname ) throws Exception;
+	
+	public ArrayList<Nutzer> getNutzerByHashtagAbo(String text) throws Exception;
 
 }

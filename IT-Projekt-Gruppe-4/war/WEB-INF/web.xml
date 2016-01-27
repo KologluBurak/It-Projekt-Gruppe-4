@@ -26,10 +26,16 @@
     <url-pattern>/it_projekt_gruppe_4/messagingAdmin</url-pattern>
   </servlet-mapping>
   
+    <servlet-mapping>
+    <servlet-name>messagingAdminService</servlet-name>
+    <url-pattern>/it_projekt_gruppe_4_Report/messagingAdmin</url-pattern>
+  </servlet-mapping>
+  
   
   <!-- messagingAdmin Default page to serve -->
   <welcome-file-list>
     <welcome-file>IT_Projekt_Gruppe_4.html</welcome-file>
+    <welcome-file>IT_Projekt_Gruppe_4_Report.html</welcome-file>
   </welcome-file-list>
 
 </web-app>

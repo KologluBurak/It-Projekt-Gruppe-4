@@ -81,7 +81,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 					int anf = 0;
 					String userCheck = "";
 					//Window.alert(uCheck.getText().length()+"");
-					if(uCheck.getText() != ""){
+					if(uCheck.getText() != "" && hashtagFenster.getText()== ""){
 						for(int i = 1; i <= uCheck.getText().length(); i++){
 							if(uCheck.getText().charAt(i) == ','){
 								userCheck = uCheck.getText().substring(anf, i).toString();
@@ -95,12 +95,13 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 							if(hashtagFenster.getText().charAt(i) == ','){
 								userCheck = hashtagFenster.getText().substring(anf, i).toString();
 								anf = i + 2;
+								Window.alert(userCheck + " anf " + anf); 
 								pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
-								//Window.alert(userCheck + " anf " + anf); 
+								
 							}
 						}
 					}
-					else {
+					else if(uCheck.getText() == "" && hashtagFenster.getText() == "") {
 						//Window.alert("Else in Click");
 						pruefeUnterhaltung(Cookies.getCookie("userID"), userCheck);
 					}
@@ -386,7 +387,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
 	
 	private void pruefeUnterhaltung(String absender, final String empfaenger){
-//		Window.alert("Beim pruefeUnterhaltung");;
+		Window.alert("Beim pruefeUnterhaltung" + empfaenger);;
 		if(empfaenger !="" && uCheck.getText() != ""){
 			Window.alert("If " + " " + absender + " " + empfaenger);
 			myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
@@ -421,7 +422,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				}
 			});
 		}else if( hashtagFenster.getText() != "" && uCheck.getText() == ""){
-			//Window.alert("weiter gehts mit getHashtagAbso");
+			Window.alert("weiter gehts mit getHashtagAbso");
 			
 			getHashtagAbos(empfaenger); //hashtagFenster.getText().toString());
 		}else if( hashtagFenster.getText() == "" && uCheck.getText() == ""){
@@ -446,7 +447,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				empf.setId(result.getNutzerID());
 				Nutzer absender = new Nutzer();
 				absender.setNickname(Cookies.getCookie("userMail"));
-				//Window.alert("gethasshtagAbos");
+				Window.alert("gethashtagAbos");
 				getNutzerHashtagName(absender, empf);
 			}
 		});
@@ -481,7 +482,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			@Override
 			public void onSuccess(Unterhaltungsliste result) {
 				String empf = empfaenger;
-				Window.alert("ID "+result.getUnterhaltungID());
+				//Window.alert("ID "+result.getUnterhaltungID());
 				if(result.getUnterhaltungID() > 0 && hashtagFenster.getText() != ""){
 					//Wenn Unterhaltung bereits besteht
 					Unterhaltung u = new Unterhaltung();
@@ -518,7 +519,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 				for(Nutzerabonnement na : result){
 					
 					Nutzer nutzer = new Nutzer();
-					nutzer.setId(na.getFollowerID());
+					nutzer.setId(na.getDerBeobachteteID());
 					Nutzer absender = new Nutzer();
 					absender.setNickname(Cookies.getCookie("userMail"));
 					getNutzerAboName(absender, nutzer);

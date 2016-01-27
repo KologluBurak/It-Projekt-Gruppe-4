@@ -147,12 +147,63 @@ public class NutzerAboMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+					+ "ON nutzerabonnements.derBeobachteteID =  nutzer.nutzerID "
+					+ "WHERE nutzerabonnements.followerID =" + userID);
+//			stmt = con.createStatement();
+//			rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+//					+ "ON nutzerabonnements.nutzerID = nutzer.nutzerID");
+
+			while (rs.next()) {
+				Nutzer nutzer = new Nutzer();
+				nutzer.setNickname(rs.getString("nickname"));
+
+				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setNutzerNickname(nutzer);
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+
+				allNutzerabonnements.add(nutzerabonnement);
+			}
+			stmt.close();
+			rs.close();
+			// con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			//DBConnection.closeAll(rs, stmt, con );
+		}
+		return allNutzerabonnements;
+	}
+
+	/**
+	 * Diese Methode ermoeglicht es alle Nutzerabonnements aus der Datenbank in
+	 * einer Liste auszugeben.
+	 * 
+	 * @return allNutzerabonnements
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Nutzerabonnement> findAllNutzerabonnementsByBeobacheteteID(String userID) 
+			throws Exception{
+		Connection con = DBConnection.connection();
+//		Statement stmt= null;
+//		ResultSet rs= null;
+		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
 					+ "ON nutzerabonnements.followerID =  nutzer.nutzerID "
 					+ "WHERE nutzerabonnements.derBeobachteteID =" + userID);
 //			stmt = con.createStatement();
 //			rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
 //					+ "ON nutzerabonnements.nutzerID = nutzer.nutzerID");
 
+			System.out.println("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+					+ "ON nutzerabonnements.followerID =  nutzer.nutzerID "
+					+ "WHERE nutzerabonnements.derBeobachteteID =" + userID);
 			while (rs.next()) {
 				Nutzer nutzer = new Nutzer();
 				nutzer.setNickname(rs.getString("nickname"));
@@ -220,6 +271,48 @@ public class NutzerAboMapper {
 		return null;
 	}
 
+	/**
+	 * Diese Methode ermoeglicht es ein Nutzerabonnement anhand ihrer ID zu
+	 * finden und anzuzeigen.
+	 * 
+	 * @param id
+	 * @param id2
+	 * @return nutzerabo
+	 * @throws IllegalArgumentException
+	 */
+	public Nutzerabonnement findAboByNutzerID(int id, int id2) 
+			throws Exception{		
+		
+		Connection con = DBConnection.connection();
+		Statement stmt= null;
+		ResultSet rs= null;
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM nutzerabonnements "
+							+ "WHERE derBeobachteteID= " + id + " AND followerID = " + id2);
+
+			if (rs.next()) {
+				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+
+				return nutzerabonnement;
+			}
+			stmt.close();
+			rs.close();
+			// con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con );
+		}
+		return null;
+	}
+	
 	/**
 	 * Diese Methode erm�glicht es eine Ausgabe ueber einen Nutzerabonnements
 	 * in der Datenbank, anhand deren ID.

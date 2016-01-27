@@ -53,10 +53,12 @@
 	    <jvmarg value="-Xmx256M"/>
 	    <arg value="-startupUrl"/>
 	    <arg value="IT_Projekt_Gruppe_4.html"/>
+	  	<arg value="IT_Projekt_Gruppe_4_Report.html"/>
 	    <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
 	    <arg value="-server"/>
 	    <arg value="com.google.appengine.tools.development.gwt.AppEngineLauncher"/>
 	    <arg value="de.hdm.itProjektGruppe4.client.IT_Projekt_Gruppe_4"/>
+	  	<arg value="de.hdm.itProjektGruppe4.client.IT_Projekt_Gruppe_4_Report"/>
 	  </java>
 	</target>
 

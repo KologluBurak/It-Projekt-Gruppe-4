@@ -10,9 +10,12 @@ import java.util.ArrayList;
 
 
 
+
+
 //import com.google.appengine.repackaged.com.google.common.util.concurrent.AsyncCallable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -30,6 +33,7 @@ import de.hdm.itProjektGruppe4.client.gui.NutzeraboTabelle;
 import de.hdm.itProjektGruppe4.client.gui.UnterhaltungsForm;
 //import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 
+import de.hdm.itProjektGruppe4.client.gui.report.ReportForm;
 //import de.hdm.itProjektGruppe4.shared.ReportGenerator.*;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
@@ -172,7 +176,13 @@ public class MSG_Front_End {
 			}
 		};
 
-
+		Command reportAuswahlAnzeigen = new Command() {
+			public void execute() {
+				rechts.clear();
+				rechts.add(new HTML("<h2>Hier können Sie ihre Reports auswählen</h2>"));
+				Window.Location.assign(GWT.getHostPageBaseURL() + "IT_Projekt_Gruppe_4_Report.html");
+			}
+		};
 
 		// Menuebar und verschiede Reiter + Commands
 
@@ -186,7 +196,8 @@ public class MSG_Front_End {
 		hasM.addItem("Hashtagabonnement Anzeigen", hashtagAnzeigen);
 		MenuBar aboM = new MenuBar(true);
 		aboM.addItem("Nutzerabonnement Anzeigen", nutzeraboAnzeigen);
-		
+		MenuBar repM = new MenuBar(true);
+		repM.addItem("Reportauswahl anzeigen", reportAuswahlAnzeigen);
 
 		MenuBar menu = new MenuBar();
 		menu.setAutoOpen(true);
@@ -195,7 +206,7 @@ public class MSG_Front_End {
 		menu.addItem("Unterhaltung", untM);
 		menu.addItem("Hashtag Abonnement", hasM);
 		menu.addItem("Nutzeraboonement", aboM);
-		
+		menu.addItem("Report", repM);
 
 		Label user = new Label ("Wilkommen zurueck "+email);
 		vertipanel.add(user);

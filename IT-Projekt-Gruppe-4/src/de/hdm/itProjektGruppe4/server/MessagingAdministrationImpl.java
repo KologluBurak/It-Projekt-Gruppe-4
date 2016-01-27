@@ -510,6 +510,16 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		nutzabo.setFollowerID(follower.getId());
 		return nutzerAboMapper.insert(nutzabo);
 	}
+	
+	public Nutzerabonnement findAboByNutzerID(int id, int id2) throws Exception {
+		
+		if(this.nutzerAboMapper.findAboByNutzerID(id, id2) == null){
+			Nutzerabonnement na = new Nutzerabonnement();
+			na.setId(0);
+			return na;
+		}
+		return this.nutzerAboMapper.findAboByNutzerID(id, id2); 
+	}
 
 	/*
 	 * L�schen eines Nutzerabonnement
@@ -526,6 +536,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public ArrayList<Nutzerabonnement> getAllNutzerabonnements(String userID) throws Exception {
 		return this.nutzerAboMapper.findAllNutzerabonnements(userID);
 	}
+	
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnementsByBeobachteteID(String userID) throws Exception {
+		return this.nutzerAboMapper.findAllNutzerabonnementsByBeobacheteteID(userID);
+	}
+
 
 	/**
 	 * Auslesen eines Nutzerabonnements anhand seiner ID.
@@ -613,12 +628,41 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.hashtagAboMapper.findHashtagAbonnementByNutzerID(nutzer);
 	}
 
+	public ArrayList<Nutzer> getNutzerByHashtagAbo(String text) throws Exception {
+		int hid = 0;
+		ArrayList<Nutzer> alleNutzer = new ArrayList <Nutzer>();
+		//Hashtag h = 
+		hid = this.hashtagMapper.findHashtagByText(text).getId();
+		ArrayList<Hashtagabonnement> hsa = this.hashtagAboMapper.findAlleHashtagAbonnementByHashtagID(hid);
+		
+		for(Hashtagabonnement hs : hsa){
+			Nutzer n = new Nutzer();
+			n = this.getNutzerById(hs.getNutzerID());
+			System.out.println(n.getNickname());
+			alleNutzer.add(n);
+		}
+		return alleNutzer;
+	}
 	/**
 	 * Auslesen eines Hashtagsabonnement anhand der Hashtag-ID
 	 */
 	public Hashtagabonnement getHashtagAbonnementByHashtagId(String text) throws Exception {
 		int hid = 0;
-		hid = this.hashtagMapper.findHashtagByText(text).getId();
+		System.out.println("getHashtagAbonnementByHashtagId "+hid);
+		Hashtag h = this.hashtagMapper.findHashtagByText(text);
+		System.out.println("Objekt "+h); 
+
+		if(h == null){
+			System.out.println(text + " Existiert nicht");
+			Hashtag hashtag = new Hashtag();
+			hashtag.setBezeichnung(text); 
+			this.hashtagMapper.insert(hashtag);
+			hid = this.hashtagMapper.findHashtagByText(text).getId();
+		}else{
+			System.out.println(text + " Existiert");
+			hid = this.hashtagMapper.findHashtagByText(text).getId();
+		}
+		
 		return this.hashtagAboMapper.findHashtagAbonnementByHashtagID(hid);
 	}
 
@@ -752,7 +796,21 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		return this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId());
 	}
 	
+	public void deleteUnterhaltungsliste (String absender, String empfaenger) throws Exception {
+		
+		Nutzer empf = new Nutzer();
+		empf = this.nutzerMapper.findNutzerByNickname(empfaenger);
+		System.out.println("UnterhaltungID "+this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId()).getUnterhaltungID());
+		
+		Unterhaltungsliste unterhaltungsliste = this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId());
+		
+		this.unterhaltungslisteMapper.delete(unterhaltungsliste); 
+	}
 	
+	public ArrayList<Nachricht> getNachrichtByNickname(String nickname ) throws Exception {
+		Nutzer nutzer = this.nutzerMapper.findNutzerByNickname(nickname);
+		return this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
+	}
 
 	/*
 	 * *************************************************************************

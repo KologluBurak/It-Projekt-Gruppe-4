@@ -41,12 +41,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				final FlexTable flexTable = new FlexTable();
 				
 								
-				flexTable.setText(0, 0, "Your Nickname");
-				flexTable.setText(0, 1, "Follower");
+		
+				flexTable.setText(0, 1, "Abo");
 				flexTable.setText(0, 2, "Entfernen");
 				
 				
-				myAsync.getAllNutzerabonnements(Cookies.getCookie("userID"),new AsyncCallback<ArrayList<Nutzerabonnement>>() {
+				myAsync.getAllNutzerabonnementsByBeobachteteID(Cookies.getCookie("userID"),new AsyncCallback<ArrayList<Nutzerabonnement>>() {
 					
 					@Override
 					public void onSuccess(ArrayList<Nutzerabonnement> result) {
@@ -61,7 +61,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 							
 							
 							
-							flexTable.setText(zeileCounter, 0, Cookies.getCookie("userMail"));
+//							flexTable.setText(zeileCounter, 0, Cookies.getCookie("userMail"));
 							flexTable.setWidget(zeileCounter, 1, followID);
 							flexTable.setWidget(zeileCounter, 2, bModifizieren);
 							
@@ -96,10 +96,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				 
 				
 				 
-				 final  FlexTable FlexTable = new FlexTable();
+				 final  FlexTable flexTable2 = new FlexTable();
 				 
-				 FlexTable.setText(0, 0, "Nickname");
-				 FlexTable.setText(0, 1, "Folgen");
+				 flexTable2.setText(0, 0, "Nickname");
+				 flexTable2.setText(0, 1, "Folgen");
 				 
 		
 				 myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
@@ -120,8 +120,8 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 							
 							Label nickname = new Label (String.valueOf(nutzer.getNickname()));
 							
-							FlexTable.setWidget(zeileCounter, 0, nickname);
-							FlexTable.setWidget(zeileCounter, 1, brechts);
+							flexTable2.setWidget(zeileCounter, 0, nickname);
+							flexTable2.setWidget(zeileCounter, 1, brechts);
 						
 							zeileCounter ++;
 							
@@ -132,7 +132,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 									Nutzer beobachtete = new Nutzer();
 									int id = Integer.parseInt(Cookies.getCookie("userID"));
 									beobachtete.setId(id);
-									folgen(beobachtete, nutzer);
+									folgenExistiert(beobachtete, nutzer);
 								 
 								}				
 															
@@ -145,9 +145,43 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 						}
 				});
 				 
+				final FlexTable flexTable3 = new FlexTable();
+				//flexTable3.setText(0, 0, "Nickname");
+				flexTable3.setText(0, 1, "Nickname");
+				
+				myAsync.getAllNutzerabonnementsByBeobachteteID(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Nutzerabonnement>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Fehler bei getAllNutzeraboonementsByBeobachteteID " + caught);
+						
+					}
+
+					@Override
+					public void onSuccess(ArrayList<Nutzerabonnement> result) {
+
+						//Window.alert(result.size()+""); 
+						int zeileCounter = 1;
+						for (Nutzerabonnement na : result){
+							
+							//Label beoID = new Label(na.getNutzerNickname().getNickname());
+							Label followID = new Label(na.getNutzerNickname().getNickname());
+							
+							
+							
+//							flexTable.setText(zeileCounter, 0, Cookies.getCookie("userMail"));
+							flexTable3.setWidget(zeileCounter, 1, followID);
+							
+							zeileCounter ++;
+							
+						}
+						
+					}
+				});
 		
 				links.add(flexTable);
-				rechts.add(FlexTable);
+				rechts.add(flexTable2);
+				rechts.add(flexTable3);
 				hauptP.add(links);
 				hauptP.add(rechts);
 				
@@ -156,22 +190,43 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				
 	}
 
-		private void folgen(Nutzer derBeobachteteId, Nutzer follower) {
-			myAsync.createNutzerabonnement(derBeobachteteId, follower, new AsyncCallback<Nutzerabonnement>() {
+	
+	private void folgenExistiert(final Nutzer derBeobachteteId, final Nutzer follower){
+		myAsync.findAboByNutzerID(derBeobachteteId.getId(),follower.getId(), new AsyncCallback<Nutzerabonnement>() {
 
-				@Override
-				public void onFailure(Throwable caught) {
-					Window.alert("Fehler bei " + caught);
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler folgenExistiert " + caught);
+				
+			}
 
+			@Override
+			public void onSuccess(Nutzerabonnement result) {
+				
+				if(result.getId() == 0){
+					folgen(derBeobachteteId, follower);
 				}
+				
+			}
+		});
+	}
+	
+	private void folgen(Nutzer derBeobachteteId, Nutzer follower) {
+		myAsync.createNutzerabonnement(derBeobachteteId, follower, new AsyncCallback<Nutzerabonnement>() {
 
-				@Override
-				public void onSuccess(Nutzerabonnement result) {
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Fehler bei " + caught);
 
-				}
-			});
-			
-		}
+			}
+
+			@Override
+			public void onSuccess(Nutzerabonnement result) {
+
+			}
+		});
+		
+	}
 			
 //			private void loeschenAbo(Nutzer nutzer) {
 //				myAsync.delete(nutzer, new AsyncCallback<Void>() {

@@ -114,8 +114,7 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 				Cookies.setCookie("userID",String.valueOf(result.getId())); 
 			}
 		});
-		
-		
+
 	}
 
 }

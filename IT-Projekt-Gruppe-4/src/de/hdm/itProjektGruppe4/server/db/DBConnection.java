@@ -18,7 +18,7 @@ public class DBConnection {
 	    private static String localUrl = "jdbc:mysql://localhost:3306/messaging_administration?user=root";
 
 	    public static Connection connection() {
-	    	System.out.println("Connection aufgerufen!");
+	    	//System.out.println("Connection aufgerufen!");
 	        // Wenn es bisher keine Conncetion zur DB gab, ...
 	        if (con == null) {
 	            String url = "";

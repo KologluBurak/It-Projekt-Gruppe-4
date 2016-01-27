@@ -265,6 +265,21 @@ public interface MessagingAdministrationAsync {
 	void getAlleEmpfaengerByAbsender(Nutzer absender,
 			AsyncCallback<ArrayList<Nutzer>> callback);
 
+	void getAllNutzerabonnementsByBeobachteteID(String userID,
+			AsyncCallback<ArrayList<Nutzerabonnement>> callback);
+
+	void findAboByNutzerID(int id, int id2,
+			AsyncCallback<Nutzerabonnement> callback);
+
+	void deleteUnterhaltungsliste(String absender, String empfaenger,
+			AsyncCallback<Void> callback);
+
+	void getNachrichtByNickname(String nickname,
+			AsyncCallback<ArrayList<Nachricht>> callback);
+
+	void getNutzerByHashtagAbo(String text,
+			AsyncCallback<ArrayList<Nutzer>> callback);
+
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte

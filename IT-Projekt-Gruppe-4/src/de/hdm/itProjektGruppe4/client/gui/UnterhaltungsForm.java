@@ -37,7 +37,7 @@ public class UnterhaltungsForm {
 	Label nachricht = new Label("Nachricht");
 	Label chatMit = new Label();
 	
-	Label chats = new Label("Chats");
+	Label chats = new Label("Unterhaltung");
 	TextArea nachTa = new TextArea();
 	Button sendenN = new Button("Senden");
 	FlexTable uft = new FlexTable();
@@ -98,7 +98,7 @@ public class UnterhaltungsForm {
 	    eigenesRasterRechts.setWidget(2, 0, chatss);
 	    
 	    cft.setBorderWidth(1);
-		cft.setText(0, 0, "Nickname");
+		cft.setText(0, 0, "EMail");
 	    cft.setText(0, 1, "Anzeigen");
 	    cft.setText(0, 2, "Entfernen");
 	    
@@ -152,8 +152,7 @@ public class UnterhaltungsForm {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							// TODO Auto-generated method stub
-							
+							loescheUnterhaltung(Cookies.getCookie("userID"), nutzer.getNickname());
 						}
 					});
 				    
@@ -194,6 +193,39 @@ public class UnterhaltungsForm {
 		
 		
 		
+	}
+	
+	private void loescheUnterhaltung(String absender, String empfaenger){
+		myAsync.deleteUnterhaltungsliste(absender, empfaenger, new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("Beim löschen ist ein Fehler aufgetreten! " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("Löschen erfolgreich!");
+				
+			}
+		});
+		
+		
+//		(absender, empfaenger, new AsyncCallback<Void>() {
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				Window.alert("Beim löschen ist ein Fehler aufgetreten! " + caught);
+//			}
+//
+//			@Override
+//			public void onSuccess(Integer result) {
+//				if(result == 1){
+//					Window.alert("Löschen erfolgreich!");
+//				}
+//			}
+//		});
 	}
 	
 	private void findeUnterhaltung(String absender, String empfaenger){
