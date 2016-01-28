@@ -627,6 +627,17 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public ArrayList<Hashtagabonnement> getHashtagabonnementByNutzerId(int nutzer) throws Exception {
 		return this.hashtagAboMapper.findHashtagAbonnementByNutzerID(nutzer);
 	}
+	
+	public Hashtagabonnement getHashtagabonnementByNutzerIdHashtagID(int nutzer, int hashtag) throws Exception {
+		
+		if(this.hashtagAboMapper.findHashtagAbonnementByNutzerIDHashtagID(nutzer, hashtag) == null){
+			Hashtagabonnement ha = new Hashtagabonnement();
+			ha.setId(0);
+			return ha;
+		}
+		
+		return this.hashtagAboMapper.findHashtagAbonnementByNutzerIDHashtagID(nutzer, hashtag);
+	}
 
 	public ArrayList<Nutzer> getNutzerByHashtagAbo(String text) throws Exception {
 		int hid = 0;

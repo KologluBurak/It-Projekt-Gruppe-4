@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -36,7 +37,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		//Elemente unserer Nachrichten _GUI
 		
 		HorizontalPanel nachrichtenButtonpan = new HorizontalPanel();
-		TextBox nachrichtFenster = new TextBox();
+	
 		Button sendeButton = new Button ("senden");
 		Button empfaengerEntfernen = new Button ("Empfänger Entfernen");
 		TextBox hashtagFenster = new TextBox();
@@ -151,13 +152,21 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			eigenesRaster.setWidget(8, 0, flexTable);
 			eigenesRaster.setWidget(1, 1, uCheck);
 			eigenesRaster.setWidget(0, 1, an);
-			nachrichtFenster.setWidth("500px");
+			nachta.setWidth("300px");
+			nachta.setHeight("100px");
+					
+			
+		
+			flexTable.setBorderWidth(5);
 			
 			
 			flexTable.setText(0, 0, "ID");
-			flexTable.setText(0, 1, "Vorname");
 			flexTable.setText(0, 2, "Nickname");
 			flexTable.setText(0, 3, "Hinzufuegen");
+			
+			flexTable.getCellFormatter().addStyleName(0, 0, "nachr");
+			flexTable.getCellFormatter().addStyleName(0, 2, "nachr");
+			flexTable.getCellFormatter().addStyleName(0, 3, "nachr");
 			
 			myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 
@@ -176,11 +185,9 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 							Button bModifizieren = new Button("hinzufuegen");
 							
 							Label id = new Label(String.valueOf(nutzer.getId()));
-							Label vornameID = new Label (String.valueOf(nutzer.getVorname()));
 							Label nicknameID = new Label (String.valueOf(nutzer.getNickname()));
 							
 							flexTable.setWidget(zeileCounter, 0, id);
-							flexTable.setWidget(zeileCounter, 1, vornameID);
 							flexTable.setWidget(zeileCounter, 2, nicknameID);
 							flexTable.setWidget(zeileCounter, 3, bModifizieren);
 							

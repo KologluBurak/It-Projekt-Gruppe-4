@@ -411,4 +411,48 @@ public class HashtagAboMapper {
 
 		return hashtagAboListe;
 	}
+	
+	/**
+	 * Diese Methode ermöglicht eine Ausgabe über die Hashtagabonnements eines
+	 * Nutzers, in einer Liste.
+	 * 
+	 * @param id
+	 * @return hashtagAboListe
+	 */
+
+	public Hashtagabonnement findHashtagAbonnementByNutzerIDHashtagID(int id, int id2) throws Exception {
+		Connection con = DBConnection.connection();
+		Statement stmt = null;
+		ResultSet rs = null;
+		//ArrayList<Hashtagabonnement> hashtagAboListe = new ArrayList<Hashtagabonnement>();
+
+		try {
+
+			stmt = con.createStatement();
+
+			rs = stmt.executeQuery("SELECT * FROM hashtagabonnements WHERE nutzerID=" + id + " AND hashtagID= " + id2);
+
+			if (rs.next()) {
+				Hashtagabonnement hashtagAbonnement = new Hashtagabonnement();
+				hashtagAbonnement.setId(rs.getInt("hashtagAboID"));
+				hashtagAbonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				hashtagAbonnement.setHashtagID(rs.getInt("hashtagID"));
+				hashtagAbonnement.setNutzerID(rs.getInt("nutzerID"));
+				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
+				
+				return hashtagAbonnement;
+			}
+
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			DBConnection.closeAll(rs, stmt, con);
+		}
+
+		return null;
+	}
+
 }
+

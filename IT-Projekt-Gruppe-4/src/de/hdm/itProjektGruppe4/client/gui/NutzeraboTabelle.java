@@ -86,21 +86,18 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 					}
 				});
 				
-				flexTable.setCellPadding(4);
-				
-				 flexTable.addStyleName("nutzerabo");
-				 flexTable.getCellFormatter().addStyleName(0, 1, "nutzeraboNumericColumn");
-				 flexTable.getCellFormatter().addStyleName(0, 2, "nutzeraboNumericColumn");
-				 flexTable.getCellFormatter().addStyleName(0, 3, "nutzeraboNumericColumn");
-				 flexTable.getCellFormatter().addStyleName(0, 4, "nutzeraboNumericColumn");
-				 
-				
+			 
 				 
 				 final  FlexTable flexTable2 = new FlexTable();
 				 
 				 flexTable2.setText(0, 0, "Nickname");
 				 flexTable2.setText(0, 1, "Folgen");
+				 flexTable2.setBorderWidth(5);
 				 
+				 flexTable2.addStyleName("nabo");
+				 flexTable2.getCellFormatter().addStyleName(0, 0, "naboColumn");
+				 flexTable2.getCellFormatter().addStyleName(0, 1, "naboColumn");
+				
 		
 				 myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 
@@ -147,9 +144,9 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				 
 				final FlexTable flexTable3 = new FlexTable();
 				//flexTable3.setText(0, 0, "Nickname");
-				flexTable3.setText(0, 1, "Nickname");
+				flexTable3.setText(0, 3, "Hier sehen Sie Ihre Follower");
 				
-				myAsync.getAllNutzerabonnementsByBeobachteteID(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Nutzerabonnement>>() {
+				myAsync.getAllNutzerabonnements(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Nutzerabonnement>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {

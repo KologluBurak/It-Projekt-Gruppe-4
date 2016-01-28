@@ -280,6 +280,9 @@ public interface MessagingAdministrationAsync {
 	void getNutzerByHashtagAbo(String text,
 			AsyncCallback<ArrayList<Nutzer>> callback);
 
+	void getHashtagabonnementByNutzerIdHashtagID(int nutzer, int hashtag,
+			AsyncCallback<Hashtagabonnement> callback);
+
 	/*
 	 * *************************************************************************
 	 * ** ABSCHNITT, Ende: Methoden für Unterhaltungssliste-Objekte

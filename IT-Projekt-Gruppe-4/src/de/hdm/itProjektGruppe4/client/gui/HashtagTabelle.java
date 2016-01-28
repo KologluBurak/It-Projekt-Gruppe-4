@@ -12,9 +12,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+
+
 
 
 
@@ -34,6 +38,7 @@ import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 
 
 
@@ -94,9 +99,23 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 						zeileCounter += 1;
 				}
 
+					ScrollPanel scroller = new ScrollPanel(FlexTable);
+				    scroller.setSize("250px", "450px");
+				    
+				    // Rahmen, Größe Unterhaltung
+				    
+				    rechts.add(scroller);
+					FlexTable.setBorderWidth(5);
+					
+					
 					FlexTable.setText(0, 0, "ID");
 					FlexTable.setText(0, 1, "Bezeichnung");
 					FlexTable.setText(0, 2, "Folgen");
+					
+					FlexTable.addStyleName("habo");
+					FlexTable.getCellFormatter().addStyleName(0, 0, "haboColumn");
+					FlexTable.getCellFormatter().addStyleName(0, 1, "haboColumn");
+					FlexTable.getCellFormatter().addStyleName(0, 2, "haboColumn");
 
 					myAsync.getAllHashtags(new AsyncCallback<ArrayList<Hashtag>>() {
 
@@ -130,7 +149,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 										hta.setAbonnementID(0); 
 										int nid = Integer.parseInt(Cookies.getCookie("userID"));
 										hta.setNutzerID(nid);
-										hashFolgen(hta);
+										Nutzer nutzer = new Nutzer();
+										nutzer.setId(nid);
+										
+										Hashtag hashtag = new Hashtag();
+										hashtag.setId(ht.getId());
+										hashtagaboExistiert(nutzer, hashtag, hta);
 
 									}
 
@@ -158,8 +182,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			
 			
 			
-			 flexTable.addStyleName("habo");
-			 flexTable.getCellFormatter().addStyleName(0, 1, "haboNumericColumn");
+			 
 		
 			
 			 
@@ -174,6 +197,27 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 			
 			
 		}
+		
+		private void hashtagaboExistiert(Nutzer nutzer, Hashtag hashtag, final Hashtagabonnement bezeichnung){
+
+			myAsync.getHashtagabonnementByNutzerIdHashtagID(nutzer.getId(), hashtag.getId(), new AsyncCallback<Hashtagabonnement>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					Window.alert("Fehler beim Überprüfen der Hashtagabonnement " + caught);
+				}
+
+				@Override
+				public void onSuccess(Hashtagabonnement result) {
+					if(result.getId() == 0){
+						hashFolgen(bezeichnung);
+					}
+					
+				}
+				
+			});
+		}
+		
 		private void hashFolgen(Hashtagabonnement bezeichnung) {
 			myAsync.createHashtagAbonnement(bezeichnung, new AsyncCallback<Hashtagabonnement>() {
 

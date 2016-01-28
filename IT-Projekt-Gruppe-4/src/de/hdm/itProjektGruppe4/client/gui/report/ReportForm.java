@@ -32,39 +32,32 @@ public class ReportForm {
 	
 	HorizontalPanel haupt = new HorizontalPanel();
 	VerticalPanel root = new VerticalPanel();
-	VerticalPanel linksO	= new VerticalPanel();
-	VerticalPanel mitteO = new VerticalPanel();
+	
 	VerticalPanel rechtO = new VerticalPanel();
 	VerticalPanel linksU = new VerticalPanel();
 	VerticalPanel mitteU = new VerticalPanel();
 	VerticalPanel rechtsU = new VerticalPanel();
 	VerticalPanel inhaltPanel = new VerticalPanel();
 	
-	FlexTable ftLinksO = new FlexTable();
-	FlexTable ftMitteO = new FlexTable();
-	FlexTable ftRechtsO = new FlexTable();
-	FlexTable ftLinksU = new FlexTable();
-	FlexTable ftMitteU = new FlexTable();
 	FlexTable inhalt = new FlexTable();
-	FlexTable ftRechtsU = new FlexTable();
+	Label inhaltT = new Label("Gesuchte Ausgabe bitte eingeben!");
+	
 	
 	TextBox tb = new TextBox();
-	Button tbb = new Button ("Go");
+	Button tbb = new Button ("Los");
 	
 	TextBox tb2 = new TextBox();
 	TextBox tb21 = new TextBox();
-	Button tbb2 = new Button("Go");
+	Button tbb2 = new Button("Los");
 	
 	TextBox tb3 = new TextBox();
-	Button tbb3 = new Button("Go");
+	Button tbb3 = new Button("Los");
 	
 	TextBox tb4 = new TextBox();
-	Button tbb4 = new Button("Go");
+	Button tbb4 = new Button("Los");
 
-	Button aboRepAnzeigenButton = new Button("Alle Abos anzeigen");
-	Button nachRepAnzeigenButton = new Button("Alle Nachrichten anzeigen");
-	Button nutzSpezNachRepAnzeigenButton = new Button("MSG by Nutzer ID anzeigen");
-	Button zeitSpezNachRepAnzeigenButton = new Button("MSG by Zeit anzeigen");
+	Button nutzSpezNachRepAnzeigenButton = new Button("Nachrichten von Nutzer");
+	Button zeitSpezNachRepAnzeigenButton = new Button("Nachrichten nach Zeit");
 	Button hashAboRepAnzeigenButton = new Button("HashtagAbo anzeigen");
 	Button nutzAboRepAnzeigenButton = new Button("NutzerAbo anzeigen");
 
@@ -72,74 +65,53 @@ public class ReportForm {
 	
 public void anzeigenR() {
 	
-	Grid eigenesRaster = new Grid(12, 12);
 	
-	Label abonnementRep = new Label("Alle Abonnements");
-	Label nachrichtenRep = new Label("Alle Nachrichten ");
-	Label nutzSpezNachRep = new Label("Nutzerspezifische Nachrichten");
-	Label zeitSpezNachRep = new Label("Zeitraumspezifische Nachrichten");
+	Label nutzSpezNachRep = new Label("Nutzerspezifische");
+	Label zeitSpezNachRep = new Label("Zeitraumspezifisch");
 	Label hashAboRep = new Label("Hashtagabonnements");
 	Label nutzAboRep = new Label("Nutzerabonnements");
 	
 	
-	Grid gridLinksO = new Grid(3, 3);
-	gridLinksO.setWidget(1, 2, abonnementRep);
-	gridLinksO.setWidget(2, 2, aboRepAnzeigenButton);
-	linksO.add(gridLinksO);
-	
-	Grid gridMitteO = new Grid(3, 3);
-	gridMitteO.setWidget(1, 2, nachrichtenRep);
-	gridMitteO.setWidget(2, 2, nachRepAnzeigenButton);
-	mitteO.add(gridMitteO);
-	
-	Grid gridRechtsO = new Grid(4, 4);
-	gridRechtsO.setWidget(1, 2, nutzSpezNachRep);
+	Grid gridRechtsO = new Grid(3, 3);
+	gridRechtsO.setWidget(0, 2, nutzSpezNachRep);
 	gridRechtsO.setWidget(2, 2, nutzSpezNachRepAnzeigenButton);
 	//gridRechtsO.setWidget(3, 2, tbb);
 	rechtO.add(gridRechtsO);
+	rechtO.setStylePrimaryName("rechtO");
+    rechtO.setBorderWidth(10);
 	
 	Grid gridLinksU = new Grid(3, 3);
-	gridLinksU.setWidget(1, 2, zeitSpezNachRep);
+	gridLinksU.setWidget(0, 2, zeitSpezNachRep);
 	gridLinksU.setWidget(2, 2, zeitSpezNachRepAnzeigenButton);
 	linksU.add(gridLinksU);
+	linksU.setStylePrimaryName("linksU");
+	linksU.setBorderWidth(10);
 	
 	Grid gridMitteU = new Grid(3, 3);
-	gridMitteU.setWidget(1, 2, hashAboRep);
+	gridMitteU.setWidget(0, 2, hashAboRep);
 	gridMitteU.setWidget(2, 2, hashAboRepAnzeigenButton);
 	mitteU.add(gridMitteU);
+	mitteU.setStylePrimaryName("mitteU");
+	mitteU.setBorderWidth(10);
 	
 	
 	Grid gridRechtsU = new Grid(3, 3);
-	gridRechtsU.setWidget(1, 2, nutzAboRep);
+	gridRechtsU.setWidget(0, 2, nutzAboRep);
 	gridRechtsU.setWidget(2, 2, nutzAboRepAnzeigenButton);
 	rechtsU.add(gridRechtsU);
+	rechtsU.setStylePrimaryName("rechtsU");
+	rechtsU.setBorderWidth(10);
 
-	
-	aboRepAnzeigenButton.addClickHandler(new ClickHandler() {
-		
-		@Override
-		public void onClick(ClickEvent event) {
-			
-			alleAbos();
-		}
-	});
-	
-	nachRepAnzeigenButton.addClickHandler(new ClickHandler() {
-		
-		@Override
-		public void onClick(ClickEvent event) {
-			alleNachrichten();
-			
-		}
-	});
+
 	
 	nutzSpezNachRepAnzeigenButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0,0, tb);
-			inhalt.setWidget(1, 0, tbb);
+			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(1, 0, tb);
+			inhalt.setWidget(2, 0, tbb);
 			nutzerSpezNach();
 			
 		}
@@ -150,9 +122,10 @@ public void anzeigenR() {
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0,0, tb2);
-			inhalt.setWidget(1, 0, tb21);
-			inhalt.setWidget(2, 0, tbb2);
+			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(1, 0, tb2);
+			inhalt.setWidget(2, 0, tb21);
+			inhalt.setWidget(3, 0, tbb2);
 			zeitSpezNach();
 			
 		}
@@ -163,8 +136,9 @@ public void anzeigenR() {
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0,0, tb3);
-			inhalt.setWidget(1, 0, tbb3);
+			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(1,0, tb3);
+			inhalt.setWidget(2, 0, tbb3);
 			alleHashAbosAneigen();
 			
 		}
@@ -175,29 +149,24 @@ public void anzeigenR() {
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0,0, tb4);
-			inhalt.setWidget(1, 0, tbb4);
+			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(1,0, tb4);
+			inhalt.setWidget(2, 0, tbb4);
 			alleNutzerAbosAnzeigen();
 		}
 	});
 	
-	linksO.add(ftLinksO);
-	mitteO.add(ftMitteO);
-	rechtO.add(ftRechtsO);
-	linksU.add(ftLinksU);
-	mitteU.add(ftMitteU);
-	rechtsU.add(ftRechtsU);
 	
-	
-	haupt.add(linksO);
-	haupt.add(mitteO);
+
 	haupt.add(rechtO);
 	haupt.add(linksU);
 	haupt.add(mitteU);
 	haupt.add(rechtsU);
 	//inhaltPanel.add(inhalt);
+	
 	root.add(haupt);
 	root.add(inhalt);
+	
 	
 	RootPanel.get("starterReport").add(root);
 }

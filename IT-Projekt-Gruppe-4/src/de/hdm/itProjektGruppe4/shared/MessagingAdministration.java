@@ -257,5 +257,6 @@ public interface MessagingAdministration extends RemoteService {
 	public ArrayList<Nachricht> getNachrichtByNickname(String nickname ) throws Exception;
 	
 	public ArrayList<Nutzer> getNutzerByHashtagAbo(String text) throws Exception;
+	public Hashtagabonnement getHashtagabonnementByNutzerIdHashtagID(int nutzer, int hashtag) throws Exception;
 
 }

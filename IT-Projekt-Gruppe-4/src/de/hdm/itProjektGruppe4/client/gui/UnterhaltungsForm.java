@@ -102,6 +102,11 @@ public class UnterhaltungsForm {
 	    cft.setText(0, 1, "Anzeigen");
 	    cft.setText(0, 2, "Entfernen");
 	    
+	    cft.addStyleName("unter");
+	    cft.getCellFormatter().addStyleName(0, 0, "unterH");
+	    cft.getCellFormatter().addStyleName(0, 1, "unterH");
+	    cft.getCellFormatter().addStyleName(0, 2, "unterH");
+	    
 		Nutzer n = new Nutzer();
 
 		int id = Integer.parseInt(Cookies.getCookie("userID"));

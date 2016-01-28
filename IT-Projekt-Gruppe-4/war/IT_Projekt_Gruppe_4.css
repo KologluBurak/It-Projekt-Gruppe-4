@@ -32,3 +32,52 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+
+.haboColumn {
+	
+  background-color: #2062B8;
+  color: white;
+  font-style: italic;
+}
+
+.naboColumn {
+	background-color: #2062B8;
+  color: white;
+  font-style: italic;
+}
+
+.unterH {
+	background-color: #2062B8;
+  color: white;
+  font-style: italic;
+	
+}
+
+
+.nachr {
+	background-color: #2062B8;
+  color: white;
+  font-style: italic;
+	
+}
+
+.rechtO {
+	
+border-color: #2062B8;
+}
+
+.linksU {
+border-color: #2062B8;
+	
+}
+
+.mitteU {
+border-color: #2062B8;
+	
+}
+
+.rechtsU {
+border-color: #2062B8;
+	
+}
