@@ -193,11 +193,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 					int zeileCounter = 1;
 					ArrayList<String> kontakte = new ArrayList<String>();
 					for (final Nutzer nutzer : result) {
-						if(nutzer.getNickname() != Cookies.getCookie("userMail")){
+						if(nutzer.getEmail() != Cookies.getCookie("userMail")){
 							Button bModifizieren = new Button("hinzufuegen");
 							final Label checked = new Label("");
 							Label id = new Label(String.valueOf(nutzer.getId()));
-							Label nicknameID = new Label (String.valueOf(nutzer.getNickname()));
+							Label nicknameID = new Label (String.valueOf(nutzer.getEmail()));
 							
 							
 							flexTable.setWidget(zeileCounter, 0, id);
@@ -603,7 +603,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			@Override
 			public void onSuccess(Nutzer result) {
 				//Window.alert(result.getNickname());
-				unterhaltungHashtagExistenz(Cookies.getCookie("userID"), result.getNickname(), hashtagText);
+				unterhaltungHashtagExistenz(Cookies.getCookie("userID"), result.getEmail(), hashtagText);
 				
 			}
 		});
@@ -678,7 +678,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			@Override
 			public void onSuccess(Nutzer result) {
 				//Window.alert(result.getNickname());
-				unterhaltungAboExistenz(Cookies.getCookie("userID"), result.getNickname());
+				unterhaltungAboExistenz(Cookies.getCookie("userID"), result.getEmail());
 				
 			}
 		});
@@ -713,11 +713,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 						int zeileCounter = 1;
 						ArrayList<String> kontakte = new ArrayList<String>();
 						for (final Nutzer nutzer : result) {
-							if(nutzer.getNickname() != Cookies.getCookie("userMail")){
+							if(nutzer.getEmail() != Cookies.getCookie("userMail")){
 								Button bModifizieren = new Button("hinzufuegen");
 								final Label checked = new Label("");
 								Label id = new Label(String.valueOf(nutzer.getId()));
-								Label nicknameID = new Label (String.valueOf(nutzer.getNickname()));
+								Label nicknameID = new Label (String.valueOf(nutzer.getEmail()));
 								
 								
 								flexTable.setWidget(zeileCounter, 0, id);
