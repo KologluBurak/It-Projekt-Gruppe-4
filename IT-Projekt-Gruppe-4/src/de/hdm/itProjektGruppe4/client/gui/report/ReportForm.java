@@ -26,10 +26,18 @@ import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
-
+/**
+ * Enthält Methoden und Elemente die für das ausgeben des Reports benötigt werden
+ * @author Di Giovanni
+ *
+ */
 
 
 public class ReportForm {
+	
+	/**
+	 * Widgets und Panels werden erstellt 
+	 */
 	
 	HorizontalPanel haupt = new HorizontalPanel();
 	VerticalPanel root = new VerticalPanel();
@@ -41,7 +49,10 @@ public class ReportForm {
 	VerticalPanel inhaltPanel = new VerticalPanel();
 	
 	FlexTable inhalt = new FlexTable();
-	Label inhaltT = new Label("Gesuchte Ausgabe bitte eingeben!");
+	Label inhalt1 = new Label("Geben Sie bitte eine EMail ein!");
+	Label inhalt2 = new Label("Geben Sie das Datum ein TT/MM/JJJJ!");
+	Label inhalt3 = new Label("Geben Sie ein #Hashtag ein!");
+	Label inhalt4 = new Label("Geben Sie bitte eine EMail ein!");
 	
 	
 	TextBox tb = new TextBox();
@@ -66,12 +77,18 @@ public class ReportForm {
 	
 public void anzeigenR() {
 	
+	/**
+	 * Labels werden erstellt 
+	 */
 	
 	Label nutzSpezNachRep = new Label("Nutzerspezifische");
 	Label zeitSpezNachRep = new Label("Zeitraumspezifisch");
 	Label hashAboRep = new Label("Hashtagabonnements");
 	Label nutzAboRep = new Label("Nutzerabonnements");
 	
+	/**
+	 * erstellen von mehreren Grids für eine bessere Übersicht
+	 */
 	
 	Grid gridRechtsO = new Grid(3, 3);
 	gridRechtsO.setWidget(0, 2, nutzSpezNachRep);
@@ -103,14 +120,16 @@ public void anzeigenR() {
 	rechtsU.setStylePrimaryName("rechtsU");
 	rechtsU.setBorderWidth(10);
 
-
+	/**
+	 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+	 */
 	
 	nutzSpezNachRepAnzeigenButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(0, 0, inhalt1);
 			inhalt.setWidget(1, 0, tb);
 			inhalt.setWidget(2, 0, tbb);
 			nutzerSpezNach();
@@ -118,12 +137,16 @@ public void anzeigenR() {
 		}
 	});
 	
+	/**
+	 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+	 */
+	
 	zeitSpezNachRepAnzeigenButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(0, 0, inhalt2);
 			inhalt.setWidget(1, 0, tb2);
 			inhalt.setWidget(2, 0, tb21);
 			inhalt.setWidget(3, 0, tbb2);
@@ -132,12 +155,16 @@ public void anzeigenR() {
 		}
 	});
 	
+	/**
+	 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+	 */
+	
 	hashAboRepAnzeigenButton.addClickHandler(new ClickHandler() {
 		
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(0, 0, inhalt3);
 			inhalt.setWidget(1,0, tb3);
 			inhalt.setWidget(2, 0, tbb3);
 			alleHashAbosAneigen();
@@ -145,19 +172,25 @@ public void anzeigenR() {
 		}
 	});
 	
+	/**
+	 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+	 */
+	
 	nutzAboRepAnzeigenButton.addClickHandler(new ClickHandler() {
 
 		@Override
 		public void onClick(ClickEvent event) {
 			inhalt.clear();
-			inhalt.setWidget(0, 0, inhaltT);
+			inhalt.setWidget(0, 0, inhalt4);
 			inhalt.setWidget(1,0, tb4);
 			inhalt.setWidget(2, 0, tbb4);
 			alleNutzerAbosAnzeigen();
 		}
 	});
 	
-	
+	/**
+	 * Hier werden die einzelnen Panel zusammengeführt und das root panel zurück geben
+	 */
 
 	haupt.add(rechtO);
 	haupt.add(linksU);
@@ -168,11 +201,17 @@ public void anzeigenR() {
 	root.add(haupt);
 	root.add(inhalt);
 	
+	/*
+     * Das VerticalPanel wird einem DIV-Element namens "Starter" in der
+     * zugeh�rigen HTML-Datei zugewiesen und erh�lt so seinen Darstellungsort.
+     */
 	
 	RootPanel.get("starterReport").add(root);
 }
 
-//methoden
+/**
+ * Mathode für das ausbeben aller abonnements
+ */
 
 public void alleAbos() {
 	
@@ -198,7 +237,16 @@ public void alleAbos() {
 		
 	}
 	
+	/**
+	 * Methode für die Auswahl von Nachrichten von einem Nutzer
+	 */
+	
 	public void nutzerSpezNach(){
+		
+		/**
+		 * Der erstellte Button wird aufgerufen + neuer Clickhandler
+		 */
+		
 		tbb.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -225,6 +273,10 @@ public void alleAbos() {
 			}
 		});
 	}
+	
+	/**
+	 * Methode für die Auswahl von Nachrichten nach Zeit
+	 */
 	
 	public void zeitSpezNach(){
 		
@@ -261,6 +313,10 @@ public void alleAbos() {
 		});
 		
 	}
+	
+	/**
+	 * Methode für die Auswahl von wem ein Hashtag gefolgt wird
+	 */
 	
 	public void alleHashAbosAneigen(){
 		
@@ -323,6 +379,10 @@ public void alleAbos() {
 //			}
 //		});
 //	}
+	
+	/**
+	 * Methode für die Auwahl von Nutzerabos die der eingeloggte User abonniert hat
+	 */
 	
 	public void alleNutzerAbosAnzeigen(){
 		

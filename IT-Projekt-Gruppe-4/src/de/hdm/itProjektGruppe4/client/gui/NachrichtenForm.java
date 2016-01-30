@@ -32,9 +32,18 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
+/**
+ * Enthält Methoden und Elemente die für das schreiben einer Nachricht erfolderlich sind
+ * @author Di Giovanni
+ *
+ */
+
+
 	public class NachrichtenForm extends VerticalPanel{
 
-		//Elemente unserer Nachrichten _GUI
+		/**
+		 * Widgets und Panels werden erstellt 
+		 */
 		
 		HorizontalPanel nachrichtenButtonpan = new HorizontalPanel();
 	
@@ -54,6 +63,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		
 		// Konstruktor
 		public NachrichtenForm(){
+			
+			
+			/**
+			 * ein grid wird erstellt für eine bessere übersicht
+			 */
 			
 			Grid eigenesRaster = new Grid (9, 9);
 			this.add(eigenesRaster);
@@ -147,6 +161,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 //				}
 //			});
 			
+			/**
+			 * hier werden die einzelnen Widgets in das grid platziert
+			 */
+			
 			eigenesRaster.setWidget(0, 0, nachrichtB);
 			eigenesRaster.setWidget(1, 0, nachta);
 			eigenesRaster.setWidget(4, 0, hashTB);
@@ -164,8 +182,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			flexTable.setBorderWidth(5);
 			
 			flexTable.setText(0, 0, "ID");
-			flexTable.setText(0, 2, "Nickname");
+			flexTable.setText(0, 2, "E-Mail");
 			flexTable.setText(0, 3, "Hinzufuegen");
+			
+			 /**
+			  * Style für die CSS
+			  */
 			
 			flexTable.getCellFormatter().addStyleName(0, 0, "nachr");
 			flexTable.getCellFormatter().addStyleName(0, 2, "nachr");
@@ -179,6 +201,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 					
 				}
 			});
+			
+			/**
+			 * Liest alle Daten aus der DB und füllt sie in die FlexTable
+			 */
 			
 			myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 
@@ -194,7 +220,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 					ArrayList<String> kontakte = new ArrayList<String>();
 					for (final Nutzer nutzer : result) {
 						if(nutzer.getEmail() != Cookies.getCookie("userMail")){
+							
+							/**
+							 * Button wird erstellt der später hinzufügen soll
+							 */
 							Button bModifizieren = new Button("hinzufuegen");
+							
 							final Label checked = new Label("");
 							Label id = new Label(String.valueOf(nutzer.getId()));
 							Label nicknameID = new Label (String.valueOf(nutzer.getEmail()));
@@ -212,6 +243,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 	//						empf.setVorname(nutzer.getVorname());
 	//						empf.setNickname(nutzer.getNickname());
 							
+							
+							/**
+							 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+							 */
 							bModifizieren.addClickHandler(new ClickHandler() {
 								
 								private String userCheck;
@@ -267,7 +302,9 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			
 		}
 		
-		// Methoden
+		/**
+		 * Methode die überprüft ob hashtag schon existiert 
+		 */
 		
 	public void pruefeHashtag(final String text){
 		myAsync.getHashtagByHashtag(text, new AsyncCallback<Hashtag>() {
@@ -286,6 +323,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 		
+	/**
+	 * Methode die es ermöglicht ein hashtag zu erstellen
+	 */
+	
 	public void erstelleHashtag(String text){
 		Window.alert(text + " Text erstelle Hashtag");
 		if (text != ""){
@@ -308,6 +349,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		}
 		
 	}
+	/**
+	 * Methode die es ermöglicht ein hashtag zu erstellen
+	 */
+	
 	
 	public void erstelleHashtag(){
 		
@@ -340,6 +385,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			uCheck.setText(uCheck.getText() + user + ", ");
 		}
 	}
+	
+	/**
+	 * Methode die es ermöglicht eine Nachricht zu erstellen
+	 */
+	
 	
 	private void erstelleNachricht(final String text, String nickname, final String empf, Unterhaltung unterhaltung, final String hashtagText) {
 		
@@ -383,6 +433,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 	
+	/**
+	 * Methode für das erstellen von Markierungsliste (setzen von hashtag wert und nachricht wert)
+	 */
+	
+	
 	private void setMarkierungsliste(Nachricht nachricht, Hashtag hashtag){
 		Window.alert("Nachrichten und Hashtagid "+ nachricht.getId() + " " + hashtag.getBezeichnung());
 		myAsync.createMarkierungsliste(nachricht, hashtag, new AsyncCallback<Markierungsliste>() {
@@ -401,6 +456,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 
+	/**
+	 * 
+	 * Methode für das Fragen für die höchste Unterhaltung
+	 */
+	
 	private void getMaxID(final String empfaenger){
 
 		myAsync.getMaxID(new AsyncCallback<Unterhaltung>() {
@@ -429,6 +489,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 	
+	/**
+	 * Methode für das erstellen von Unterhaltung
+	 */
+	
 	private void setUnterhaltung(){
 		Date datum = new Date(0);
 		myAsync.createUnterhaltung(datum , new AsyncCallback<Unterhaltung>() {
@@ -447,6 +511,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 	
+	/**
+	 * 
+	 * Methode für das erstellen von einer Unterhaltungsliste
+	 */
+	
 	private void setUListe(Unterhaltung u, String absender, String empf){
 		myAsync.createUnterhaltungsliste(u, absender, empf, new AsyncCallback<Unterhaltungsliste>() {
 
@@ -463,7 +532,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 
-	
+	/**
+	 * 
+	 * Methode  für die überprüfung der Unterhaltung
+	 */
 	private void pruefeUnterhaltung(String absender, final String empfaenger){
 //		Window.alert("Beim pruefeUnterhaltung" + empfaenger);;
 		if(empfaenger !="" && uCheck.getText() != ""){
@@ -518,7 +590,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 //					userCheck = uCheck.getText().substring(anf, i).toString();
 //					final String userEmpf = uCheck.getText().substring(anf, i).toString();;
 //					anf = i + 2;
-////					Window.alert(userCheck + " Absender " + absender + " Empf�nger " + empfaenger);
+////					Window.alert(userCheck + " Absender " + absender + " Empf�nger " + empfaenger);
 //					myAsync.getUnterhaltung(absender, userCheck, new AsyncCallback<Unterhaltungsliste>() {
 //						
 //						@Override
@@ -563,6 +635,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 //		}
 	}
 	
+	/**
+	 * 
+	 * Methode für das ausgeben des Hashtag bei der Hashtag ID
+	 */
+	
 	private void getHashtagAbos(final String text){
 //		Window.alert(text + " getHashtagAbos");
 		myAsync.getHashtagAbonnementByHashtagId(text, new AsyncCallback<ArrayList<Hashtagabonnement>>() {
@@ -591,6 +668,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 	
+	/**
+	 * 
+	 * Methode für das ausgeben von Nutzer bei seiner id
+	 */
+	
 	private void getNutzerHashtagName(final Nutzer absender, final Nutzer empf, final String hashtagText){
 		myAsync.getNutzerById(empf.getId(), new AsyncCallback<Nutzer>() {
 
@@ -608,6 +690,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 			}
 		});
 	}
+	
+	/**
+	 * Methdode 
+	 * 
+	 */
 	private void unterhaltungHashtagExistenz(String absender, final String empfaenger, final String hashtagText){
 		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
 
@@ -642,6 +729,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 
+	
+	/**
+	 *  Methode für das ausgeben aller Nutzerabonnements
+	 */
+	
 	private void getAbos(){
 		myAsync.getAllNutzerabonnements(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Nutzerabonnement>>() {
 
@@ -666,6 +758,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 	
+	
+	/**
+	 * 
+	 * Methode
+	 */
+	
 	private void getNutzerAboName(final Nutzer absender, final Nutzer empf){
 		myAsync.getNutzerById(empf.getId(), new AsyncCallback<Nutzer>() {
 
@@ -685,7 +783,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		
 	}
 		
-
+/**
+ * Methode für das entfernen von empfänger bei ucheck
+ */
+	
 	private void empfEntfernen() {
 		uCheck.setText("");
 		myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
@@ -754,6 +855,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 		});
 	}
 
+	/**
+	 * 
+	 * Methode
+	 */
+	
 	private void unterhaltungAboExistenz(String absender, final String empfaenger){
 		//Window.alert("unterhaltungAboExistenz Parameter " + absender + " " + empfaenger);
 		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {

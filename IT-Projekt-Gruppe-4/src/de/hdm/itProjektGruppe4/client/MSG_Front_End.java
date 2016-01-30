@@ -49,6 +49,10 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 public class MSG_Front_End {
 
+	 /*
+     * Erstellung von Panels und Widgets
+     */
+	
 	private VerticalPanel hauptpanel = new VerticalPanel();
 	VerticalPanel vertipanel = new VerticalPanel();
 	HorizontalPanel horipanel1 = new HorizontalPanel();
@@ -60,11 +64,16 @@ public class MSG_Front_End {
 
 	private Anchor signOutLink = new Anchor("Sign Out");
 
-	// Anzeigen von dem Menue
+	/**
+	 *  Anzeigen von dem Menue
+	 * @param email
+	 */
 
 	public void anzeigenMenu(String email) {
 
-		// Hier werden verschiedene Commands angelegt
+		/**
+		 *  Hier werden verschiedene Commands angelegt
+		 */
 
 		Command nachrichtenErstellen = new Command() {
 			public void execute() {
@@ -154,7 +163,7 @@ public class MSG_Front_End {
 			}
 		};
 
-		// Hier werden verschiedene Commands angezeigt
+	
 
 		Command hashtagAnzeigen = new Command() {
 			public void execute() {
@@ -222,7 +231,9 @@ public class MSG_Front_End {
 			}
 		};
 
-		// Menuebar und verschiede Reiter + Commands
+		/**
+		 *  Menuebar und verschiede Reiter + Commands
+		 */
 
 		hauptpanel.add(vertipanel);
 		hauptpanel.add(horipanel1);
@@ -256,6 +267,11 @@ public class MSG_Front_End {
 		vertipanel.add(menu);
 		horipanel1.setSpacing(5);
 
+		/*
+	     * Das VerticalPanel wird einem DIV-Element namens "Starter" in der
+	     * zugehörigen HTML-Datei zugewiesen und erhält so seinen Darstellungsort.
+	     */
+		
 		RootPanel.get("starter").add(hauptpanel);
 
 	}

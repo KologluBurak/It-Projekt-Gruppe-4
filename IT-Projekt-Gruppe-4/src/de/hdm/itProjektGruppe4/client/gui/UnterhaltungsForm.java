@@ -26,12 +26,27 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
 
+
+/**
+ * EnthÃ¤lt Methoden und Elemente die fÃ¼r das anzeigen einer Unterhaltung nÃ¶tig sind
+ * @author DI Giovanni
+ *
+ */
+
 public class UnterhaltungsForm {
+	
+	/**
+	 * Erstellen von Panels 
+	 */
 
 	HorizontalPanel hauptP = new HorizontalPanel();
 	HorizontalPanel links = new HorizontalPanel();
 	HorizontalPanel rechts = new HorizontalPanel();
 	
+	
+	/**
+	 * Widgets und Panels werden erstellt 
+	 */
 	
 	Label unterhaltung = new Label("Unterhaltung");
 	Label nachricht = new Label("Nachricht");
@@ -68,7 +83,7 @@ public class UnterhaltungsForm {
 		ScrollPanel scroller = new ScrollPanel(uft);
 	    scroller.setSize("450px", "100px");
 	    
-	    // Rahmen, Größe Unterhaltung
+	    // Rahmen, Grï¿½ï¿½e Unterhaltung
 	    
 	    eigenesRasterLinks.setWidget(2, 2, scroller);
 		uft.setBorderWidth(5);
@@ -89,7 +104,7 @@ public class UnterhaltungsForm {
 	    chatss.setSize("300px", "100px");
 	   
 	    
-	    // Rahmen, Größe Chats
+	    // Rahmen, Grï¿½ï¿½e Chats
 	    Grid eigenesRasterRechts = new Grid(8, 8);
 	    
 	    eigenesRasterRechts.setWidget(1, 0, chats);
@@ -99,12 +114,12 @@ public class UnterhaltungsForm {
 	    cft.setBorderWidth(1);
 		cft.setText(0, 0, "EMail");
 	    cft.setText(0, 1, "Anzeigen");
-	    cft.setText(0, 2, "Entfernen");
+	    
 	    
 	    cft.addStyleName("unter");
 	    cft.getCellFormatter().addStyleName(0, 0, "unterH");
 	    cft.getCellFormatter().addStyleName(0, 1, "unterH");
-	    cft.getCellFormatter().addStyleName(0, 2, "unterH");
+	   
 	    
 		Nutzer n = new Nutzer();
 
@@ -112,6 +127,10 @@ public class UnterhaltungsForm {
 		n.setId(id);
 		n.setNickname(Cookies.getCookie("userMail"));
 
+		/**
+		 * Liest alle Daten aus der DB und fÃ¼llt sie in die FlexTable
+		 */
+		
 		myAsync.getAlleEmpfaengerByAbsender(n, new AsyncCallback<ArrayList<Nutzer>>() {
 
 			@Override
@@ -131,12 +150,18 @@ public class UnterhaltungsForm {
 					
 					cft.setText(z, 0, nutzer.getEmail());
 					 
-				    Button anzeigen = new Button ("Anzeigen");
-				    Button entfernen = new Button("Entfernen");
+					/**
+					 * Button wird erstellt fÃ¼r das spÃ¤tere Anzeigen von Unterhaltung
+					 */
+					
+					Button anzeigen = new Button ("Anzeigen");
+				    
 				    
 				    cft.setWidget(z, 1, anzeigen);
-				    cft.setWidget(z, 2, entfernen);
 				    
+				    /**
+					 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+					 */
 				    anzeigen.addClickHandler(new ClickHandler() {
 						
 						@Override
@@ -152,13 +177,13 @@ public class UnterhaltungsForm {
 						}
 					});
 				    
-				    entfernen.addClickHandler(new ClickHandler() {
-						
-						@Override
-						public void onClick(ClickEvent event) {
-							loescheUnterhaltung(Cookies.getCookie("userID"), nutzer.getEmail());
-						}
-					});
+//				    entfernen.addClickHandler(new ClickHandler() {
+//						
+//						@Override
+//						public void onClick(ClickEvent event) {
+//							loescheUnterhaltung(Cookies.getCookie("userID"), nutzer.getEmail());
+//						}
+//					});
 				    
 				    z++;
 					
@@ -171,7 +196,7 @@ public class UnterhaltungsForm {
 
 	    
 	
-	  //Clickhandler
+	  //Clickhandler fÃ¼r nachricht senden 
 	     
 	    sendenN.addClickHandler(new ClickHandler() {
 			
@@ -186,7 +211,9 @@ public class UnterhaltungsForm {
 	    
 	    
 		
-		// adden von Raster und HPanel 
+	    /**
+		 * Hier werden die einzelnen Panel zusammengefÃ¼hrt und das Hauptpanel zurÃ¼ck geben
+		 */
 	    
 		links.add(eigenesRasterLinks);
 		rechts.add(eigenesRasterRechts);
@@ -199,19 +226,21 @@ public class UnterhaltungsForm {
 		
 	}
 	
+	//Methode wird nciht benutzt
+	
 	private void loescheUnterhaltung(String absender, String empfaenger){
 		Window.alert(absender + " " + empfaenger);
 		myAsync.deleteUnterhaltungsliste(absender, empfaenger, new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				Window.alert("Beim löschen ist ein Fehler aufgetreten! " + caught);
+				Window.alert("Beim lÃ¶schen ist ein Fehler aufgetreten! " + caught);
 				
 			}
 
 			@Override
 			public void onSuccess(Void result) {
-				Window.alert("Löschen erfolgreich!");
+				Window.alert("LÃ¶schen erfolgreich!");
 				
 			}
 		});
@@ -221,20 +250,25 @@ public class UnterhaltungsForm {
 //
 //			@Override
 //			public void onFailure(Throwable caught) {
-//				Window.alert("Beim löschen ist ein Fehler aufgetreten! " + caught);
+//				Window.alert("Beim lï¿½schen ist ein Fehler aufgetreten! " + caught);
 //			}
 //
 //			@Override
 //			public void onSuccess(Integer result) {
 //				if(result == 1){
-//					Window.alert("Löschen erfolgreich!");
+//					Window.alert("Lï¿½schen erfolgreich!");
 //				}
 //			}
 //		});
 	}
 	
+	/**
+	 * 
+	 *Methode die fÃ¼r das finden der richtigen Unterhalugn benÃ¶tigt wird
+	 */
+	
 	private void findeUnterhaltung(String absender, String empfaenger){
-		//Window.alert("Absender " + absender + " Empfänger " + empfaenger);
+		//Window.alert("Absender " + absender + " Empfï¿½nger " + empfaenger);
 		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
 
 			@Override
@@ -254,8 +288,13 @@ public class UnterhaltungsForm {
 		});
 	}
 	
+	/**
+	 * Methode fÃ¼r das verschicken der Nachricht
+	 * 
+	 */
+	
 	private void nachrichtVerschicken(final String absender, final String empfaenger){
-		//Window.alert("Absender " + absender + " Empfänger " + empfaenger);
+		//Window.alert("Absender " + absender + " Empfï¿½nger " + empfaenger);
 		myAsync.getUnterhaltung(absender, empfaenger, new AsyncCallback<Unterhaltungsliste>() {
 
 			@Override
@@ -276,7 +315,11 @@ public class UnterhaltungsForm {
 		});
 	}
 	
-	
+	/**
+	 * 
+	 * Methode fÃ¼r das erstellen einer nachricht (TextArea)
+	 *
+	 */
 	private void erstelleNachricht(String text, String nickname, String empf, Unterhaltung unterhaltung) {
 		//Window.alert(text + " " + nickname + " " + " " + empf + " " + unterhaltung.getId());
 		myAsync.createNachricht(text, nickname, empf, unterhaltung, new AsyncCallback<Nachricht>() {
@@ -293,6 +336,11 @@ public class UnterhaltungsForm {
 					}
 		});
 	}
+	
+	/**
+	 * 
+	 * Methode fÃ¼r das fÃ¼r das anzeigen der Unterhaltung
+	 */
 	
 	private void zeigeUnterhaltung(Unterhaltung unterhaltung){
 		

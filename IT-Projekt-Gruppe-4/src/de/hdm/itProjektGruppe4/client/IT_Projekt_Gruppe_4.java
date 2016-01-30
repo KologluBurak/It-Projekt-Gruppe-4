@@ -24,6 +24,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 
+
+/**
+ * Entry-Point-Klasse des Projekts <b>IT-Projekt Gruppe 4</b>.
+ */
+
 public class IT_Projekt_Gruppe_4 implements EntryPoint {
 
 	private LoginInfo loginInfo = null;
@@ -32,6 +37,14 @@ public class IT_Projekt_Gruppe_4 implements EntryPoint {
 			"Bitte Melden Sie sich mit Ihren Google Account, um einen Zugriff auf die App zu haben.");
 
 	private Anchor signInLink = new Anchor("Sign In");
+	
+	
+	 /**
+	   * Da diese Klasse die Implementierung des Interface <code>EntryPoint</code>
+	   * zusichert, benötigen wir eine Methode
+	   * <code>public void onModuleLoad()</code>. Diese ist das GWT-Pendant der
+	   * <code>main()</code>-Methode normaler Java-Applikationen.
+	   */
 	
 	public void onModuleLoad() {
 

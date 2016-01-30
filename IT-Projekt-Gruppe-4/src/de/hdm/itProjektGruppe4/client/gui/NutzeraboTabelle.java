@@ -23,10 +23,20 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
-
+/**
+ * Zeigt mehrere Tabellen mit den erforderlichen Daten an, hier in Verbindung mit Nutzer
+ * 
+ * @author Di Giovanni
+ *
+ */
 
 
 		public class NutzeraboTabelle {
+			
+			
+			/**
+			 * Erstellung von verschiedenen Panels
+			 */
 
 			HorizontalPanel hauptP = new HorizontalPanel();
 			
@@ -36,15 +46,27 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 			MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 			
 			
+			/**
+			 * Stellt die Tabellen da
+			 * Panel + FlexTable
+			 */
+			
 			public Widget zeigeTabelle() {
+				
+				
+				/**
+				 * Flextable wird erstellt die alle Abonnierten Nutzer anzeigt
+				 */
 				
 				final FlexTable flexTable = new FlexTable();
 				
 								
-		
-				flexTable.setText(0, 1, "Abo");
+				flexTable.setText(0, 1, "Abonnnierte Nutzer");
 				flexTable.setText(0, 2, "Entfernen");
 				
+				/**
+				 * Liest alle Daten aus der DB und füllt sie in die FlexTable
+				 */
 				
 				myAsync.getAllNutzerabonnementsByBeobachteteID(Cookies.getCookie("userID"),new AsyncCallback<ArrayList<Nutzerabonnement>>() {
 					
@@ -54,6 +76,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 						
 						for (final Nutzerabonnement na : result) {
 
+							/**
+							 * Button wird erstellt der später entfernen soll
+							 */
+							
 							Button bModifizieren = new Button("Entfernen");
 						
 							Label beoID = new Label(na.getNutzerNickname().getNickname());
@@ -66,6 +92,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 							flexTable.setWidget(zeileCounter, 2, bModifizieren);
 							
 							zeileCounter ++;
+							
+							/**
+							 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+							 */
 							
 							bModifizieren.addClickHandler(new ClickHandler() {
 								
@@ -86,19 +116,30 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 					}
 				});
 				
-			 
+			 /**
+			  * eine neue FlexTable wird erstellt die alle Nutzer anzeigt 
+			  */
 				 
 				 final  FlexTable flexTable2 = new FlexTable();
 				 
-				 flexTable2.setText(0, 0, "Nickname");
+				 flexTable2.setText(0, 0, "EMail");
 				 flexTable2.setText(0, 1, "Folgen");
 				 flexTable2.setBorderWidth(5);
+				 
+				 
+				 /**
+				  * Style für die CSS
+				  */
 				 
 				 flexTable2.addStyleName("nabo");
 				 flexTable2.getCellFormatter().addStyleName(0, 0, "naboColumn");
 				 flexTable2.getCellFormatter().addStyleName(0, 1, "naboColumn");
 				
 		
+				 /**
+					 * Liest alle Daten aus der DB und füllt sie in die FlexTable
+					 */
+				 
 				 myAsync.getAllNutzer(new AsyncCallback<ArrayList<Nutzer>>() {
 
 					@Override
@@ -140,7 +181,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 						}
 				});
 				 
-				final FlexTable flexTable3 = new FlexTable();
+				
+				 /**
+				  * neue Flextable für Anzeigen der Follower
+				  */
+				 
+				 final FlexTable flexTable3 = new FlexTable();
 				//flexTable3.setText(0, 0, "Nickname");
 				flexTable3.setText(0, 3, "Hier sehen Sie Ihre Follower");
 				
@@ -174,6 +220,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 					}
 				});
 		
+				
+				/**
+				 * Hier werden die einzelnen Panel zusammengeführt und das Hauptpanel zurück geben
+				 */
+				
 				links.add(flexTable);
 				rechts.add(flexTable2);
 				rechts.add(flexTable3);
@@ -185,6 +236,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 				
 	}
 
+			
+			/**
+			 * 
+			 * Methode die überprüft, ob man den Follower schon folgt
+			 * 
+			 */
 	
 	private void folgenExistiert(final Nutzer derBeobachteteId, final Nutzer follower){
 		myAsync.findAboByNutzerID(derBeobachteteId.getId(),follower.getId(), new AsyncCallback<Nutzerabonnement>() {
@@ -205,6 +262,13 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 			}
 		});
 	}
+	
+	
+	/**
+	 * 
+	 * Methode die es ermöglicht zu Folgen
+	 * 
+	 */
 	
 	private void folgen(Nutzer derBeobachteteId, Nutzer follower) {
 		myAsync.createNutzerabonnement(derBeobachteteId, follower, new AsyncCallback<Nutzerabonnement>() {
@@ -240,6 +304,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 //				});	
 //		}
 	
+	/**
+	 * 
+	 * Methode die ein Nutzer Abonnement aufhebt
+	 * 
+	 */
+	
 	public void loeschenFollower(Nutzerabonnement nutzerAbo){
 		myAsync.delete(nutzerAbo, new AsyncCallback<Void>() {
 
@@ -252,7 +322,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 					@Override
 					public void onSuccess(Void result) {
 
-						Window.alert("gel�scht!");
+						Window.alert("gel�scht!");
 						
 					}
 		});

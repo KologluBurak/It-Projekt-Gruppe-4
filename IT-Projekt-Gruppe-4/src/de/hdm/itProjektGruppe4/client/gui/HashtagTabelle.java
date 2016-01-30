@@ -40,14 +40,26 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 
-
+/**
+ * Zeigt mehrere Tabellen mit den erforderlichen Daten an, hier in Verbindung mit Hashtags
+ * 
+ * @author Di Giovanni
+ *
+ */
 
 	public class HashtagTabelle {
 		
+		/**
+		 * Erstellen von Panels 
+		 */
 		
 		HorizontalPanel hauptP = new HorizontalPanel();
 		HorizontalPanel links = new HorizontalPanel();
 		HorizontalPanel rechts = new HorizontalPanel();
+		
+		/**
+		 * Erstellung von verschiedenen Widgets
+		 */
 		
 		FlexTable FlexTable = new FlexTable();
 		TextBox hashtagTextBox = new TextBox();
@@ -55,7 +67,16 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 		
 		MessagingAdministrationAsync myAsync = GWT.create(MessagingAdministration.class);
 		
+		/**
+		 * Stellt die Tabellen da
+		 * Panel + FlexTable
+		 */
+		
 		public Widget zeigeTabelle () {
+			
+			/**
+			 * Erstellt ein FlexTable für die Anzeige der Abonnierten Hashtags
+			 */
 			
 			final FlexTable flexTable = new FlexTable();
 
@@ -63,6 +84,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			flexTable.setText(0, 1, "HashtagID");
 			flexTable.setText(0, 2, "Entfernen");
 
+			/**
+			 * Liest alle Daten aus der DB und füllt sie in die FlexTable
+			 */
+			
 			myAsync.getAllHashtagabonnements(Cookies.getCookie("userID"), new AsyncCallback<ArrayList<Hashtagabonnement>>() {
 
 				@Override
@@ -71,9 +96,13 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 
 					for (final Hashtagabonnement hta : result) {
 
+						/**
+						 * Button wird erstellt der später entfernen soll
+						 */
+						
 						Button bModifizieren = new Button("Entfernen");
 
-						//TODO Hier m�sst hr erst eine Tabell erstellen und alle Daten reintun was in hta steht.
+						//TODO Hier m�sst hr erst eine Tabell erstellen und alle Daten reintun was in hta steht.
 
 						Label aboID = new Label(String.valueOf(hta.getHashtagID()));
 						Label zeit = new Label(String.valueOf(hta.getErstellungsZeitpunkt()));
@@ -84,6 +113,10 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 						flexTable.setWidget(zeileCounter, 1, hashtagID);
 						flexTable.setWidget(zeileCounter, 2, bModifizieren);
 
+						/**
+						 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+						 */
+						
 						bModifizieren.addClickHandler(new ClickHandler(){
 
 							@Override
@@ -91,7 +124,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 								loeschenHashtag(hta);
 
 								// Beispiel zum sehen, dass es funktioniert abspielen bitt
-//								Window.alert("�ndern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
+//								Window.alert("�ndern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
 							}
 
 						});
@@ -99,10 +132,14 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 						zeileCounter += 1;
 				}
 
+					/**
+					 * Scroller wird erstellt für den Flextable
+					 */
+					
 					ScrollPanel scroller = new ScrollPanel(FlexTable);
 				    scroller.setSize("250px", "450px");
 				    
-				    // Rahmen, Gr��e Unterhaltung
+				    // Rahmen, Gr��e Unterhaltung
 				    
 				    rechts.add(scroller);
 					FlexTable.setBorderWidth(5);
@@ -112,11 +149,19 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 					FlexTable.setText(0, 1, "Bezeichnung");
 					FlexTable.setText(0, 2, "Folgen");
 					
+					 /**
+					  * Style für die CSS
+					  */
+					
 					FlexTable.addStyleName("habo");
 					FlexTable.getCellFormatter().addStyleName(0, 0, "haboColumn");
 					FlexTable.getCellFormatter().addStyleName(0, 1, "haboColumn");
 					FlexTable.getCellFormatter().addStyleName(0, 2, "haboColumn");
 
+					/**
+					 * Liest alle Daten aus der DB und füllt sie in die FlexTable
+					 */
+					
 					myAsync.getAllHashtags(new AsyncCallback<ArrayList<Hashtag>>() {
 
 						@Override
@@ -130,6 +175,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 							
 							for (final Hashtag ht : result){
 								
+							
+								
+								/**
+								 * Button wird erstellt der später entfernen soll
+								 */
+								
 								Button hfolgen = new Button("Folgen");
 								
 								Label hID = new Label(String.valueOf(ht.getId()));
@@ -139,6 +190,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 								FlexTable.setWidget(zeileCounterH, 0, hID);
 								FlexTable.setWidget(zeileCounterH, 1, bez);
 								FlexTable.setWidget(zeileCounterH, 2, hfolgen);
+								
+								
+								/**
+								 * Der erstellte Button wird aufgerufen + neuer Clickhanlder
+								 */
 								
 								hfolgen.addClickHandler(new ClickHandler() {
 
@@ -158,7 +214,6 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 
 									}
 
-									
 									
 								});
 								zeileCounterH ++;
@@ -183,7 +238,9 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			
 			
 			 
-		
+			/**
+			 * Hier werden die einzelnen Panel zusammengeführt und das Hauptpanel zurück geben
+			 */
 			
 			 
 			links.add(flexTable);
@@ -198,13 +255,19 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			
 		}
 		
+		/**
+		 * 
+		 * Methode die überprüft, ob man dem Hashtag schon folgt
+		 * 
+		 */
+		
 		private void hashtagaboExistiert(Nutzer nutzer, Hashtag hashtag, final Hashtagabonnement bezeichnung){
 
 			myAsync.getHashtagabonnementByNutzerIdHashtagID(nutzer.getId(), hashtag.getId(), new AsyncCallback<Hashtagabonnement>(){
 
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert("Fehler beim �berpr�fen der Hashtagabonnement " + caught);
+					Window.alert("Fehler beim �berpr�fen der Hashtagabonnement " + caught);
 				}
 
 				@Override
@@ -217,6 +280,12 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 				
 			});
 		}
+		
+		/**
+		 * 
+		 * Methode die das Folgen eines Hashtags ermöglicht
+		 * 
+		 */
 		
 		private void hashFolgen(Hashtagabonnement bezeichnung) {
 			myAsync.createHashtagAbonnement(bezeichnung, new AsyncCallback<Hashtagabonnement>() {
@@ -235,6 +304,13 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 			});
 			
 		}
+		
+		/**
+		 * 
+		 * Methode die das Löschen eines Hashtags ermöglicht
+		 * 
+		 */
+		
 		private void loeschenHashtag(Hashtagabonnement habo) {
 			myAsync.delete(habo, new AsyncCallback<Void>() {
 
