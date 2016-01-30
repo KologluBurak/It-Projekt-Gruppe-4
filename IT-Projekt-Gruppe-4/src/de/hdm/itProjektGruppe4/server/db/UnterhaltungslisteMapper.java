@@ -115,7 +115,7 @@ public class UnterhaltungslisteMapper {
 
 		try {
 			stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM unterhaltungslisten WHERE unterhaltungID = "
+			stmt.executeUpdate("DELETE FROM `unterhaltungslisten` WHERE `unterhaltungslisten`.`unterhaltungID` =  "
 					+ unterhaltungsliste.getId());
 			System.out.println("DELETE FROM unterhaltungslisten WHERE unterhaltungID = "
 					+ unterhaltungsliste.getUnterhaltungID());

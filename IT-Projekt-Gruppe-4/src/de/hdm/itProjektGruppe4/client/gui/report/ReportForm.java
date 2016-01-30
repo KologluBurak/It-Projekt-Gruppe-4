@@ -24,6 +24,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Hashtag;
 import de.hdm.itProjektGruppe4.shared.bo.Hashtagabonnement;
 import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
+import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 
 
 
@@ -325,6 +326,33 @@ public void alleAbos() {
 	
 	public void alleNutzerAbosAnzeigen(){
 		
+		tbb4.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				myAsync.getAllNutzerabonnementsByBeobachteteMail(tb4.getText(), new AsyncCallback<ArrayList<Nutzerabonnement>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Fehler beim anzeigen eines Nutzerabos " + caught);
+						
+					}
+
+					@Override
+					public void onSuccess(ArrayList<Nutzerabonnement> result) {
+
+						int zeilenCounter = 1;
+
+						for(Nutzerabonnement na : result){
+							inhalt.setText(zeilenCounter, 0, na.getNutzerNickname().getNickname());
+							zeilenCounter ++;
+						}
+						
+					}
+				});
+				
+			}
+		});
 	}
 	
 }

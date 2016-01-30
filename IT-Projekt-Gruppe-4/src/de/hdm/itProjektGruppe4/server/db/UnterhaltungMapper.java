@@ -139,14 +139,14 @@ public class UnterhaltungMapper {
 	 */
 	public void delete(Unterhaltung unterhaltung)
 			throws Exception{
-		
+
 		Connection con = DBConnection.connection();
 		Statement stmt= null;
 		try {
 			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM unterhaltungen WHERE unterhaltungID="+ unterhaltung.getId());
 			stmt.close();
-			
+
 			// con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -91,7 +91,7 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 								loeschenHashtag(hta);
 
 								// Beispiel zum sehen, dass es funktioniert abspielen bitt
-								Window.alert("Ändern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
+//								Window.alert("Ändern funktioniert mit der Hashtag ID von " + hta.getHashtagID()); 
 							}
 
 						});

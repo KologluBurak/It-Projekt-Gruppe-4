@@ -214,7 +214,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	 * Auslesen eines Nutzers anhand seines Nickname.
 	 */
 	public Nutzer getNutzerByNickname(String nickname) throws Exception {
-		return this.nutzerMapper.findNutzerByNickname(nickname);
+		return this.nutzerMapper.findNutzerByEmail(nickname);
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		Nutzer absender = new Nutzer();
 
 		// erster Fremdschlï¿½ssel
-		absender = this.nutzerMapper.findNutzerByNickname(nickname);
+		absender = this.nutzerMapper.findNutzerByEmail(nickname);
 
 	    //Nutzer empfaenger = new Nutzer();
 
@@ -262,7 +262,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 		// this.unterhaltungslisteMapper.findByAbsender(absender);
 
 		// 3. Fremschlüssel
-		Nutzer empfaenger =  this.nutzerMapper.findNutzerByNickname(empf);
+		Nutzer empfaenger =  this.nutzerMapper.findNutzerByEmail(empf);
 
 		System.out.println(absender.getId() + " " + unterhaltung.getId());
 
@@ -540,6 +540,13 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public ArrayList<Nutzerabonnement> getAllNutzerabonnementsByBeobachteteID(String userID) throws Exception {
 		return this.nutzerAboMapper.findAllNutzerabonnementsByBeobacheteteID(userID);
 	}
+	
+	public ArrayList<Nutzerabonnement> getAllNutzerabonnementsByBeobachteteMail(String userMail) throws Exception {
+		Nutzer nutzer = new Nutzer();
+		nutzer = this.nutzerMapper.findNutzerByEmail(userMail);
+		
+		return this.nutzerAboMapper.findAllNutzerabonnementsByBeobacheteteID(nutzer.getId());
+	}
 
 
 	/**
@@ -657,11 +664,11 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	/**
 	 * Auslesen eines Hashtagsabonnement anhand der Hashtag-ID
 	 */
-	public Hashtagabonnement getHashtagAbonnementByHashtagId(String text) throws Exception {
+	public ArrayList<Hashtagabonnement> getHashtagAbonnementByHashtagId(String text) throws Exception {
 		int hid = 0;
 		System.out.println("getHashtagAbonnementByHashtagId "+hid);
 		Hashtag h = this.hashtagMapper.findHashtagByText(text);
-		System.out.println("Objekt "+h); 
+		System.out.println("Objekt "+ text); 
 
 		if(h == null){
 			System.out.println(text + " Existiert nicht");
@@ -673,7 +680,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			System.out.println(text + " Existiert");
 			hid = this.hashtagMapper.findHashtagByText(text).getId();
 		}
-		
+
 		return this.hashtagAboMapper.findHashtagAbonnementByHashtagID(hid);
 	}
 
@@ -802,7 +809,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 			throws Exception {
 	
 		Nutzer empf = new Nutzer();
-		empf = this.nutzerMapper.findNutzerByNickname(empfaenger);
+		empf = this.nutzerMapper.findNutzerByEmail(empfaenger);
 		System.out.println("UnterhaltungID "+this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId()).getUnterhaltungID());
 		return this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId());
 	}
@@ -810,7 +817,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	public void deleteUnterhaltungsliste (String absender, String empfaenger) throws Exception {
 		
 		Nutzer empf = new Nutzer();
-		empf = this.nutzerMapper.findNutzerByNickname(empfaenger);
+		empf = this.nutzerMapper.findNutzerByEmail(empfaenger);
 		System.out.println("UnterhaltungID "+this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId()).getUnterhaltungID());
 		
 		Unterhaltungsliste unterhaltungsliste = this.unterhaltungslisteMapper.pruefeUnterhaltung(absender, empf.getId());
@@ -819,7 +826,7 @@ public class MessagingAdministrationImpl extends RemoteServiceServlet implements
 	}
 	
 	public ArrayList<Nachricht> getNachrichtByNickname(String nickname ) throws Exception {
-		Nutzer nutzer = this.nutzerMapper.findNutzerByNickname(nickname);
+		Nutzer nutzer = this.nutzerMapper.findNutzerByEmail(nickname);
 		return this.nachrichtMapper.alleNachrichtenJeNutzer(nutzer);
 	}
 

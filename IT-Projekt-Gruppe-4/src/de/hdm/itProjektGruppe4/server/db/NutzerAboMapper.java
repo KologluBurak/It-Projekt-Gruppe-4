@@ -231,6 +231,57 @@ public class NutzerAboMapper {
 	}
 
 	/**
+	 * Diese Methode ermoeglicht es alle Nutzerabonnements aus der Datenbank in
+	 * einer Liste auszugeben.
+	 * 
+	 * @return allNutzerabonnements
+	 * @throws IllegalArgumentException
+	 */
+	public ArrayList<Nutzerabonnement> findAllNutzerabonnementsByBeobacheteteID(int userID) 
+			throws Exception{
+		Connection con = DBConnection.connection();
+//		Statement stmt= null;
+//		ResultSet rs= null;
+		ArrayList<Nutzerabonnement> allNutzerabonnements = new ArrayList<Nutzerabonnement>();
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+					+ "ON nutzerabonnements.followerID =  nutzer.nutzerID "
+					+ "WHERE nutzerabonnements.derBeobachteteID =" + userID);
+//			stmt = con.createStatement();
+//			rs = stmt.executeQuery("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+//					+ "ON nutzerabonnements.nutzerID = nutzer.nutzerID");
+
+			System.out.println("SELECT * FROM nutzerabonnements INNER JOIN nutzer "
+					+ "ON nutzerabonnements.followerID =  nutzer.nutzerID "
+					+ "WHERE nutzerabonnements.derBeobachteteID =" + userID);
+			while (rs.next()) {
+				Nutzer nutzer = new Nutzer();
+				nutzer.setNickname(rs.getString("nickname"));
+
+				Nutzerabonnement nutzerabonnement = new Nutzerabonnement();
+				nutzerabonnement.setId(rs.getInt("nutzerAboID"));
+				nutzerabonnement.setNutzerNickname(nutzer);
+				nutzerabonnement.setErstellungsZeitpunkt(rs.getString("datum"));
+				nutzerabonnement.setAbonnementID(rs.getInt("abonnementID"));
+				nutzerabonnement.setDerBeobachteteID(rs.getInt("derBeobachteteID"));
+				nutzerabonnement.setFollowerID(rs.getInt("followerID"));
+
+				allNutzerabonnements.add(nutzerabonnement);
+			}
+			stmt.close();
+			rs.close();
+			// con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
+		}finally {
+			//DBConnection.closeAll(rs, stmt, con );
+		}
+		return allNutzerabonnements;
+	}
+
+	/**
 	 * Diese Methode ermoeglicht es ein Nutzerabonnement anhand ihrer ID zu
 	 * finden und anzuzeigen.
 	 * 

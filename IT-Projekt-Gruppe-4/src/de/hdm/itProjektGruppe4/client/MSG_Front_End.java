@@ -12,11 +12,17 @@ import java.util.ArrayList;
 
 
 
+
+
+
+
 //import com.google.appengine.repackaged.com.google.common.util.concurrent.AsyncCallable;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -34,6 +40,8 @@ import de.hdm.itProjektGruppe4.client.gui.UnterhaltungsForm;
 //import de.hdm.itProjektGruppe4.shared.bo.Abonnement;
 
 import de.hdm.itProjektGruppe4.client.gui.report.ReportForm;
+import de.hdm.itProjektGruppe4.shared.LoginService;
+import de.hdm.itProjektGruppe4.shared.LoginServiceAsync;
 //import de.hdm.itProjektGruppe4.shared.ReportGenerator.*;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministration;
 import de.hdm.itProjektGruppe4.shared.MessagingAdministrationAsync;
@@ -49,6 +57,8 @@ public class MSG_Front_End {
 	TextBox textfeld = new TextBox();
 	Button button = new Button();
 	Label label = new Label();
+
+	private Anchor signOutLink = new Anchor("Sign Out");
 
 	// Anzeigen von dem Menue
 
@@ -183,6 +193,34 @@ public class MSG_Front_End {
 				Window.Location.assign(GWT.getHostPageBaseURL() + "IT_Projekt_Gruppe_4_Report.html");
 			}
 		};
+		
+		Command logout = new Command() {
+			
+			public void execute(){
+//				signOutLink.setHref(loginInfo.getLogoutUrl());
+//				RootPanel.get("starter").clear();
+				//loadLogin();
+				//Window.Location.reload();
+				
+				LoginServiceAsync loginService = GWT.create(LoginService.class);
+
+				loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("Fehler beim Logout " + caught);
+					}
+
+					@Override
+					public void onSuccess(LoginInfo result) {
+						signOutLink.setHref(result.getLogoutUrl());
+						Window.Location.replace(result.getLogoutUrl());
+						Window.alert("Sie haben sich ausgeloggt"); 
+						
+					}
+				});
+			}
+		};
 
 		// Menuebar und verschiede Reiter + Commands
 
@@ -198,6 +236,8 @@ public class MSG_Front_End {
 		aboM.addItem("Nutzerabonnement Anzeigen", nutzeraboAnzeigen);
 		MenuBar repM = new MenuBar(true);
 		repM.addItem("Reportauswahl anzeigen", reportAuswahlAnzeigen);
+		MenuBar log = new MenuBar(true);
+		log.addItem("Abmelden", logout);
 
 		MenuBar menu = new MenuBar();
 		menu.setAutoOpen(true);
@@ -205,8 +245,9 @@ public class MSG_Front_End {
 		menu.addItem("Nachricht", nachM);
 		menu.addItem("Unterhaltung", untM);
 		menu.addItem("Hashtag Abonnement", hasM);
-		menu.addItem("Nutzeraboonement", aboM);
+		menu.addItem("Nutzer Abonnement", aboM);
 		menu.addItem("Report", repM);
+		menu.addItem("Logout", log);
 
 		Label user = new Label ("Wilkommen zurueck "+email);
 		vertipanel.add(user);
@@ -218,4 +259,5 @@ public class MSG_Front_End {
 		RootPanel.get("starter").add(hauptpanel);
 
 	}
+
 }

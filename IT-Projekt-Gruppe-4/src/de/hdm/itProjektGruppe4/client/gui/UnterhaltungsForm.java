@@ -72,7 +72,6 @@ public class UnterhaltungsForm {
 	    
 	    eigenesRasterLinks.setWidget(2, 2, scroller);
 		uft.setBorderWidth(5);
-	
 		
 //		uft.setText(0, 0, "Hallo wie gehts?");
 //		uft.setText(1, 1, "Gut und selbst?");
@@ -128,9 +127,9 @@ public class UnterhaltungsForm {
 				
 				int z = 1;
 				for(final Nutzer nutzer : result){
-					//Window.alert(nutzer.getNickname());
+					//Window.alert(nutzer.getEmail());
 					
-					cft.setText(z, 0, nutzer.getNickname());
+					cft.setText(z, 0, nutzer.getEmail());
 					 
 				    Button anzeigen = new Button ("Anzeigen");
 				    Button entfernen = new Button("Entfernen");
@@ -147,8 +146,8 @@ public class UnterhaltungsForm {
 								uft.setText(i, 1, "");
 							}
 							
-							chatMit.setText(nutzer.getNickname()); 
-							findeUnterhaltung(Cookies.getCookie("userID"), nutzer.getNickname());
+							chatMit.setText(nutzer.getEmail()); 
+							findeUnterhaltung(Cookies.getCookie("userID"), nutzer.getEmail());
 							//Window.alert(""+uft.getRowCount());
 						}
 					});
@@ -157,7 +156,7 @@ public class UnterhaltungsForm {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							loescheUnterhaltung(Cookies.getCookie("userID"), nutzer.getNickname());
+							loescheUnterhaltung(Cookies.getCookie("userID"), nutzer.getEmail());
 						}
 					});
 				    
@@ -201,6 +200,7 @@ public class UnterhaltungsForm {
 	}
 	
 	private void loescheUnterhaltung(String absender, String empfaenger){
+		Window.alert(absender + " " + empfaenger);
 		myAsync.deleteUnterhaltungsliste(absender, empfaenger, new AsyncCallback<Void>() {
 
 			@Override

@@ -226,12 +226,13 @@ public class HashtagAboMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	public Hashtagabonnement findHashtagAbonnementByHashtagID(int id) throws Exception {
+	public ArrayList<Hashtagabonnement> findHashtagAbonnementByHashtagID(int id) throws Exception {
 
 		// DB-Verbindung herstellen
 		Connection con = DBConnection.connection();
 		Statement stmt = null;
 		ResultSet rs = null;
+		ArrayList<Hashtagabonnement> array = new ArrayList<Hashtagabonnement>();
 		try {
 			// Insert-Statement erzeugen
 			stmt = con.createStatement();
@@ -247,7 +248,7 @@ public class HashtagAboMapper {
 			System.out.println(rs.getStatement());
 			System.out.println(id);
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
-			if (rs.next()) {
+			while (rs.next()) {
 				Hashtag bezeichnung = new Hashtag();
 				bezeichnung.setBezeichnung(rs.getString("bezeichnung"));
 	
@@ -258,15 +259,17 @@ public class HashtagAboMapper {
 				hashtagAbonnement.setAbonnementID(rs.getInt("abonnementID"));
 				hashtagAbonnement.setNutzerID(rs.getInt("nutzerID"));
 
-				return hashtagAbonnement;
+				array.add(hashtagAbonnement);
 			}
+			
+			return array;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException("Datenbank fehler!" + e.toString());
 		}finally {
 			DBConnection.closeAll(rs, stmt, con);
 		}
-		return null;
+		
 	}
 
 	/**

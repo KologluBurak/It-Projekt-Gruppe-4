@@ -220,8 +220,8 @@ public class HashtagMapper {
 			rs = stmt.executeQuery("SELECT * FROM hashtags "
 					+ "WHERE bezeichnung= '" + text + "'");
 
-			System.out.println(rs.getStatement());
-			System.out.println(text);
+			//System.out.println(rs.getStatement());
+			System.out.println("Text von findHahtagByText " +text);
 			// Wenn ein Datensatz gefunden wurde, wird auf diesen zugegriffen
 			if (rs.next()) {
 				Hashtag hashtag = new Hashtag();

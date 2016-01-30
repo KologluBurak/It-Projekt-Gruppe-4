@@ -113,32 +113,30 @@ import de.hdm.itProjektGruppe4.shared.bo.Nutzerabonnement;
 						
 						for (final Nutzer nutzer : result){
 							
-							Button brechts = new Button("Folgen");
+							if(nutzer.getEmail() != Cookies.getCookie("userMail")){
+								Button brechts = new Button("Folgen");
+								
+								Label nickname = new Label (String.valueOf(nutzer.getNickname()));
+								
+								flexTable2.setWidget(zeileCounter, 0, nickname);
+								flexTable2.setWidget(zeileCounter, 1, brechts);
 							
-							Label nickname = new Label (String.valueOf(nutzer.getNickname()));
-							
-							flexTable2.setWidget(zeileCounter, 0, nickname);
-							flexTable2.setWidget(zeileCounter, 1, brechts);
-						
-							zeileCounter ++;
-							
-							brechts.addClickHandler(new ClickHandler() {
+								zeileCounter ++;
 								
-								@Override
-								public void onClick(ClickEvent event) {
-									Nutzer beobachtete = new Nutzer();
-									int id = Integer.parseInt(Cookies.getCookie("userID"));
-									beobachtete.setId(id);
-									folgenExistiert(beobachtete, nutzer);
-								 
-								}				
-															
-								});
-								
-								
-								
+								brechts.addClickHandler(new ClickHandler() {
+									
+									@Override
+									public void onClick(ClickEvent event) {
+										Nutzer beobachtete = new Nutzer();
+										int id = Integer.parseInt(Cookies.getCookie("userID"));
+										beobachtete.setId(id);
+										folgenExistiert(beobachtete, nutzer);
+									 
+									}				
+																
+									});
+								}
 							}
-							
 						}
 				});
 				 

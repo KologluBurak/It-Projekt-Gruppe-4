@@ -148,6 +148,7 @@ public class NachrichtMapper {
 			while (rs.next()) {
 				Nutzer absender = new Nutzer();
 				absender.setNickname(rs.getString("nickname"));
+				absender.setEmail(rs.getString("email"));
 				
 				Nachricht nachricht = new Nachricht();
 				nachricht.setId(rs.getInt("nachrichtID"));
