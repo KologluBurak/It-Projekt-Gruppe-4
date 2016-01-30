@@ -3,7 +3,7 @@ package de.hdm.itProjektGruppe4.shared.bo;
 import java.io.Serializable;
 
 /**
- * Klasse enth‰lt alle Daten hinsichtlich 
+ * Klasse enth√§lt alle Daten hinsichtlich 
  * einer aktuellen Nutzersession.
  * @author Raue
  *

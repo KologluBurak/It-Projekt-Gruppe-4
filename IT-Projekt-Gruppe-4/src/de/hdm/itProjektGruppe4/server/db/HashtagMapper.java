@@ -76,7 +76,7 @@ public class HashtagMapper {
 	 * 
 	 * @param hashtag
 	 * @return hashtag
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Hashtag insert(Hashtag hashtag) 
 			throws Exception {
@@ -110,7 +110,7 @@ public class HashtagMapper {
 	 * Diese Methode ermöglicht das Löschen eines Hashtags
 	 * 
 	 * @param hashtag
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public void delete(Hashtag hashtag) 
 			throws Exception {
@@ -136,7 +136,7 @@ public class HashtagMapper {
 	 * auszugeben.
 	 * 
 	 * @return allHashtags
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public ArrayList<Hashtag> findAllHashtags()
 			throws Exception {
@@ -177,7 +177,7 @@ public class HashtagMapper {
 	 * 
 	 * @param id
 	 * @return hashtag
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Hashtag findHashtagByID(int id) 
 			throws Exception {
@@ -207,7 +207,13 @@ public class HashtagMapper {
 	}
 		return null;
 	}
-	
+
+	/**
+	 * Auslesen eines Hashtags durch den Text
+	 * @param text
+	 * @return hashtag
+	 * @throws Exception
+	 */
 	public Hashtag findHashtagByText(String text) 
 			throws Exception {
 		// DB-Verbindung herstellen
@@ -239,6 +245,12 @@ public class HashtagMapper {
 		return null;
 	}
 	
+	/**
+	 * Auslesen der letzten ID in der Tabelle Hashtag
+	 * 
+	 * @return u
+	 * @throws Exception
+	 */
 	public Hashtag getMaxID() throws Exception{
 		Connection con = DBConnection.connection();
 		Statement stmt = null; 

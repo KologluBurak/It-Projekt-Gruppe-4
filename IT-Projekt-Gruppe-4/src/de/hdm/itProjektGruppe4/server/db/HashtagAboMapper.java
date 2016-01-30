@@ -277,7 +277,7 @@ public class HashtagAboMapper {
 	 * der Datenbank, anhand deren ID.
 	 * 
 	 * @param id
-	 * @return
+	 * @return hsa
 	 * @throws Exception
 	 */
 	public ArrayList<Hashtagabonnement> findAlleHashtagAbonnementByHashtagID(int id) throws Exception {
@@ -333,7 +333,7 @@ public class HashtagAboMapper {
 	 * der Datenbank, anhand deren ID.
 	 * 
 	 * @param id
-	 * @return
+	 * @return hashtagAbonnement
 	 * @throws Exception
 	 */
 
@@ -379,6 +379,7 @@ public class HashtagAboMapper {
 	 * 
 	 * @param id
 	 * @return hashtagAboListe
+	 * @throws Exception
 	 */
 
 	public ArrayList<Hashtagabonnement> findHashtagAbonnementByNutzerID(int id) throws Exception {
@@ -421,6 +422,7 @@ public class HashtagAboMapper {
 	 * 
 	 * @param id
 	 * @return hashtagAboListe
+	 * @throws Exception
 	 */
 
 	public Hashtagabonnement findHashtagAbonnementByNutzerIDHashtagID(int id, int id2) throws Exception {

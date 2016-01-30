@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import de.hdm.itProjektGruppe4.shared.bo.Nachricht;
 import de.hdm.itProjektGruppe4.shared.bo.Nutzer;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltung;
 import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
@@ -20,9 +19,11 @@ import de.hdm.itProjektGruppe4.shared.bo.Unterhaltungsliste;
  * Objekte können in DB-Strukturen und DB-Strukturen in Objekte umgewandelt
  * werden.
  * 
- * @author thies
+ * @author Thies
  * @author Kologlu
  * @author Yücel
+ * 
+ * 
  */
 
 public class UnterhaltungslisteMapper {
@@ -72,7 +73,7 @@ public class UnterhaltungslisteMapper {
 	 * 
 	 * @param unterhaltungsliste
 	 * @return unterhaltungsliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Unterhaltungsliste insert(Unterhaltungsliste unterhaltungsliste)
 			throws Exception {
@@ -287,7 +288,7 @@ public class UnterhaltungslisteMapper {
 	 * 
 	 * @param unterhaltung
 	 * @return unterhaltungsliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Unterhaltungsliste findByUnterhaltung(Unterhaltung unterhaltung)
 			throws Exception {
@@ -326,7 +327,7 @@ public class UnterhaltungslisteMapper {
 	 * Die Methode ermöglicht das Finden eines Absenders aus der Datenbank
 	 * über den Parameter
 	 * 
-	 * @param absenderNickname
+	 * @param absender
 	 * @return uliste
 	 * @throws Exception
 	 */

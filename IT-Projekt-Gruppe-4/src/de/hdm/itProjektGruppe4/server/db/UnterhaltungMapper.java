@@ -2,9 +2,8 @@ package de.hdm.itProjektGruppe4.server.db;
 
 import java.sql.*;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import de.hdm.itProjektGruppe4.shared.bo.*;
 
@@ -12,7 +11,7 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
  * Mapper-Klasse, die <code>Unterhaltung</code>-Objekte auf eine relationale
  * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gel�scht werden können. Das Mapping ist bidirektional. D.h., Objekte können
+ * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * @author Thies
@@ -36,7 +35,7 @@ public class UnterhaltungMapper {
 	private static UnterhaltungMapper unterhaltungMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected UnterhaltungMapper() {
@@ -71,6 +70,7 @@ public class UnterhaltungMapper {
 	 * @param unterhaltung
 	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
+	 * @throws Exception
 	 */
 	public Unterhaltung insert()
 			throws Exception{
@@ -97,7 +97,13 @@ public class UnterhaltungMapper {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Auslesen der letzten ID in der Unterhaltung
+	 * 
+	 * @return u
+	 * @throws Exception
+	 */
 	public Unterhaltung getMaxID() throws Exception{
 		Connection con = DBConnection.connection();
 		Statement stmt = null; 

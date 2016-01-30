@@ -8,12 +8,17 @@ import com.google.appengine.api.users.UserServiceFactory;
 import de.hdm.itProjektGruppe4.shared.LoginService;
 import de.hdm.itProjektGruppe4.shared.bo.LoginInfo;
 
+/**
+	 * Die Klasse LoginServiceImpl erbt von der Klasse RemoteServiceServlet und 
+	 * implementiert das Interface LoginService. 
+	 * 
+	 * @author Raue
+	 */
+
 public class LoginServiceImpl extends RemoteServiceServlet implements
 LoginService {
 
-/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 public LoginInfo login(String requestUri) {

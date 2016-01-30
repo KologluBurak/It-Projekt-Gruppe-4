@@ -60,6 +60,7 @@ public class NutzerAboMapper {
 	 * 
 	 * @return DAS <code>NutzerAboMapper</code>-Objekt.
 	 * @see nutzerAboMapper
+	 * @throws Exception
 	 */
 	public static NutzerAboMapper nutzerAboMapper() {
 		if (nutzerAboMapper == null) {
@@ -76,7 +77,7 @@ public class NutzerAboMapper {
 	 * 
 	 * @param nutzerabonnement
 	 * @return nutzerabonnement
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Nutzerabonnement insert(Nutzerabonnement nutzerabonnement) 
 			throws Exception{
@@ -112,6 +113,7 @@ public class NutzerAboMapper {
 	 * Diese Methode ermoeglicht das Loeschen eines Nutzerabonnements
 	 * 
 	 * @param nutzerabonnement
+	 * @throws Exception
 	 */
 	public void delete(Nutzerabonnement nutzerabonnement) 
 			throws Exception{
@@ -135,8 +137,8 @@ public class NutzerAboMapper {
 	 * Diese Methode ermoeglicht es alle Nutzerabonnements aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
-	 * @return allNutzerabonnements
-	 * @throws IllegalArgumentException
+	 * @return ArrayList<Nutzerabonnement> 
+	 * @throws Exception
 	 */
 	public ArrayList<Nutzerabonnement> findAllNutzerabonnements(String userID) 
 			throws Exception{
@@ -183,8 +185,8 @@ public class NutzerAboMapper {
 	 * Diese Methode ermoeglicht es alle Nutzerabonnements aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
-	 * @return allNutzerabonnements
-	 * @throws IllegalArgumentException
+	 * @return ArrayList<Nutzerabonnement> 
+	 * @throws Exception
 	 */
 	public ArrayList<Nutzerabonnement> findAllNutzerabonnementsByBeobacheteteID(String userID) 
 			throws Exception{
@@ -234,8 +236,8 @@ public class NutzerAboMapper {
 	 * Diese Methode ermoeglicht es alle Nutzerabonnements aus der Datenbank in
 	 * einer Liste auszugeben.
 	 * 
-	 * @return allNutzerabonnements
-	 * @throws IllegalArgumentException
+	 * @return ArrayList<Nutzerabonnement> 
+	 * @throws Exception
 	 */
 	public ArrayList<Nutzerabonnement> findAllNutzerabonnementsByBeobacheteteID(int userID) 
 			throws Exception{
@@ -286,8 +288,8 @@ public class NutzerAboMapper {
 	 * finden und anzuzeigen.
 	 * 
 	 * @param id
-	 * @return nutzerabo
-	 * @throws IllegalArgumentException
+	 * @return nutzerabonnement
+	 * @throws Exception
 	 */
 	public Nutzerabonnement findNutzerAbonnementByID(int id) 
 			throws Exception{		
@@ -328,8 +330,8 @@ public class NutzerAboMapper {
 	 * 
 	 * @param id
 	 * @param id2
-	 * @return nutzerabo
-	 * @throws IllegalArgumentException
+	 * @return nutzerabonnement
+	 * @throws Exception
 	 */
 	public Nutzerabonnement findAboByNutzerID(int id, int id2) 
 			throws Exception{		
@@ -370,6 +372,7 @@ public class NutzerAboMapper {
 	 * 
 	 * @param id
 	 * @return nutzerAboListe
+	 * @throws Exception
 	 */
 
 	public ArrayList<Nutzerabonnement> findNutzerAbonnementByAbonnementID(int id) 
@@ -410,6 +413,7 @@ public class NutzerAboMapper {
 	 * 
 	 * @param id
 	 * @return nutzerAboListe
+	 * @throws Exception
 	 */
 	public ArrayList<Nutzerabonnement> findNutzerAbonnementByDerBeobachteteID(int id) 
 			throws Exception{
@@ -448,7 +452,7 @@ public class NutzerAboMapper {
 	 * in der Datenbank, anhand deren FollowerID.
 	 * @param id
 	 * @return nutzerAboListe
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public ArrayList<Nutzerabonnement> findNutzerAbonnementByFollowerID(int id) 
 			throws Exception{
@@ -485,7 +489,7 @@ public class NutzerAboMapper {
 	 * Diese Methode ermoeglicht es eine Ausgabe ueber einen Nutzerabonnement
 	 * in der Datenbank, anhand der Id des Beobachteten.
 	 * @param nutzer
-	 * @return 
+	 * @return ArrayList<Nutzerabonnement> 
 	 * @throws Exception
 	 */
 	public ArrayList<Nutzerabonnement> alleNutzerFollowerJeNutzer(Nutzer nutzer)

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,9 +14,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Nutzer</code>-Objekte auf eine relationale Datenbank
- * abbildet. Hierzu wird eine Reihe von Methoden zur Verf�gung gestellt, mit
- * deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und gel�scht werden
- * k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen in DB-Strukturen
+ * abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung gestellt, mit
+ * deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und gelöscht werden
+ * können. Das Mapping ist bidirektional. D.h., Objekte können in DB-Strukturen
  * und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * 
@@ -33,7 +32,7 @@ public class NutzerMapper {
 	 * von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see NutzerMapper()
@@ -78,6 +77,7 @@ public class NutzerMapper {
 	 *            das zu speichernde Objekt
 	 * @return das bereits übergebene Objekt, jedoch mit ggf. korrigierter
 	 *         <code>id</code>.
+	 * @throws Exception        
 	 */
 	public Nutzer insert(Nutzer nutzer)
 			throws Exception {
@@ -118,6 +118,7 @@ public class NutzerMapper {
 	 * 
 	 * @param nutzer
 	 * @return nutzer
+	 * @throws Exception
 	 */
 	public Nutzer update(Nutzer nutzer) throws Exception {
 		Connection con = DBConnection.connection();
@@ -155,6 +156,7 @@ public class NutzerMapper {
 	 * Datenbank.
 	 * 
 	 * @param nutzer
+	 * @throws Exception
 	 */
 	public void delete(Nutzer nutzer) throws Exception {
 		Connection con = DBConnection.connection();
@@ -177,7 +179,8 @@ public class NutzerMapper {
 	 * Diese Methode ermöglicht es alle Nutzer aus der Datenbank in einer Liste
 	 * zu finden und anzuzeigen.
 	 * 
-	 * @return alleNutzer
+	 * @return nutzer
+	 * @throws Exception
 	 */
 	public ArrayList<Nutzer> findAllNutzer() throws Exception {
 		Connection con = DBConnection.connection();
@@ -295,7 +298,7 @@ public class NutzerMapper {
 	 * 
 	 * @param nutzerID
 	 * @return nutzer
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Nutzer findNutzerById(int nutzerID) throws Exception {
 		Connection con = DBConnection.connection();

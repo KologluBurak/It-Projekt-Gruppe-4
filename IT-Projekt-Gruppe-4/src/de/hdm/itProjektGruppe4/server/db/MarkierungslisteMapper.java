@@ -122,7 +122,7 @@ public class MarkierungslisteMapper {
 	 * 
 	 * @param nachricht
 	 * @return mliste
-	 * @throws IllegalArgumentException
+	 * @throws Exception
 	 */
 	public Markierungsliste findByNachricht(String nachricht)
 			throws Exception {

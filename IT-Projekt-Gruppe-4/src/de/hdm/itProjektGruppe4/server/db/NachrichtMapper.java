@@ -14,9 +14,9 @@ import de.hdm.itProjektGruppe4.shared.bo.*;
 
 /**
  * Mapper-Klasse, die <code>Nachricht</code>-Objekte auf eine relationale
- * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verf�gung
+ * Datenbank abbildet. Hierzu wird eine Reihe von Methoden zur Verfügung
  * gestellt, mit deren Hilfe z.B. Objekte gesucht, erzeugt, modifiziert und
- * gel�scht werden k�nnen. Das Mapping ist bidirektional. D.h., Objekte k�nnen
+ * gelöscht werden können. Das Mapping ist bidirektional. D.h., Objekte können
  * in DB-Strukturen und DB-Strukturen in Objekte umgewandelt werden.
  * 
  * 
@@ -32,7 +32,7 @@ public class NachrichtMapper {
 	 * hierbei von einem sogenannten <b>Singleton</b>.
 	 * <p>
 	 * Diese Variable ist durch den Bezeichner <code>static</code> nur einmal
-	 * f�r s�mtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
+	 * für sämtliche eventuellen Instanzen dieser Klasse vorhanden. Sie
 	 * speichert die einzige Instanz dieser Klasse.
 	 * 
 	 * @see NachrichtMapper()
@@ -40,7 +40,7 @@ public class NachrichtMapper {
 	private static NachrichtMapper nachrichtMapper = null;
 
 	/**
-	 * Geschützter Konstruktor - verhindert die M�glichkeit, mit
+	 * Geschützter Konstruktor - verhindert die Möglichkeit, mit
 	 * <code>new</code> neue Instanzen dieser Klasse zu erzeugen.
 	 */
 	protected NachrichtMapper() {
@@ -50,7 +50,7 @@ public class NachrichtMapper {
 	/**
 	 * Diese statische Methode kann aufgrufen werden durch
 	 * <code>NachrichtMapper.nachrichtMapper()</code>. Sie stellt die
-	 * Singleton-Eigenschaft sicher, indem Sie daf�r sorgt, dass nur eine
+	 * Singleton-Eigenschaft sicher, indem Sie dafür sorgt, dass nur eine
 	 * einzige Instanz von <code>NachrichtMapper</code> existiert.
 	 * <p>
 	 * 
@@ -73,7 +73,8 @@ public class NachrichtMapper {
 	 * Diese Methode ermöglicht es eine Nachricht in der Datenbank anzulegen.
 	 * 
 	 * @param nachricht
-	 * @return
+	 * @return Nachricht
+	 * @throws Exception
 	 */
 	public Nachricht insert(Nachricht nachricht)
 			throws Exception{
@@ -111,6 +112,7 @@ public class NachrichtMapper {
 	 * Diese Methode ermöglicht das Löschen einer Nachricht
 	 * 
 	 * @param nachricht
+	 * @throws Exception
 	 */
 	public void delete(Nachricht nachricht) throws Exception{
 		Connection con = DBConnection.connection();
@@ -133,6 +135,7 @@ public class NachrichtMapper {
 	 * Liste auszugeben.
 	 * 
 	 * @return allNachrichten
+	 * @throws Exception
 	 */
 	public ArrayList<Nachricht> findAllNachrichten()
 			throws Exception{
@@ -208,6 +211,7 @@ public class NachrichtMapper {
 	 * 
 	 * @param nutzer
 	 * @return nachrichtenJeNutzer
+	 * @throws Exception
 	 */
 	public ArrayList<Nachricht> alleNachrichtenJeNutzer(Nutzer nutzer)
 			throws Exception{
@@ -249,6 +253,7 @@ public class NachrichtMapper {
 	 * @param von
 	 * @param bis
 	 * @return nachrichtenJeZeitraum
+	 * @throws Exception
 	 */
 	public ArrayList<Nachricht> alleNachrichtenJeZeitraum(String von, String bis)
 			throws Exception{
@@ -277,6 +282,12 @@ public class NachrichtMapper {
 		return nachrichtenJeZeitraum;
 	}
 	
+	/**
+	 * Auslesen der letzten ID in der Nachricht.
+	 * 
+	 * @return n
+	 * @throws Exception
+	 */
 	public Nachricht getMaxID() throws Exception{
 		Connection con = DBConnection.connection();
 		Statement stmt = null; 
